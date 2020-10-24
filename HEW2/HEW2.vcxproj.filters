@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="texture.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="debugFont.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOperation.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="InputLogger.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="keyboard.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="mouse.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="myd3d.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="system_timer.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="config.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="debugFont.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="debugPrintf.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOperation.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="InputLogger.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="keyboard.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="mouse.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="myd3d.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="system_timer.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ヘッダー">
+      <UniqueIdentifier>{04243e1f-ed67-450a-83b9-0942eb9d7a01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース">
+      <UniqueIdentifier>{83833afc-cff1-44ab-94db-386af5ce6f76}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
