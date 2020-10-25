@@ -16,3 +16,30 @@ void DrawPlayer(){
 }
 void UninitPlayer(){
 }
+
+void RotateLeftPlayer(){
+
+}
+void RotateRightPlayer(){
+
+}
+
+void MoveUpPlayer(){
+
+}
+void MoveDownPlayer(){
+
+}
+void MoveLeftPlayer(){
+
+}
+void MoveRightPlayer(){
+
+}
+
+void ShotPlayer(){
+
+}
+void DamagePlayer(){
+
+}
