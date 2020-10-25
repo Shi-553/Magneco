@@ -37,6 +37,9 @@
     <ClCompile Include="system_timer.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
+    <ClCompile Include="judge.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -76,6 +79,9 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="system_timer.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="judge.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
   </ItemGroup>
