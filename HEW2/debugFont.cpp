@@ -12,6 +12,7 @@
 
 #define ONE_LINE_COUNT 16
 
+//hafilh
 int textureId;
 
 void InitDebugFont() {
