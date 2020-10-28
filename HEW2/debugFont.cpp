@@ -12,7 +12,7 @@
 
 #define ONE_LINE_COUNT 16
 
-//hafilh
+// SKT
 int textureId;
 
 void InitDebugFont() {
