@@ -1,5 +1,5 @@
 //Direct3D‚ÌŠj‚ğ‰Šú‰»
-
+// a
 #include <Windows.h>
 
 
