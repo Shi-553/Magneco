@@ -8,6 +8,6 @@ void UpdateJudge(){
 void DrawJudge(){
 
 }
-void UninitJudge(){//test
+void UninitJudge(){
 
 }
