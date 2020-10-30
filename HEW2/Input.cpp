@@ -4,6 +4,8 @@
 //						Author:Kanna Noda
 // -------------------------------------------------------------------------
 
+#include "Input.h"
+#include "InputLogger.h"
 
 void InitInput() {
 

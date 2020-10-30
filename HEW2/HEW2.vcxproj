@@ -159,6 +159,7 @@
     <ClCompile Include="debugFont.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="GameOperation.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="InputLogger.cpp" />
     <ClCompile Include="judge.cpp" />
     <ClCompile Include="keyboard.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="debugPrintf.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="GameOperation.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="InputLogger.h" />
     <ClInclude Include="judge.h" />
     <ClInclude Include="keyboard.h" />
