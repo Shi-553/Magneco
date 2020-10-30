@@ -22,14 +22,7 @@ void DrawJudge(){
 
 }
 
-bool JudgePlayerandBlockHit() {
+bool JudgePlayerandFlyingObjectHit() {
 
 }
 
-bool JudgeBlockandEnemyHit() {
-
-}
-
-bool JudgePlayerandEnemyHit() {
-
-}

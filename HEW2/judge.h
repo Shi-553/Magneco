@@ -12,8 +12,6 @@ void UninitJudge();
 void UpdateJudge();
 void DrawJudge();
 
-bool JudgePlayerandBlockHit();
-bool JudgeBlockandEnemyHit();
-bool JudgePlayerandEnemyHit();
+bool JudgePlayerandFlyingObjectHit();
 
 #endif // !_JUDGE_H
