@@ -40,6 +40,9 @@
     <ClCompile Include="judge.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
+    <ClCompile Include="map.cpp" />
+      <Filter>ソース</Filter>
+    </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
@@ -85,6 +88,9 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="judge.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="map.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
