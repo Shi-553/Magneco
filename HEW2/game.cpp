@@ -2,7 +2,7 @@
 // テストコメント
 // テスト２
 
-
+//リモート・マスターからブランチ分けて追加
 #include "config.h"
 #include "texture.h"
 #include "sprite.h"
