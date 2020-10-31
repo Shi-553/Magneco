@@ -158,6 +158,7 @@
   <ItemGroup>
     <ClCompile Include="debugFont.cpp" />
     <ClCompile Include="flyingObject.cpp" />
+    <ClCompile Include="flyingObjectSponer.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="GameOperation.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="debugFont.h" />
     <ClInclude Include="debugPrintf.h" />
     <ClInclude Include="flyingObject.h" />
+    <ClInclude Include="flyingObjectSponer.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="GameOperation.h" />
     <ClInclude Include="Input.h" />
