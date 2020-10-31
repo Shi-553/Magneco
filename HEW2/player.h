@@ -1,11 +1,11 @@
-
 #ifndef _PLAYER_H
 #define _PLAYER_H
 
 void InitPlayer();
+void UninitPlayer();
 void UpdatePlayer();
 void DrawPlayer();
-void UninitPlayer();
+
 
 void RotateLeftPlayer();
 void RotateRightPlayer();
@@ -15,7 +15,6 @@ void MoveDownPlayer();
 void MoveLeftPlayer();
 void MoveRightPlayer();
 
-void ShotPlayer();
-void DamagePlayer();
+void BlockDecision();
 
 #endif // !_PLAYER_H
