@@ -7,9 +7,12 @@
 #include "player.h"
 #include "game.h"
 
+typedef struct Player_tag{
+	D3DXVECTOR2 Position;
+	D3DXVECTOR2 direction;
+}Player;
 
-static D3DXVECTOR2 g_PlayerPosition(0.0f, 0.0f);  // プレイヤー座標
-static D3DXVECTOR2 g_PlayerDirection(0.0f, 0.0f); // プレイヤー進行方向
+
 std::list < std::string > flyingObject;
 
 
