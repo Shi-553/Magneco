@@ -13,6 +13,7 @@ struct FlyingObject
 	D3DXVECTOR2 pos;
 	D3DXVECTOR2 lastPos;
 	FlyingObjectType type;
+	D3DXVECTOR2 dir;
 };
 
 std::list<FlyingObject>* GetFlyingObjects();
