@@ -7,9 +7,6 @@
     <ClCompile Include="flyingObject.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
-    <ClCompile Include="flyingObjectSponer.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
     <ClCompile Include="game.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
@@ -52,6 +49,12 @@
     <ClCompile Include="texture.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
+    <ClCompile Include="flyingObjectSponer.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="gameSprite.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -64,9 +67,6 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="flyingObject.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="flyingObjectSponer.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
@@ -106,6 +106,12 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="mouse.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="flyingObjectSponer.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="gameSrite.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
   </ItemGroup>
