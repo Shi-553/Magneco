@@ -41,6 +41,11 @@
       <Filter>ソース</Filter>
     </ClCompile>
     <ClCompile Include="map.cpp" />
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -86,6 +91,9 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="map.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
   </ItemGroup>
