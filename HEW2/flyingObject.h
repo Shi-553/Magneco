@@ -1,5 +1,6 @@
 #pragma once
 #include "myd3d.h"
+#include <list>
 
 enum FlyingObjectType
 {
