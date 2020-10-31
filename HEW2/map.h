@@ -1,7 +1,7 @@
 #ifndef MAP_H
 #define MAP_H
 
-enum Map_Object
+enum MapType
 {
 	NONE,
 	BLOCK,

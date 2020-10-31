@@ -2,7 +2,7 @@
 #include "texture.h"
 
 
-static int MapChipList[MAPCHIP_WIDTH][MAPCHIP_HEIGHT]
+static MapType MapChipList[MAPCHIP_WIDTH][MAPCHIP_HEIGHT]
 {
 	{},
 	{},
