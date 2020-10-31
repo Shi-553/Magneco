@@ -40,6 +40,15 @@
     <ClCompile Include="judge.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="flyingObject.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="flyingObjectSponer.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
     <ClCompile Include="map.cpp" />
       <Filter>ソース</Filter>
     </ClCompile>
@@ -88,6 +97,15 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="judge.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="flyingObject.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="flyingObjectSponer.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="map.h">
