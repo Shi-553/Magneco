@@ -166,6 +166,7 @@
     <ClCompile Include="judge.cpp" />
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map.cpp" />
     <ClCompile Include="mouse.cpp" />
     <ClCompile Include="myd3d.cpp" />
     <ClCompile Include="player.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="InputLogger.h" />
     <ClInclude Include="judge.h" />
     <ClInclude Include="keyboard.h" />
+    <ClInclude Include="map.h" />
     <ClInclude Include="mouse.h" />
     <ClInclude Include="myd3d.h" />
     <ClInclude Include="player.h" />
