@@ -15,3 +15,8 @@ struct FlyingObject
 };
 
 std::list<FlyingObject>* GetFlyingObjects();
+
+void InitFlyingObject();
+void UninitFlyingObject();
+void DrawFlyingObject();
+void UpdateFlyingObject();
