@@ -1,8 +1,10 @@
 
 #include <list>
 #include "flyingObject.h"
+#include "texture.h"
 
-std::list<FlyingObject> flyingObjects;
+static std::list<FlyingObject> flyingObjects;
+static int flyingObjectTextureId = TEXTURE_INVALID_ID;
 
 std::list<FlyingObject>* GetFlyingObjects(){
 	return &flyingObjects;
