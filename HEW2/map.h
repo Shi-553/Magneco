@@ -15,11 +15,10 @@ enum MapType
 
 
 void InitMap(void);
-
 void UninitMap(void);
-
 void UpdateMap(void);
-
 void DrawMap(void);
+
+void MapChange(FlyingObject flyingobject);
 
 #endif // !MAP_H
