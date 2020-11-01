@@ -10,7 +10,7 @@ typedef struct NPC_tag{
 }NPC;
 
 
-static int TextureId = TEXTURE_INVALID_ID;
+static int NPCTextureId = TEXTURE_INVALID_ID;
 
 void InitNPC(){
 
