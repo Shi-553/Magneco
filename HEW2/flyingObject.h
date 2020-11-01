@@ -1,5 +1,6 @@
 #pragma once
 #include "myd3d.h"
+#include <list>
 
 enum FlyingObjectType
 {
@@ -7,11 +8,19 @@ enum FlyingObjectType
 	FLYING_OBJECT_BLOCK,
 	FLYING_OBJECT_ENEMY,
 };
-struct FlyingObject
+typedef struct FlyingObject
 {
 	D3DXVECTOR2 pos;
-	D3DXVECTOR2 lastPos;
 	FlyingObjectType type;
+	D3DXVECTOR2 dir;
+	D3DXVECTOR2 lastPos;
+
+	FlyingObject(D3DXVECTOR2 pos, FlyingObjectType type, D3DXVECTOR2 dir) {
+		this->pos = pos;
+		this->type = type;
+		this->dir = dir;
+		this->lastPos = pos;
+	}
 };
 
 std::list<FlyingObject>* GetFlyingObjects();
