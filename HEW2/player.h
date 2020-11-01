@@ -14,6 +14,6 @@ void MoveDownPlayer();
 void MoveLeftPlayer();
 void MoveRightPlayer();
 
-void BlockDecision();
+void BlockDecision(FlyingObject flyngobject);
 
 #endif // !_PLAYER_H

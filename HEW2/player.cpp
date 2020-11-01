@@ -1,6 +1,7 @@
 #include "config.h"
 #include "texture.h"
 #include "sprite.h"
+#include "flyingObject.h"
 #include "myd3d.h"
 #include <math.h>
 #include <list>
@@ -8,13 +9,12 @@
 #include "game.h"
 
 typedef struct Player_tag{
-	D3DXVECTOR2* Position;
-	D3DXVECTOR2* direction;
+	D3DXVECTOR2 position;
+	D3DXVECTOR2 direction;
+	std::list < FlyingObject > flyingObject;
 }Player;
 
 static int TextureId = TEXTURE_INVALID_ID;
-
-std::list < std::string > flyingObject;
 
 
 void InitPlayer(){
@@ -58,6 +58,6 @@ void MoveRightPlayer(){
 
 }
 
-void BlockDecision() {
+void BlockDecision(FlyingObject flyngobject) {
 
 }
