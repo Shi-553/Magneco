@@ -7,6 +7,7 @@
 #include "player.h"
 #include "flyingObject.h"
 #include "judge.h"
+
 void InitJudge(){
 
 }
@@ -23,13 +24,22 @@ void DrawJudge(){
 
 }
 
-int JudgePlayerandFlyingObjectHit(int playerX, int playerY, int objectX, int objectY) {
+int JudgePlayerandFlyingObjectHit() {
 
-	// “–‚½‚Á‚Ä‚¢‚éê‡‚Í‚P‚ğ•Ô‚µ‚Ü‚·
-	if (playerX == objectX || playerY == objectY) return 1;
+	Player* player = GetPlayer();
+	std::list<FlyingObject>* flyingObjectList = GetFlyingObjects();
 
-	// “–‚½‚Á‚Ä‚¢‚È‚¢ê‡‚Í‚O‚ğ•Ô‚µ‚Ü‚·
-	return 0;
+	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
+		if (player->position == itr->pos){
+			player->flyingObjectList.push_back(*itr);
+			itr->pos = itr->lastPos;
+			itr = flyingObjectList->erase(itr);
+		}else {
+			itr++;
+		}
+	}
+
+
 
 }
 
