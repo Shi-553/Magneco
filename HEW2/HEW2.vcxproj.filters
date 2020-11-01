@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="texture.cpp">
+    <ClCompile Include="debugFont.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
-    <ClCompile Include="debugFont.cpp">
+    <ClCompile Include="flyingObject.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
@@ -13,13 +13,22 @@
     <ClCompile Include="GameOperation.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
     <ClCompile Include="InputLogger.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="judge.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
     <ClCompile Include="keyboard.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="map.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
     <ClCompile Include="mouse.cpp">
@@ -37,13 +46,10 @@
     <ClCompile Include="system_timer.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
-    <ClCompile Include="judge.cpp">
+    <ClCompile Include="texture.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
-    <ClCompile Include="map.cpp" />
-      <Filter>ソース</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
+    <ClCompile Include="flyingObjectSponer.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
   </ItemGroup>
@@ -57,28 +63,25 @@
     <ClInclude Include="debugPrintf.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
+    <ClInclude Include="flyingObject.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
     <ClInclude Include="game.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="GameOperation.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
     <ClInclude Include="InputLogger.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
+    <ClInclude Include="judge.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
     <ClInclude Include="keyboard.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="mouse.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="myd3d.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="sprite.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="texture.h">
@@ -87,22 +90,31 @@
     <ClInclude Include="system_timer.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
-    <ClInclude Include="judge.h">
+    <ClInclude Include="sprite.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="myd3d.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="map.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
-    <ClInclude Include="Input.h">
+    <ClInclude Include="mouse.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="flyingObjectSponer.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダー">
-      <UniqueIdentifier>{04243e1f-ed67-450a-83b9-0942eb9d7a01}</UniqueIdentifier>
+      <UniqueIdentifier>{0ffb9820-175d-4545-9042-81161b578943}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース">
-      <UniqueIdentifier>{83833afc-cff1-44ab-94db-386af5ce6f76}</UniqueIdentifier>
+      <UniqueIdentifier>{f1e264d4-926f-4ab4-b738-751ce1a20933}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
