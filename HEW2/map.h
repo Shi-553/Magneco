@@ -1,9 +1,12 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include "myd3d.h"
+
 enum MapType
 {
 	NONE,
+	BLOCK_NONE,
 	BLOCK,
 	WALL,
 	ROCK,
@@ -20,5 +23,7 @@ void UpdateMap(void);
 void DrawMap(void);
 
 void MapChange(FlyingObject flyingobject);
+
+MapType GetMapType(D3DXVECTOR2 pos);
 
 #endif // !MAP_H
