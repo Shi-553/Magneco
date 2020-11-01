@@ -75,5 +75,23 @@ void MoveRightPlayer(){
 }
 
 void BlockDecision() {
-	
+	bool canBlockPut = true;
+
+	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+		itr != player.flyingObjectList.end(); itr++) {
+		MapType type;
+		type = GetMapType(itr->pos);
+		if (type != BLOCK_NONE){
+			canBlockPut = false;
+			break;
+		}
+	}
+	if (canBlockPut == false){
+		return;
+	}
+	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+		itr != player.flyingObjectList.end(); itr++) {
+		MapChange(*itr);
+	}
+	player.flyingObjectList.clear();
 }
