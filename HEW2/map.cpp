@@ -1,20 +1,22 @@
 #include "map.h"
 #include "myd3d.h"
 #include "texture.h"
+#include "flyingObject.h"
 
 
-static MapType MapChipList[MAPCHIP_WIDTH][MAPCHIP_HEIGHT]
+static MapType MapChipList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH]
 {
-	{WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL},
-	{WALL, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, WALL},
-	{WALL, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, WALL},
-	{WALL, NONE, NONE, NONE, NONE, NONE, GOAL, NONE, NONE, WALL},
-	{WALL, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, WALL},
-	{WALL, NONE, NONE, NONE, ROCK, NONE, NONE, NONE, NONE, WALL},
-	{WALL, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, WALL},
-	{WALL, NONE,BLOCK, NONE, NONE, NONE, NONE, NONE, NONE, WALL},
-    {WALL, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, WALL},
-	{WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL},
+	{WALL,       WALL,       WALL,       WALL,       WALL,       WALL,       WALL,       WALL,       WALL, WALL},
+	{WALL, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, WALL},
+	{WALL, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, WALL},
+	{WALL, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, WALL},
+	{WALL, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, WALL},
+	{WALL, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE,       ROCK, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, WALL},
+	{WALL, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, WALL},
+	{WALL, BLOCK_NONE,      BLOCK, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, WALL},
+    {WALL, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, WALL},
+	{WALL,       WALL,       WALL,       WALL,       WALL,       WALL,       WALL,       WALL,       WALL, WALL},
+
 };
 
 
@@ -23,7 +25,7 @@ static int TextureId = TEXTURE_INVALID_ID;
 
 void InitMap(void)
 {
-
+	//TextureId = ReserveTextureLoadFile("");
 }
 
 void UninitMap(void)
@@ -39,4 +41,30 @@ void UpdateMap(void)
 void DrawMap(void)
 {
 
+}
+
+void MapChange(FlyingObject flyingobject)
+{
+	int x = flyingobject.pos.x;
+	int y = flyingobject.pos.y;
+    
+	if (x < 0 || y < 0 || x >= MAPCHIP_WIDTH || y >= MAPCHIP_HEIGHT){
+		return;
+	}
+		
+	if (flyingobject.type == FLYING_OBJECT_BLOCK) {
+		MapChipList[y][x] = BLOCK;
+	}
+}
+
+MapType GetMapType(D3DXVECTOR2 pos)
+{
+	int x = pos.x;
+	int y = pos.y;
+
+	if (x < 0 || y < 0 || x >= MAPCHIP_WIDTH || y >= MAPCHIP_HEIGHT) {
+		return NONE;
+	}
+
+	return MapChipList[y][x];
 }
