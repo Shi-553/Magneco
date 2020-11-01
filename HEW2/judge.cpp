@@ -6,6 +6,7 @@
 
 
 #include "judge.h"
+
 void InitJudge(){
 
 }
@@ -22,7 +23,7 @@ void DrawJudge(){
 
 }
 
-bool JudgePlayerandFlyingObjectHit() {
+void JudgePlayerandFlyingObjectHit() {
 
 }
 
