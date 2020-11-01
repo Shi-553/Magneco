@@ -8,10 +8,6 @@
 #include "game.h"
 #include "map.h"
 
-typedef struct Player_tag{
-	D3DXVECTOR2 position;
-	std::list < FlyingObject > flyingObjectList;
-}Player;
 
 static int TextureId = TEXTURE_INVALID_ID;
 static Player player;
@@ -94,4 +90,8 @@ void BlockDecision() {
 		MapChange(*itr);
 	}
 	player.flyingObjectList.clear();
+}
+
+Player* GetPlayer(){
+
 }
