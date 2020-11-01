@@ -12,6 +12,6 @@ void UninitJudge();
 void UpdateJudge();
 void DrawJudge();
 
-bool JudgePlayerandFlyingObjectHit();
+void JudgePlayerandFlyingObjectHit(int playerX, int playerY, int playerW, int playerH, int ObjectX, int ObjectY, int ObjectW, int objectH);
 
 #endif // !_JUDGE_H
