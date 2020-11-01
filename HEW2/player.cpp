@@ -6,6 +6,7 @@
 #include <list>
 #include "player.h"
 #include "game.h"
+#include "map.h"
 
 typedef struct Player_tag{
 	D3DXVECTOR2 position;
@@ -43,20 +44,36 @@ void RotateRightPlayer(){
 
 void MoveUpPlayer(){
 	player.position.y += -1.0f;
+	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+		itr != player.flyingObjectList.end(); itr++) {
+		itr->pos.y += -1.0;
+	}
 }
 
 void MoveDownPlayer(){
 	player.position.y += 1.0f;
+	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+		itr != player.flyingObjectList.end(); itr++) {
+		itr->pos.y += 1.0;
+	}
 }
 
 void MoveLeftPlayer(){
 	player.position.x += -1.0f;
+	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+		itr != player.flyingObjectList.end(); itr++) {
+		itr->pos.x += -1.0;
+	}
 }
 
 void MoveRightPlayer(){
 	player.position.x += 1.0f;
+	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+		itr != player.flyingObjectList.end(); itr++) {
+		itr->pos.x += 1.0;
+	}
 }
 
-void BlockDecision(FlyingObject flyngObject) {
-
+void BlockDecision() {
+	
 }
