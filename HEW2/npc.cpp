@@ -1,17 +1,17 @@
 #include "npc.h"
 
-void InitNpc(){
+void InitNPC(){
 
 }
 
-void UninitGame() {
+void UninitNPC() {
 
 }
 
-void UpdateGame() {
+void UpdateNPC() {
 
 }
 
-void DrawGame() {
+void DrawNPC() {
 
 }

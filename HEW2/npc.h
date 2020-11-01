@@ -2,9 +2,9 @@
 #define _NPC_H
 
 
-void InitNpc();
-void UpdateGame();
-void DrawGame();
-void UninitGame();
+void InitNPC();
+void UpdateNPC();
+void DrawNPC();
+void UninitNPC();
 
 #endif // !_NPC_H
