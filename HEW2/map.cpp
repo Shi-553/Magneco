@@ -1,4 +1,5 @@
 #include "map.h"
+#include "myd3d.h"
 #include "texture.h"
 #include "flyingObject.h"
 
@@ -15,6 +16,7 @@ static MapType MapChipList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH]
 	{WALL, BLOCK_NONE,      BLOCK, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, WALL},
     {WALL, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, BLOCK_NONE, WALL},
 	{WALL,       WALL,       WALL,       WALL,       WALL,       WALL,       WALL,       WALL,       WALL, WALL},
+
 };
 
 
