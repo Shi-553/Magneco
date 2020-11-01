@@ -40,7 +40,9 @@
     <ClCompile Include="judge.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
-    <ClCompile Include="map.cpp" />
+    <ClCompile Include="map.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
