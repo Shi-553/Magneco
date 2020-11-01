@@ -8,10 +8,11 @@
 #include "game.h"
 
 typedef struct Player_tag{
-	D3DXVECTOR2 Position;
-	D3DXVECTOR2 direction;
+	D3DXVECTOR2* Position;
+	D3DXVECTOR2* direction;
 }Player;
 
+static int TextureId = TEXTURE_INVALID_ID;
 
 std::list < std::string > flyingObject;
 

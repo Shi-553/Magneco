@@ -6,7 +6,6 @@ void UninitPlayer();
 void UpdatePlayer();
 void DrawPlayer();
 
-
 void RotateLeftPlayer();
 void RotateRightPlayer();
 
