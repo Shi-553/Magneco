@@ -23,8 +23,13 @@ void DrawJudge(){
 
 }
 
-void JudgePlayerandFlyingObjectHit(int playerX, int playerY, int playerW, int playerH, int ObjectX, int ObjectY, int ObjectW, int objectH) {
+int JudgePlayerandFlyingObjectHit(int playerX, int playerY, int objectX, int objectY) {
 
+	// “–‚½‚Á‚Ä‚¢‚éê‡‚Í‚P‚ğ•Ô‚µ‚Ü‚·
+	if (playerX == objectX || playerY == objectY) return 1;
+
+	// “–‚½‚Á‚Ä‚¢‚È‚¢ê‡‚Í‚O‚ğ•Ô‚µ‚Ü‚·
+	return 0;
 
 }
 
