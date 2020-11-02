@@ -93,5 +93,5 @@ void BlockDecision() {
 }
 
 Player* GetPlayer(){
-
+return &player;
 }
