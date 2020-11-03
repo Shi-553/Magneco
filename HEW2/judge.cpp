@@ -44,7 +44,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 	// flyingObject同士の当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
-		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); ) {
+		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
 			if (itr->pos == itr2->pos) {
 				player->flyingObjectList.push_back(*itr);
 				itr->pos == itr->lastPos;
