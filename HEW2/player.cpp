@@ -9,7 +9,7 @@
 #include "map.h"
 #include "gameSrite.h"
 
-static float playerSpeed = 0.1f;
+static float playerSpeed = 1.0f;
 static int textureId = TEXTURE_INVALID_ID;
 static Player player;
 
