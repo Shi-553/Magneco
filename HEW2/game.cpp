@@ -34,7 +34,7 @@ void UpdateGame()
 	UpdateMap();
 	UpdatePlayer();
 
-	UninitInput();
+	UpdateInput();
 
 	UpdateNPC();
 
