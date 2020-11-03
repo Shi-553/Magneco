@@ -16,8 +16,9 @@
 void InitGame() {
 	InitPlayer();
 	InitGameOperation();
-	LoadTexture();
 	InitNPC();
+	LoadTexture();
+	
 }
 
 void UpdateGame() {
