@@ -39,8 +39,8 @@ void UpdateGame()
 	UpdateInput();
 
 	UpdateNPC();
-	UpdateJudge();
 
+	UpdateJudge();
 	UpdateFlyingObject();
 	UpdateFlyingSponer();
 }
@@ -62,8 +62,8 @@ void UninitGame()
 {
 	UninitInput();
 	UninitPlayer();
-	UninitJudge();
 	UninitNPC();
+	UninitJudge();
 	UninitMap();
 }
 
