@@ -10,10 +10,12 @@
 #include "player.h"
 #include "GameOperation.h"
 #include "game.h"
+#include "Input.h"
 
 
 void InitGame() {
 	InitPlayer();
+	InitInput();
 	InitGameOperation();
 	LoadTexture();
 }
@@ -22,15 +24,18 @@ void UpdateGame() {
 
 	UpdateGameOperation();
 	UpdatePlayer();
+	UninitInput();
 
 }
 
 void DrawGame() {
 	DrawPlayer();
+	DrawInput();
 }
 
 void UninitGame() {
 	UninitGameOperation();
+	UninitInput();
 	UninitPlayer();
 }
 
