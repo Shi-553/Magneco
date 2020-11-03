@@ -19,7 +19,7 @@ void UninitInput(){
 
 void UpdateInput() {
 
-	// プレイヤーの移動（if文の中にplayerの移動書きます）
+	// プレイヤーの移動
 	if (PressInputLogger(MYVK_UP)) {
 		MoveUpPlayer();
 	}
@@ -33,9 +33,9 @@ void UpdateInput() {
 		MoveRightPlayer();
 	}
 
-	// プレイヤーの決定（現時点ではpressにしてます）
+	// ブロックの決定（現時点ではpressにしてます）
 	if (PressInputLogger(MYVK_ENTER)) {
-
+		BlockDecision();
 	}
 
 }
