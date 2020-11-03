@@ -1,7 +1,7 @@
 #include "map.h"
 #include "myd3d.h"
 #include "texture.h"
-#include "flyingObject.h"
+#include "gameSrite.h"
 
 
 static MapType MapChipList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH]
@@ -25,12 +25,12 @@ static int TextureId = TEXTURE_INVALID_ID;
 
 void InitMap(void)
 {
-	//TextureId = ReserveTextureLoadFile("");
+	TextureId = ReserveTextureLoadFile("sample.tga");
 }
 
 void UninitMap(void)
 {
-	//Texture_Release(&TextureId, 1);
+	ReleaseTexture(&TextureId, 1);
 }
 
 void UpdateMap(void)
@@ -40,7 +40,11 @@ void UpdateMap(void)
 
 void DrawMap(void)
 {
-
+	for (int i = 0; i < MAPCHIP_HEIGHT; i++) {
+		for (int j = 0; j < MAPCHIP_WIDTH; j++) {
+			DrawGameSprite(TextureId, D3DXVECTOR2(i,j));
+		}
+	}
 }
 
 void MapChange(FlyingObject flyingobject)
@@ -63,7 +67,7 @@ MapType GetMapType(D3DXVECTOR2 pos)
 	int y = pos.y;
 
 	if (x < 0 || y < 0 || x >= MAPCHIP_WIDTH || y >= MAPCHIP_HEIGHT) {
-		return NONE;
+		return MAP_NONE;
 	}
 
 	return MapChipList[y][x];
