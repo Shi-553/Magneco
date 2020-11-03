@@ -25,4 +25,4 @@ void DrawFlyingObject();
 void UpdateFlyingObject();
 
 
-void DrawFlyingObject(FlyingObject* flyingObject);
+void DrawFlyingObject(FlyingObject flyingObject);
