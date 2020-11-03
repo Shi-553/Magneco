@@ -7,6 +7,7 @@
 #include "player.h"
 #include "game.h"
 #include "map.h"
+#include "gameSrite.h"
 
 
 static int TextureId = TEXTURE_INVALID_ID;

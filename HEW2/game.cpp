@@ -8,6 +8,7 @@
 #include "sprite.h"
 #include "debugFont.h"
 #include "player.h"
+#include "gameSrite.h"
 #include "GameOperation.h"
 #include "game.h"
 
