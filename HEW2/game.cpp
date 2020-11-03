@@ -9,7 +9,6 @@
 #include "debugFont.h"
 #include "player.h"
 #include "npc.h"
-#include "GameOperation.h"
 #include "game.h"
 
 #include "Input.h"
@@ -23,7 +22,6 @@ void InitGame()
 {
 	InitPlayer();
 	InitInput();
-	InitGameOperation();
 	InitNPC();
 	InitMap();
 	LoadTexture();
@@ -34,7 +32,6 @@ void UpdateGame()
 {
 
 	UpdateMap();
-	UpdateGameOperation();
 	UpdatePlayer();
 
 	UninitInput();
@@ -61,7 +58,6 @@ void DrawGame()
 
 void UninitGame()
 {
-	UninitGameOperation();
 	UninitInput();
 	UninitPlayer();
 	UninitNPC();
