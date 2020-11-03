@@ -1,4 +1,4 @@
 #pragma once
 #include "myd3d.h"
 
-void DrawGameSprite(int textureId, D3DXVECTOR2 pos);
+void DrawGameSprite(int textureId, D3DXVECTOR2 pos, float z);
