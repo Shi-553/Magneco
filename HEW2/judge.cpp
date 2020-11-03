@@ -40,6 +40,18 @@ void JudgePlayerandFlyingObjectHit() {
 		}
 	}
 
+	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
+		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); ) {
+			if (itr->pos == itr2->pos) {
+				player->flyingObjectList.push_back(*itr);
+				itr->pos == itr->lastPos;
+				itr = flyingObjectList->erase(itr);
+			}
+			else {
+				itr++;
+			}
+		}
+	}
 
 
 
