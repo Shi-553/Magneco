@@ -23,7 +23,7 @@ void UninitFlyingObject(){
 void DrawFlyingObject(){
 
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end(); itr++) {
-		DrawGameSprite(flyingObjectTextureId, itr->pos);
+		DrawGameSprite(flyingObjectTextureId, itr->pos,50);
 	}
 }
 void UpdateFlyingObject(){
