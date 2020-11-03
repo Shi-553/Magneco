@@ -11,13 +11,18 @@
 #include "npc.h"
 #include "GameOperation.h"
 #include "game.h"
+
+#include "Input.h"
+
 #include "map.h"
 #include "flyingObjectSponer.h"
+
 
 
 void InitGame() 
 {
 	InitPlayer();
+	InitInput();
 	InitGameOperation();
 	InitNPC();
 	InitMap();
@@ -31,7 +36,11 @@ void UpdateGame()
 	UpdateMap();
 	UpdateGameOperation();
 	UpdatePlayer();
+
+	UninitInput();
+
 	UpdateNPC();
+
 
 	UpdateFlyingObject();
 	UpdateFlyingSponer();
@@ -41,14 +50,19 @@ void DrawGame()
 {
 	DrawMap();
 	DrawPlayer();
+
+	DrawInput();
+
 	DrawNPC();
 
 	DrawFlyingObject();
+
 }
 
 void UninitGame()
 {
 	UninitGameOperation();
+	UninitInput();
 	UninitPlayer();
 	UninitNPC();
 	UninitMap();
