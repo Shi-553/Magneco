@@ -10,16 +10,18 @@
 #include "gameSrite.h"
 
 
-static int TextureId = TEXTURE_INVALID_ID;
+static int textureId = TEXTURE_INVALID_ID;
 static Player player;
 
 void InitPlayer(){
+	textureId = ReserveTextureLoadFile("texture/player.png");
+
 	player.position = D3DXVECTOR2(3, 3);
 	player.flyingObjectList.clear();
 }
 
 void UninitPlayer(){
-
+	ReleaseTexture(textureId);
 }
 
 void UpdatePlayer(){
@@ -27,6 +29,7 @@ void UpdatePlayer(){
 }
 
 void DrawPlayer(){
+	DrawGameSprite(textureId,player.position,30);
 
 }
 
