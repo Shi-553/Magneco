@@ -77,7 +77,7 @@ void BlockDecision() {
 		itr != player.flyingObjectList.end(); itr++) {
 		MapType type;
 		type = GetMapType(itr->pos);
-		if (type != BLOCK_NONE){
+		if (type != MAP_BLOCK_NONE){
 			canBlockPut = false;
 			break;
 		}

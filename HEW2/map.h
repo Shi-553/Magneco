@@ -7,11 +7,11 @@
 enum MapType
 {
 	MAP_NONE,    // 無効な値
-	BLOCK_NONE,  // ブロックなし
-	BLOCK,       // ブロック
-	WALL,        // 壁
-	ROCK,        // 岩
-	GOAL         // ゴール
+	MAP_BLOCK_NONE,  // ブロックなし
+	MAP_BLOCK,       // ブロック
+	MAP_WALL,        // 壁
+	MAP_ROCK,        // 岩
+	MAP_GOAL         // ゴール
 };
 
 #define MAPCHIP_WIDTH  (10)

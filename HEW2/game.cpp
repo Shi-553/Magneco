@@ -11,6 +11,7 @@
 #include "GameOperation.h"
 #include "game.h"
 #include "map.h"
+#include "flyingObjectSponer.h"
 
 
 void InitGame() 
