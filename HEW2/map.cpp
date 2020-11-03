@@ -42,7 +42,7 @@ void DrawMap(void)
 {
 	for (int i = 0; i < MAPCHIP_HEIGHT; i++) {
 		for (int j = 0; j < MAPCHIP_WIDTH; j++) {
-			DrawGameSprite(TextureId, D3DXVECTOR2(i,j));
+			DrawGameSprite(TextureId, D3DXVECTOR2(i,j), 100);
 		}
 	}
 }
