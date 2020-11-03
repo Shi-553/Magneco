@@ -32,6 +32,11 @@ void DrawPlayer(){
 	D3DXVECTOR2 intposition;
 	intposition = D3DXVECTOR2((int)player.position.x, (int)player.position.y);
 	DrawGameSprite(textureId,intposition,30);
+
+	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+		itr != player.flyingObjectList.end(); itr++) {
+		DrawFlyingObject(*itr);
+	}
 }
 
 
