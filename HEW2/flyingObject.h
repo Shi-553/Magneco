@@ -23,3 +23,6 @@ void InitFlyingObject();
 void UninitFlyingObject();
 void DrawFlyingObject();
 void UpdateFlyingObject();
+
+
+void DrawFlyingObject(FlyingObject* flyingObject);

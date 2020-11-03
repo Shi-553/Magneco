@@ -24,15 +24,18 @@ void InitFlyingObject(){
 void UninitFlyingObject(){
 
 }
+void DrawFlyingObject(FlyingObject* flyingObject) {
+	if (flyingObject->type == FLYING_OBJECT_BLOCK) {
+		DrawGameSprite(blockObjectTextureId, flyingObject->pos, 50);
+	}
+	if (flyingObject->type == FLYING_OBJECT_ENEMY) {
+		DrawGameSprite(enemyObjectTextureId, flyingObject->pos, 50);
+	}
+}
 void DrawFlyingObject(){
 
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end(); itr++) {
-		if (itr->type == FLYING_OBJECT_BLOCK) {
-			DrawGameSprite(blockObjectTextureId, itr->pos, 50);
-		}
-		if (itr->type == FLYING_OBJECT_ENEMY) {
-			DrawGameSprite(enemyObjectTextureId, itr->pos, 50);
-		}
+		DrawFlyingObject(&*itr);
 	}
 }
 void UpdateFlyingObject(){
