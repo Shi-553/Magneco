@@ -24,7 +24,7 @@ void DrawJudge(){
 
 }
 
-int JudgePlayerandFlyingObjectHit() {
+void JudgePlayerandFlyingObjectHit() {
 
 	Player* player = GetPlayer();
 	std::list<FlyingObject>* flyingObjectList = GetFlyingObjects();
