@@ -27,6 +27,9 @@ void InitGame()
 	InitNPC();
 	InitMap();
 	InitJudge();
+	InitFlyingObject();
+	InitFlyingSponer();
+
 	LoadTexture();
 	
 }
@@ -66,5 +69,8 @@ void UninitGame()
 	UninitJudge();
 	UninitNPC();
 	UninitMap();
+
+	UninitFlyingObject();
+	UninitFlyingSponer();
 }
 
