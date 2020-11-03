@@ -25,7 +25,7 @@ static int TextureId = TEXTURE_INVALID_ID;
 
 void InitMap(void)
 {
-	TextureId = ReserveTextureLoadFile("sample.tga");
+	TextureId = ReserveTextureLoadFile("texture/sample.tga");
 }
 
 void UninitMap(void)
