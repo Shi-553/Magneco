@@ -51,7 +51,7 @@ void DrawMap(void)
 {
 	for (int i = 0; i < MAPCHIP_HEIGHT; i++) {
 		for (int j = 0; j < MAPCHIP_WIDTH; j++) {
-			DrawGameSprite(textureIds[MapChipList[j][i]], D3DXVECTOR2(i, j), 100);
+			DrawGameSprite(textureIds[MapChipList[i][j]], D3DXVECTOR2(i, j), 100);
 		}
 	}
 }
