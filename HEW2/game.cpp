@@ -12,6 +12,7 @@
 #include "game.h"
 
 #include "Input.h"
+#include "judge.h"
 
 #include "map.h"
 #include "flyingObjectSponer.h"
@@ -24,6 +25,7 @@ void InitGame()
 	InitInput();
 	InitNPC();
 	InitMap();
+	InitJudge();
 	LoadTexture();
 	
 }
@@ -37,7 +39,7 @@ void UpdateGame()
 	UpdateInput();
 
 	UpdateNPC();
-
+	UpdateJudge();
 
 	UpdateFlyingObject();
 	UpdateFlyingSponer();
@@ -51,7 +53,7 @@ void DrawGame()
 	DrawInput();
 
 	DrawNPC();
-
+	DrawJudge();
 	DrawFlyingObject();
 
 }
@@ -60,6 +62,7 @@ void UninitGame()
 {
 	UninitInput();
 	UninitPlayer();
+	UninitJudge();
 	UninitNPC();
 	UninitMap();
 }
