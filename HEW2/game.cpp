@@ -10,22 +10,22 @@
 #include "player.h"
 #include "GameOperation.h"
 #include "game.h"
-#include "flyingObject.h"
+#include "map.h"
 #include "flyingObjectSponer.h"
 
 
-void InitGame() {
+void InitGame() 
+{
 	InitPlayer();
 	InitGameOperation();
-
-	InitFlyingObject();
-	InitFlyingSponer();
-
+	InitMap();
 	LoadTexture();
 }
 
-void UpdateGame() {
+void UpdateGame() 
+{
 
+	UpdateMap();
 	UpdateGameOperation();
 	UpdatePlayer();
 
@@ -33,17 +33,18 @@ void UpdateGame() {
 	UpdateFlyingSponer();
 }
 
-void DrawGame() {
+void DrawGame() 
+{
+	DrawMap();
 	DrawPlayer();
 
 	DrawFlyingObject();
 }
 
-void UninitGame() {
+void UninitGame()
+{
 	UninitGameOperation();
 	UninitPlayer();
-
-	UninitFlyingObject();
-	UninitFlyingSponer();
+	UninitMap();
 }
 
