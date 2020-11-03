@@ -28,12 +28,16 @@ void UpdateGame()
 	UpdateGameOperation();
 	UpdatePlayer();
 
+	UpdateFlyingObject();
+	UpdateFlyingSponer();
 }
 
 void DrawGame() 
 {
 	DrawMap();
 	DrawPlayer();
+
+	DrawFlyingObject();
 }
 
 void UninitGame()
