@@ -9,7 +9,7 @@
 #include "map.h"
 #include "gameSrite.h"
 
-
+static float playerSpeed = 0.3f;
 static int textureId = TEXTURE_INVALID_ID;
 static Player player;
 
@@ -29,8 +29,9 @@ void UpdatePlayer(){
 }
 
 void DrawPlayer(){
-	DrawGameSprite(textureId,player.position,30);
-
+	D3DXVECTOR2 intposition;
+	intposition = D3DXVECTOR2((int)player.position.x, (int)player.position.y);
+	DrawGameSprite(textureId,intposition,30);
 }
 
 
@@ -43,34 +44,34 @@ void RotateRightPlayer(){
 }
 
 void MoveUpPlayer(){
-	player.position.y += -1.0f;
+	player.position.y += -playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
-		itr->pos.y += -1.0;
+		itr->pos.y += -playerSpeed;
 	}
 }
 
 void MoveDownPlayer(){
-	player.position.y += 1.0f;
+	player.position.y += playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
-		itr->pos.y += 1.0;
+		itr->pos.y += playerSpeed;
 	}
 }
 
 void MoveLeftPlayer(){
-	player.position.x += -1.0f;
+	player.position.x += -playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
-		itr->pos.x += -1.0;
+		itr->pos.x += -playerSpeed;
 	}
 }
 
 void MoveRightPlayer(){
-	player.position.x += 1.0f;
+	player.position.x += playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
-		itr->pos.x += 1.0;
+		itr->pos.x += playerSpeed;
 	}
 }
 
