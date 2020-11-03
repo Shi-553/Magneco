@@ -11,7 +11,8 @@ enum MapType
 	MAP_BLOCK,       // ブロック
 	MAP_WALL,        // 壁
 	MAP_ROCK,        // 岩
-	MAP_GOAL         // ゴール
+	MAP_GOAL,         // ゴール
+	MAP_MAX
 };
 
 #define MAPCHIP_WIDTH  (10)
