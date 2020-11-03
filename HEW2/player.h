@@ -1,5 +1,7 @@
 #ifndef _PLAYER_H
 #define _PLAYER_H
+#include <list>
+#include "flyingObject.h"
 
 
 typedef struct Player_tag {
