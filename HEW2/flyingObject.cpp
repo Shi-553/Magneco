@@ -25,11 +25,12 @@ void UninitFlyingObject(){
 
 }
 void DrawFlyingObject(FlyingObject flyingObject) {
+	auto intPos = D3DXVECTOR2((int)flyingObject.pos.x, (int)flyingObject.pos.y);
 	if (flyingObject.type == FLYING_OBJECT_BLOCK) {
-		DrawGameSprite(blockObjectTextureId, flyingObject.pos, 50);
+		DrawGameSprite(blockObjectTextureId, intPos, 50);
 	}
 	if (flyingObject.type == FLYING_OBJECT_ENEMY) {
-		DrawGameSprite(enemyObjectTextureId, flyingObject.pos, 50);
+		DrawGameSprite(enemyObjectTextureId, intPos, 50);
 	}
 }
 void DrawFlyingObject(){
