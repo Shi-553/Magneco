@@ -1,13 +1,14 @@
-//ƒQ[ƒ€–{‘Ì
-// ƒeƒXƒgƒRƒƒ“ƒg
-// ƒeƒXƒg‚Q
+//ã‚²ãƒ¼ãƒ æœ¬ä½“
+// ãƒ†ã‚¹ãƒˆã‚³ãƒ¡ãƒ³ãƒˆ
+// ãƒ†ã‚¹ãƒˆï¼’
 
-//ƒŠƒ‚[ƒgEƒ}ƒXƒ^[‚©‚çƒuƒ‰ƒ“ƒ`•ª‚¯‚Ä’Ç‰Á
+//ãƒªãƒ¢ãƒ¼ãƒˆãƒ»ãƒã‚¹ã‚¿ãƒ¼ã‹ã‚‰ãƒ–ãƒ©ãƒ³ãƒåˆ†ã‘ã¦è¿½åŠ 
 #include "config.h"
 #include "texture.h"
 #include "sprite.h"
 #include "debugFont.h"
 #include "player.h"
+#include "npc.h"
 #include "GameOperation.h"
 #include "game.h"
 #include "map.h"
@@ -18,8 +19,10 @@ void InitGame()
 {
 	InitPlayer();
 	InitGameOperation();
+	InitNPC();
 	InitMap();
 	LoadTexture();
+	
 }
 
 void UpdateGame() 
@@ -28,6 +31,7 @@ void UpdateGame()
 	UpdateMap();
 	UpdateGameOperation();
 	UpdatePlayer();
+	UpdateNPC();
 
 	UpdateFlyingObject();
 	UpdateFlyingSponer();
@@ -37,6 +41,7 @@ void DrawGame()
 {
 	DrawMap();
 	DrawPlayer();
+	DrawNPC();
 
 	DrawFlyingObject();
 }
@@ -45,6 +50,7 @@ void UninitGame()
 {
 	UninitGameOperation();
 	UninitPlayer();
+	UninitNPC();
 	UninitMap();
 }
 
