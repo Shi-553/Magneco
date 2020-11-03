@@ -1,37 +1,68 @@
-//ƒQ[ƒ€–{‘Ì
-// ƒeƒXƒgƒRƒƒ“ƒg
-// ƒeƒXƒg‚Q
+//ã‚²ãƒ¼ãƒ æœ¬ä½“
+// ãƒ†ã‚¹ãƒˆã‚³ãƒ¡ãƒ³ãƒˆ
+// ãƒ†ã‚¹ãƒˆï¼’
 
-//ƒŠƒ‚[ƒgEƒ}ƒXƒ^[‚©‚çƒuƒ‰ƒ“ƒ`•ª‚¯‚Ä’Ç‰Á
+//ãƒªãƒ¢ãƒ¼ãƒˆãƒ»ãƒã‚¹ã‚¿ãƒ¼ã‹ã‚‰ãƒ–ãƒ©ãƒ³ãƒåˆ†ã‘ã¦è¿½åŠ 
 #include "config.h"
 #include "texture.h"
 #include "sprite.h"
 #include "debugFont.h"
 #include "player.h"
+#include "npc.h"
 #include "gameSrite.h"
 #include "GameOperation.h"
 #include "game.h"
 
+#include "Input.h"
 
-void InitGame() {
+#include "map.h"
+#include "flyingObjectSponer.h"
+
+
+
+void InitGame() 
+{
 	InitPlayer();
-	InitGameOperation();
+	InitInput();
+	InitNPC();
+	InitMap();
 	LoadTexture();
+	
 }
 
-void UpdateGame() {
+void UpdateGame() 
+{
 
-	UpdateGameOperation();
+	UpdateMap();
 	UpdatePlayer();
 
+	UninitInput();
+
+	UpdateNPC();
+
+
+	UpdateFlyingObject();
+	UpdateFlyingSponer();
 }
 
-void DrawGame() {
+void DrawGame() 
+{
+	DrawMap();
 	DrawPlayer();
+
+	DrawInput();
+
+	DrawNPC();
+
+	DrawFlyingObject();
+
 }
 
-void UninitGame() {
-	UninitGameOperation();
+void UninitGame()
+{
+	UninitInput();
 	UninitPlayer();
+	UninitNPC();
+	UninitMap();
 }
 

@@ -4,6 +4,8 @@
 #include "texture.h"
 #include "myd3d.h"
 #include "sprite.h"
+#include "gameSrite.h"
+
 
 static std::list<FlyingObject> flyingObjects;
 static int flyingObjectTextureId = TEXTURE_INVALID_ID;
@@ -13,20 +15,18 @@ std::list<FlyingObject>* GetFlyingObjects(){
 }
 
 void InitFlyingObject(){
-	//flyingObjectTextureId = ReserveTextureLoadFile("");
+	flyingObjectTextureId = ReserveTextureLoadFile("texture/fade.png");
 }
 void UninitFlyingObject(){
 
 }
 void DrawFlyingObject(){
 
-	auto flyingObjects = *GetFlyingObjects();
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end(); itr++) {
-		DrawSprite(flyingObjectTextureId, itr->pos, 10);
+		DrawGameSprite(flyingObjectTextureId, itr->pos,50);
 	}
 }
 void UpdateFlyingObject(){
-	auto flyingObjects = *GetFlyingObjects();
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end(); itr++) {
 		itr->pos += itr->dir;
 	}

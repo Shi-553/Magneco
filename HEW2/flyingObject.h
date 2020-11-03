@@ -15,12 +15,6 @@ typedef struct FlyingObject
 	D3DXVECTOR2 dir;
 	D3DXVECTOR2 lastPos;
 
-	FlyingObject(D3DXVECTOR2 pos, FlyingObjectType type, D3DXVECTOR2 dir) {
-		this->pos = pos;
-		this->type = type;
-		this->dir = dir;
-		this->lastPos = pos;
-	}
 };
 
 std::list<FlyingObject>* GetFlyingObjects();

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -160,7 +160,6 @@
     <ClCompile Include="flyingObject.cpp" />
     <ClCompile Include="flyingObjectSponer.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="GameOperation.cpp" />
     <ClCompile Include="gameSprite.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InputLogger.cpp" />
@@ -170,6 +169,7 @@
     <ClCompile Include="map.cpp" />
     <ClCompile Include="mouse.cpp" />
     <ClCompile Include="myd3d.cpp" />
+    <ClCompile Include="npc.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="system_timer.cpp" />
@@ -182,7 +182,6 @@
     <ClInclude Include="flyingObject.h" />
     <ClInclude Include="flyingObjectSponer.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="GameOperation.h" />
     <ClInclude Include="gameSrite.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputLogger.h" />
@@ -191,6 +190,7 @@
     <ClInclude Include="map.h" />
     <ClInclude Include="mouse.h" />
     <ClInclude Include="myd3d.h" />
+    <ClInclude Include="npc.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="system_timer.h" />

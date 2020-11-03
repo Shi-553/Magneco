@@ -2,15 +2,17 @@
 #define MAP_H
 
 #include "myd3d.h"
+#include "flyingObject.h"
 
 enum MapType
 {
-	NONE,
-	BLOCK_NONE,
-	BLOCK,
-	WALL,
-	ROCK,
-	GOAL
+	MAP_NONE,    // 無効な値
+	MAP_BLOCK_NONE,  // ブロックなし
+	MAP_BLOCK,       // ブロック
+	MAP_WALL,        // 壁
+	MAP_ROCK,        // 岩
+	MAP_GOAL,         // ゴール
+	MAP_MAX
 };
 
 #define MAPCHIP_WIDTH  (10)
@@ -22,8 +24,10 @@ void UninitMap(void);
 void UpdateMap(void);
 void DrawMap(void);
 
+// 置いたところのマップタイプを変える
 void MapChange(FlyingObject flyingobject);
 
+// 位置を指定してマップタイプを返す
 MapType GetMapType(D3DXVECTOR2 pos);
 
 #endif // !MAP_H
