@@ -10,27 +10,36 @@
 #include "player.h"
 #include "GameOperation.h"
 #include "game.h"
+#include "map.h"
 
 
-void InitGame() {
+void InitGame() 
+{
 	InitPlayer();
 	InitGameOperation();
+	InitMap();
 	LoadTexture();
 }
 
-void UpdateGame() {
+void UpdateGame() 
+{
 
+	UpdateMap();
 	UpdateGameOperation();
 	UpdatePlayer();
 
 }
 
-void DrawGame() {
+void DrawGame() 
+{
+	DrawMap();
 	DrawPlayer();
 }
 
-void UninitGame() {
+void UninitGame()
+{
 	UninitGameOperation();
 	UninitPlayer();
+	UninitMap();
 }
 
