@@ -33,7 +33,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 	// プレイヤーとflyingObjectの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
-		if (player->position == itr->pos){
+		if ((int)player->position.x == (int)itr->pos.x&& (int)player->position.y == (int)itr->pos.y){
 			player->flyingObjectList.push_back(*itr);
 			itr->pos = itr->lastPos;
 			itr = flyingObjectList->erase(itr);

@@ -9,6 +9,7 @@
 #include "debugFont.h"
 #include "player.h"
 #include "npc.h"
+#include "gameSrite.h"
 #include "game.h"
 
 #include "Input.h"
@@ -26,6 +27,9 @@ void InitGame()
 	InitNPC();
 	InitMap();
 	InitJudge();
+	InitFlyingObject();
+	InitFlyingSponer();
+
 	LoadTexture();
 	
 }
@@ -65,5 +69,8 @@ void UninitGame()
 	UninitNPC();
 	UninitJudge();
 	UninitMap();
+
+	UninitFlyingObject();
+	UninitFlyingSponer();
 }
 
