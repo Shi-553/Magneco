@@ -52,6 +52,7 @@
     <ClCompile Include="gameSprite.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
+    <ClCompile Include="npc.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -108,6 +109,7 @@
     <ClInclude Include="gameSrite.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
+    <ClInclude Include="npc.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダー">
