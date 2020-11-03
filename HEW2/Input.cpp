@@ -20,21 +20,21 @@ void UninitInput(){
 void UpdateInput() {
 
 	// プレイヤーの移動
-	if (PressInputLogger(MYVK_UP)) {
+	if (TriggerInputLogger(MYVK_UP)) {
 		MoveUpPlayer();
 	}
-	if (PressInputLogger(MYVK_DOWN)) {
+	if (TriggerInputLogger(MYVK_DOWN)) {
 		MoveDownPlayer();
 	}
-	if (PressInputLogger(MYVK_LEFT)) {
+	if (TriggerInputLogger(MYVK_LEFT)) {
 		MoveLeftPlayer();
 	}
-	if (PressInputLogger(MYVK_RIGHT)) {
+	if (TriggerInputLogger(MYVK_RIGHT)) {
 		MoveRightPlayer();
 	}
 
 	// ブロックの決定（現時点ではpressにしてます）
-	if (PressInputLogger(MYVK_ENTER)) {
+	if (TriggerInputLogger(MYVK_ENTER)) {
 		BlockDecision();
 	}
 
