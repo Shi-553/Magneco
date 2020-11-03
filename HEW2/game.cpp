@@ -9,6 +9,7 @@
 #include "debugFont.h"
 #include "player.h"
 #include "npc.h"
+#include "gameSrite.h"
 #include "game.h"
 
 #include "Input.h"
