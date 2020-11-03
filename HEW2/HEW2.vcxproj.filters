@@ -10,9 +10,6 @@
     <ClCompile Include="game.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
-    <ClCompile Include="GameOperation.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
@@ -70,9 +67,6 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="GameOperation.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">

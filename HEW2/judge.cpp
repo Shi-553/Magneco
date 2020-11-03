@@ -1,5 +1,5 @@
 // --------------------------------------------------------------
-//  “–‚½‚è”»’è‚Ìˆ—[judge.cpp]
+//  â€œâ€“â€šÂ½â€šÃ¨â€Â»â€™Ã¨â€šÃŒÂË†â€”Â[judge.cpp]
 // 
 //							Author:Kanna Noda
 //----------------------------------------------------------------
@@ -26,6 +26,7 @@ void DrawJudge(){
 
 void JudgePlayerandFlyingObjectHit() {
 
+
 	Player* player = GetPlayer();
 	std::list<FlyingObject>* flyingObjectList = GetFlyingObjects();
 
@@ -38,6 +39,7 @@ void JudgePlayerandFlyingObjectHit() {
 			itr++;
 		}
 	}
+
 
 
 
