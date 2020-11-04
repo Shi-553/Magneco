@@ -17,6 +17,7 @@ void InitPlayer(){
 	textureId = ReserveTextureLoadFile("texture/player.png");
 
 	player.position = D3DXVECTOR2(3, 3);
+	player.listPosition = player.position;
 	player.flyingObjectList.clear();
 }
 
@@ -49,6 +50,8 @@ void RotateRightPlayer(){
 }
 
 void MoveUpPlayer(){
+	player.listPosition = player.position;
+
 	player.position.y += -playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
@@ -57,6 +60,8 @@ void MoveUpPlayer(){
 }
 
 void MoveDownPlayer(){
+	player.listPosition = player.position;
+
 	player.position.y += playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
@@ -65,6 +70,8 @@ void MoveDownPlayer(){
 }
 
 void MoveLeftPlayer(){
+	player.listPosition = player.position;
+
 	player.position.x += -playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
@@ -73,6 +80,8 @@ void MoveLeftPlayer(){
 }
 
 void MoveRightPlayer(){
+	player.listPosition = player.position;
+
 	player.position.x += playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
