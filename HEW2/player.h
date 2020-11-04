@@ -6,7 +6,7 @@
 
 typedef struct Player_tag {
 	D3DXVECTOR2 position;
-	D3DXVECTOR2 listPosition;
+	D3DXVECTOR2 lastPosition;
 	std::list < FlyingObject > flyingObjectList;
 }Player;
 
