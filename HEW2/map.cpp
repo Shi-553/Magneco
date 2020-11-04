@@ -5,7 +5,7 @@
 
 
 
-static MapType MapChipList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH]
+static MapType initMapChipList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH]
 {
 	{MAP_WALL,       MAP_WALL,       MAP_WALL,       MAP_WALL,       MAP_WALL,       MAP_WALL,       MAP_WALL,       MAP_WALL,       MAP_WALL, MAP_WALL},
 	{MAP_WALL, MAP_BLOCK_NONE, MAP_BLOCK_NONE, MAP_BLOCK_NONE, MAP_BLOCK_NONE, MAP_BLOCK_NONE, MAP_BLOCK_NONE, MAP_BLOCK_NONE, MAP_BLOCK_NONE, MAP_WALL},
@@ -20,7 +20,7 @@ static MapType MapChipList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH]
 
 };
 
-
+static MapType MapChipList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH];
 static int textureIds[MAP_MAX];
 
 
@@ -33,7 +33,14 @@ void InitMap(void)
 	textureIds[MAP_WALL] = ReserveTextureLoadFile("texture/MAP_WALL.png");
 	textureIds[MAP_ROCK] = ReserveTextureLoadFile("texture/MAP_ROCK.png");
 	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/MAP_GOAL.png");
+
+	for (int i = 0; i < MAPCHIP_HEIGHT; i++) {
+		for (int j = 0; j < MAPCHIP_WIDTH; j++) {
+			MapChipList[i][j] = initMapChipList[i][j];
+		}
+	}
 }
+
 void UninitMap(void)
 {
 	for (int i = 0; i < MAP_MAX; i++)
