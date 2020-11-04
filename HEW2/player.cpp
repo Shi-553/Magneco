@@ -95,6 +95,20 @@ void BlockDecision() {
 	if (canBlockPut == false){
 		return;
 	}
+
+	bool isFourDirections = false;
+
+	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+		itr != player.flyingObjectList.end(); itr++) {
+		if (MapFourDirectionsJudgment(itr->pos)) {
+			isFourDirections = true;
+			break;
+		}
+	}
+	if (isFourDirections == false) {
+		return;
+	}
+
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
 		MapChange(*itr);
