@@ -1,10 +1,13 @@
-
 #include <list>
 #include "flyingObject.h"
 #include "texture.h"
 #include "myd3d.h"
 #include "sprite.h"
 #include "gameSrite.h"
+#include "map.h"
+
+// flyingObject•`‰æ”ÍˆÍ‚Ì‰ÁŽZ•ª
+#define FLYINGOBJECT_ADD_RANGE (5)
 
 
 static std::list<FlyingObject> flyingObjects;
@@ -48,7 +51,10 @@ void UpdateFlyingObject(){
 			itr->lastPos = itr->pos;
 			itr->pos += itr->dir;
 
-			if (itr->pos.x > 10 || itr->pos.x < -10 || itr->pos.y>10 || itr->pos.y < -10) {
+			if (itr->pos.x > MAPCHIP_WIDTH + FLYINGOBJECT_ADD_RANGE ||
+				itr->pos.x < -MAPCHIP_WIDTH - FLYINGOBJECT_ADD_RANGE ||
+				itr->pos.y > MAPCHIP_HEIGHT + FLYINGOBJECT_ADD_RANGE ||
+				itr->pos.y < -MAPCHIP_HEIGHT - FLYINGOBJECT_ADD_RANGE) {
 				itr = flyingObjects.erase(itr);
 			}
 			else {
