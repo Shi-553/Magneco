@@ -70,6 +70,27 @@ void MapChange(FlyingObject flyingobject)
 	}
 }
 
+bool MapFourDirectionsJudgment(D3DXVECTOR2 pos)
+{
+	int x = pos.x;
+	int y = pos.y;
+
+	if (MapChipList[x][y + 1] == MAP_BLOCK) {
+		return true;
+	}
+	if (MapChipList[x][y - 1] == MAP_BLOCK) {
+		return true;
+	}
+	if (MapChipList[x + 1][y] == MAP_BLOCK) {
+		return true;
+	}
+	if (MapChipList[x - 1][y] == MAP_BLOCK) {
+		return true;
+	}
+
+	return false;
+}
+
 MapType GetMapType(D3DXVECTOR2 pos)
 {
 	int x = pos.x;
