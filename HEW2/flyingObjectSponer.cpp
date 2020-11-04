@@ -40,6 +40,8 @@ static int frame = 0;
 static int sponeIndex = 0;
 
 void InitFlyingSponer() {
+	frame = 0;
+	sponeIndex = 0;
 }
 void UninitFlyingSponer() {
 
@@ -55,5 +57,9 @@ void UpdateFlyingSponer() {
 		}
 	}
 	frame++;
+	if (spones[sponeIndex].frame == -1){
+		frame = 0;
+		sponeIndex = 0;
+	}
 }
 
