@@ -75,16 +75,16 @@ bool MapFourDirectionsJudgment(D3DXVECTOR2 pos)
 	int x = pos.x;
 	int y = pos.y;
 
-	if (MapChipList[x][y + 1] == MAP_BLOCK) {
+	if (MapChipList[y + 1][x] == MAP_BLOCK) {
 		return true;
 	}
-	if (MapChipList[x][y - 1] == MAP_BLOCK) {
+	if (MapChipList[y - 1][x] == MAP_BLOCK) {
 		return true;
 	}
-	if (MapChipList[x + 1][y] == MAP_BLOCK) {
+	if (MapChipList[y][x + 1] == MAP_BLOCK) {
 		return true;
 	}
-	if (MapChipList[x - 1][y] == MAP_BLOCK) {
+	if (MapChipList[y][x - 1] == MAP_BLOCK) {
 		return true;
 	}
 
