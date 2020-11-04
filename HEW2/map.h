@@ -27,6 +27,9 @@ void DrawMap(void);
 // 置いたところのマップタイプを変える
 void MapChange(FlyingObject flyingobject);
 
+// 4方向にブロックがあるかの判定
+bool MapFourDirectionsJudgment(D3DXVECTOR2 pos);
+
 // 位置を指定してマップタイプを返す
 MapType GetMapType(D3DXVECTOR2 pos);
 
