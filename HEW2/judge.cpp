@@ -8,7 +8,10 @@
 #include "flyingObject.h"
 #include "judge.h"
 
-void InitJudge(){
+#define MAX_BLOCK (4)
+
+
+void InitJudge() {
 
 }
 
@@ -16,12 +19,12 @@ void UninitJudge() {
 	//test
 }
 
-void UpdateJudge(){
+void UpdateJudge() {
 
 	JudgePlayerandFlyingObjectHit();
 }
 
-void DrawJudge(){
+void DrawJudge() {
 
 }
 
@@ -31,13 +34,19 @@ void JudgePlayerandFlyingObjectHit() {
 	Player* player = GetPlayer();
 	std::list<FlyingObject>* flyingObjectList = GetFlyingObjects();
 
+
+	if (player->flyingObjectList.size() >= MAX_BLOCK) {
+		return;
+	}
+
 	// プレイヤーとflyingObjectの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
-		if ((int)player->position.x == (int)itr->pos.x&& (int)player->position.y == (int)itr->pos.y){
+		if ((int)player->position.x == (int)itr->pos.x && (int)player->position.y == (int)itr->pos.y) {
 			itr->pos = itr->lastPos;
 			player->flyingObjectList.push_back(*itr);
 			itr = flyingObjectList->erase(itr);
-		}else {
+		}
+		else {
 			itr++;
 		}
 	}
@@ -58,6 +67,7 @@ void JudgePlayerandFlyingObjectHit() {
 			itr++;
 		}
 	}
+
 
 
 
