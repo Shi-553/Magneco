@@ -25,6 +25,7 @@ void AddFlyingObjects(FlyingObject* flyingObject) {
 }
 
 void InitFlyingObject(){
+	flyingObjects.clear();
 	frame = 0;
 	blockObjectTextureId = ReserveTextureLoadFile("texture/FLYING_OBJECT_BLOCK.png");
 	enemyObjectTextureId = ReserveTextureLoadFile("texture/FLYING_OBJECT_ENEMY.png");

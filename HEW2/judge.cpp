@@ -72,6 +72,7 @@ void JudgePlayerandFlyingObjectHit() {
 			if (CheckCollision(&player->position, &itr->pos)) {
 				itr = flyingObjectList->erase(itr);
 				InitGame();
+				return;
 			}
 			else {
 				itr++;
