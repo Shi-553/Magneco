@@ -20,6 +20,7 @@ std::list<FlyingObject>* GetFlyingObjects(){
 }
 
 void AddFlyingObjects(FlyingObject* flyingObject) {
+	flyingObject->lastPos = flyingObject->pos;
 	flyingObjects.push_back(*flyingObject);
 }
 
