@@ -4,10 +4,11 @@
 #include "flyingObject.h"
 
 
-typedef struct Player_tag {
+typedef struct Player {
 	D3DXVECTOR2 position;
+	D3DXVECTOR2 lastPosition;
 	std::list < FlyingObject > flyingObjectList;
-}Player;
+};
 
 void InitPlayer();
 void UninitPlayer();

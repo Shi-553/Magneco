@@ -28,6 +28,17 @@ void UpdateJudge() {
 void DrawJudge() {
 
 }
+bool CheckCollision(D3DXVECTOR2* pos1,D3DXVECTOR2* pos2 ) {
+	return (int)pos1->x == (int)pos2->x && (int)pos1->y == (int)pos2->y;
+}
+bool CheckCollision(std::list<FlyingObject>* flyingObjectList,D3DXVECTOR2* pos ) {
+	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); itr++) {
+		if (CheckCollision(pos,&itr->pos)) {
+			return true;
+		}
+	}
+	return false;
+}
 
 void JudgePlayerandFlyingObjectHit() {
 
@@ -43,8 +54,12 @@ void JudgePlayerandFlyingObjectHit() {
 				itr++;
 				continue;
 			}
-			if ((int)player->position.x == (int)itr->pos.x && (int)player->position.y == (int)itr->pos.y) {
+			if (CheckCollision(&player->position,&itr->pos)) {
 				itr->pos = itr->lastPos;
+				while (CheckCollision(&player->flyingObjectList, &itr->pos) || CheckCollision(&itr->pos, &player->position)) {
+					itr->pos += player->position - player->lastPosition;
+				}
+
 				player->flyingObjectList.push_back(*itr);
 				itr = flyingObjectList->erase(itr);
 			}
@@ -54,7 +69,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 		}
 		else if (itr->type == FLYING_OBJECT_ENEMY) {
-			if ((int)player->position.x == (int)itr->pos.x && (int)player->position.y == (int)itr->pos.y) {
+			if (CheckCollision(&player->position, &itr->pos)) {
 				itr = flyingObjectList->erase(itr);
 				InitGame();
 			}
@@ -76,8 +91,11 @@ void JudgePlayerandFlyingObjectHit() {
 			}
 			// playerにくっついているblockの数が４個未満
 			for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
-				if ((int)itr->pos.x == (int)itr2->pos.x && (int)itr->pos.y == (int)itr2->pos.y) {
+				if (CheckCollision(&itr->pos, &itr2->pos)) {
 					itr->pos = itr->lastPos;
+					while (CheckCollision(&player->flyingObjectList, &itr->pos)|| CheckCollision(&itr->pos, &player->position)) {
+						itr->pos += player->position - player->lastPosition;
+					}
 					player->flyingObjectList.push_back(*itr);
 					itr = flyingObjectList->erase(itr);
 					isMatched = true;
@@ -89,7 +107,7 @@ void JudgePlayerandFlyingObjectHit() {
 		else if (itr->type == FLYING_OBJECT_ENEMY) {
 			// playerにくっついているflyingObjectにEnemyがぶつかった場合
 			for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
-				if ((int)itr->pos.x == (int)itr2->pos.x && (int)itr->pos.y == (int)itr2->pos.y) {
+				if (CheckCollision(&itr->pos, &itr2->pos)) {
 					player->flyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
 					isMatched = true;
