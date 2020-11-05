@@ -55,7 +55,9 @@ void JudgePlayerandFlyingObjectHit() {
 				continue;
 			}
 			if (CheckCollision(&player->position,&itr->pos)) {
-				itr->pos = itr->lastPos;
+				if (player->position == player->lastPosition) {
+					itr->pos = itr->lastPos;
+				}
 				while (CheckCollision(&player->flyingObjectList, &itr->pos) || CheckCollision(&itr->pos, &player->position)) {
 					itr->pos += player->position - player->lastPosition;
 				}
@@ -92,9 +94,12 @@ void JudgePlayerandFlyingObjectHit() {
 			// playerにくっついているblockの数が４個未満
 			for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
 				if (CheckCollision(&itr->pos, &itr2->pos)) {
-					itr->pos = itr->lastPos;
-					while (CheckCollision(&player->flyingObjectList, &itr->pos)|| CheckCollision(&itr->pos, &player->position)) {
-						itr->pos += player->position - player->lastPosition;
+					if (player->position == player->lastPosition) {
+						itr->pos = itr->lastPos;
+					}
+					while (CheckCollision(&player->flyingObjectList, &itr->pos) || CheckCollision(&itr->pos, &player->position)) {
+							itr->pos += player->position - player->lastPosition;
+						
 					}
 					player->flyingObjectList.push_back(*itr);
 					itr = flyingObjectList->erase(itr);
