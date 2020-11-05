@@ -7,6 +7,7 @@
 #include "player.h"
 #include "flyingObject.h"
 #include "judge.h"
+#include "game.h"
 
 #define MAX_BLOCK (4)
 
@@ -55,6 +56,7 @@ void JudgePlayerandFlyingObjectHit() {
 		else if (itr->type == FLYING_OBJECT_ENEMY) {
 			if ((int)player->position.x == (int)itr->pos.x && (int)player->position.y == (int)itr->pos.y) {
 				itr = flyingObjectList->erase(itr);
+				InitGame();
 			}
 			else {
 				itr++;
@@ -88,6 +90,7 @@ void JudgePlayerandFlyingObjectHit() {
 			// playerにくっついているflyingObjectにEnemyがぶつかった場合
 			for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
 				if ((int)itr->pos.x == (int)itr2->pos.x && (int)itr->pos.y == (int)itr2->pos.y) {
+					player->flyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
 					isMatched = true;
 					break;
