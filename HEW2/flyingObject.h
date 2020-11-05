@@ -18,6 +18,7 @@ typedef struct FlyingObject
 };
 
 std::list<FlyingObject>* GetFlyingObjects();
+void AddFlyingObjects(FlyingObject* flyingObject);
 
 void InitFlyingObject();
 void UninitFlyingObject();

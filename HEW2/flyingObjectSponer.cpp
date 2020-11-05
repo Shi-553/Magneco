@@ -49,7 +49,7 @@ void UninitFlyingSponer() {
 void UpdateFlyingSponer() {
 	while (spones[sponeIndex].frame != -1) {
 		if (spones[sponeIndex].frame <= frame) {
-			GetFlyingObjects()->push_back(spones[sponeIndex].flyingObject);
+			AddFlyingObjects(&spones[sponeIndex].flyingObject);
 			sponeIndex++;
 		}
 		else {

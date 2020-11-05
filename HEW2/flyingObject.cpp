@@ -19,6 +19,11 @@ std::list<FlyingObject>* GetFlyingObjects(){
 	return &flyingObjects;
 }
 
+void AddFlyingObjects(FlyingObject* flyingObject) {
+	flyingObject->lastPos = flyingObject->pos-flyingObject->dir;
+	flyingObjects.push_back(*flyingObject);
+}
+
 void InitFlyingObject(){
 	frame = 0;
 	blockObjectTextureId = ReserveTextureLoadFile("texture/FLYING_OBJECT_BLOCK.png");
