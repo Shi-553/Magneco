@@ -56,7 +56,7 @@ void JudgePlayerandFlyingObjectHit() {
 			}
 			if (CheckCollision(&player->position,&itr->pos)) {
 				itr->pos = itr->lastPos;
-				if (CheckCollision(&player->flyingObjectList, &itr->pos)) {
+				while (CheckCollision(&player->flyingObjectList, &itr->pos) || CheckCollision(&itr->pos, &player->position)) {
 					itr->pos += player->position - player->lastPosition;
 				}
 
@@ -93,7 +93,7 @@ void JudgePlayerandFlyingObjectHit() {
 			for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
 				if (CheckCollision(&itr->pos, &itr2->pos)) {
 					itr->pos = itr->lastPos;
-					if (CheckCollision(&player->flyingObjectList, &itr->pos)|| CheckCollision(&itr->pos, &player->position)) {
+					while (CheckCollision(&player->flyingObjectList, &itr->pos)|| CheckCollision(&itr->pos, &player->position)) {
 						itr->pos += player->position - player->lastPosition;
 					}
 					player->flyingObjectList.push_back(*itr);
@@ -108,6 +108,7 @@ void JudgePlayerandFlyingObjectHit() {
 			// playerにくっついているflyingObjectにEnemyがぶつかった場合
 			for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
 				if (CheckCollision(&itr->pos, &itr2->pos)) {
+					player->flyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
 					isMatched = true;
 					break;
