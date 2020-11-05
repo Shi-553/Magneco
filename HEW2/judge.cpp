@@ -11,6 +11,9 @@
 
 #define MAX_BLOCK (4)
 
+bool CheckCollision(D3DXVECTOR2* pos1, D3DXVECTOR2* pos2);
+bool CheckCollision(std::list<FlyingObject>* flyingObjectList, D3DXVECTOR2* pos);
+
 
 void InitJudge() {
 
