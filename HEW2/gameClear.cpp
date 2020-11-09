@@ -9,7 +9,7 @@
 
 int gameClearTexture;
 void InitGameClear(){
-	//gameClearTexture = ReserveTextureLoadFile("texture/gameClear.png");
+	gameClearTexture = ReserveTextureLoadFile("texture/result.png");
 	LoadTexture();
 }
 void UninitGameClear(){
