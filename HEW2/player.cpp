@@ -8,6 +8,7 @@
 #include "game.h"
 #include "map.h"
 #include "gameSrite.h"
+#include "npc.h"
 
 static float playerSpeed = 1.0f;
 static int textureId = TEXTURE_INVALID_ID;
@@ -123,8 +124,17 @@ void BlockDecision() {
 		MapChange(*itr);
 	}
 	player.flyingObjectList.clear();
+
+	UpdateNPCShortestPath();
 }
 
 Player* GetPlayer(){
 return &player;
+}
+
+void PutBeacon() {
+	auto mapType = GetMapType(player.position);
+	if (mapType==MAP_BLOCK|| mapType==MAP_GOAL) {
+		UpdateNPCShortestPath(player.position);
+	}
 }
