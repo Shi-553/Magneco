@@ -18,7 +18,6 @@
 
 #include "config.h"
 #include "myd3d.h"
-#include "game.h"
 #include "sprite.h"
 #include "texture.h"
 #include "debugFont.h"
@@ -26,6 +25,7 @@
 #include "keyboard.h"
 #include "mouse.h"
 #include "InputLogger.h"
+#include "sceneManager.h"
 
 
 #define CLASS_NAME "GameWindow"
@@ -219,7 +219,8 @@ bool Init(HWND hWnd) {
 		MessageBox(NULL, "初期化エラー", "エラー", MB_OK);
 	}
 	InitTexture();
-	InitGame();
+
+	InitSceneManager(GameStartScene);
 
 	InitDebugFont();
 
@@ -237,7 +238,7 @@ bool Init(HWND hWnd) {
 
 void Update(void) {
 	UpdateInputLogger();
-	UpdateGame();
+	UpdateSceneManager();
 
 	double time = SystemTimer_GetTime();
 
@@ -269,7 +270,7 @@ void Draw() {
 	//描画命令を貯めていく
 	d3dDevice->BeginScene();
 
-	DrawGame();
+	DrawSceneManager();
 
 
 	DEBUG_FONT_STATE state;
@@ -291,7 +292,7 @@ void Draw() {
 void Uninit(void) {
 
 	UninitSprite();
-	UninitGame();
+	UninitSceneManager();
 
 
 	UninitDebugFont();
