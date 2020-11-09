@@ -10,7 +10,7 @@
 #include <stack>
 
 typedef struct MapLabel {
-	int x, y, label;
+	int x, y, label,notBlockCount;
 };
 
 D3DXVECTOR2 FindNearestBlock();
@@ -130,12 +130,13 @@ D3DXVECTOR2 FindNearestBlock() {
 	auto intBeaconPosY = (int)gBeaconPos.y;
 
 	std::queue<MapLabel> mapQueue;
-	mapQueue.push({ intBeaconPosX, intBeaconPosY,-1 });
+	mapQueue.push({ intBeaconPosX, intBeaconPosY,-1,0 });
 
 	mapLabelList[intBeaconPosY][intBeaconPosX] = -1;
-
+	
 	D3DXVECTOR2 nearestPos = npc.pos;
-	int nearestLabel=-10000;
+	int nearestNotBlockCount =10000;
+	int nearestLabel =-10000;
 
 	while (!mapQueue.empty()) {
 		auto mapLabel = mapQueue.front();
@@ -146,7 +147,8 @@ D3DXVECTOR2 FindNearestBlock() {
 		auto right = mapLabel;
 		right.x++;
 		if (FourDirFindNearestBlock(&mapQueue, &right)) {
-			if (right.label > nearestLabel) {
+			if (right.notBlockCount < nearestNotBlockCount||(right.notBlockCount == nearestNotBlockCount&& right.label> nearestLabel)) {
+				nearestNotBlockCount = right.notBlockCount;
 				nearestLabel = right.label;
 				nearestPos.x = right.x;
 				nearestPos.y = right.y;
@@ -156,7 +158,8 @@ D3DXVECTOR2 FindNearestBlock() {
 		auto bottom = mapLabel;
 		bottom.y++;
 		if (FourDirFindNearestBlock(&mapQueue, &bottom)) {
-			if (bottom.label > nearestLabel) {
+			if (bottom.notBlockCount < nearestNotBlockCount || (bottom.notBlockCount == nearestNotBlockCount && bottom.label > nearestLabel)) {
+				nearestNotBlockCount = bottom.notBlockCount;
 				nearestLabel = bottom.label;
 				nearestPos.x = bottom.x;
 				nearestPos.y = bottom.y;
@@ -166,7 +169,8 @@ D3DXVECTOR2 FindNearestBlock() {
 		auto left = mapLabel;
 		left.x--;
 		if (FourDirFindNearestBlock(&mapQueue, &left)) {
-			if (left.label > nearestLabel) {
+			if (left.notBlockCount < nearestNotBlockCount || (left.notBlockCount == nearestNotBlockCount && left.label > nearestLabel)) {
+				nearestNotBlockCount = left.notBlockCount;
 				nearestLabel = left.label;
 				nearestPos.x = left.x;
 				nearestPos.y = left.y;
@@ -176,7 +180,8 @@ D3DXVECTOR2 FindNearestBlock() {
 		auto top = mapLabel;
 		top.y--;
 		if (FourDirFindNearestBlock(&mapQueue, &top)) {
-			if (top.label > nearestLabel) {
+			if (top.notBlockCount < nearestNotBlockCount || (top.notBlockCount == nearestNotBlockCount && top.label > nearestLabel)) {
+				nearestNotBlockCount = top.notBlockCount;
 				nearestLabel = top.label;
 				nearestPos.x = top.x;
 				nearestPos.y = top.y;
@@ -192,10 +197,16 @@ bool FourDirFindNearestBlock(std::queue<MapLabel>* mapQueue, MapLabel* label) {
 	if ((mapType == MAP_BLOCK || mapType == MAP_GOAL) && mapLabelList[label->y][label->x] > 0) {
 		return true;
 	}
-	if (mapType == MAP_BLOCK_NONE && mapLabelList[label->y][label->x] == 0) {
-		mapQueue->push(*label);
+	if (mapType == MAP_BLOCK_NONE){
+	label->notBlockCount++;
+	}
+	if (mapType == MAP_BLOCK ||mapType == MAP_BLOCK_NONE ) {
 
-		mapLabelList[label->y][label->x] = label->label;
+		if (mapLabelList[label->y][label->x] == 0) {
+			mapQueue->push(*label);
+
+			mapLabelList[label->y][label->x] = label->label;
+		}
 	}
 
 	return false;
