@@ -55,6 +55,18 @@
     <ClCompile Include="npc.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
+    <ClCompile Include="gameOver.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneManager.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="gameClear.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="gameStart.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -112,6 +124,18 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="npc.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="gameOver.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneManager.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="gameClear.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="gameStart.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
   </ItemGroup>
