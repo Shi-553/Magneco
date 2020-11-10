@@ -159,7 +159,7 @@ D3DXVECTOR2 FindNearestBlock() {
 
 		auto bottom = mapLabel;
 		bottom.y++;
-		FourDirFindNearestBlock(&mapQueue, &bottom,&nearest);
+		FourDirFindNearestBlock(&mapQueue, &bottom, &nearest);
 
 		auto left = mapLabel;
 		left.x--;
@@ -171,7 +171,7 @@ D3DXVECTOR2 FindNearestBlock() {
 
 	}
 
-	return { (float)nearest.x,(float)nearest.y};
+	return { (float)nearest.x,(float)nearest.y };
 }
 void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, MapLabel* nearest) {
 	auto mapType = GetMapType({ (float)label->x,(float)label->y });
@@ -195,16 +195,20 @@ void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, Ma
 		}
 		else {
 			for (auto itr = mapQueue->begin(); itr != mapQueue->end(); itr++) {
-				if (itr->x == label->x && itr->y == label->y && itr->notBlockCount > label->notBlockCount) {
+				if (itr->x == label->x && itr->y == label->y &&
+					(itr->notBlockCount > label->notBlockCount || (itr->notBlockCount == label->notBlockCount && itr->label < label->label))) {
 					itr->notBlockCount = label->notBlockCount;
 					itr->label = label->label;
+					mapLabelList[label->y][label->x] = label->label;
 				}
 			}
-			if (nearest->x == label->x && nearest->y == label->y && nearest->notBlockCount > label->notBlockCount) {
+			if (nearest->x == label->x && nearest->y == label->y &&
+				(nearest->notBlockCount > label->notBlockCount ||(nearest->notBlockCount == label->notBlockCount && nearest->label < label->label))) {
 				nearest->notBlockCount = label->notBlockCount;
 				nearest->label = label->label;
+				mapLabelList[label->y][label->x] = label->label;
 			}
-			
+
 		}
 	}
 }
