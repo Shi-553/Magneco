@@ -10,11 +10,11 @@
 #include <stack>
 
 typedef struct MapLabel {
-	int x, y, label,notBlockCount;
+	int x, y, label, notBlockCount;
 };
 
 D3DXVECTOR2 FindNearestBlock();
-bool FourDirFindNearestBlock(std::queue<MapLabel>* mapQueue, MapLabel* label);
+void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, MapLabel* nearest);
 
 bool FindShortestPath();
 void FourDir(std::queue<MapLabel>* mapQueue, MapLabel* label);
@@ -35,6 +35,9 @@ void InitNPC() {
 	npc.speed = 1;
 	npc.pos = D3DXVECTOR2(2, 7);
 	gBeaconPos = npc.pos;
+	while (!nextPosQueue.empty()) {
+		nextPosQueue.pop();
+	}
 }
 
 void UninitNPC() {
@@ -104,7 +107,7 @@ void UpdateNPCShortestPath() {
 		int label = mapLabelList[currentY][currentX];
 
 		auto mapType = GetMapType({ (float)currentX + 1 ,(float)currentY });
-		if (mapLabelList[currentY][currentX + 1] == label - 1 &&( mapType ==MAP_BLOCK|| mapType ==MAP_GOAL)) {
+		if (mapLabelList[currentY][currentX + 1] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
 			currentX++;
 			continue;
 		}
@@ -129,87 +132,81 @@ D3DXVECTOR2 FindNearestBlock() {
 	auto intBeaconPosX = (int)gBeaconPos.x;
 	auto intBeaconPosY = (int)gBeaconPos.y;
 
-	std::queue<MapLabel> mapQueue;
-	mapQueue.push({ intBeaconPosX, intBeaconPosY,-1,0 });
+	std::deque<MapLabel> mapQueue;
+	mapQueue.push_back({ intBeaconPosX, intBeaconPosY,-1,0 });
 
 	mapLabelList[intBeaconPosY][intBeaconPosX] = -1;
-	
-	D3DXVECTOR2 nearestPos = npc.pos;
-	int nearestNotBlockCount =10000;
-	int nearestLabel =-10000;
+
+	MapLabel nearest = {
+		npc.pos.x,
+		npc.pos.y,
+		-10000,
+		10000
+	};
 
 	while (!mapQueue.empty()) {
 		auto mapLabel = mapQueue.front();
-		mapQueue.pop();
+		mapQueue.pop_front();
 
 		mapLabel.label--;
+		if (mapLabel.notBlockCount > nearest.notBlockCount || (mapLabel.notBlockCount == nearest.notBlockCount && mapLabel.label <= nearest.label)) {
+			continue;
+		}
 
 		auto right = mapLabel;
 		right.x++;
-		if (FourDirFindNearestBlock(&mapQueue, &right)) {
-			if (right.notBlockCount < nearestNotBlockCount||(right.notBlockCount == nearestNotBlockCount&& right.label> nearestLabel)) {
-				nearestNotBlockCount = right.notBlockCount;
-				nearestLabel = right.label;
-				nearestPos.x = right.x;
-				nearestPos.y = right.y;
-			}
-		}
+		FourDirFindNearestBlock(&mapQueue, &right, &nearest);
 
 		auto bottom = mapLabel;
 		bottom.y++;
-		if (FourDirFindNearestBlock(&mapQueue, &bottom)) {
-			if (bottom.notBlockCount < nearestNotBlockCount || (bottom.notBlockCount == nearestNotBlockCount && bottom.label > nearestLabel)) {
-				nearestNotBlockCount = bottom.notBlockCount;
-				nearestLabel = bottom.label;
-				nearestPos.x = bottom.x;
-				nearestPos.y = bottom.y;
-			}
-		}
+		FourDirFindNearestBlock(&mapQueue, &bottom,&nearest);
 
 		auto left = mapLabel;
 		left.x--;
-		if (FourDirFindNearestBlock(&mapQueue, &left)) {
-			if (left.notBlockCount < nearestNotBlockCount || (left.notBlockCount == nearestNotBlockCount && left.label > nearestLabel)) {
-				nearestNotBlockCount = left.notBlockCount;
-				nearestLabel = left.label;
-				nearestPos.x = left.x;
-				nearestPos.y = left.y;
-			}
-		}
+		FourDirFindNearestBlock(&mapQueue, &left, &nearest);
 
 		auto top = mapLabel;
 		top.y--;
-		if (FourDirFindNearestBlock(&mapQueue, &top)) {
-			if (top.notBlockCount < nearestNotBlockCount || (top.notBlockCount == nearestNotBlockCount && top.label > nearestLabel)) {
-				nearestNotBlockCount = top.notBlockCount;
-				nearestLabel = top.label;
-				nearestPos.x = top.x;
-				nearestPos.y = top.y;
-			}
-		}
+		FourDirFindNearestBlock(&mapQueue, &top, &nearest);
 
 	}
 
-	return nearestPos;
+	return { (float)nearest.x,(float)nearest.y};
 }
-bool FourDirFindNearestBlock(std::queue<MapLabel>* mapQueue, MapLabel* label) {
+void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, MapLabel* nearest) {
 	auto mapType = GetMapType({ (float)label->x,(float)label->y });
-	if ((mapType == MAP_BLOCK || mapType == MAP_GOAL) && mapLabelList[label->y][label->x] > 0) {
-		return true;
+	//そこが到達可能なとき
+	if (mapLabelList[label->y][label->x] > 0) {
+		//置かないといけないブロックが今より少ないかどうかと、同じならビーコンからの距離が短いかどうか
+		if (label->notBlockCount < nearest->notBlockCount || (label->notBlockCount == nearest->notBlockCount && label->label > nearest->label)) {
+			*nearest = *label;
+		}
+		return;
 	}
-	if (mapType == MAP_BLOCK_NONE){
-	label->notBlockCount++;
+	if (mapType == MAP_BLOCK_NONE) {
+		label->notBlockCount++;
 	}
-	if (mapType == MAP_BLOCK ||mapType == MAP_BLOCK_NONE ) {
+	if (mapType == MAP_BLOCK || mapType == MAP_GOAL || mapType == MAP_BLOCK_NONE) {
 
 		if (mapLabelList[label->y][label->x] == 0) {
-			mapQueue->push(*label);
+			mapQueue->push_back(*label);
 
 			mapLabelList[label->y][label->x] = label->label;
 		}
+		else {
+			for (auto itr = mapQueue->begin(); itr != mapQueue->end(); itr++) {
+				if (itr->x == label->x && itr->y == label->y && itr->notBlockCount > label->notBlockCount) {
+					itr->notBlockCount = label->notBlockCount;
+					itr->label = label->label;
+				}
+			}
+			if (nearest->x == label->x && nearest->y == label->y && nearest->notBlockCount > label->notBlockCount) {
+				nearest->notBlockCount = label->notBlockCount;
+				nearest->label = label->label;
+			}
+			
+		}
 	}
-
-	return false;
 }
 
 bool FindShortestPath() {
