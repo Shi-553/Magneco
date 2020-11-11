@@ -27,4 +27,6 @@ void BlockDecision();
 
 Player* GetPlayer();
 
+void PutBeacon();
+
 #endif // !_PLAYER_H

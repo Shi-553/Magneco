@@ -37,6 +37,9 @@ void UpdateInput() {
 	if (TriggerInputLogger(MYVK_ENTER)) {
 		BlockDecision();
 	}
+	if (TriggerInputLogger(MYVK_BEACON)) {
+		PutBeacon();
+	}
 
 }
 

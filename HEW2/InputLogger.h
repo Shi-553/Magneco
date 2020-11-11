@@ -7,7 +7,7 @@ typedef enum VirtualKey {
 	MYVK_LEFT,
 	MYVK_RIGHT,
 	MYVK_ENTER,
-	MYVK_SHOT,
+	MYVK_BEACON,
 	MYVK_SHOT2,
 	MYVK_MAX
 };
