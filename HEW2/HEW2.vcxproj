@@ -156,6 +156,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="selectButton.cpp" />
     <ClCompile Include="debugFont.cpp" />
     <ClCompile Include="flyingObject.cpp" />
     <ClCompile Include="flyingObjectSponer.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="gameStart.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="selectButton.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="debugFont.h" />
     <ClInclude Include="debugPrintf.h" />
