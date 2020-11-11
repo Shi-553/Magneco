@@ -17,6 +17,7 @@ static int g_LineCount = 0;
 
 void Grid_Initialize(float size, int count, D3DCOLOR color)
 {
+	count -= 2;
 	g_LineCount = (count + 1) * 2;
 	g_VertexCount = g_LineCount * 2;
 
@@ -29,10 +30,10 @@ void Grid_Initialize(float size, int count, D3DCOLOR color)
 
 
 	for (int i = 0; i < count + 1; i++) {
-		g_pVertex[i * 2].pos = D3DXVECTOR4(start + size * i + GAME_SPRITE_ZERO_X,  start + GAME_SPRITE_ZERO_Y, 1.0f, 1.0f);
-		g_pVertex[i * 2 + 1].pos = D3DXVECTOR4(start + size * i + GAME_SPRITE_ZERO_X,  end + GAME_SPRITE_ZERO_Y, 1.0f, 1.0f);
-		g_pVertex[n + i * 2].pos = D3DXVECTOR4(start + GAME_SPRITE_ZERO_X,  start + size * i + GAME_SPRITE_ZERO_Y, 1.0f, 1.0f);
-		g_pVertex[n + i * 2 + 1].pos = D3DXVECTOR4(end + GAME_SPRITE_ZERO_X,  start + size * i + GAME_SPRITE_ZERO_Y, 1.0f, 1.0f);
+		g_pVertex[i * 2].pos = D3DXVECTOR4(start + size * i + GAME_SPRITE_ZERO_X + size,  start + GAME_SPRITE_ZERO_Y + size, 1.0f, 1.0f);
+		g_pVertex[i * 2 + 1].pos = D3DXVECTOR4(start + size * i + GAME_SPRITE_ZERO_X + size,  end + GAME_SPRITE_ZERO_Y + size, 1.0f, 1.0f);
+		g_pVertex[n + i * 2].pos = D3DXVECTOR4(start + GAME_SPRITE_ZERO_X + size,  start + size * i + GAME_SPRITE_ZERO_Y + size, 1.0f, 1.0f);
+		g_pVertex[n + i * 2 + 1].pos = D3DXVECTOR4(end + GAME_SPRITE_ZERO_X + size,  start + size * i + GAME_SPRITE_ZERO_Y + size, 1.0f, 1.0f);
 	}
 
 	for (int i = 0; i < g_VertexCount; i++) {
