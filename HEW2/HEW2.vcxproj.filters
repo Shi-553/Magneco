@@ -67,6 +67,7 @@
     <ClCompile Include="gameStart.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
+    <ClCompile Include="trans.cpp">
     <ClCompile Include="grid.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
@@ -141,6 +142,7 @@
     <ClInclude Include="gameStart.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
+    <ClInclude Include="trans.h">
     <ClInclude Include="grid.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
