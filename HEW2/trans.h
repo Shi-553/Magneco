@@ -16,7 +16,8 @@ typedef struct TRANS {
 	INTVECTOR2 intPos;
 	INTVECTOR2 intLastPos;
 };
-
+void InitTrans(TRANS* trans, D3DXVECTOR2 pos);
+void ChangeTrans(TRANS* trans, D3DXVECTOR2 pos);
 void MoveTrans(TRANS* trans, D3DXVECTOR2 addPos);
 void MoveTransX(TRANS* trans, float x);
 void MoveTransY(TRANS* trans, float y);
