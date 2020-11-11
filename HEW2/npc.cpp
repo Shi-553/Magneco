@@ -8,6 +8,7 @@
 #include "map.h"
 #include <queue>
 #include <stack>
+#include "sceneManager.h"
 
 typedef struct MapLabel {
 	int x, y, label, notBlockCount;
@@ -55,6 +56,11 @@ void UpdateNPC() {
 		nextPosQueue.pop();
 
 		frame = 0;
+
+		if (GetMapType(npc.pos) == MAP_GOAL) {
+			GoNextScene(GameClearScene);
+		}
+
 		return;
 	}
 	frame++;
