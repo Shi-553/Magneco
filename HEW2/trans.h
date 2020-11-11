@@ -67,6 +67,8 @@ typedef struct TRANS {
 	INTVECTOR2 intLastPos;
 };
 
+void InitTrans(TRANS* trans, D3DXVECTOR2 initPos);
+void InitTrans(TRANS* trans, INTVECTOR2 initPos);
 void UpdateTrans(TRANS* trans);
 void UpdateTransX(TRANS* trans);
 void UpdateTransY(TRANS* trans);

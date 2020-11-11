@@ -7,6 +7,18 @@
 #include "trans.h"
 
 
+void InitTrans(TRANS* trans,D3DXVECTOR2 initPos) {
+	trans->pos = initPos;
+	trans->intPos = {(int)initPos.x,(int)initPos.y};
+	trans->intLastPos = trans->intPos;
+}
+void InitTrans(TRANS* trans, INTVECTOR2 initPos) {
+	trans->pos.x = initPos.x;
+	trans->pos.y = initPos.y;
+	trans->intPos = initPos;
+	trans->intLastPos = trans->intPos;
+}
+
 void UpdateTrans(TRANS* trans) {
 	// XV‚µ‚½ˆÊ’u‚ğ•ÛŠÇ
 	INTVECTOR2 compare;
