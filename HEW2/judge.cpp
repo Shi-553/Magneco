@@ -8,6 +8,7 @@
 #include "flyingObject.h"
 #include "judge.h"
 #include "game.h"
+#include "sceneManager.h"
 
 #define MAX_BLOCK (4)
 
@@ -74,7 +75,7 @@ void JudgePlayerandFlyingObjectHit() {
 		else if (itr->type == FLYING_OBJECT_ENEMY) {
 			if (CheckCollision(&player->position, &itr->pos)) {
 				itr = flyingObjectList->erase(itr);
-				InitGame();
+				GoNextScene(GameOverScene, FADE_IN);
 				return;
 			}
 			else {
