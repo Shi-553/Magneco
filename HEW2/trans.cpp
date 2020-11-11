@@ -9,7 +9,7 @@
 
 void InitTrans(TRANS* trans,D3DXVECTOR2 initPos) {
 	trans->pos = initPos;
-	trans->intPos = {(int)initPos.x,(int)initPos.y};
+	trans->intPos = INTVECTOR2((int)initPos.x,(int)initPos.y);
 	trans->intLastPos = trans->intPos;
 }
 void InitTrans(TRANS* trans, INTVECTOR2 initPos) {
@@ -21,9 +21,7 @@ void InitTrans(TRANS* trans, INTVECTOR2 initPos) {
 
 void UpdateTrans(TRANS* trans) {
 	// 更新した位置を保管
-	INTVECTOR2 compare;
-	compare.x = (int)trans->pos.x;
-	compare.y = (int)trans->pos.y;
+	INTVECTOR2 compare((int)trans->pos.x, (int)trans->pos.y);
 
 	// 更新した位置と元の位置を比較
 	if (compare == trans->intPos) {

@@ -10,6 +10,15 @@ typedef struct INTVECTOR2 {
 	int x;
 	int y;
 
+	INTVECTOR2() {
+		x = 0;
+		y = 0;
+	}
+	INTVECTOR2(int x, int y) {
+		this->x = x;
+		this->y = y;
+	}
+
 	bool operator==(const INTVECTOR2& b)const {
 		return x == b.x && y == b.y;
 	}
