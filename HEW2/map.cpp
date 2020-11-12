@@ -43,10 +43,7 @@ void InitMap(void)
 
 void UninitMap(void)
 {
-	for (int i = 0; i < MAP_MAX; i++)
-	{
-		ReleaseTexture(&textureIds[i], 1);
-	}
+		ReleaseTexture(textureIds, MAP_MAX);
 }
 
 void UpdateMap(void)
