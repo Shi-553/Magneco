@@ -62,15 +62,14 @@ void DrawMap(void)
 
 void MapChange(FlyingObject flyingobject)
 {
-	int x = flyingobject.pos.x;
-	int y = flyingobject.pos.y;
+	auto intPos= flyingobject.trans.GetIntPos();
 
-	if (x < 0 || y < 0 || x >= MAPCHIP_WIDTH || y >= MAPCHIP_HEIGHT) {
+	if (intPos.x < 0 ||intPos.y < 0 || intPos.x >= MAPCHIP_WIDTH || intPos.y >= MAPCHIP_HEIGHT) {
 		return;
 	}
 
 	if (flyingobject.type == FLYING_OBJECT_BLOCK) {
-		MapChipList[y][x] = MAP_BLOCK;
+		MapChipList[intPos.y][intPos.x] = MAP_BLOCK;
 	}
 }
 
