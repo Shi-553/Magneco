@@ -100,6 +100,20 @@ public:
 		pos.y = initPos.y;
 		Init();
 	}
+	void Init(D3DXVECTOR2 initPos) {
+		pos = initPos;
+		Init();
+	}
+	void Init(float initX,float initY) {
+		pos.x = initX;
+		pos.y = initY;
+		Init();
+	}
+	void Init(INTVECTOR2 initPos) {
+		pos.x = initPos.x;
+		pos.y = initPos.y;
+		Init();
+	}
 
 	void UpdatePos();
 	void UpdateX();
