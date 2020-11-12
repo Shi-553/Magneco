@@ -31,7 +31,8 @@ void InitFlyingObject(){
 	enemyObjectTextureId = ReserveTextureLoadFile("texture/FLYING_OBJECT_ENEMY.png");
 }
 void UninitFlyingObject(){
-
+	ReleaseTexture(blockObjectTextureId);
+	ReleaseTexture(enemyObjectTextureId);
 }
 void DrawFlyingObject(FlyingObject flyingObject) {
 	auto intPos = D3DXVECTOR2((int)flyingObject.pos.x, (int)flyingObject.pos.y);
