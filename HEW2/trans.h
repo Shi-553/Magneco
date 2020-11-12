@@ -21,6 +21,10 @@ typedef struct INTVECTOR2 {
 		this->y = (int)pos.y;
 	}
 
+	D3DXVECTOR2 ToD3DXVECTOR2() {
+		return D3DXVECTOR2(x, y);
+	}
+
 	bool operator==(const INTVECTOR2& b)const {
 		return x == b.x && y == b.y;
 	}
@@ -113,10 +117,6 @@ public:
 		pos.x = initPos.x;
 		pos.y = initPos.y;
 		Init();
-	}
-
-	D3DXVECTOR2 ToD3DXVECTOR2() {
-		return D3DXVECTOR2(pos.x,pos.y);
 	}
 
 	void UpdatePos();
