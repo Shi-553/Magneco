@@ -67,6 +67,7 @@
     <ClCompile Include="gameStart.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
+    <ClCompile Include="selectButton.cpp">
     <ClCompile Include="trans.cpp">
     <ClCompile Include="grid.cpp">
       <Filter>ソース</Filter>
@@ -142,6 +143,7 @@
     <ClInclude Include="gameStart.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
+    <ClInclude Include="selectButton.h">
     <ClInclude Include="trans.h">
     <ClInclude Include="grid.h">
       <Filter>ヘッダー</Filter>
