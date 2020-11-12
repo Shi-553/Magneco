@@ -1,6 +1,8 @@
 #pragma once
 #include "myd3d.h"
 #include <list>
+#include "trans.h"
+
 
 enum FlyingObjectType
 {
@@ -10,10 +12,9 @@ enum FlyingObjectType
 };
 typedef struct FlyingObject
 {
-	D3DXVECTOR2 pos;
+	TRANS trans;
 	FlyingObjectType type;
 	D3DXVECTOR2 dir;
-	D3DXVECTOR2 lastPos;
 
 };
 
