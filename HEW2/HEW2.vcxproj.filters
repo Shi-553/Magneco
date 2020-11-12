@@ -1,69 +1,77 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="debugFont.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
-    <ClCompile Include="flyingObject.cpp">
-      <Filter>ソース</Filter>
+    <ClCompile Include="grid.cpp">
+      <Filter>cpp\scenes\game</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
-    <ClCompile Include="InputLogger.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
-    <ClCompile Include="judge.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
-    <ClCompile Include="keyboard.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
-    <ClCompile Include="map.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
-    <ClCompile Include="mouse.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
-    <ClCompile Include="myd3d.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
-    <ClCompile Include="sprite.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
-    <ClCompile Include="system_timer.cpp">
-      <Filter>ソース</Filter>
-    </ClCompile>
-    <ClCompile Include="texture.cpp">
-      <Filter>ソース</Filter>
+      <Filter>cpp\scenes\game</Filter>
     </ClCompile>
     <ClCompile Include="flyingObjectSponer.cpp">
-      <Filter>ソース</Filter>
+      <Filter>cpp\scenes\game</Filter>
+    </ClCompile>
+    <ClCompile Include="flyingObject.cpp">
+      <Filter>cpp\scenes\game</Filter>
     </ClCompile>
     <ClCompile Include="gameSprite.cpp">
-      <Filter>ソース</Filter>
+      <Filter>cpp\scenes\game</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>cpp\scenes\game</Filter>
+    </ClCompile>
+    <ClCompile Include="judge.cpp">
+      <Filter>cpp\scenes\game</Filter>
+    </ClCompile>
+    <ClCompile Include="map.cpp">
+      <Filter>cpp\scenes\game</Filter>
     </ClCompile>
     <ClCompile Include="npc.cpp">
-      <Filter>ソース</Filter>
+      <Filter>cpp\scenes\game</Filter>
     </ClCompile>
-    <ClCompile Include="gameOver.cpp">
-      <Filter>ソース</Filter>
+    <ClCompile Include="player.cpp">
+      <Filter>cpp\scenes\game</Filter>
+    </ClCompile>
+    <ClCompile Include="trans.cpp">
+      <Filter>cpp\scenes\game</Filter>
+    </ClCompile>
+    <ClCompile Include="InputLogger.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
+    <ClCompile Include="keyboard.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
+    <ClCompile Include="mouse.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
+    <ClCompile Include="myd3d.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
+    <ClCompile Include="system_timer.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
+    <ClCompile Include="debugFont.cpp">
+      <Filter>cpp\debug</Filter>
     </ClCompile>
     <ClCompile Include="sceneManager.cpp">
-      <Filter>ソース</Filter>
+      <Filter>cpp\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="gameStart.cpp">
+      <Filter>cpp\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="gameOver.cpp">
+      <Filter>cpp\scenes</Filter>
     </ClCompile>
     <ClCompile Include="gameClear.cpp">
-      <Filter>ソース</Filter>
+      <Filter>cpp\scenes</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>cpp</Filter>
     <ClCompile Include="gameStart.cpp">
       <Filter>ソース</Filter>
     </ClCompile>
@@ -74,75 +82,80 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="config.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="debugFont.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="debugPrintf.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="flyingObject.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="game.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="InputLogger.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="judge.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="keyboard.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="texture.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="system_timer.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="sprite.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="myd3d.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="map.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="mouse.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="flyingObjectSponer.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="gameSrite.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="npc.h">
-      <Filter>ヘッダー</Filter>
+    <ClInclude Include="gameClear.h">
+      <Filter>ヘッダー\scenes</Filter>
     </ClInclude>
     <ClInclude Include="gameOver.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="sceneManager.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="gameClear.h">
-      <Filter>ヘッダー</Filter>
+      <Filter>ヘッダー\scenes</Filter>
     </ClInclude>
     <ClInclude Include="gameStart.h">
-      <Filter>ヘッダー</Filter>
+      <Filter>ヘッダー\scenes</Filter>
     </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>ヘッダー\scenes\game</Filter>
+    </ClInclude>
+    <ClInclude Include="gameSrite.h">
+      <Filter>ヘッダー\scenes\game</Filter>
+    </ClInclude>
+    <ClInclude Include="grid.h">
+      <Filter>ヘッダー\scenes\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>ヘッダー\scenes\game</Filter>
+    </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>ヘッダー\scenes\game</Filter>
+    </ClInclude>
+    <ClInclude Include="judge.h">
+      <Filter>ヘッダー\scenes\game</Filter>
+    </ClInclude>
+    <ClInclude Include="npc.h">
+      <Filter>ヘッダー\scenes\game</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>ヘッダー\scenes\game</Filter>
+    </ClInclude>
+    <ClInclude Include="trans.h">
+      <Filter>ヘッダー\scenes\game</Filter>
+    </ClInclude>
+    <ClInclude Include="flyingObjectSponer.h">
+      <Filter>ヘッダー\scenes\game</Filter>
+    </ClInclude>
+    <ClInclude Include="flyingObject.h">
+      <Filter>ヘッダー\scenes\game</Filter>
+    </ClInclude>
+    <ClInclude Include="debugFont.h">
+      <Filter>ヘッダー\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="debugPrintf.h">
+      <Filter>ヘッダー\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="system_timer.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="myd3d.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="mouse.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="keyboard.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="InputLogger.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneManager.h">
+      <Filter>ヘッダー\scenes</Filter>
     <ClInclude Include="selectButton.h">
     <ClInclude Include="trans.h">
     <ClInclude Include="grid.h">
@@ -151,10 +164,34 @@
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダー">
-      <UniqueIdentifier>{0ffb9820-175d-4545-9042-81161b578943}</UniqueIdentifier>
+      <UniqueIdentifier>{58eaf24a-14c4-4978-bbfc-63a7b0e49c9c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース">
-      <UniqueIdentifier>{f1e264d4-926f-4ab4-b738-751ce1a20933}</UniqueIdentifier>
+    <Filter Include="cpp">
+      <UniqueIdentifier>{5ec69f22-e4e7-4702-a854-c29a6f2255ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\scenes">
+      <UniqueIdentifier>{6124cdc6-e7b9-42a2-89ba-4d555062482f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー\scenes">
+      <UniqueIdentifier>{27f9ce1f-2060-48cc-bc96-7777b341a57f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー\scenes\game">
+      <UniqueIdentifier>{02a56934-0dcf-4f2a-ba1f-15623eb68337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\others">
+      <UniqueIdentifier>{7ca50487-8968-4e85-8f25-88ea248a78bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\debug">
+      <UniqueIdentifier>{d8eef095-5904-4fc1-ae97-5236ea4de93e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\scenes\game">
+      <UniqueIdentifier>{10c5fd01-89c8-4a74-95fa-3e9a8eb3f976}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー\debug">
+      <UniqueIdentifier>{00435ddc-7104-4c32-8aae-1a634f9b104f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー\others">
+      <UniqueIdentifier>{e9f5fb84-d649-4d2c-9bd0-d14d69acc49f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
