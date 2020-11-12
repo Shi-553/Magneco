@@ -1,8 +1,9 @@
 #ifndef _NPC_H
 #define _NPC_H
+#include "trans.h"
 
 typedef struct NPC_tag {
-	D3DXVECTOR2 pos;
+	TRANS trans;
 	float speed;
 }NPC;
 
