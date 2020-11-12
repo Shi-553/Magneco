@@ -28,6 +28,7 @@ void UninitPlayer(){
 
 void UpdatePlayer(){
 
+	player.lastPosition = player.position;
 }
 
 void DrawPlayer(){
