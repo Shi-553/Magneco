@@ -30,11 +30,11 @@ void InitMap(void)
 	map_textureIds = ReserveTextureLoadFile("texture/”wŒi‚P.png");
 
 	textureIds[MAP_NONE] = ReserveTextureLoadFile("texture/MAP_NONE.png");
-	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE.png");
-	textureIds[MAP_BLOCK] = ReserveTextureLoadFile("texture/MAP_BLOCK.png");
-	textureIds[MAP_WALL] = ReserveTextureLoadFile("texture/MAP_WALL.png");
-	textureIds[MAP_ROCK] = ReserveTextureLoadFile("texture/MAP_ROCK.png");
-	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/MAP_GOAL.png");
+	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE_2.png");
+	textureIds[MAP_BLOCK] = ReserveTextureLoadFile("texture/block02.png");
+	textureIds[MAP_WALL] = ReserveTextureLoadFile("texture/meteorite_1.png");
+	textureIds[MAP_ROCK] = ReserveTextureLoadFile("texture/brokenblock01.png");
+	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/magnekko_goalflag01.png");
 
 	for (int i = 0; i < MAPCHIP_HEIGHT; i++) {
 		for (int j = 0; j < MAPCHIP_WIDTH; j++) {
