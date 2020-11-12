@@ -7,7 +7,7 @@
 
 int gameOverTexture;
 void InitGameOver() {
-	gameOverTexture = ReserveTextureLoadFile("texture/result.png");
+	gameOverTexture = ReserveTextureLoadFile("texture/”wŒi‚P.png");
 	LoadTexture();
 }
 void UninitGameOver() {
