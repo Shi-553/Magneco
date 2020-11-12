@@ -11,12 +11,14 @@ typedef struct INTVECTOR2 {
 	int y;
 
 	INTVECTOR2() {
-		x = 0;
-		y = 0;
 	}
 	INTVECTOR2(int x, int y) {
 		this->x = x;
 		this->y = y;
+	}
+	INTVECTOR2(D3DXVECTOR2 pos) {
+		this->x = (int)pos.x;
+		this->y = (int)pos.y;
 	}
 
 	bool operator==(const INTVECTOR2& b)const {
@@ -46,38 +48,62 @@ typedef struct INTVECTOR2 {
 	INTVECTOR2& operator += (const INTVECTOR2& b)
 	{
 		x += b.x;
-		y += b.y; 
+		y += b.y;
 		return *this;
 	}
 	INTVECTOR2& operator -= (const INTVECTOR2& b)
 	{
 		x -= b.x;
-		y -= b.y; 
+		y -= b.y;
 		return *this;
 	}
 	INTVECTOR2& operator *= (const INTVECTOR2& b)
 	{
 		x *= b.x;
-		y *= b.y; 
+		y *= b.y;
 		return *this;
 	}
 	INTVECTOR2& operator /= (const INTVECTOR2& b)
 	{
 		x /= b.x;
-		y /= b.y; 
+		y /= b.y;
 		return *this;
 	}
 };
 
 
-typedef struct TRANS {
+class TRANS {
+public:
 	D3DXVECTOR2 pos;
+
+	TRANS() {
+	}
+	TRANS(D3DXVECTOR2 initPos) {
+		pos = initPos;
+		Init();
+	}
+	TRANS(float initX,float initY) {
+		pos.x = initX;
+		pos.y = initY;
+		Init();
+	}
+	TRANS(INTVECTOR2 initPos) {
+		pos.x = initPos.x;
+		pos.y = initPos.y;
+		Init();
+	}
+
+	void UpdatePos();
+	void UpdateX();
+	void UpdateY();
+
+private:
 	INTVECTOR2 intPos;
 	INTVECTOR2 intLastPos;
+
+	void Init() {
+		intPos = { (int)pos.x,(int)pos.y };
+		intLastPos = intPos;
+	}
 };
 
-void InitTrans(TRANS* trans, D3DXVECTOR2 initPos);
-void InitTrans(TRANS* trans, INTVECTOR2 initPos);
-void UpdateTrans(TRANS* trans);
-void UpdateTransX(TRANS* trans);
-void UpdateTransY(TRANS* trans);

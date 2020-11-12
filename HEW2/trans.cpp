@@ -7,57 +7,45 @@
 #include "trans.h"
 
 
-void InitTrans(TRANS* trans,D3DXVECTOR2 initPos) {
-	trans->pos = initPos;
-	trans->intPos = INTVECTOR2((int)initPos.x,(int)initPos.y);
-	trans->intLastPos = trans->intPos;
-}
-void InitTrans(TRANS* trans, INTVECTOR2 initPos) {
-	trans->pos.x = initPos.x;
-	trans->pos.y = initPos.y;
-	trans->intPos = initPos;
-	trans->intLastPos = trans->intPos;
-}
-
-void UpdateTrans(TRANS* trans) {
+void TRANS::UpdatePos() {
 	// 更新した位置を保管
-	INTVECTOR2 compare((int)trans->pos.x, (int)trans->pos.y);
+	INTVECTOR2 compare((int)pos.x, (int)pos.y);
 
 	// 更新した位置と元の位置を比較
-	if (compare == trans->intPos) {
+	if (compare == intPos) {
 		return;
 	}
 
-	trans->intLastPos = trans->intPos;
+	intLastPos = intPos;
 
 	// intPosに現在の位置を入れる
-	trans->intPos = compare;
+	intPos = compare;
 }
-void UpdateTransX(TRANS* trans) {
+void TRANS::UpdateX() {
 	// 更新した位置を保管
-	int x = (int)trans->pos.x;
+	int x = (int)pos.x;
 
 	// 更新した位置と元の位置を比較
-	if (x == trans->intPos.x) {
+	if (x == intPos.x) {
 		return;
 	}
 
-	trans->intLastPos.x = trans->intPos.x;
+	intLastPos.x = intPos.x;
 
 	// intPosに現在の位置を入れる
-	trans->intPos.x = x;
+	intPos.x = x;
 }
-void UpdateTransY(TRANS* trans){
+void TRANS::UpdateY(){
 	// 更新した位置を保管
-	int y = (int)trans->pos.y;
+	int y = (int)pos.y;
 
 	// 更新した位置と元の位置を比較
-	if (y == trans->intPos.y) {
+	if (y == intPos.y) {
 		return;
 	}
 
-	trans->intLastPos.y = trans->intPos.y;
+	intLastPos.y = intPos.y;
 
 	// intPosに現在の位置を入れる
-	trans->intPos.y = y;
+	intPos.y = y;
 }
