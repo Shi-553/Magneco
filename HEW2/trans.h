@@ -9,16 +9,123 @@
 typedef struct INTVECTOR2 {
 	int x;
 	int y;
+
+	INTVECTOR2() {
+	}
+	INTVECTOR2(int x, int y) {
+		this->x = x;
+		this->y = y;
+	}
+	INTVECTOR2(D3DXVECTOR2 pos) {
+		this->x = (int)pos.x;
+		this->y = (int)pos.y;
+	}
+
+	bool operator==(const INTVECTOR2& b)const {
+		return x == b.x && y == b.y;
+	}
+	INTVECTOR2& operator = (const INTVECTOR2& b) {
+		x = b.x;
+		y = b.y;
+		return *this;
+	}
+	const INTVECTOR2 operator + (const INTVECTOR2& b) const
+	{
+		return { x + b.x, y + b.y };
+	}
+	const INTVECTOR2 operator - (const INTVECTOR2& b) const
+	{
+		return { x - b.x, y - b.y };
+	}
+	const INTVECTOR2 operator * (const INTVECTOR2& b) const
+	{
+		return { x * b.x, y * b.y };
+	}
+	const INTVECTOR2 operator / (const INTVECTOR2& b) const
+	{
+		return { x / b.x, y / b.y };
+	}
+	INTVECTOR2& operator += (const INTVECTOR2& b)
+	{
+		x += b.x;
+		y += b.y;
+		return *this;
+	}
+	INTVECTOR2& operator -= (const INTVECTOR2& b)
+	{
+		x -= b.x;
+		y -= b.y;
+		return *this;
+	}
+	INTVECTOR2& operator *= (const INTVECTOR2& b)
+	{
+		x *= b.x;
+		y *= b.y;
+		return *this;
+	}
+	INTVECTOR2& operator /= (const INTVECTOR2& b)
+	{
+		x /= b.x;
+		y /= b.y;
+		return *this;
+	}
 };
 
-typedef struct TRANS {
+
+class TRANS {
+public:
 	D3DXVECTOR2 pos;
+
+	INTVECTOR2 GetIntPos() {
+		return intPos;
+	}
+	INTVECTOR2 GetIntLastPos() {
+		return intLastPos;
+	}
+
+
+	TRANS() {
+	}
+	TRANS(D3DXVECTOR2 initPos) {
+		pos = initPos;
+		Init();
+	}
+	TRANS(float initX,float initY) {
+		pos.x = initX;
+		pos.y = initY;
+		Init();
+	}
+	TRANS(INTVECTOR2 initPos) {
+		pos.x = initPos.x;
+		pos.y = initPos.y;
+		Init();
+	}
+	void Init(D3DXVECTOR2 initPos) {
+		pos = initPos;
+		Init();
+	}
+	void Init(float initX,float initY) {
+		pos.x = initX;
+		pos.y = initY;
+		Init();
+	}
+	void Init(INTVECTOR2 initPos) {
+		pos.x = initPos.x;
+		pos.y = initPos.y;
+		Init();
+	}
+
+	void UpdatePos();
+	void UpdateX();
+	void UpdateY();
+
+private:
 	INTVECTOR2 intPos;
 	INTVECTOR2 intLastPos;
+
+	void Init() {
+		intPos = { (int)pos.x,(int)pos.y };
+		intLastPos = intPos;
+	}
 };
-void InitTrans(TRANS* trans, D3DXVECTOR2 pos);
-void ChangeTrans(TRANS* trans, D3DXVECTOR2 pos);
-void MoveTrans(TRANS* trans, D3DXVECTOR2 addPos);
-void MoveTransX(TRANS* trans, float x);
-void MoveTransY(TRANS* trans, float y);
 

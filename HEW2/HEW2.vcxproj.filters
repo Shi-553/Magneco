@@ -72,6 +72,13 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>cpp</Filter>
+    <ClCompile Include="gameStart.cpp">
+      <Filter>ソース</Filter>
+    </ClCompile>
+    <ClCompile Include="selectButton.cpp">
+    <ClCompile Include="trans.cpp">
+    <ClCompile Include="grid.cpp">
+      <Filter>ソース</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +156,10 @@
     </ClInclude>
     <ClInclude Include="sceneManager.h">
       <Filter>ヘッダー\scenes</Filter>
+    <ClInclude Include="selectButton.h">
+    <ClInclude Include="trans.h">
+    <ClInclude Include="grid.h">
+      <Filter>ヘッダー</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
