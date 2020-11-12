@@ -148,14 +148,7 @@ void ReleaseTexture(int textureId) {
 		return;
 	}
 
-	if (t->texture != NULL) {
-		t->texture->Release();
-	}
-	t->texture = NULL;
-
-
-	free(t->size);
-	t->size = NULL;
+	InitTextureStruct(t);
 }
 
 //引数1：解放したいテクスチャIDの先頭アドレス
@@ -172,7 +165,7 @@ void ReleaseTexture(int textureIds[], int count) {
 void ReleaseAllTexture() {
 	for (int i = 0; i < TEXTURE_MAX; i++)
 	{
-		ReleaseTexture(i);
+		InitTextureStruct(&textures[i]);
 	}
 
 }
