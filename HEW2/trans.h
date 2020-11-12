@@ -115,6 +115,10 @@ public:
 		Init();
 	}
 
+	D3DXVECTOR2 ToD3DXVECTOR2() {
+		return D3DXVECTOR2(pos.x,pos.y);
+	}
+
 	void UpdatePos();
 	void UpdateX();
 	void UpdateY();
