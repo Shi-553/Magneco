@@ -17,8 +17,7 @@ static Player player;
 void InitPlayer(){
 	textureId = ReserveTextureLoadFile("texture/player.png");
 
-	player.position = D3DXVECTOR2(3, 3);
-	player.lastPosition = player.position;
+	player.trans.Init(3, 3);
 	player.flyingObjectList.clear();
 }
 
@@ -28,13 +27,13 @@ void UninitPlayer(){
 
 void UpdatePlayer(){
 
-	player.lastPosition = player.position;
 }
 
 void DrawPlayer(){
-	D3DXVECTOR2 intposition;
-	intposition = D3DXVECTOR2((int)player.position.x, (int)player.position.y);
+//	D3DXVECTOR2 intposition;
+//	intposition = D3DXVECTOR2((int)player.position.x, (int)player.position.y);
 	DrawGameSprite(textureId,intposition,30);
+	//‚¨‚¨‚æ‚» ToD3DXVECTOR2()‚ð‚¢‚ê‚é‚Ì‚Í‹C•t‚¢‚Ä‚Ü‚·
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
@@ -52,6 +51,8 @@ void RotateRightPlayer(){
 }
 
 void MoveUpPlayer(){
+	player.trans.UpdateY();
+
 	player.lastPosition = player.position;
 
 	player.position.y += -playerSpeed;
@@ -134,8 +135,8 @@ return &player;
 }
 
 void PutBeacon() {
-	auto mapType = GetMapType(player.position);
+	auto mapType = GetMapType(player.trans.pos);
 	if (mapType==MAP_BLOCK|| mapType==MAP_GOAL) {
-		UpdateNPCShortestPath(player.position);
+		UpdateNPCShortestPath(player.trans.pos);
 	}
 }
