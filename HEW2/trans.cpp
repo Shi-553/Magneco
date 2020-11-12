@@ -3,7 +3,7 @@
 // 
 //							Author:Kanna Noda
 //----------------------------------------------------------------
-
+//
 #include "trans.h"
 
 void InitTrans(TRANS* trans, D3DXVECTOR2 pos) {
