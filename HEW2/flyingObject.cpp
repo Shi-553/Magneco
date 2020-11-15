@@ -20,7 +20,6 @@ std::list<FlyingObject>* GetFlyingObjects(){
 }
 
 void AddFlyingObjects(FlyingObject* flyingObject) {
-	flyingObject->lastPos = flyingObject->pos-flyingObject->dir;
 	flyingObjects.push_back(*flyingObject);
 }
 
@@ -35,12 +34,11 @@ void UninitFlyingObject(){
 	ReleaseTexture(enemyObjectTextureId);
 }
 void DrawFlyingObject(FlyingObject flyingObject) {
-	auto intPos = D3DXVECTOR2((int)flyingObject.pos.x, (int)flyingObject.pos.y);
 	if (flyingObject.type == FLYING_OBJECT_BLOCK) {
-		DrawGameSprite(blockObjectTextureId, intPos, 50);
+		DrawGameSprite(blockObjectTextureId, flyingObject.trans.pos, 50);
 	}
 	if (flyingObject.type == FLYING_OBJECT_ENEMY) {
-		DrawGameSprite(enemyObjectTextureId, intPos, 50);
+		DrawGameSprite(enemyObjectTextureId, flyingObject.trans.pos, 50);
 	}
 }
 void DrawFlyingObject(){
@@ -55,13 +53,14 @@ void UpdateFlyingObject(){
 		frame = 0;
 
 		for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
-			itr->lastPos = itr->pos;
-			itr->pos += itr->dir;
+			itr->trans.pos += itr->dir;
 
-			if (itr->pos.x > MAPCHIP_WIDTH + FLYINGOBJECT_ADD_RANGE ||
-				itr->pos.x < -MAPCHIP_WIDTH - FLYINGOBJECT_ADD_RANGE ||
-				itr->pos.y > MAPCHIP_HEIGHT + FLYINGOBJECT_ADD_RANGE ||
-				itr->pos.y < -MAPCHIP_HEIGHT - FLYINGOBJECT_ADD_RANGE) {
+			itr->trans.UpdatePos();
+
+			if (itr->trans.pos.x > MAPCHIP_WIDTH + FLYINGOBJECT_ADD_RANGE ||
+				itr->trans.pos.x < -MAPCHIP_WIDTH - FLYINGOBJECT_ADD_RANGE ||
+				itr->trans.pos.y > MAPCHIP_HEIGHT + FLYINGOBJECT_ADD_RANGE ||
+				itr->trans.pos.y < -MAPCHIP_HEIGHT - FLYINGOBJECT_ADD_RANGE) {
 				itr = flyingObjects.erase(itr);
 			}
 			else {

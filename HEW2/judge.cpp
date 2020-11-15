@@ -13,8 +13,7 @@
 
 #define MAX_BLOCK (4)
 
-bool CheckCollision(D3DXVECTOR2* pos1, D3DXVECTOR2* pos2);
-bool CheckCollision(std::list<FlyingObject>* flyingObjectList, D3DXVECTOR2* pos);
+bool CheckCollision(std::list<FlyingObject>* flyingObjectList, INTVECTOR2* pos);
 
 
 void InitJudge() {
@@ -33,12 +32,10 @@ void UpdateJudge() {
 void DrawJudge() {
 
 }
-bool CheckCollision(D3DXVECTOR2* pos1,D3DXVECTOR2* pos2 ) {
-	return (int)pos1->x == (int)pos2->x && (int)pos1->y == (int)pos2->y;
-}
-bool CheckCollision(std::list<FlyingObject>* flyingObjectList,D3DXVECTOR2* pos ) {
+
+bool CheckCollision(std::list<FlyingObject>* flyingObjectList,INTVECTOR2* pos ) {
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); itr++) {
-		if (CheckCollision(pos,&itr->pos)) {
+		if (itr->trans.GetIntPos()==*pos) {
 			return true;
 		}
 	}
@@ -58,13 +55,17 @@ void JudgePlayerandFlyingObjectHit() {
 				itr++;
 				continue;
 			}
-			if (CheckCollision(&player->trans.pos,&itr->pos)) {
+			if (player->trans.GetIntPos()==itr->trans.GetIntPos()) {
 				if (!player->isMove) {
-					itr->pos = itr->lastPos;
+					itr->trans.pos = itr->trans.GetIntLastPos().ToD3DXVECTOR2();
+					itr->trans.UpdatePos();
 				}
-				while (CheckCollision(&player->flyingObjectList, &itr->pos) || CheckCollision(&itr->pos, &player->trans.pos)) {
-					itr->pos +=	(player->trans.GetIntPos() - player->trans.GetIntLastPos()).ToD3DXVECTOR2();
+				while (player->trans.GetIntPos() == itr->trans.GetIntPos() || CheckCollision(&player->flyingObjectList, &itr->trans.GetIntPos())) {
+					itr->trans.pos +=	(player->trans.GetIntPos() - player->trans.GetIntLastPos()).ToD3DXVECTOR2();
+					itr->trans.UpdatePos();
 				}
+
+				itr->trans.Init(itr->trans.pos);
 
 				player->flyingObjectList.push_back(*itr);
 				itr = flyingObjectList->erase(itr);
@@ -75,7 +76,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 		}
 		else if (itr->type == FLYING_OBJECT_ENEMY) {
-			if (CheckCollision(&player->trans.pos, &itr->pos)) {
+			if (player->trans.GetIntPos() == itr->trans.GetIntPos()) {
 				itr = flyingObjectList->erase(itr);
 				GoNextScene(GameOverScene, FADE_IN);
 				return;
@@ -98,14 +99,17 @@ void JudgePlayerandFlyingObjectHit() {
 			}
 			// playerにくっついているblockの数が４個未満
 			for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
-				if (CheckCollision(&itr->pos, &itr2->pos)) {
+				if (itr->trans.GetIntPos() == itr2->trans.GetIntPos()) {
 					if (!player->isMove) {
-						itr->pos = itr->lastPos;
+						itr->trans.pos = itr->trans.GetIntLastPos().ToD3DXVECTOR2();
+						itr->trans.UpdatePos();
 					}
-					while (CheckCollision(&player->flyingObjectList, &itr->pos) || CheckCollision(&itr->pos, &player->trans.pos)) {
-							itr->pos += (player->trans.GetIntPos() - player->trans.GetIntLastPos()).ToD3DXVECTOR2();
-						
+					while (player->trans.GetIntPos() == itr->trans.GetIntPos() || CheckCollision(&player->flyingObjectList, &itr->trans.GetIntPos())) {
+							itr->trans.pos += (player->trans.GetIntPos() - player->trans.GetIntLastPos()).ToD3DXVECTOR2();
+							itr->trans.UpdatePos();
 					}
+					itr->trans.Init(itr->trans.pos);
+
 					player->flyingObjectList.push_back(*itr);
 					itr = flyingObjectList->erase(itr);
 					isMatched = true;
@@ -117,7 +121,7 @@ void JudgePlayerandFlyingObjectHit() {
 		else if (itr->type == FLYING_OBJECT_ENEMY) {
 			// playerにくっついているflyingObjectにEnemyがぶつかった場合
 			for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
-				if (CheckCollision(&itr->pos, &itr2->pos)) {
+				if (itr->trans.GetIntPos() == itr2->trans.GetIntPos()) {
 					player->flyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
 					isMatched = true;
