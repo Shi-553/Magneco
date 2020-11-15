@@ -9,6 +9,7 @@
 #include "judge.h"
 #include "game.h"
 #include "sceneManager.h"
+#include "trans.h"
 
 #define MAX_BLOCK (4)
 
@@ -46,7 +47,6 @@ bool CheckCollision(std::list<FlyingObject>* flyingObjectList,D3DXVECTOR2* pos )
 
 void JudgePlayerandFlyingObjectHit() {
 
-
 	Player* player = GetPlayer();
 	std::list<FlyingObject>* flyingObjectList = GetFlyingObjects();
 
@@ -58,12 +58,12 @@ void JudgePlayerandFlyingObjectHit() {
 				itr++;
 				continue;
 			}
-			if (CheckCollision(&player->position,&itr->pos)) {
-				if (player->position == player->lastPosition) {
+			if (CheckCollision(&player->trans.pos,&itr->pos)) {
+				if (!player->isMove) {
 					itr->pos = itr->lastPos;
 				}
-				while (CheckCollision(&player->flyingObjectList, &itr->pos) || CheckCollision(&itr->pos, &player->position)) {
-					itr->pos += player->position - player->lastPosition;
+				while (CheckCollision(&player->flyingObjectList, &itr->pos) || CheckCollision(&itr->pos, &player->trans.pos)) {
+					itr->pos +=	(player->trans.GetIntPos() - player->trans.GetIntLastPos()).ToD3DXVECTOR2();
 				}
 
 				player->flyingObjectList.push_back(*itr);
@@ -75,7 +75,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 		}
 		else if (itr->type == FLYING_OBJECT_ENEMY) {
-			if (CheckCollision(&player->position, &itr->pos)) {
+			if (CheckCollision(&player->trans.pos, &itr->pos)) {
 				itr = flyingObjectList->erase(itr);
 				GoNextScene(GameOverScene, FADE_IN);
 				return;
@@ -99,11 +99,11 @@ void JudgePlayerandFlyingObjectHit() {
 			// playerにくっついているblockの数が４個未満
 			for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
 				if (CheckCollision(&itr->pos, &itr2->pos)) {
-					if (player->position == player->lastPosition) {
+					if (!player->isMove) {
 						itr->pos = itr->lastPos;
 					}
-					while (CheckCollision(&player->flyingObjectList, &itr->pos) || CheckCollision(&itr->pos, &player->position)) {
-							itr->pos += player->position - player->lastPosition;
+					while (CheckCollision(&player->flyingObjectList, &itr->pos) || CheckCollision(&itr->pos, &player->trans.pos)) {
+							itr->pos += (player->trans.GetIntPos() - player->trans.GetIntLastPos()).ToD3DXVECTOR2();
 						
 					}
 					player->flyingObjectList.push_back(*itr);

@@ -121,8 +121,6 @@ public:
 	}
 
 	void UpdatePos();
-	void UpdateX();
-	void UpdateY();
 
 private:
 	INTVECTOR2 intPos;

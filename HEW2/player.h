@@ -2,12 +2,13 @@
 #define _PLAYER_H
 #include <list>
 #include "flyingObject.h"
-
+#include "trans.h"
+#pragma once
 
 typedef struct Player {
-	D3DXVECTOR2 position;
-	D3DXVECTOR2 lastPosition;
+	TRANS trans;
 	std::list < FlyingObject > flyingObjectList;
+	bool isMove;
 };
 
 void InitPlayer();
