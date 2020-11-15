@@ -30,8 +30,6 @@ void UpdatePlayer(){
 }
 
 void DrawPlayer(){
-//	D3DXVECTOR2 intposition;
-//	intposition = D3DXVECTOR2((int)player.position.x, (int)player.position.y);
 	DrawGameSprite(textureId,intposition,30);
 	//‚¨‚¨‚æ‚» ToD3DXVECTOR2()‚ð‚¢‚ê‚é‚Ì‚Í‹C•t‚¢‚Ä‚Ü‚·
 
@@ -53,8 +51,6 @@ void RotateRightPlayer(){
 void MoveUpPlayer(){
 	player.trans.UpdateY();
 
-	player.lastPosition = player.position;
-
 	player.position.y += -playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
@@ -63,7 +59,7 @@ void MoveUpPlayer(){
 }
 
 void MoveDownPlayer(){
-	player.lastPosition = player.position;
+	player.trans.UpdateY();
 
 	player.position.y += playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
@@ -73,7 +69,7 @@ void MoveDownPlayer(){
 }
 
 void MoveLeftPlayer(){
-	player.lastPosition = player.position;
+	player.trans.UpdateX();
 
 	player.position.x += -playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
@@ -83,8 +79,7 @@ void MoveLeftPlayer(){
 }
 
 void MoveRightPlayer(){
-	player.lastPosition = player.position;
-
+	player.trans.UpdateX();
 	player.position.x += playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
