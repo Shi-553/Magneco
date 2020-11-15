@@ -13,8 +13,8 @@
 #define GAME_OVER_LOGO_WIDTH 640
 #define GAME_OVER_LOGO_HEIGHT 240
 
-static int gameOverTexture;
-static int gameOverTexture_2;
+static int backgroundTexture;
+static int gameOverTextTexture;
 
 static Button restartButton, backtitleButton;
 
@@ -44,9 +44,9 @@ void InitGameOver() {
 	AddButton(&restartButton);
 	AddButton(&backtitleButton);
 
-	gameOverTexture = ReserveTextureLoadFile("texture/îwåiÇP.png");
+	backgroundTexture = ReserveTextureLoadFile("texture/îwåiÇP.png");
 
-	gameOverTexture_2 = ReserveTextureLoadFile("texture/gameover_640Å~240.png");
+	gameOverTextTexture = ReserveTextureLoadFile("texture/gameover_640Å~240.png");
 
 	LoadTexture();
 }
@@ -54,15 +54,15 @@ void InitGameOver() {
 void UninitGameOver() {
 	UninitSelectButton();
 
-	ReleaseTexture(gameOverTexture);
-	ReleaseTexture(gameOverTexture_2);
+	ReleaseTexture(backgroundTexture);
+	ReleaseTexture(gameOverTextTexture);
 	ReleaseTexture(restartButton.textureId);
 	ReleaseTexture(backtitleButton.textureId);
 
 }
 void DrawGameOver() {
-	DrawSprite(gameOverTexture, { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT }, { 0,0 }, { SCREEN_WIDTH,SCREEN_HEIGHT });
-	DrawSprite(gameOverTexture_2, { 325,0 }, 10, { GAME_OVER_LOGO_WIDTH,GAME_OVER_LOGO_HEIGHT }, { 0,0 }, { GAME_OVER_LOGO_WIDTH,GAME_OVER_LOGO_HEIGHT });
+	DrawSprite(backgroundTexture, { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT }, { 0,0 }, { SCREEN_WIDTH,SCREEN_HEIGHT });
+	DrawSprite(gameOverTextTexture, { 325,0 }, 10, { GAME_OVER_LOGO_WIDTH,GAME_OVER_LOGO_HEIGHT }, { 0,0 }, { GAME_OVER_LOGO_WIDTH,GAME_OVER_LOGO_HEIGHT });
 	DrawSelectButton();
 }
 
