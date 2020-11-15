@@ -11,10 +11,11 @@
 #include "sceneManager.h"
 
 typedef struct MapLabel {
-	int x, y, label, notBlockCount;
+	INTVECTOR2 pos;
+	int label, notBlockCount;
 };
 
-D3DXVECTOR2 FindNearestBlock();
+INTVECTOR2 FindNearestBlock();
 void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, MapLabel* nearest);
 
 bool FindShortestPath();
@@ -25,17 +26,17 @@ static int NPCTextureId = TEXTURE_INVALID_ID;
 static NPC npc;
 
 static int mapLabelList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH];
-std::stack<D3DXVECTOR2> nextPosQueue;
+std::stack<INTVECTOR2> nextPosQueue;
 
-static D3DXVECTOR2 gBeaconPos;
+static INTVECTOR2 gBeaconPos;
 
 int frame = 0;
 
 void InitNPC() {
 	NPCTextureId = ReserveTextureLoadFile("texture/npc.png");
 	npc.speed = 1;
-	npc.pos = D3DXVECTOR2(2, 7);
-	gBeaconPos = npc.pos;
+	npc.trans.Init(2, 7);
+	gBeaconPos = npc.trans.GetIntPos();
 	while (!nextPosQueue.empty()) {
 		nextPosQueue.pop();
 	}
@@ -51,13 +52,14 @@ void UpdateNPC() {
 		return;
 	}
 	if (frame > 30) {
-		npc.pos = nextPosQueue.top();
+		npc.trans.pos = nextPosQueue.top().ToD3DXVECTOR2();
+		npc.trans.UpdatePos();
 
 		nextPosQueue.pop();
 
 		frame = 0;
 
-		if (GetMapType(npc.pos) == MAP_GOAL) {
+		if (GetMapType(npc.trans.pos) == MAP_GOAL) {
 			GoNextScene(GameClearScene);
 		}
 
@@ -67,9 +69,7 @@ void UpdateNPC() {
 }
 
 void DrawNPC() {
-	D3DXVECTOR2 intposition;
-	intposition = D3DXVECTOR2((int)npc.pos.x, (int)npc.pos.y);
-	DrawGameSprite(NPCTextureId, intposition, 30);
+	DrawGameSprite(NPCTextureId, npc.trans.GetIntPos().ToD3DXVECTOR2(), 30);
 
 }
 void UpdateNPCShortestPath(D3DXVECTOR2 beaconPos) {
@@ -78,7 +78,7 @@ void UpdateNPCShortestPath(D3DXVECTOR2 beaconPos) {
 }
 
 void UpdateNPCShortestPath() {
-	if (gBeaconPos == npc.pos) {
+	if (gBeaconPos == npc.trans.GetIntPos()) {
 		return;
 	}
 	for (int i = 0; i < MAPCHIP_HEIGHT; i++)
@@ -92,60 +92,53 @@ void UpdateNPCShortestPath() {
 		nextPosQueue.pop();
 	}
 
-	int currentX;
-	int currentY;
+	INTVECTOR2 current;
 	if (FindShortestPath()) {
-		currentX = (int)gBeaconPos.x;
-		currentY = (int)gBeaconPos.y;
+		current = gBeaconPos;
 
 	}
 	else {
-		auto nearest = FindNearestBlock();
-		currentX = (int)nearest.x;
-		currentY = (int)nearest.y;
+		current = FindNearestBlock();
 	}
 	while (true) {
-		if ((int)npc.pos.x == currentX && (int)npc.pos.y == currentY) {
+		if (npc.trans.GetIntPos() == current) {
 			break;
 		}
-		nextPosQueue.push(D3DXVECTOR2(currentX, currentY));
+		nextPosQueue.push(current);
 
-		int label = mapLabelList[currentY][currentX];
+		int label = mapLabelList[current.y][current.x];
 
-		auto mapType = GetMapType({ (float)currentX + 1 ,(float)currentY });
-		if (mapLabelList[currentY][currentX + 1] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
-			currentX++;
+		auto mapType = GetMapType(current.ToD3DXVECTOR2()+D3DXVECTOR2(1,0));
+		if (mapLabelList[current.y][current.x + 1] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
+			current.x++;
 			continue;
 		}
-		mapType = GetMapType({ (float)currentX  ,(float)currentY + 1 });
-		if (mapLabelList[currentY + 1][currentX] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
-			currentY++;
+		mapType = GetMapType(current.ToD3DXVECTOR2() + D3DXVECTOR2(0, 1));
+		if (mapLabelList[current.y + 1][current.x] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
+			current.y++;
 			continue;
 		}
-		mapType = GetMapType({ (float)currentX - 1 ,(float)currentY });
-		if (mapLabelList[currentY][currentX - 1] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
-			currentX--;
+		mapType = GetMapType(current.ToD3DXVECTOR2() + D3DXVECTOR2(-1, 0));
+		if (mapLabelList[current.y][current.x - 1] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
+			current.x--;
 			continue;
 		}
-		mapType = GetMapType({ (float)currentX  ,(float)currentY - 1 });
-		if (mapLabelList[currentY - 1][currentX] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
-			currentY--;
+		mapType = GetMapType(current.ToD3DXVECTOR2() + D3DXVECTOR2(0, -1));
+		if (mapLabelList[current.y - 1][current.x] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
+			current.y--;
 			continue;
 		}
 	}
 }
-D3DXVECTOR2 FindNearestBlock() {
-	auto intBeaconPosX = (int)gBeaconPos.x;
-	auto intBeaconPosY = (int)gBeaconPos.y;
+INTVECTOR2 FindNearestBlock() {
 
 	std::deque<MapLabel> mapQueue;
-	mapQueue.push_back({ intBeaconPosX, intBeaconPosY,-1,0 });
+	mapQueue.push_back({ gBeaconPos,-1,0 });
 
-	mapLabelList[intBeaconPosY][intBeaconPosX] = -1;
+	mapLabelList[gBeaconPos.y][gBeaconPos.x] = -1;
 
 	MapLabel nearest = {
-		npc.pos.x,
-		npc.pos.y,
+		npc.trans.GetIntPos(),
 		-10000,
 		10000
 	};
@@ -160,29 +153,29 @@ D3DXVECTOR2 FindNearestBlock() {
 		}
 
 		auto right = mapLabel;
-		right.x++;
+		right.pos.x++;
 		FourDirFindNearestBlock(&mapQueue, &right, &nearest);
 
 		auto bottom = mapLabel;
-		bottom.y++;
+		bottom.pos.y++;
 		FourDirFindNearestBlock(&mapQueue, &bottom, &nearest);
 
 		auto left = mapLabel;
-		left.x--;
+		left.pos.x--;
 		FourDirFindNearestBlock(&mapQueue, &left, &nearest);
 
 		auto top = mapLabel;
-		top.y--;
+		top.pos.y--;
 		FourDirFindNearestBlock(&mapQueue, &top, &nearest);
 
 	}
 
-	return { (float)nearest.x,(float)nearest.y };
+	return nearest.pos;
 }
 void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, MapLabel* nearest) {
-	auto mapType = GetMapType({ (float)label->x,(float)label->y });
+	auto mapType = GetMapType(label->pos.ToD3DXVECTOR2());
 	//そこが到達可能なとき
-	if (mapLabelList[label->y][label->x] > 0) {
+	if (mapLabelList[label->pos.y][label->pos.x] > 0) {
 		//置かないといけないブロックが今より少ないかどうかと、同じならビーコンからの距離が短いかどうか
 		if (label->notBlockCount < nearest->notBlockCount || (label->notBlockCount == nearest->notBlockCount && label->label > nearest->label)) {
 			*nearest = *label;
@@ -194,25 +187,25 @@ void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, Ma
 	}
 	if (mapType == MAP_BLOCK || mapType == MAP_GOAL || mapType == MAP_BLOCK_NONE) {
 
-		if (mapLabelList[label->y][label->x] == 0) {
+		if (mapLabelList[label->pos.y][label->pos.x] == 0) {
 			mapQueue->push_back(*label);
 
-			mapLabelList[label->y][label->x] = label->label;
+			mapLabelList[label->pos.y][label->pos.x] = label->label;
 		}
 		else {
 			for (auto itr = mapQueue->begin(); itr != mapQueue->end(); itr++) {
-				if (itr->x == label->x && itr->y == label->y &&
+				if (itr->pos == label->pos &&
 					(itr->notBlockCount > label->notBlockCount || (itr->notBlockCount == label->notBlockCount && itr->label < label->label))) {
 					itr->notBlockCount = label->notBlockCount;
 					itr->label = label->label;
-					mapLabelList[label->y][label->x] = label->label;
+					mapLabelList[label->pos.y][label->pos.x] = label->label;
 				}
 			}
-			if (nearest->x == label->x && nearest->y == label->y &&
-				(nearest->notBlockCount > label->notBlockCount ||(nearest->notBlockCount == label->notBlockCount && nearest->label < label->label))) {
+			if (nearest->pos == label->pos &&
+				(nearest->notBlockCount > label->notBlockCount || (nearest->notBlockCount == label->notBlockCount && nearest->label < label->label))) {
 				nearest->notBlockCount = label->notBlockCount;
 				nearest->label = label->label;
-				mapLabelList[label->y][label->x] = label->label;
+				mapLabelList[label->pos.y][label->pos.x] = label->label;
 			}
 
 		}
@@ -220,13 +213,12 @@ void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, Ma
 }
 
 bool FindShortestPath() {
-	auto intNPCPosX = (int)npc.pos.x;
-	auto intNPCPosY = (int)npc.pos.y;
+	auto intPos = npc.trans.GetIntPos();
 
 	std::queue<MapLabel> mapQueue;
-	mapQueue.push({ intNPCPosX, intNPCPosY,1 });
+	mapQueue.push({ intPos,1 });
 
-	mapLabelList[intNPCPosY][intNPCPosX] = 1;
+	mapLabelList[intPos.y][intPos.x] = 1;
 
 	while (!mapQueue.empty()) {
 		auto mapLabel = mapQueue.front();
@@ -235,30 +227,30 @@ bool FindShortestPath() {
 		mapLabel.label++;
 
 		auto right = mapLabel;
-		right.x++;
+		right.pos.x++;
 		FourDir(&mapQueue, &right);
-		if (right.x == gBeaconPos.x && right.y == gBeaconPos.y) {
+		if (right.pos == gBeaconPos) {
 			return true;
 		}
 
 		auto bottom = mapLabel;
-		bottom.y++;
+		bottom.pos.y++;
 		FourDir(&mapQueue, &bottom);
-		if (bottom.x == gBeaconPos.x && bottom.y == gBeaconPos.y) {
+		if (bottom.pos == gBeaconPos) {
 			return true;
 		}
 
 		auto left = mapLabel;
-		left.x--;
+		left.pos.x--;
 		FourDir(&mapQueue, &left);
-		if (left.x == gBeaconPos.x && right.y == gBeaconPos.y) {
+		if (left.pos == gBeaconPos) {
 			return true;
 		}
 
 		auto top = mapLabel;
-		top.y--;
+		top.pos.y--;
 		FourDir(&mapQueue, &top);
-		if (top.x == gBeaconPos.x && top.y == gBeaconPos.y) {
+		if (top.pos == gBeaconPos) {
 			return true;
 		}
 
@@ -267,11 +259,11 @@ bool FindShortestPath() {
 	return false;
 }
 void FourDir(std::queue<MapLabel>* mapQueue, MapLabel* label) {
-	auto mapType = GetMapType({ (float)label->x,(float)label->y });
-	if ((mapType == MAP_BLOCK || mapType == MAP_GOAL) && mapLabelList[label->y][label->x] == 0) {
+	auto mapType = GetMapType(label->pos.ToD3DXVECTOR2());
+	if ((mapType == MAP_BLOCK || mapType == MAP_GOAL) && mapLabelList[label->pos.y][label->pos.x] == 0) {
 		mapQueue->push(*label);
 
-		mapLabelList[label->y][label->x] = label->label;
+		mapLabelList[label->pos.y][label->pos.x] = label->label;
 	}
 
 }
