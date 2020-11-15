@@ -47,7 +47,6 @@ bool CheckCollision(std::list<FlyingObject>* flyingObjectList,D3DXVECTOR2* pos )
 
 void JudgePlayerandFlyingObjectHit() {
 
-
 	Player* player = GetPlayer();
 	std::list<FlyingObject>* flyingObjectList = GetFlyingObjects();
 
@@ -60,7 +59,7 @@ void JudgePlayerandFlyingObjectHit() {
 				continue;
 			}
 			if (CheckCollision(&player->trans.pos,&itr->pos)) {
-				if (player->trans.GetIntPos() == player->trans.GetIntLastPos()) {
+				if (!player->isMove) {
 					itr->pos = itr->lastPos;
 				}
 				while (CheckCollision(&player->flyingObjectList, &itr->pos) || CheckCollision(&itr->pos, &player->trans.pos)) {
@@ -100,7 +99,7 @@ void JudgePlayerandFlyingObjectHit() {
 			// playerにくっついているblockの数が４個未満
 			for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
 				if (CheckCollision(&itr->pos, &itr2->pos)) {
-					if (player->trans.GetIntPos() == player->trans.GetIntLastPos()) {
+					if (!player->isMove) {
 						itr->pos = itr->lastPos;
 					}
 					while (CheckCollision(&player->flyingObjectList, &itr->pos) || CheckCollision(&itr->pos, &player->trans.pos)) {
