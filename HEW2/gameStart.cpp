@@ -13,10 +13,10 @@
 #define TITLE_LOGO_WIDTH 640
 #define TITLE_LOGO_HEIGHT 240
 
-static int titleTexture;
-static int titleTexture_2;
+static int backGroundTexture;
+static int titleTextTexture;
 
-Button startButton, endButton;
+static Button startButton, endButton;
 
 void InitGameStart() {
 	InitSelectButton();
@@ -44,9 +44,9 @@ void InitGameStart() {
 	AddButton(&startButton);
 	AddButton(&endButton);
 
-	titleTexture = ReserveTextureLoadFile("texture/îwåiÇP.png");
+	backGroundTexture = ReserveTextureLoadFile("texture/îwåiÇP.png");
 
-	titleTexture_2 = ReserveTextureLoadFile("texture/title_640Å~240.png");
+	titleTextTexture = ReserveTextureLoadFile("texture/title_640Å~240.png");
 
 	LoadTexture();
 }
@@ -54,15 +54,15 @@ void InitGameStart() {
 void UninitGameStart() {
 	UninitSelectButton();
 
-	ReleaseTexture(titleTexture);
-	ReleaseTexture(titleTexture_2);
+	ReleaseTexture(backGroundTexture);
+	ReleaseTexture(titleTextTexture);
 	ReleaseTexture(startButton.textureId);
 	ReleaseTexture(endButton.textureId);
 
 }
 void DrawGameStart() {
-	DrawSprite(titleTexture, { 0,0 }, 10, {SCREEN_WIDTH,SCREEN_HEIGHT}, {0,0}, { SCREEN_WIDTH,SCREEN_HEIGHT });
-	DrawSprite(titleTexture_2, { 325,0 }, 10, { TITLE_LOGO_WIDTH,TITLE_LOGO_HEIGHT }, { 0,0 }, { TITLE_LOGO_WIDTH,TITLE_LOGO_HEIGHT });
+	DrawSprite(backGroundTexture, { 0,0 }, 10, {SCREEN_WIDTH,SCREEN_HEIGHT}, {0,0}, { SCREEN_WIDTH,SCREEN_HEIGHT });
+	DrawSprite(titleTextTexture, { 325,0 }, 10, { TITLE_LOGO_WIDTH,TITLE_LOGO_HEIGHT }, { 0,0 }, { TITLE_LOGO_WIDTH,TITLE_LOGO_HEIGHT });
 	DrawSelectButton();
 }
 
