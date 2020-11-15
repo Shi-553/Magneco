@@ -15,7 +15,7 @@ static int textureId = TEXTURE_INVALID_ID;
 static Player player;
 
 void InitPlayer(){
-	textureId = ReserveTextureLoadFile("texture/player_2.png");
+	textureId = ReserveTextureLoadFile("texture/player.png");
 
 	player.position = D3DXVECTOR2(3, 3);
 	player.lastPosition = player.position;

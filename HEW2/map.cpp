@@ -30,7 +30,7 @@ void InitMap(void)
 	map_textureIds = ReserveTextureLoadFile("texture/”wŒi‚P.png");
 
 	textureIds[MAP_NONE] = ReserveTextureLoadFile("texture/MAP_NONE.png");
-	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE_2.png");
+	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE.png");
 	textureIds[MAP_BLOCK] = ReserveTextureLoadFile("texture/block02.png");
 	textureIds[MAP_WALL] = ReserveTextureLoadFile("texture/meteorite_1.png");
 	textureIds[MAP_ROCK] = ReserveTextureLoadFile("texture/brokenblock01.png");
