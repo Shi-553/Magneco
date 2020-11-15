@@ -19,6 +19,7 @@ void InitPlayer(){
 
 	player.trans.Init(3, 3);
 	player.flyingObjectList.clear();
+	player.isMove = false;
 }
 
 void UninitPlayer(){
@@ -26,6 +27,7 @@ void UninitPlayer(){
 }
 
 void UpdatePlayer(){
+	player.isMove = false;
 
 }
 
@@ -48,8 +50,10 @@ void RotateRightPlayer(){
 }
 
 void MoveUpPlayer(){
+	player.isMove = true;
+
 	player.trans.pos.y += -playerSpeed;
-	player.trans.UpdateY();
+	player.trans.UpdatePos();
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
@@ -58,8 +62,10 @@ void MoveUpPlayer(){
 }
 
 void MoveDownPlayer(){
+	player.isMove = true;
+
 	player.trans.pos.y += playerSpeed;
-	player.trans.UpdateY();
+	player.trans.UpdatePos();
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
@@ -68,8 +74,10 @@ void MoveDownPlayer(){
 }
 
 void MoveLeftPlayer(){
+	player.isMove = true;
+
 	player.trans.pos.x += -playerSpeed;
-	player.trans.UpdateX();
+	player.trans.UpdatePos();
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
@@ -78,8 +86,10 @@ void MoveLeftPlayer(){
 }
 
 void MoveRightPlayer(){
+	player.isMove = true;
+
 	player.trans.pos.x += playerSpeed;
-	player.trans.UpdateX();
+	player.trans.UpdatePos();
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {

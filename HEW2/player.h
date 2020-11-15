@@ -8,6 +8,7 @@
 typedef struct Player {
 	TRANS trans;
 	std::list < FlyingObject > flyingObjectList;
+	bool isMove;
 };
 
 void InitPlayer();
