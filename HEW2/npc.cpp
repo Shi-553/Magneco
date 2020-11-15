@@ -59,7 +59,7 @@ void UpdateNPC() {
 
 		frame = 0;
 
-		if (GetMapType(npc.trans.pos) == MAP_GOAL) {
+		if (GetMapType(npc.trans.GetIntPos()) == MAP_GOAL) {
 			GoNextScene(GameClearScene);
 		}
 
@@ -108,24 +108,32 @@ void UpdateNPCShortestPath() {
 
 		int label = mapLabelList[current.y][current.x];
 
-		auto mapType = GetMapType(current.ToD3DXVECTOR2()+D3DXVECTOR2(1,0));
-		if (mapLabelList[current.y][current.x + 1] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
-			current.x++;
+		auto right = current;
+		right.x ++;
+		auto mapType = GetMapType(right);
+		if (mapLabelList[right.y][right.x] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
+			current = right;
 			continue;
 		}
-		mapType = GetMapType(current.ToD3DXVECTOR2() + D3DXVECTOR2(0, 1));
-		if (mapLabelList[current.y + 1][current.x] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
-			current.y++;
+		auto bottom = current;
+		bottom.y++;
+		mapType = GetMapType(bottom);
+		if (mapLabelList[bottom.y ][bottom.x] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
+			current = bottom;
 			continue;
 		}
-		mapType = GetMapType(current.ToD3DXVECTOR2() + D3DXVECTOR2(-1, 0));
-		if (mapLabelList[current.y][current.x - 1] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
-			current.x--;
+		auto left = current;
+		left.x--;
+		mapType = GetMapType(left);
+		if (mapLabelList[left.y][left.x] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
+			current = left;
 			continue;
 		}
-		mapType = GetMapType(current.ToD3DXVECTOR2() + D3DXVECTOR2(0, -1));
-		if (mapLabelList[current.y - 1][current.x] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
-			current.y--;
+		auto top = current;
+		top.y--;
+		mapType = GetMapType(top);
+		if (mapLabelList[top.y][top.x] == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
+			current = top;
 			continue;
 		}
 	}
@@ -173,7 +181,7 @@ INTVECTOR2 FindNearestBlock() {
 	return nearest.pos;
 }
 void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, MapLabel* nearest) {
-	auto mapType = GetMapType(label->pos.ToD3DXVECTOR2());
+	auto mapType = GetMapType(label->pos);
 	//そこが到達可能なとき
 	if (mapLabelList[label->pos.y][label->pos.x] > 0) {
 		//置かないといけないブロックが今より少ないかどうかと、同じならビーコンからの距離が短いかどうか
@@ -259,7 +267,7 @@ bool FindShortestPath() {
 	return false;
 }
 void FourDir(std::queue<MapLabel>* mapQueue, MapLabel* label) {
-	auto mapType = GetMapType(label->pos.ToD3DXVECTOR2());
+	auto mapType = GetMapType(label->pos);
 	if ((mapType == MAP_BLOCK || mapType == MAP_GOAL) && mapLabelList[label->pos.y][label->pos.x] == 0) {
 		mapQueue->push(*label);
 

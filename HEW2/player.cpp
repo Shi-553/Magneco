@@ -107,7 +107,7 @@ void BlockDecision() {
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
 		MapType type;
-		type = GetMapType(itr->trans.pos);
+		type = GetMapType(itr->trans.GetIntPos());
 		if (type != MAP_BLOCK_NONE){
 			canBlockPut = false;
 			break;
@@ -121,7 +121,7 @@ void BlockDecision() {
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
-		if (MapFourDirectionsJudgment(itr->trans.pos)) {
+		if (MapFourDirectionsJudgment(itr->trans.GetIntPos())) {
 			isFourDirections = true;
 			break;
 		}
@@ -144,7 +144,7 @@ return &player;
 }
 
 void PutBeacon() {
-	auto mapType = GetMapType(player.trans.pos);
+	auto mapType = GetMapType(player.trans.GetIntPos());
 	if (mapType == MAP_BLOCK || mapType == MAP_GOAL) {
 		UpdateNPCShortestPath(player.trans.pos);
 	}
