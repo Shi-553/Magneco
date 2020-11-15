@@ -3,6 +3,7 @@
 // 
 //							Author:Kanna Noda
 //----------------------------------------------------------------
+#pragma once
 
 #include <d3dx9.h>
 
@@ -21,7 +22,7 @@ typedef struct INTVECTOR2 {
 		this->y = (int)pos.y;
 	}
 
-	D3DXVECTOR2 ToD3DXVECTOR2() {
+	const D3DXVECTOR2 ToD3DXVECTOR2()const {
 		return D3DXVECTOR2(x, y);
 	}
 
