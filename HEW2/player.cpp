@@ -17,7 +17,8 @@ static Player player;
 void InitPlayer(){
 	textureId = ReserveTextureLoadFile("texture/player.png");
 
-	player.trans.Init(3, 3);
+	player.position = D3DXVECTOR2(3, 3);
+	player.lastPosition = player.position;
 	player.flyingObjectList.clear();
 }
 
@@ -27,10 +28,13 @@ void UninitPlayer(){
 
 void UpdatePlayer(){
 
+	player.lastPosition = player.position;
 }
 
 void DrawPlayer(){
-	DrawGameSprite(textureId, player.trans.GetIntPos().ToD3DXVECTOR2(), 30);
+	D3DXVECTOR2 intposition;
+	intposition = D3DXVECTOR2((int)player.position.x, (int)player.position.y);
+	DrawGameSprite(textureId,intposition,30);
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
@@ -48,9 +52,9 @@ void RotateRightPlayer(){
 }
 
 void MoveUpPlayer(){
-	player.trans.pos.y += -playerSpeed;
-	player.trans.UpdateY();
+	player.lastPosition = player.position;
 
+	player.position.y += -playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
 		itr->pos.y += -playerSpeed;
@@ -58,9 +62,9 @@ void MoveUpPlayer(){
 }
 
 void MoveDownPlayer(){
-	player.trans.pos.y += playerSpeed;
-	player.trans.UpdateY();
+	player.lastPosition = player.position;
 
+	player.position.y += playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
 		itr->pos.y += playerSpeed;
@@ -68,9 +72,9 @@ void MoveDownPlayer(){
 }
 
 void MoveLeftPlayer(){
-	player.trans.pos.x += -playerSpeed;
-	player.trans.UpdateX();
+	player.lastPosition = player.position;
 
+	player.position.x += -playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
 		itr->pos.x += -playerSpeed;
@@ -78,9 +82,9 @@ void MoveLeftPlayer(){
 }
 
 void MoveRightPlayer(){
-	player.trans.pos.x += playerSpeed;
-	player.trans.UpdateX();
+	player.lastPosition = player.position;
 
+	player.position.x += playerSpeed;
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
 		itr->pos.x += playerSpeed;
@@ -130,8 +134,8 @@ return &player;
 }
 
 void PutBeacon() {
-	auto mapType = GetMapType(player.trans.pos);
-	if (mapType == MAP_BLOCK || mapType == MAP_GOAL) {
-		UpdateNPCShortestPath(player.trans.pos);
+	auto mapType = GetMapType(player.position);
+	if (mapType==MAP_BLOCK|| mapType==MAP_GOAL) {
+		UpdateNPCShortestPath(player.position);
 	}
 }
