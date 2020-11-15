@@ -9,7 +9,7 @@ int gameClearTexture;
 
 void InitGameClear()
 {
-	gameClearTexture = ReserveTextureLoadFile("texture/”wŒi‚P.png");
+	gameClearTexture = ReserveTextureLoadFile("texture/result.png");
 	LoadTexture();
 }
 
@@ -20,7 +20,7 @@ void UninitGameClear()
 
 void DrawGameClear()
 {
-	DrawSprite(gameClearTexture, { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT }, { 0,0 }, { SCREEN_WIDTH,SCREEN_HEIGHT });
+	DrawSprite(gameClearTexture, { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT }, { 0,0 }, { 1920,1080 });
 
 }
 

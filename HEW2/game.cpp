@@ -29,7 +29,7 @@ void InitGame()
 	InitJudge();
 	InitFlyingObject();
 	InitFlyingSponer();
-	Grid_Initialize(GAME_SPRITE_WHIDTH, MAPCHIP_WIDTH, D3DCOLOR_RGBA(0, 197, 0, 255));
+	Grid_Initialize(GAME_SPRITE_WHIDTH, MAPCHIP_WIDTH, D3DCOLOR_RGBA(0, 0, 0, 255));
 
 	LoadTexture();
 	
