@@ -57,7 +57,8 @@ void MoveUpPlayer(){
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
-		itr->pos.y += -playerSpeed;
+		itr->trans.pos.y += -playerSpeed;
+		itr->trans.UpdatePos();
 	}
 }
 
@@ -69,7 +70,8 @@ void MoveDownPlayer(){
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
-		itr->pos.y += playerSpeed;
+		itr->trans.pos.y += playerSpeed;
+		itr->trans.UpdatePos();
 	}
 }
 
@@ -81,7 +83,8 @@ void MoveLeftPlayer(){
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
-		itr->pos.x += -playerSpeed;
+		itr->trans.pos.x += -playerSpeed;
+		itr->trans.UpdatePos();
 	}
 }
 
@@ -93,7 +96,8 @@ void MoveRightPlayer(){
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
-		itr->pos.x += playerSpeed;
+		itr->trans.pos.x += playerSpeed;
+		itr->trans.UpdatePos();
 	}
 }
 
@@ -103,7 +107,7 @@ void BlockDecision() {
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
 		MapType type;
-		type = GetMapType(itr->pos);
+		type = GetMapType(itr->trans.pos);
 		if (type != MAP_BLOCK_NONE){
 			canBlockPut = false;
 			break;
@@ -117,7 +121,7 @@ void BlockDecision() {
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
-		if (MapFourDirectionsJudgment(itr->pos)) {
+		if (MapFourDirectionsJudgment(itr->trans.pos)) {
 			isFourDirections = true;
 			break;
 		}
