@@ -9,7 +9,6 @@ typedef struct Button {
 	int textureId=TEXTURE_INVALID_ID;
 	void (*pressedCallback)()=NULL;
 
-	D3DCOLOR frameColor=D3DCOLOR_RGBA(255,255,255,255);
 };
 
 void InitSelectButton();
