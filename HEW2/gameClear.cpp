@@ -21,21 +21,19 @@ void InitGameClear()
 {
 	InitSelectButton();
 
-	auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - GAME_CLEAR_BUTTON_WIDTH / 2, SCREEN_HEIGHT / 2 - GAME_CLEAR_BUTTON_HEIGHT / 2);
+	auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - GAME_CLEAR_BUTTON_WIDTH / 2, (SCREEN_HEIGHT / 2 - GAME_CLEAR_BUTTON_HEIGHT / 2) + 40);
 
 	startReturnButton.pos = buttonCenter;
 	startReturnButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
-	startReturnButton.frameColor = D3DCOLOR_RGBA(0, 0, 0, 255);
 	startReturnButton.textureId = ReserveTextureLoadFile("texture/quit.png");
 
 	startReturnButton.pressedCallback = []() {
 		GoNextScene(GameStartScene);
 	};
 
-	nextStageButton.pos = buttonCenter + D3DXVECTOR2(0, 200);
+	nextStageButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 32);
 	nextStageButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
-	nextStageButton.frameColor = D3DCOLOR_RGBA(255, 0, 0, 255);
-	nextStageButton.textureId = ReserveTextureLoadFile("texture/next.png");
+	nextStageButton.textureId = ReserveTextureLoadFile("texture/retry.png");
 
 	nextStageButton.pressedCallback = []() {
 		GoNextScene(GameScene);
@@ -63,7 +61,7 @@ void UninitGameClear()
 void DrawGameClear()
 {
 	DrawSprite(backgroundTexture, { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT }, { 0,0 }, { SCREEN_WIDTH,SCREEN_HEIGHT });
-	DrawSprite(gameClearTexture, { 200,0 }, 10, { GAME_CLEAR_LOGO_WIDTH,GAME_CLEAR_LOGO_HEIGHT }, { 0,0 }, { GAME_CLEAR_LOGO_WIDTH,GAME_CLEAR_LOGO_HEIGHT });
+	DrawSprite(gameClearTexture, { 200,64 }, 10, { GAME_CLEAR_LOGO_WIDTH,GAME_CLEAR_LOGO_HEIGHT }, { 0,0 }, { GAME_CLEAR_LOGO_WIDTH,GAME_CLEAR_LOGO_HEIGHT });
 	DrawSelectButton();
 }
 

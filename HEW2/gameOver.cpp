@@ -7,11 +7,11 @@
 #include "InputLogger.h"
 #include "selectButton.h"
 
-#define GAME_OVER_BUTTON_WIDTH 256
-#define GAME_OVER_BUTTON_HEIGHT 128
+#define GAME_OVER_BUTTON_WIDTH 330
+#define GAME_OVER_BUTTON_HEIGHT 90
 
-#define GAME_OVER_LOGO_WIDTH 640
-#define GAME_OVER_LOGO_HEIGHT 240
+#define GAME_OVER_LOGO_WIDTH 896
+#define GAME_OVER_LOGO_HEIGHT 224
 
 static int backgroundTexture;
 static int gameOverTextTexture;
@@ -21,21 +21,19 @@ static Button restartButton, backtitleButton;
 void InitGameOver() {
 	InitSelectButton();
 
-	auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - GAME_OVER_BUTTON_WIDTH / 2, SCREEN_HEIGHT / 2 - GAME_OVER_BUTTON_HEIGHT / 2);
+	auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - GAME_OVER_BUTTON_WIDTH / 2, (SCREEN_HEIGHT / 2 - GAME_OVER_BUTTON_HEIGHT / 2) + 40);
 
 	restartButton.pos = buttonCenter;
 	restartButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
-	restartButton.frameColor = D3DCOLOR_RGBA(0, 0, 0, 255);
-	restartButton.textureId = ReserveTextureLoadFile("texture/restartButton.png");
+	restartButton.textureId = ReserveTextureLoadFile("texture/retry.png");
 
 	restartButton.pressedCallback = []() {
 		GoNextScene(GameScene);
 	};
 
-	backtitleButton.pos = buttonCenter + D3DXVECTOR2(0, 200);
+	backtitleButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_OVER_BUTTON_HEIGHT + 32);
 	backtitleButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
-	backtitleButton.frameColor = D3DCOLOR_RGBA(255, 0, 0, 255);
-	backtitleButton.textureId = ReserveTextureLoadFile("texture/backtitleButton.png");
+	backtitleButton.textureId = ReserveTextureLoadFile("texture/quit.png");
 
 	backtitleButton.pressedCallback = []() {
 		GoNextScene(GameStartScene);
@@ -44,9 +42,9 @@ void InitGameOver() {
 	AddButton(&restartButton);
 	AddButton(&backtitleButton);
 
-	backgroundTexture = ReserveTextureLoadFile("texture/îwåiÇP.png");
+	backgroundTexture = ReserveTextureLoadFile("texture/îwåi2.jpg");
 
-	gameOverTextTexture = ReserveTextureLoadFile("texture/gameover_640Å~240.png");
+	gameOverTextTexture = ReserveTextureLoadFile("texture/gameover.png");
 
 	LoadTexture();
 }
@@ -62,7 +60,7 @@ void UninitGameOver() {
 }
 void DrawGameOver() {
 	DrawSprite(backgroundTexture, { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT }, { 0,0 }, { SCREEN_WIDTH,SCREEN_HEIGHT });
-	DrawSprite(gameOverTextTexture, { 325,0 }, 10, { GAME_OVER_LOGO_WIDTH,GAME_OVER_LOGO_HEIGHT }, { 0,0 }, { GAME_OVER_LOGO_WIDTH,GAME_OVER_LOGO_HEIGHT });
+	DrawSprite(gameOverTextTexture, { 200,64 }, 10, { GAME_OVER_LOGO_WIDTH,GAME_OVER_LOGO_HEIGHT }, { 0,0 }, { GAME_OVER_LOGO_WIDTH,GAME_OVER_LOGO_HEIGHT });
 	DrawSelectButton();
 }
 

@@ -34,7 +34,7 @@ void InitMap(void)
 	textureIds[MAP_BLOCK] = ReserveTextureLoadFile("texture/block02.png");
 	textureIds[MAP_WALL] = ReserveTextureLoadFile("texture/meteorite_1.png");
 	textureIds[MAP_ROCK] = ReserveTextureLoadFile("texture/brokenblock01.png");
-	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/magnekko_goalflag01.png");
+	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/wormhole01.png");
 
 	for (int i = 0; i < MAPCHIP_HEIGHT; i++) {
 		for (int j = 0; j < MAPCHIP_WIDTH; j++) {
