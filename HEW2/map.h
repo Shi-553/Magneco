@@ -3,6 +3,7 @@
 
 #include "myd3d.h"
 #include "flyingObject.h"
+#include "trans.h"
 
 enum MapType
 {
@@ -28,9 +29,9 @@ void DrawMap(void);
 void MapChange(FlyingObject flyingobject);
 
 // 4方向にブロックがあるかの判定
-bool MapFourDirectionsJudgment(D3DXVECTOR2 pos);
+bool MapFourDirectionsJudgment(INTVECTOR2 pos);
 
 // 位置を指定してマップタイプを返す
-MapType GetMapType(D3DXVECTOR2 pos);
+MapType GetMapType(INTVECTOR2 pos);
 
 #endif // !MAP_H

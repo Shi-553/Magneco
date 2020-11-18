@@ -8,6 +8,9 @@ typedef struct Button {
 	D3DXVECTOR2 size;
 	int textureId=TEXTURE_INVALID_ID;
 	void (*pressedCallback)()=NULL;
+	void (*triggeredCallback)()=NULL;
+	void (*releasedCallback)()=NULL;
+
 };
 
 void InitSelectButton();
@@ -20,4 +23,6 @@ void AddButton(Button* button);
 void ForwardSelectButton();
 
 void BackSelectButton();
-void EnterSelectButton();
+void TriggerSelectButton();
+void PressSelectButton();
+void ReleaseSelectButton();

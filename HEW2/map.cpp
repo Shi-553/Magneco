@@ -78,7 +78,7 @@ void MapChange(FlyingObject flyingobject)
 	}
 }
 
-bool MapFourDirectionsJudgment(D3DXVECTOR2 pos)
+bool MapFourDirectionsJudgment(INTVECTOR2 pos)
 {
 	int x = pos.x;
 	int y = pos.y;
@@ -99,7 +99,7 @@ bool MapFourDirectionsJudgment(D3DXVECTOR2 pos)
 	return false;
 }
 
-MapType GetMapType(D3DXVECTOR2 pos)
+MapType GetMapType(INTVECTOR2 pos)
 {
 	int x = pos.x;
 	int y = pos.y;

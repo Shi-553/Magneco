@@ -27,7 +27,7 @@ void InitGameOver() {
 	restartButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
 	restartButton.textureId = ReserveTextureLoadFile("texture/retry.png");
 
-	restartButton.pressedCallback = []() {
+	restartButton.releasedCallback = []() {
 		GoNextScene(GameScene);
 	};
 
@@ -35,7 +35,7 @@ void InitGameOver() {
 	backtitleButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
 	backtitleButton.textureId = ReserveTextureLoadFile("texture/quit.png");
 
-	backtitleButton.pressedCallback = []() {
+	backtitleButton.releasedCallback = []() {
 		GoNextScene(GameStartScene);
 	};
 
@@ -65,8 +65,8 @@ void DrawGameOver() {
 }
 
 void UpdateGameOver() {
-	if (TriggerInputLogger(MYVK_ENTER)) {
-		EnterSelectButton();
+	if (ReleaseInputLogger(MYVK_ENTER)) {
+		ReleaseSelectButton();
 	}
 	if (TriggerInputLogger(MYVK_UP)) {
 		BackSelectButton();

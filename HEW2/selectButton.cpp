@@ -56,6 +56,14 @@ void BackSelectButton() {
 	selectedIndex--;
 }
 
-void EnterSelectButton() {
+void TriggerSelectButton() {
+	buttons[selectedIndex]->triggeredCallback();
+}
+
+void ReleaseSelectButton() {
+	buttons[selectedIndex]->releasedCallback();
+}
+
+void PressSelectButton() {
 	buttons[selectedIndex]->pressedCallback();
 }
