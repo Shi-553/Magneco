@@ -27,7 +27,7 @@ void InitGameClear()
 	startReturnButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
 	startReturnButton.textureId = ReserveTextureLoadFile("texture/quit.png");
 
-	startReturnButton.pressedCallback = []() {
+	startReturnButton.releasedCallback = []() {
 		GoNextScene(GameStartScene);
 	};
 
@@ -35,7 +35,7 @@ void InitGameClear()
 	nextStageButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
 	nextStageButton.textureId = ReserveTextureLoadFile("texture/retry.png");
 
-	nextStageButton.pressedCallback = []() {
+	nextStageButton.releasedCallback = []() {
 		GoNextScene(GameScene);
 	};
 
@@ -68,7 +68,7 @@ void DrawGameClear()
 void UpdateGameClear()
 {
 	if (ReleaseInputLogger(MYVK_ENTER)) {
-		EnterSelectButton();
+		ReleaseSelectButton();
 	}
 	if (TriggerInputLogger(MYVK_UP)) {
 		BackSelectButton();

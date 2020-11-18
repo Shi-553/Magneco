@@ -31,7 +31,7 @@ void InitGameStart() {
 	startButton.size = D3DXVECTOR2(GAME_START_BUTTON_WIDTH, GAME_START_BUTTON_HEIGHT);
 	startButton.textureId = ReserveTextureLoadFile("texture/start.png");
 
-	startButton.pressedCallback = []() {
+	startButton.releasedCallback = []() {
 		GoNextScene(GameScene);
 	};
 
@@ -39,7 +39,7 @@ void InitGameStart() {
 	endButton.size = D3DXVECTOR2(GAME_START_BUTTON_WIDTH, GAME_START_BUTTON_HEIGHT);
 	endButton.textureId = ReserveTextureLoadFile("texture/end.png");
 
-	endButton.pressedCallback = []() {
+	endButton.releasedCallback = []() {
 		PostQuitMessage(0);
 	};
 
@@ -74,7 +74,7 @@ void DrawGameStart() {
 
 void UpdateGameStart() {
 	if (TriggerInputLogger(MYVK_ENTER)) {
-		EnterSelectButton();
+		ReleaseSelectButton();
 	}
 	if (TriggerInputLogger(MYVK_UP)) {
 		BackSelectButton();
