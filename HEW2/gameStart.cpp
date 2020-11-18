@@ -28,7 +28,7 @@ void InitGameStart() {
 	startButton.frameColor = D3DCOLOR_RGBA(0,0,0,255);
 	startButton.textureId = ReserveTextureLoadFile("texture/startButton.png");
 
-	startButton.releasedCallback = []() {
+	startButton.pressedCallback = []() {
 		GoNextScene(GameScene);
 	};
 
@@ -37,7 +37,7 @@ void InitGameStart() {
 	endButton.frameColor = D3DCOLOR_RGBA(255,0,0, 255);
 	endButton.textureId = ReserveTextureLoadFile("texture/endButton.png");
 
-	endButton.releasedCallback = []() {
+	endButton.pressedCallback = []() {
 		PostQuitMessage(0);
 	};
 
@@ -67,8 +67,8 @@ void DrawGameStart() {
 }
 
 void UpdateGameStart() {
-	if (ReleaseInputLogger(MYVK_ENTER)) {
-		ReleaseSelectButton();
+	if (TriggerInputLogger(MYVK_ENTER)) {
+		EnterSelectButton();
 	}
 	if (TriggerInputLogger(MYVK_UP)) {
 		BackSelectButton();

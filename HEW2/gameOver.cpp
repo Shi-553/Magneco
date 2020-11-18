@@ -28,7 +28,7 @@ void InitGameOver() {
 	restartButton.frameColor = D3DCOLOR_RGBA(0, 0, 0, 255);
 	restartButton.textureId = ReserveTextureLoadFile("texture/restartButton.png");
 
-	restartButton.releasedCallback = []() {
+	restartButton.pressedCallback = []() {
 		GoNextScene(GameScene);
 	};
 
@@ -37,7 +37,7 @@ void InitGameOver() {
 	backtitleButton.frameColor = D3DCOLOR_RGBA(255, 0, 0, 255);
 	backtitleButton.textureId = ReserveTextureLoadFile("texture/backtitleButton.png");
 
-	backtitleButton.releasedCallback = []() {
+	backtitleButton.pressedCallback = []() {
 		GoNextScene(GameStartScene);
 	};
 
@@ -67,8 +67,8 @@ void DrawGameOver() {
 }
 
 void UpdateGameOver() {
-	if (ReleaseInputLogger(MYVK_ENTER)) {
-		ReleaseSelectButton();
+	if (TriggerInputLogger(MYVK_ENTER)) {
+		EnterSelectButton();
 	}
 	if (TriggerInputLogger(MYVK_UP)) {
 		BackSelectButton();
