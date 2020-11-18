@@ -26,6 +26,7 @@
 #include "mouse.h"
 #include "InputLogger.h"
 #include "sceneManager.h"
+#include "time.h"
 
 
 #define CLASS_NAME "GameWindow"
@@ -212,6 +213,8 @@ bool Init(HWND hWnd) {
 	Keyboard_Initialize();
 	Mouse_Initialize(hWnd);
 
+	InitTime(SystemTimer_GetTime());
+
 	InitInputLogger();
 
 	if (!InitMyD3D(hWnd)) {
@@ -239,6 +242,8 @@ bool Init(HWND hWnd) {
 void Update(void) {
 	UpdateInputLogger();
 	UpdateSceneManager();
+
+	UpdateTime(SystemTimer_GetTime());
 
 	double time = SystemTimer_GetTime();
 
@@ -300,6 +305,8 @@ void Uninit(void) {
 	UninitTexture();
 
 	UninitMyD3D();
+
+	UninitTime();
 
 	UninitInputLogger();
 }
