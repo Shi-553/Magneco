@@ -11,7 +11,6 @@ typedef struct Button {
 	void (*triggeredCallback)()=NULL;
 	void (*releasedCallback)()=NULL;
 
-	D3DCOLOR frameColor=D3DCOLOR_RGBA(255,255,255,255);
 };
 
 void InitSelectButton();
