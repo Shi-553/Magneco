@@ -2,8 +2,8 @@
 #include "sprite.h"
 #include <vector>
 
-#define FRAME_WIDTH 0
-#define FRAME_HEIGHT 0
+#define FRAME_WIDTH 20
+#define FRAME_HEIGHT 20
 
 static std::vector<Button*> buttons;
 static int selectedIndex;
@@ -12,7 +12,7 @@ static int selectFrameTextureId = TEXTURE_INVALID_ID;
 
 void InitSelectButton() {
 	selectedIndex = 0;
-	selectFrameTextureId = ReserveTextureLoadFile("texture/select.png");
+	selectFrameTextureId = ReserveTextureLoadFile("texture/selectFrame.png");
 	buttons.clear();
 }
 
@@ -23,8 +23,10 @@ void DrawSelectButton() {
 	}
 	//ƒtƒŒ[ƒ€‚Ì•`‰æ
 	auto selected = buttons[selectedIndex];
+	SetSpriteColor(selected->frameColor);
 	DrawSprite(selectFrameTextureId, selected->pos-D3DXVECTOR2(FRAME_WIDTH/2,FRAME_HEIGHT/2), selected->z, selected->size + D3DXVECTOR2(FRAME_WIDTH, FRAME_HEIGHT));
 
+	SetSpriteColor(D3DCOLOR_RGBA(255,255,255,255));
 
 	//ƒ{ƒ^ƒ“‚Ì•`‰æ
 	for (auto itr = buttons.begin(); itr != buttons.end(); itr++) {
