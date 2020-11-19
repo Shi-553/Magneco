@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "InputLogger.h"
 #include "player.h"
+#include "sceneManager.h"
 
 
 void InitInput() {
@@ -41,6 +42,15 @@ void UpdateInput() {
 		PutBeacon();
 	}
 
+#if _DEBUG
+	if (TriggerInputLogger(MYVK_GAME_CLEAR)) {
+		GoNextScene(GameClearScene);
+	}
+
+	if (TriggerInputLogger(MYVK_GAME_OVER)) {
+		GoNextScene(GameOverScene);
+	}
+#endif
 }
 
 void DrawInput() {
