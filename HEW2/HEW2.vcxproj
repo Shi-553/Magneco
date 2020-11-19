@@ -180,7 +180,6 @@
     <ClCompile Include="system_timer.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="gameStart.cpp" />
-    <ClCompile Include="time.cpp" />
     <ClCompile Include="trans.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -209,7 +208,6 @@
     <ClInclude Include="system_timer.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="gameStart.h" />
-    <ClInclude Include="time.h" />
     <ClInclude Include="trans.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

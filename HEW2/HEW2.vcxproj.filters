@@ -76,9 +76,6 @@
     <ClCompile Include="selectButton.cpp">
       <Filter>cpp\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="time.cpp">
-      <Filter>cpp\others</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -158,9 +155,6 @@
     </ClInclude>
     <ClInclude Include="selectButton.h">
       <Filter>ヘッダー\scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="time.h">
-      <Filter>ヘッダー\others</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
