@@ -15,32 +15,48 @@
 static int backgroundTexture;
 static int gameClearTexture;
 
-static Button startReturnButton, nextStageButton;
+static int quitTexture;
+static int quitPressedTexture;
+static int retryTexture;
+static int retryPressedTexture;
+
+static Button returnTitleButton, retryButton;
 
 void InitGameClear()
 {
 	InitSelectButton();
+	quitTexture= ReserveTextureLoadFile("texture/quit.png");
+	quitPressedTexture= ReserveTextureLoadFile("texture/quit_pressed.png");
+	retryTexture= ReserveTextureLoadFile("texture/retry.png");
+	retryPressedTexture= ReserveTextureLoadFile("texture/retry_pressed.png");
 
 	auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - GAME_CLEAR_BUTTON_WIDTH / 2, (SCREEN_HEIGHT / 2 - GAME_CLEAR_BUTTON_HEIGHT / 2) + 40);
 
-	startReturnButton.pos = buttonCenter;
-	startReturnButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
-	startReturnButton.textureId = ReserveTextureLoadFile("texture/quit.png");
+	returnTitleButton.pos = buttonCenter;
+	returnTitleButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
+	returnTitleButton.textureId = quitTexture;
 
-	startReturnButton.releasedCallback = []() {
+	returnTitleButton.triggeredCallback = []() {
+		returnTitleButton.textureId = quitPressedTexture;
+	};
+	returnTitleButton.releasedCallback = []() {
 		GoNextScene(GameStartScene);
 	};
 
-	nextStageButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 32);
-	nextStageButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
-	nextStageButton.textureId = ReserveTextureLoadFile("texture/retry.png");
+	retryButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 32);
+	retryButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
+	retryButton.textureId = retryTexture;
 
-	nextStageButton.releasedCallback = []() {
+	retryButton.triggeredCallback = []() {
+		retryButton.textureId = retryPressedTexture;
+	};
+
+	retryButton.releasedCallback = []() {
 		GoNextScene(GameScene);
 	};
 
-	AddButton(&startReturnButton);
-	AddButton(&nextStageButton);
+	AddButton(&returnTitleButton);
+	AddButton(&retryButton);
 
 	backgroundTexture = ReserveTextureLoadFile("texture/”wŒi‚P.png");
 	gameClearTexture = ReserveTextureLoadFile("texture/stageclear.png");
@@ -54,8 +70,10 @@ void UninitGameClear()
 
 	ReleaseTexture(backgroundTexture);
 	ReleaseTexture(gameClearTexture);
-	ReleaseTexture(startReturnButton.textureId);
-	ReleaseTexture(nextStageButton.textureId);
+	ReleaseTexture(quitTexture);
+	ReleaseTexture(quitPressedTexture);
+	ReleaseTexture(retryTexture);
+	ReleaseTexture(retryPressedTexture);
 }
 
 void DrawGameClear()
@@ -65,16 +83,27 @@ void DrawGameClear()
 	DrawSelectButton();
 }
 
+static bool isChange = false;
 void UpdateGameClear()
 {
-	if (ReleaseInputLogger(MYVK_ENTER)) {
+	if (TriggerInputLogger(MYVK_ENTER)) {
+		TriggerSelectButton();
+		isChange = false;
+	}
+	if (!isChange&&ReleaseInputLogger(MYVK_ENTER)) {
 		ReleaseSelectButton();
 	}
 	if (TriggerInputLogger(MYVK_UP)) {
 		BackSelectButton();
+		returnTitleButton.textureId = quitTexture;
+		retryButton.textureId = retryTexture;
+		isChange = true;
 	}
 	if (TriggerInputLogger(MYVK_DOWN)) {
 		ForwardSelectButton();
+		returnTitleButton.textureId = quitTexture;
+		retryButton.textureId = retryTexture;
+		isChange = true;
 	}
 }
 
