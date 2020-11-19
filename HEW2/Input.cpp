@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "InputLogger.h"
 #include "player.h"
+#include "sceneManager.h"
 
 
 void InitInput() {
