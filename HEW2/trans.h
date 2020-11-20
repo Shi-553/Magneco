@@ -29,6 +29,10 @@ typedef struct INTVECTOR2 {
 	bool operator==(const INTVECTOR2& b)const {
 		return x == b.x && y == b.y;
 	}
+
+	bool operator!=(const INTVECTOR2& b)const {
+		return x != b.x || y != b.y;
+	}
 	INTVECTOR2& operator = (const INTVECTOR2& b) {
 		x = b.x;
 		y = b.y;
