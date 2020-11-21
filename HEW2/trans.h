@@ -22,6 +22,42 @@ struct INTVECTOR2 {
 		this->y = (int)floorf(pos.y);
 	}
 
+	static const INTVECTOR2 GetNone() {
+		return INTVECTOR2(0, 0);
+	}
+
+	static const INTVECTOR2 GetUp(){
+		return INTVECTOR2(0, -1);
+	}
+
+	static const INTVECTOR2 GetDown() {
+		return INTVECTOR2(0, 1);
+	}
+
+	static const INTVECTOR2 GetRight() {
+		return INTVECTOR2(1, 0);
+	}
+
+	static const INTVECTOR2 GetLeft() {
+		return INTVECTOR2(-1, 0);
+	}
+
+	static const INTVECTOR2 GetLowreRightCorner() {
+		return INTVECTOR2(1, 1);
+	}
+
+	static const INTVECTOR2 GetUpperRightCorner() {
+		return INTVECTOR2(1, -1);
+	}
+
+	static const INTVECTOR2 GetLowreLeftCorner() {
+		return INTVECTOR2(-1, 1);
+	}
+
+	static const INTVECTOR2 GetUpperLeftCorner() {
+		return INTVECTOR2(-1, -1);
+	}
+
 	const D3DXVECTOR2 ToD3DXVECTOR2()const {
 		return D3DXVECTOR2(x, y);
 	}

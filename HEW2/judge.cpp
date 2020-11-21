@@ -91,6 +91,7 @@ void JudgePlayerandFlyingObjectHit() {
 						itr->trans.pos += move;
 					}
 					itr->trans.UpdatePos();
+					intPos = itr->trans.GetIntPos();
 				}
 
 				itr->trans.Init(itr->trans.pos);
