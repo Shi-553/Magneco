@@ -21,16 +21,16 @@ void UninitInput(){
 void UpdateInput() {
 
 	// ÉvÉåÉCÉÑÅ[ÇÃà⁄ìÆ
-	if (TriggerInputLogger(MYVK_UP)) {
+	if (PressInputLogger(MYVK_UP)) {
 		MoveUpPlayer();
 	}
-	if (TriggerInputLogger(MYVK_DOWN)) {
+	if (PressInputLogger(MYVK_DOWN)) {
 		MoveDownPlayer();
 	}
-	if (TriggerInputLogger(MYVK_LEFT)) {
+	if (PressInputLogger(MYVK_LEFT)) {
 		MoveLeftPlayer();
 	}
-	if (TriggerInputLogger(MYVK_RIGHT)) {
+	if (PressInputLogger(MYVK_RIGHT)) {
 		MoveRightPlayer();
 	}
 

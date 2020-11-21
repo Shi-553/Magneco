@@ -5,10 +5,11 @@
 #include "trans.h"
 #pragma once
 
-typedef struct Player {
+struct Player {
 	TRANS trans;
 	std::list < FlyingObject > flyingObjectList;
-	bool isMove;
+	INTVECTOR2 dir;
+	float speed;
 };
 
 void InitPlayer();

@@ -18,8 +18,8 @@ struct INTVECTOR2 {
 		this->y = y;
 	}
 	INTVECTOR2(D3DXVECTOR2 pos) {
-		this->x = (int)pos.x;
-		this->y = (int)pos.y;
+		this->x = (int)floorf(pos.x);
+		this->y = (int)floorf(pos.y);
 	}
 
 	static const INTVECTOR2 GetNone() {
@@ -64,6 +64,10 @@ struct INTVECTOR2 {
 
 	bool operator==(const INTVECTOR2& b)const {
 		return x == b.x && y == b.y;
+	}
+
+	bool operator!=(const INTVECTOR2& b)const {
+		return x != b.x || y != b.y;
 	}
 	INTVECTOR2& operator = (const INTVECTOR2& b) {
 		x = b.x;
@@ -117,10 +121,10 @@ class TRANS {
 public:
 	D3DXVECTOR2 pos;
 
-	INTVECTOR2 GetIntPos() {
+	 INTVECTOR2& GetIntPos() {
 		return intPos;
 	}
-	INTVECTOR2 GetIntLastPos() {
+	 INTVECTOR2& GetIntLastPos() {
 		return intLastPos;
 	}
 
@@ -163,7 +167,7 @@ private:
 	INTVECTOR2 intLastPos;
 
 	void Init() {
-		intPos = { (int)pos.x,(int)pos.y };
+		intPos =INTVECTOR2(pos);
 		intLastPos = intPos;
 	}
 };

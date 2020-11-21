@@ -9,17 +9,19 @@
 #include "map.h"
 #include "gameSrite.h"
 #include "npc.h"
+#include "debugPrintf.h"
+#include "time.h"
 
-static float playerSpeed = 1.0f;
 static int textureId = TEXTURE_INVALID_ID;
 static Player player;
 
 void InitPlayer(){
 	textureId = ReserveTextureLoadFile("texture/player.png");
 
-	player.trans.Init(3, 3);
+	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();
-	player.isMove = false;
+	player.dir = {0,0};
+	player.speed = 0.1;
 }
 
 void UninitPlayer(){
@@ -27,12 +29,38 @@ void UninitPlayer(){
 }
 
 void UpdatePlayer(){
-	player.isMove = false;
+	D3DXVECTOR2 one = player.dir.ToD3DXVECTOR2();
+	D3DXVec2Normalize(&one, &one);
+	
+	auto last = player.trans.pos;
+	auto move = one * player.speed * 60 * GetDeltaTime();
+
+	player.trans.pos.x += move.x;
+	auto mapType = GetMapType(INTVECTOR2(player.trans.pos));
+	if (mapType == MAP_NONE || mapType == MAP_WALL) {
+		player.trans.pos.x = last.x;
+	}
+
+	player.trans.pos.y += move.y;
+	 mapType = GetMapType(INTVECTOR2(player.trans.pos));
+	if (mapType == MAP_NONE || mapType == MAP_WALL) {
+		player.trans.pos.y = last.y;
+	}
+
+	player.trans.UpdatePos();
+
+	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+		itr != player.flyingObjectList.end(); itr++) {
+		itr->trans.pos +=  player.trans.pos-last;
+		itr->trans.UpdatePos();
+	}
+
+	player.dir = { 0,0 };
 
 }
 
 void DrawPlayer(){
-	DrawGameSprite(textureId, player.trans.GetIntPos().ToD3DXVECTOR2(), 30);
+	DrawGameSprite(textureId, player.trans.pos-D3DXVECTOR2(0.5,0.5), 30);
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
@@ -50,55 +78,19 @@ void RotateRightPlayer(){
 }
 
 void MoveUpPlayer(){
-	player.isMove = true;
-
-	player.trans.pos.y += -playerSpeed;
-	player.trans.UpdatePos();
-
-	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
-		itr != player.flyingObjectList.end(); itr++) {
-		itr->trans.pos.y += -playerSpeed;
-		itr->trans.UpdatePos();
-	}
+	player.dir.y--;
 }
 
 void MoveDownPlayer(){
-	player.isMove = true;
-
-	player.trans.pos.y += playerSpeed;
-	player.trans.UpdatePos();
-
-	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
-		itr != player.flyingObjectList.end(); itr++) {
-		itr->trans.pos.y += playerSpeed;
-		itr->trans.UpdatePos();
-	}
+	player.dir.y++;
 }
 
 void MoveLeftPlayer(){
-	player.isMove = true;
-
-	player.trans.pos.x += -playerSpeed;
-	player.trans.UpdatePos();
-
-	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
-		itr != player.flyingObjectList.end(); itr++) {
-		itr->trans.pos.x += -playerSpeed;
-		itr->trans.UpdatePos();
-	}
+	player.dir.x--;
 }
 
 void MoveRightPlayer(){
-	player.isMove = true;
-
-	player.trans.pos.x += playerSpeed;
-	player.trans.UpdatePos();
-
-	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
-		itr != player.flyingObjectList.end(); itr++) {
-		itr->trans.pos.x += playerSpeed;
-		itr->trans.UpdatePos();
-	}
+	player.dir.x++;
 }
 
 void BlockDecision() {
