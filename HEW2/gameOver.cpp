@@ -16,31 +16,47 @@
 static int backgroundTexture;
 static int gameOverTextTexture;
 
-static Button restartButton, backtitleButton;
+static int quitTexture;
+static int quitPressedTexture;
+static int retryTexture;
+static int retryPressedTexture;
+
+static Button retryButton, returnTitleButton;
 
 void InitGameOver() {
 	InitSelectButton();
+	quitTexture = ReserveTextureLoadFile("texture/quit.png");
+	quitPressedTexture = ReserveTextureLoadFile("texture/quit_pressed.png");
+	retryTexture = ReserveTextureLoadFile("texture/retry.png");
+	retryPressedTexture = ReserveTextureLoadFile("texture/retry_pressed.png");
+
 
 	auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - GAME_OVER_BUTTON_WIDTH / 2, (SCREEN_HEIGHT / 2 - GAME_OVER_BUTTON_HEIGHT / 2) + 40);
 
-	restartButton.pos = buttonCenter;
-	restartButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
-	restartButton.textureId = ReserveTextureLoadFile("texture/retry.png");
+	retryButton.pos = buttonCenter;
+	retryButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
+	retryButton.textureId = retryTexture;
 
-	restartButton.releasedCallback = []() {
+	retryButton.triggeredCallback = []() {
+		retryButton.textureId = retryPressedTexture;
+	};
+	retryButton.releasedCallback = []() {
 		GoNextScene(GameScene);
 	};
 
-	backtitleButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_OVER_BUTTON_HEIGHT + 32);
-	backtitleButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
-	backtitleButton.textureId = ReserveTextureLoadFile("texture/quit.png");
+	returnTitleButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_OVER_BUTTON_HEIGHT + 32);
+	returnTitleButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
+	returnTitleButton.textureId = quitTexture;
 
-	backtitleButton.releasedCallback = []() {
+	returnTitleButton.triggeredCallback = []() {
+		returnTitleButton.textureId = quitPressedTexture;
+	};
+	returnTitleButton.releasedCallback = []() {
 		GoNextScene(GameStartScene);
 	};
 
-	AddButton(&restartButton);
-	AddButton(&backtitleButton);
+	AddButton(&retryButton);
+	AddButton(&returnTitleButton);
 
 	backgroundTexture = ReserveTextureLoadFile("texture/îwåi2.jpg");
 
@@ -54,8 +70,8 @@ void UninitGameOver() {
 
 	ReleaseTexture(backgroundTexture);
 	ReleaseTexture(gameOverTextTexture);
-	ReleaseTexture(restartButton.textureId);
-	ReleaseTexture(backtitleButton.textureId);
+	ReleaseTexture(retryButton.textureId);
+	ReleaseTexture(returnTitleButton.textureId);
 
 }
 void DrawGameOver() {
@@ -64,14 +80,26 @@ void DrawGameOver() {
 	DrawSelectButton();
 }
 
-void UpdateGameOver() {
+static bool isChange = false;
+void UpdateGameOver()
+{
 	if (TriggerInputLogger(MYVK_ENTER)) {
+		TriggerSelectButton();
+		isChange = false;
+	}
+	if (!isChange && ReleaseInputLogger(MYVK_ENTER)) {
 		ReleaseSelectButton();
 	}
 	if (TriggerInputLogger(MYVK_UP)) {
 		BackSelectButton();
+		returnTitleButton.textureId = quitTexture;
+		retryButton.textureId = retryTexture;
+		isChange = true;
 	}
 	if (TriggerInputLogger(MYVK_DOWN)) {
 		ForwardSelectButton();
+		returnTitleButton.textureId = quitTexture;
+		retryButton.textureId = retryTexture;
+		isChange = true;
 	}
 }

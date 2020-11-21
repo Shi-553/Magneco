@@ -8,7 +8,12 @@ typedef enum VirtualKey {
 	MYVK_RIGHT,
 	MYVK_ENTER,
 	MYVK_BEACON,
-	MYVK_SHOT2,
+
+#if _DEBUG
+	MYVK_GAME_CLEAR,
+	MYVK_GAME_OVER,
+#endif // _DEBUG
+
 	MYVK_MAX
 };
 
