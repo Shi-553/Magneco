@@ -28,16 +28,6 @@ static int map_textureIds;
 
 void InitMap(void)
 {
-	INTVECTOR2::GetUp();
-	INTVECTOR2::GetDown();
-	INTVECTOR2::GetRight();
-	INTVECTOR2::GetLeft();
-	INTVECTOR2::GetUpperRightCorner();
-	INTVECTOR2::GetLowreRightCorner();
-	INTVECTOR2::GetUpperLeftCorner();
-	INTVECTOR2::GetLowreLeftCorner();
-
-
 	map_textureIds = ReserveTextureLoadFile("texture/”wŒi‚P.png");
 
 	textureIds[MAP_NONE] = ReserveTextureLoadFile("texture/MAP_NONE.png");
