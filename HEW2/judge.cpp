@@ -33,15 +33,17 @@ void UpdateJudge() {
 void DrawJudge() {
 
 }
+static float colllisionSize = 0.3;
+
 bool CheckBlockBlock(D3DXVECTOR2& pos1, D3DXVECTOR2& pos2) {
 	return (
 		(
-			(pos1.x - 0.5f <= pos2.x - 0.5f && pos2.x - 0.5f <= pos1.x + 0.5f)||
-			(pos1.x - 0.5f <= pos2.x + 0.5f && pos2.x + 0.5f <= pos1.x + 0.5f)
+			(pos1.x - colllisionSize <= pos2.x - colllisionSize && pos2.x - colllisionSize <= pos1.x + colllisionSize)||
+			(pos1.x - colllisionSize <= pos2.x + colllisionSize && pos2.x + colllisionSize <= pos1.x + colllisionSize)
 		)&&
 		(
-			(pos1.y - 0.5f <= pos2.y - 0.5f && pos2.y - 0.5f <= pos1.y + 0.5f)||
-			(pos1.y - 0.5f <= pos2.y + 0.5f && pos2.y + 0.5f <= pos1.y + 0.5f)
+			(pos1.y - colllisionSize <= pos2.y - colllisionSize && pos2.y - colllisionSize <= pos1.y + colllisionSize)||
+			(pos1.y - colllisionSize <= pos2.y + colllisionSize && pos2.y + colllisionSize <= pos1.y + colllisionSize)
 		)
 		);
 }
@@ -73,7 +75,7 @@ void JudgePlayerandFlyingObjectHit() {
 				itr->trans.pos = player->trans.pos;
 				itr->trans.UpdatePos();
 
-				bool isMove = player->dir != INTVECTOR2(0, 0);
+				bool isMovePlayer = player->dir != INTVECTOR2(0, 0);
 				auto movePlayer = (player->dir).ToD3DXVECTOR2();
 
 				while (true) {
@@ -82,9 +84,8 @@ void JudgePlayerandFlyingObjectHit() {
 						break;
 					}
 
-					if (isMove) {
+					if (isMovePlayer) {
 						itr->trans.pos += movePlayer;
-						//itr->trans.pos += player->dir.ToD3DXVECTOR2();
 					}
 					else {
 						itr->trans.pos += move;
@@ -126,10 +127,12 @@ void JudgePlayerandFlyingObjectHit() {
 				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
 					auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
 
-					itr->trans.pos = player->trans.pos;
+					//itr->trans.pos = player->trans.pos;
+					itr->trans.pos = itr2->trans.pos;
+
 					itr->trans.UpdatePos();
 
-					bool isMove = player->dir != INTVECTOR2(0, 0);
+					bool isMovePlayer = player->dir != INTVECTOR2(0, 0);
 					auto movePlayer = player->dir.ToD3DXVECTOR2();
 
 					while (true) {
@@ -137,7 +140,7 @@ void JudgePlayerandFlyingObjectHit() {
 						if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, &intPos)) {
 							break;
 						}
-						if (isMove) {
+						if (isMovePlayer) {
 							itr->trans.pos += movePlayer;
 						}
 						else {
