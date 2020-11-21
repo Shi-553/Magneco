@@ -7,7 +7,7 @@
 
 #include <d3dx9.h>
 
-typedef struct INTVECTOR2 {
+struct INTVECTOR2 {
 	int x;
 	int y;
 
@@ -18,8 +18,8 @@ typedef struct INTVECTOR2 {
 		this->y = y;
 	}
 	INTVECTOR2(D3DXVECTOR2 pos) {
-		this->x = (int)pos.x;
-		this->y = (int)pos.y;
+		this->x = (int)floorf(pos.x);
+		this->y = (int)floorf(pos.y);
 	}
 
 	const D3DXVECTOR2 ToD3DXVECTOR2()const {
@@ -131,7 +131,7 @@ private:
 	INTVECTOR2 intLastPos;
 
 	void Init() {
-		intPos = { (int)pos.x,(int)pos.y };
+		intPos =INTVECTOR2(pos);
 		intLastPos = intPos;
 	}
 };
