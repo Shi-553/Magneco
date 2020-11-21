@@ -59,6 +59,8 @@ void JudgePlayerandFlyingObjectHit() {
 				itr->trans.pos = player->trans.pos;
 
 				bool isMove = player->dir != INTVECTOR2(0, 0);
+				auto movePlayer = (player->dir).ToD3DXVECTOR2();
+
 				auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
 				while (true) {
 					auto intPos = itr->trans.GetIntPos();
@@ -67,7 +69,7 @@ void JudgePlayerandFlyingObjectHit() {
 					}
 
 					if (isMove) {
-						itr->trans.pos += (player->trans.GetIntPos() - player->trans.GetIntLastPos()).ToD3DXVECTOR2();
+						itr->trans.pos += movePlayer;
 						//itr->trans.pos += player->dir.ToD3DXVECTOR2();
 					}
 					else {
@@ -111,6 +113,7 @@ void JudgePlayerandFlyingObjectHit() {
 					itr->trans.pos = player->trans.pos;
 
 					bool isMove = player->dir != INTVECTOR2(0, 0);
+					auto movePlayer = (player->dir).ToD3DXVECTOR2();
 
 					auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
 					while (true) {
@@ -119,7 +122,7 @@ void JudgePlayerandFlyingObjectHit() {
 							break;
 						}
 						if (isMove) {
-							itr->trans.pos += (player->trans.GetIntPos() - player->trans.GetIntLastPos()).ToD3DXVECTOR2();
+							itr->trans.pos += movePlayer;
 							//itr->trans.pos += player->dir.ToD3DXVECTOR2();
 						}
 						else {

@@ -10,6 +10,7 @@
 #include "gameSrite.h"
 #include "npc.h"
 #include "debugPrintf.h"
+#include "time.h"
 
 static int textureId = TEXTURE_INVALID_ID;
 static Player player;
@@ -31,13 +32,26 @@ void UpdatePlayer(){
 	D3DXVECTOR2 one = player.dir.ToD3DXVECTOR2();
 	D3DXVec2Normalize(&one, &one);
 	
-	player.trans.pos += one *player.speed;
+	auto last = player.trans.pos;
+	auto move = one * player.speed * 60 * GetDeltaTime();
+
+	player.trans.pos.x += move.x;
+	auto mapType = GetMapType(INTVECTOR2(player.trans.pos));
+	if (mapType == MAP_NONE || mapType == MAP_WALL) {
+		player.trans.pos.x = last.x;
+	}
+
+	player.trans.pos.y += move.y;
+	 mapType = GetMapType(INTVECTOR2(player.trans.pos));
+	if (mapType == MAP_NONE || mapType == MAP_WALL) {
+		player.trans.pos.y = last.y;
+	}
+
 	player.trans.UpdatePos();
-	DebugPrintf("{%d,%d}\n", player.trans.GetIntPos().x, player.trans.GetIntPos().y);
-	DebugPrintf("{%f,%f}\n",player.trans.pos.x,player.trans.pos.y);
+
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
-		itr->trans.pos +=  one *player.speed;
+		itr->trans.pos +=  player.trans.pos-last;
 		itr->trans.UpdatePos();
 	}
 
