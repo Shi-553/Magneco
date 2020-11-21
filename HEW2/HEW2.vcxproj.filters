@@ -79,6 +79,9 @@
     <ClCompile Include="time.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
+    <ClCompile Include="font.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -160,6 +163,9 @@
       <Filter>ヘッダー\scenes</Filter>
     </ClInclude>
     <ClInclude Include="time.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="font.h">
       <Filter>ヘッダー\others</Filter>
     </ClInclude>
   </ItemGroup>

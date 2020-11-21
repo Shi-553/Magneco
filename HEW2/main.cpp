@@ -27,6 +27,7 @@
 #include "InputLogger.h"
 #include "sceneManager.h"
 #include "time.h"
+#include "font.h"
 
 
 #define CLASS_NAME "GameWindow"
@@ -221,6 +222,7 @@ bool Init(HWND hWnd) {
 
 		MessageBox(NULL, "初期化エラー", "エラー", MB_OK);
 	}
+	InitFont();
 	InitTexture();
 
 	InitSceneManager(GameStartScene);
@@ -270,18 +272,18 @@ void Draw() {
 	//第四引数：(何色でクリアするか)
 	//第五引数：(Zバッファの初期化：手前 0～1 奥)
 	//第六引数：(ステンシルの初期化用)
-	d3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_RGBA(30, 30,80, 255), 1.0f, 0);
+	d3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_RGBA(30, 30, 80, 255), 1.0f, 0);
 
 	//描画命令を貯めていく
 	d3dDevice->BeginScene();
 
 	DrawSceneManager();
 
-
+	
 	DEBUG_FONT_STATE state;
 	state.z = -1000;
 	SetSpriteColor(D3DCOLOR_RGBA(255, 255, 255, 255));
-	DrawDebugFont(&state,"FPS= %.2f", fps);
+	DrawDebugFont(&state, "FPS= %.2f", fps);
 
 
 
@@ -302,11 +304,11 @@ void Uninit(void) {
 
 	UninitDebugFont();
 
+	UninitFont();
 	UninitTexture();
 
 	UninitMyD3D();
 
 	UninitTime();
-
 	UninitInputLogger();
 }
