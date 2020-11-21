@@ -5,15 +5,23 @@
 #include "flyingObject.h"
 #include "trans.h"
 
+
+
 enum MapType
 {
 	MAP_NONE,    // 無効な値
 	MAP_BLOCK_NONE,  // ブロックなし
 	MAP_BLOCK,       // ブロック
-	MAP_WALL,        // 壁
+	MAP_WALL,     // 壁
 	MAP_ROCK,        // 岩
-	MAP_GOAL,         // ゴール
+	MAP_GOAL,        // ゴール
 	MAP_MAX
+};
+
+struct Map
+{
+	MapType type;
+	INTVECTOR2 dir = INTVECTOR2::GetNone();
 };
 
 #define MAPCHIP_WIDTH  (10)
