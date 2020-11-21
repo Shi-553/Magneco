@@ -64,6 +64,7 @@ void JudgePlayerandFlyingObjectHit() {
 				while (player->trans.GetIntPos() == itr->trans.GetIntPos() || CheckCollision(&player->flyingObjectList, &intPos)) {
 					itr->trans.pos +=	(player->trans.GetIntPos() - player->trans.GetIntLastPos()).ToD3DXVECTOR2();
 					itr->trans.UpdatePos();
+					intPos = itr->trans.GetIntPos();
 				}
 
 				itr->trans.Init(itr->trans.pos);
@@ -109,6 +110,7 @@ void JudgePlayerandFlyingObjectHit() {
 					while (player->trans.GetIntPos() == itr->trans.GetIntPos() || CheckCollision(&player->flyingObjectList, &intPos)) {
 							itr->trans.pos += (player->trans.GetIntPos() - player->trans.GetIntLastPos()).ToD3DXVECTOR2();
 							itr->trans.UpdatePos();
+							intPos = itr->trans.GetIntPos();
 					}
 					itr->trans.Init(itr->trans.pos);
 
