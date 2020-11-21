@@ -85,10 +85,10 @@ class TRANS {
 public:
 	D3DXVECTOR2 pos;
 
-	INTVECTOR2 GetIntPos() {
+	 INTVECTOR2& GetIntPos() {
 		return intPos;
 	}
-	INTVECTOR2 GetIntLastPos() {
+	 INTVECTOR2& GetIntLastPos() {
 		return intLastPos;
 	}
 
