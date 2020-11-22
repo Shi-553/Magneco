@@ -22,7 +22,12 @@ bool FindShortestPath();
 void FourDir(std::queue<MapLabel>* mapQueue, MapLabel* label);
 
 
-static int NPCTextureId = TEXTURE_INVALID_ID;
+#define NPC_TEXTURE_WIDTH 64
+#define NPC_TEXTURE_HEIGHT 64
+
+static int npcTextureIdWait = TEXTURE_INVALID_ID;
+static int npcTextureIdMove = TEXTURE_INVALID_ID;
+static int npcTextureIdShadow = TEXTURE_INVALID_ID;
 static NPC npc;
 
 static int mapLabelList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH];
@@ -30,12 +35,17 @@ std::stack<INTVECTOR2> nextPosQueue;
 
 static INTVECTOR2 gBeaconPos;
 
-int frame = 0;
+static int  npcTextureVertical = 0;
 
 void InitNPC() {
-	NPCTextureId = ReserveTextureLoadFile("texture/npc.png");
+	npcTextureIdWait = ReserveTextureLoadFile("texture/spr_rose_idle.png");
+	npcTextureIdMove = ReserveTextureLoadFile("texture/spr_rose_walk.png");
+	npcTextureIdShadow = ReserveTextureLoadFile("texture/spr_shadow.png");
 	npc.speed = 1;
 	npc.trans.Init(2, 7);
+	npc.frame = 0;
+	npc.aniFrame = 0;
+	npcTextureVertical = 0;
 	gBeaconPos = npc.trans.GetIntPos();
 	while (!nextPosQueue.empty()) {
 		nextPosQueue.pop();
@@ -43,21 +53,45 @@ void InitNPC() {
 }
 
 void UninitNPC() {
-	ReleaseTexture(NPCTextureId);
+	ReleaseTexture(npcTextureIdWait);
 }
 
 void UpdateNPC() {
+
+	npc.aniFrame++;
+
 	if (nextPosQueue.empty()) {
-		frame = 0;
+		npc.frame = 0;
 		return;
 	}
-	if (frame > 30) {
-		npc.trans.pos = nextPosQueue.top().ToD3DXVECTOR2();
+	if (npc.frame > 30) {
+
+		auto dir = nextPosQueue.top() - npc.trans.GetIntPos();
+	    
+
+		if (dir.y == 1) {
+			npcTextureVertical = 0;
+		}
+		if (dir.y == -1)
+		{
+			npcTextureVertical = NPC_TEXTURE_HEIGHT;
+		}
+		if (dir.x == -1)
+		{
+			npcTextureVertical = NPC_TEXTURE_HEIGHT * 2;
+		}
+		if (dir.x == 1) {
+			npcTextureVertical = NPC_TEXTURE_HEIGHT * 3;
+		}
+		
+		
+
+		npc.trans.pos = nextPosQueue.top().ToD3DXVECTOR2(); // ‚ ‚Æ
 		npc.trans.UpdatePos();
 
 		nextPosQueue.pop();
 
-		frame = 0;
+		npc.frame = 0;
 
 		if (GetMapType(npc.trans.GetIntPos()) == MAP_GOAL) {
 			GoNextScene(GameClearScene);
@@ -65,13 +99,30 @@ void UpdateNPC() {
 
 		return;
 	}
-	frame++;
+	npc.frame++;
 }
 
 void DrawNPC() {
-	DrawGameSprite(NPCTextureId, npc.trans.GetIntPos().ToD3DXVECTOR2(), 30);
 
+	//if () {
+		auto tPos = D3DXVECTOR2(
+			NPC_TEXTURE_WIDTH * (npc.aniFrame / 7 % 15),
+			npcTextureVertical
+		);
+
+		DrawGameSprite(npcTextureIdWait, npc.trans.GetIntPos().ToD3DXVECTOR2(), 30, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
+	//}
+	/*if (){
+		auto tPos = D3DXVECTOR2(
+			NPC_TEXTURE_WIDTH * (npc.frame / 32 % 6),
+			npcTextureVertical
+		);
+
+		DrawGameSprite(NPCTextureId_2, npc.trans.GetIntPos().ToD3DXVECTOR2(), 30, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
+	}*/
+	DrawGameSprite(npcTextureIdShadow, npc.trans.GetIntPos().ToD3DXVECTOR2(), 30);
 }
+
 void UpdateNPCShortestPath(D3DXVECTOR2 beaconPos) {
 	gBeaconPos = beaconPos;
 	UpdateNPCShortestPath();
