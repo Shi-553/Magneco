@@ -25,9 +25,9 @@ void FourDir(std::queue<MapLabel>* mapQueue, MapLabel* label);
 #define NPC_TEXTURE_WIDTH 64
 #define NPC_TEXTURE_HEIGHT 64
 
-static int NPCTextureId = TEXTURE_INVALID_ID;
-static int NPCTextureId_2 = TEXTURE_INVALID_ID;
-static int NPCTextureId_3 = TEXTURE_INVALID_ID;
+static int npcTextureIdWait = TEXTURE_INVALID_ID;
+static int npcTextureIdMove = TEXTURE_INVALID_ID;
+static int npcTextureIdShadow = TEXTURE_INVALID_ID;
 static NPC npc;
 
 static int mapLabelList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH];
@@ -38,9 +38,9 @@ static INTVECTOR2 gBeaconPos;
 static int  npcTextureVertical = 0;
 
 void InitNPC() {
-	NPCTextureId = ReserveTextureLoadFile("texture/spr_rose_idle.png");
-	NPCTextureId_2 = ReserveTextureLoadFile("texture/spr_rose_walk.png");
-	NPCTextureId_3 = ReserveTextureLoadFile("texture/spr_shadow.png");
+	npcTextureIdWait = ReserveTextureLoadFile("texture/spr_rose_idle.png");
+	npcTextureIdMove = ReserveTextureLoadFile("texture/spr_rose_walk.png");
+	npcTextureIdShadow = ReserveTextureLoadFile("texture/spr_shadow.png");
 	npc.speed = 1;
 	npc.trans.Init(2, 7);
 	npc.frame = 0;
@@ -53,7 +53,7 @@ void InitNPC() {
 }
 
 void UninitNPC() {
-	ReleaseTexture(NPCTextureId);
+	ReleaseTexture(npcTextureIdWait);
 }
 
 void UpdateNPC() {
@@ -110,7 +110,7 @@ void DrawNPC() {
 			npcTextureVertical
 		);
 
-		DrawGameSprite(NPCTextureId, npc.trans.GetIntPos().ToD3DXVECTOR2(), 30, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
+		DrawGameSprite(npcTextureIdWait, npc.trans.GetIntPos().ToD3DXVECTOR2(), 30, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
 	//}
 	/*if (){
 		auto tPos = D3DXVECTOR2(
@@ -120,7 +120,7 @@ void DrawNPC() {
 
 		DrawGameSprite(NPCTextureId_2, npc.trans.GetIntPos().ToD3DXVECTOR2(), 30, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
 	}*/
-	DrawGameSprite(NPCTextureId_3, npc.trans.GetIntPos().ToD3DXVECTOR2(), 30);
+	DrawGameSprite(npcTextureIdShadow, npc.trans.GetIntPos().ToD3DXVECTOR2(), 30);
 }
 
 void UpdateNPCShortestPath(D3DXVECTOR2 beaconPos) {
