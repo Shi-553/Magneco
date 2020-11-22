@@ -9,7 +9,6 @@ struct Player {
 	TRANS trans;
 	std::list < FlyingObject > flyingObjectList;
 	INTVECTOR2 dir;
-	INTVECTOR2 ani;
 	float speed;
 };
 

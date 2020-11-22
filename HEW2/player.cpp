@@ -18,7 +18,9 @@
 static int textureId = TEXTURE_INVALID_ID;
 static Player player;
 static int frame = 0;
+
 static int  playerTextureVertical = 0;
+
 
 
 void InitPlayer(){
@@ -27,9 +29,9 @@ void InitPlayer(){
 	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();
 	player.dir = {0,0};
-	player.ani = { 0,0 };
 	player.speed = 0.1;
 	frame = 0;
+	playerTextureVertical = 0;
 }
 
 void UninitPlayer(){
@@ -72,8 +74,9 @@ void UpdatePlayer(){
 
 void DrawPlayer(){
 
+
 	auto tPos = D3DXVECTOR2(
-		player.ani.x = PLAYER_TEXTURE_WIDTH * (frame / 16 % 4),
+		PLAYER_TEXTURE_WIDTH * (frame / 16 % 4),
 		playerTextureVertical
 			);
 
