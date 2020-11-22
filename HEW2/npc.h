@@ -5,6 +5,8 @@
 typedef struct NPC_tag {
 	TRANS trans;
 	float speed;
+	int frame;
+	int aniFrame;
 }NPC;
 
 
