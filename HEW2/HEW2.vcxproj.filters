@@ -82,6 +82,9 @@
     <ClCompile Include="font.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
+    <ClCompile Include="highlight.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -166,6 +169,9 @@
       <Filter>ヘッダー\others</Filter>
     </ClInclude>
     <ClInclude Include="font.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="highlight.h">
       <Filter>ヘッダー\others</Filter>
     </ClInclude>
   </ItemGroup>

@@ -157,6 +157,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="font.cpp" />
+    <ClCompile Include="highlight.cpp" />
     <ClCompile Include="selectButton.cpp" />
     <ClCompile Include="debugFont.cpp" />
     <ClCompile Include="flyingObject.cpp" />
@@ -186,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="font.h" />
+    <ClInclude Include="highlight.h" />
     <ClInclude Include="selectButton.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="debugFont.h" />
