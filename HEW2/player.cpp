@@ -12,16 +12,24 @@
 #include "debugPrintf.h"
 #include "time.h"
 
+#define PLAYER_TEXTURE_WIDTH 32
+#define PLAYER_TEXTURE_HEIGHT 32
+
 static int textureId = TEXTURE_INVALID_ID;
 static Player player;
+static int frame = 0;
+static int  playerTextureVertical = 0;
+
 
 void InitPlayer(){
-	textureId = ReserveTextureLoadFile("texture/player.png");
+	textureId = ReserveTextureLoadFile("texture/player_32Å~32.png");
 
 	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();
 	player.dir = {0,0};
+	player.ani = { 0,0 };
 	player.speed = 0.1;
+	frame = 0;
 }
 
 void UninitPlayer(){
@@ -32,6 +40,7 @@ void UpdatePlayer(){
 	D3DXVECTOR2 one = player.dir.ToD3DXVECTOR2();
 	D3DXVec2Normalize(&one, &one);
 	
+
 	auto last = player.trans.pos;
 	auto move = one * player.speed * 60 * GetDeltaTime();
 
@@ -57,16 +66,26 @@ void UpdatePlayer(){
 
 	player.dir = { 0,0 };
 
+	frame++;
+
 }
 
 void DrawPlayer(){
-	DrawGameSprite(textureId, player.trans.pos-D3DXVECTOR2(0.5,0.5), 30);
 
-	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
-		itr != player.flyingObjectList.end(); itr++) {
-		DrawFlyingObject(*itr);
-	}
+	auto tPos = D3DXVECTOR2(
+		player.ani.x = PLAYER_TEXTURE_WIDTH * (frame / 16 % 4),
+		playerTextureVertical
+			);
+
+			DrawGameSprite(textureId, player.trans.pos - D3DXVECTOR2(0.5, 0.5), 30, tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+
+
+    for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+	itr != player.flyingObjectList.end(); itr++){
+	DrawFlyingObject(*itr);
+    }
 }
+
 
 
 void RotateLeftPlayer(){
@@ -79,18 +98,22 @@ void RotateRightPlayer(){
 
 void MoveUpPlayer(){
 	player.dir.y--;
+	playerTextureVertical = PLAYER_TEXTURE_HEIGHT * 3;
 }
 
 void MoveDownPlayer(){
 	player.dir.y++;
+	playerTextureVertical = 0;
 }
 
 void MoveLeftPlayer(){
 	player.dir.x--;
+	playerTextureVertical = PLAYER_TEXTURE_HEIGHT;
 }
 
 void MoveRightPlayer(){
 	player.dir.x++;
+	playerTextureVertical = PLAYER_TEXTURE_HEIGHT * 2;
 }
 
 void BlockDecision() {
