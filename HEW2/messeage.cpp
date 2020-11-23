@@ -31,7 +31,7 @@ void UpdateMesseage() {
 }
 
 
-void DrawMesseage(const char* str) {
+void DrawMesseage(const char* str, bool red) {
 
 	sprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
 
@@ -42,8 +42,12 @@ void DrawMesseage(const char* str) {
 	SCREEN_HEIGHT / 2 + 350 + offset_pos.y * 32		// ‰E‰º‚ÌyÀ•W
 	};
 
-
-	font->DrawTextA(sprite, str, -1, &rc, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+	if (red) {
+		font->DrawTextA(sprite, str, -1, &rc, DT_LEFT, D3DCOLOR_RGBA(255, 0, 0, 255));
+	}
+	else {
+		font->DrawTextA(sprite, str, -1, &rc, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
+	}
 	sprite->End();
 
 	offset_pos.x += strlen(str);

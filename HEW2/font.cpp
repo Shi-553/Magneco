@@ -22,7 +22,7 @@ void InitFont() {
 	auto hr = D3DXCreateFont(
 		device,				// Direct3Dデバイス
 		32,						// 高さ
-		16,						// 幅
+		15,						// 幅
 		FW_REGULAR,				// フォントの太さ 普通
 		NULL,					// 下線
 		FALSE,					// 斜体
