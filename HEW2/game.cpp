@@ -1,4 +1,4 @@
-//ゲーム本体
+﻿//ゲーム本体
 // テストコメント
 // テスト２
 
@@ -18,6 +18,8 @@
 #include "map.h"
 #include "flyingObjectSponer.h"
 #include "grid.h"
+#include "messeage.h"
+#include "debugPrintf.h"
 
 
 void InitGame() 
@@ -30,6 +32,7 @@ void InitGame()
 	InitFlyingObject();
 	InitFlyingSponer();
 	Grid_Initialize(GAME_SPRITE_WHIDTH, MAPCHIP_WIDTH, D3DCOLOR_RGBA(0, 197, 0, 255));
+	InitMesseage();
 
 	LoadTexture();
 	
@@ -48,6 +51,7 @@ void UpdateGame()
 	UpdateJudge();
 	UpdateFlyingObject();
 	UpdateFlyingSponer();
+	UpdateMesseage();
 }
 
 void DrawGame() 
@@ -61,11 +65,14 @@ void DrawGame()
 	DrawNPC();
 	DrawJudge();
 	DrawFlyingObject();
-
+	DrawMesseage("あああああ");
+	DrawMesseage("あああああ");
+	DebugPrintf("あああああ");
 }
 
 void UninitGame()
 {
+	UninitMesseage();
 	UninitInput();
 	UninitPlayer();
 	UninitNPC();

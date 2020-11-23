@@ -22,11 +22,11 @@ void InitFont() {
 	auto hr = D3DXCreateFont(
 		device,				// Direct3Dデバイス
 		32,						// 高さ
-		0,						// 幅
+		16,						// 幅
 		FW_REGULAR,				// フォントの太さ 普通
 		NULL,					// 下線
 		FALSE,					// 斜体
-		ANSI_CHARSET,		// 文字セット
+		DEFAULT_CHARSET,		// 文字セット
 		OUT_DEFAULT_PRECIS,		// 出力制度は普通
 		PROOF_QUALITY,			// 文字品質を重視
 		FIXED_PITCH | FF_SCRIPT,	// ピッチとファミリ

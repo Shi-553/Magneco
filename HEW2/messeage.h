@@ -4,4 +4,4 @@ void InitMesseage();
 void UninitMesseage();
 void UpdateMesseage();
 
-void DrawMesseage();
+void DrawMesseage(const char* str);
