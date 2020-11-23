@@ -20,10 +20,6 @@ void ResetBackStencilBufferDraw();
 void ResetBackStencilBufferMask();
 
 
-void InitHighlight() {
-}
-void UninitHighlight() {
-}
 
 void DrawHighlight(D3DXVECTOR2 pos,float size,int count) {
 	SetBackStencilBufferMask();
