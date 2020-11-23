@@ -33,6 +33,8 @@ static NPC npc;
 static int mapLabelList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH];
 std::stack<INTVECTOR2> nextPosQueue;
 
+static INTVECTOR2 nextPos;
+static INTVECTOR2 dir;
 static INTVECTOR2 gBeaconPos;
 
 static int  npcTextureVertical = 0;
@@ -46,6 +48,8 @@ void InitNPC() {
 	npc.frame = 0;
 	npc.aniFrame = 0;
 	npcTextureVertical = 0;
+	nextPos = npc.trans.GetIntPos();
+	dir = INTVECTOR2(0, 0);
 	gBeaconPos = npc.trans.GetIntPos();
 	while (!nextPosQueue.empty()) {
 		nextPosQueue.pop();
@@ -60,15 +64,22 @@ void UpdateNPC() {
 
 	npc.aniFrame++;
 
-	if (nextPosQueue.empty()) {
-		npc.frame = 0;
-		return;
-	}
-	if (npc.frame > 30) {
+	if (npc.frame > 29) {
 
-		auto dir = nextPosQueue.top() - npc.trans.GetIntPos();
+		npc.trans.pos = nextPos.ToD3DXVECTOR2();
+		npc.trans.UpdatePos();
+
+		if (GetMapType(npc.trans.GetIntPos()) == MAP_GOAL) {
+			GoNextScene(GameClearScene);
+		}
+
+
+		if (nextPosQueue.empty()) {
+			return;
+		}
+
+		 dir = nextPosQueue.top() - npc.trans.GetIntPos();
 	    
-
 		if (dir.y == 1) {
 			npcTextureVertical = 0;
 		}
@@ -84,43 +95,42 @@ void UpdateNPC() {
 			npcTextureVertical = NPC_TEXTURE_HEIGHT * 3;
 		}
 		
-		
-
-		npc.trans.pos = nextPosQueue.top().ToD3DXVECTOR2(); // ‚ ‚Æ
-		npc.trans.UpdatePos();
+		nextPos = nextPosQueue.top();
 
 		nextPosQueue.pop();
 
 		npc.frame = 0;
 
-		if (GetMapType(npc.trans.GetIntPos()) == MAP_GOAL) {
-			GoNextScene(GameClearScene);
-		}
-
-		return;
 	}
+
+	npc.trans.pos += dir.ToD3DXVECTOR2() / 30;
+	npc.trans.UpdatePos();
+
 	npc.frame++;
 }
 
 void DrawNPC() {
 
-	//if () {
+	if (npc.frame > 29) {
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 7 % 15),
 			npcTextureVertical
 		);
 
-		DrawGameSprite(npcTextureIdWait, npc.trans.GetIntPos().ToD3DXVECTOR2(), 30, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
-	//}
-	/*if (){
+		DrawGameSprite(npcTextureIdWait, npc.trans.pos, 30, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
+		DrawGameSprite(npcTextureIdShadow, npc.trans.pos, 30);
+	}
+	else
+	{
 		auto tPos = D3DXVECTOR2(
-			NPC_TEXTURE_WIDTH * (npc.frame / 32 % 6),
+			NPC_TEXTURE_WIDTH * (npc.frame / 15 % 6),
 			npcTextureVertical
 		);
 
-		DrawGameSprite(NPCTextureId_2, npc.trans.GetIntPos().ToD3DXVECTOR2(), 30, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
-	}*/
-	DrawGameSprite(npcTextureIdShadow, npc.trans.GetIntPos().ToD3DXVECTOR2(), 30);
+		DrawGameSprite(npcTextureIdMove, npc.trans.pos, 30, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
+		DrawGameSprite(npcTextureIdShadow, npc.trans.pos, 30);
+	}
+	
 }
 
 void UpdateNPCShortestPath(D3DXVECTOR2 beaconPos) {
