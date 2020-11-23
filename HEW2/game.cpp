@@ -67,7 +67,7 @@ void DrawGame()
 	DrawFlyingObject();
 	DrawMesseage("あああああ");
 	DrawMesseage("あああああ");
-	DebugPrintf("あああああ");
+	//DebugPrintf("あああああ");
 }
 
 void UninitGame()
