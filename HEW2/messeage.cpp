@@ -12,7 +12,7 @@ LPD3DXSPRITE sprite;
 
 
 void InitMesseage() {
-	font = GetFont();
+	 CreateFont(32,0,&font);
 	LPDIRECT3DDEVICE9 device = GetD3DDevice();
 	D3DXCreateSprite(device, &sprite);
 
@@ -36,9 +36,9 @@ void DrawMesseage(const char* str) {
 	sprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
 
 	RECT rc = {
-	SCREEN_WIDTH / 2 - 400 + offset_pos.x * 16,		// 左上のx座標
+	SCREEN_WIDTH / 2 - 400 + offset_pos.x * 18,		// 左上のx座標
 	SCREEN_HEIGHT / 2 + 250 + offset_pos.y * 32,	// 左上のy座標
-	SCREEN_WIDTH / 2 + 400 + offset_pos.x * 16,		// 右下のx座標
+	SCREEN_WIDTH / 2 + 400 + offset_pos.x * 18,		// 右下のx座標
 	SCREEN_HEIGHT / 2 + 350 + offset_pos.y * 32		// 右下のy座標
 	};
 

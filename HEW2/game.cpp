@@ -65,8 +65,8 @@ void DrawGame()
 	DrawNPC();
 	DrawJudge();
 	DrawFlyingObject();
-	DrawMesseage("あああああ");
-	DrawMesseage("あああああ");
+	DrawMesseage("寿限無7'''.１1~iijkKー￥22");
+	DrawMesseage("22da22222");
 	//DebugPrintf("あああああ");
 }
 

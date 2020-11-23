@@ -3,13 +3,7 @@
 #include <stdio.h>
 #include "debugPrintf.h"
 
-static LPD3DXFONT	pFont=NULL;
 static auto fontPath = "./font/PixelMplus-20130602/PixelMplus10-Regular.ttf";
-
-LPD3DXFONT GetFont() {
-		return pFont;
-}
-
 
 void InitFont() {
 	if (AddFontResourceEx(fontPath, FR_PRIVATE, NULL) <= 0) {
@@ -17,12 +11,23 @@ void InitFont() {
 		return;
 	}
 
+
+	//ここで使う文字をロードしておくとよりよい
+	//pFont->PreloadText("",sizeof(""));
+}
+void UninitFont() {
+	if (RemoveFontResourceEx(fontPath, FR_PRIVATE, NULL) <= 0) {
+		DebugPrintf("error RemoveFontResourceEx\n");
+	}
+}
+
+void CreateFont(int height, int width, LPD3DXFONT* font) {
 	auto device = GetD3DDevice();
 
 	auto hr = D3DXCreateFont(
 		device,				// Direct3Dデバイス
-		32,						// 高さ
-		16,						// 幅
+		height,						// 高さ
+		width,						// 幅
 		FW_REGULAR,				// フォントの太さ 普通
 		NULL,					// 下線
 		FALSE,					// 斜体
@@ -31,27 +36,14 @@ void InitFont() {
 		PROOF_QUALITY,			// 文字品質を重視
 		FIXED_PITCH | FF_SCRIPT,	// ピッチとファミリ
 		"PixelMplus10",	// フォント名
-		&pFont);					
+		font);
 
 	if (FAILED(hr))
 	{
 		DebugPrintf("error font\n");
 		return;
 	}
-
-	//ここで使う文字をロードしておくとよりよい
-	//pFont->PreloadText("",sizeof(""));
 }
-void UninitFont() {
-	if (pFont != NULL) {
-		pFont->Release();
-		pFont = NULL;
-	}
-	if (RemoveFontResourceEx(fontPath, FR_PRIVATE, NULL) <= 0) {
-		DebugPrintf("error RemoveFontResourceEx\n");
-	}
-}
-
 //void DrawFont() {
 //	auto font = GetFont();
 //	LPD3DXSPRITE sprite = NULL;

@@ -2,7 +2,9 @@
 
 #include "myd3d.h"
 
+
 void InitFont();
 void UninitFont();
 
-LPD3DXFONT GetFont();
+
+void CreateFont(int height, int width, LPD3DXFONT* font);
