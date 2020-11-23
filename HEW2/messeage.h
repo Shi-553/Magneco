@@ -5,6 +5,13 @@
 
 void InitMesseage();
 void UninitMesseage();
-void UpdateMesseage();
 
-void DrawMesseage(const char* str, D3DCOLOR color);
+void ClearMesseageOffset();
+
+void SetMessageColor(D3DCOLOR c);
+
+void DrawMesseage(const char* str, va_list argp);
+void DrawMesseage(const char* str, ...);
+
+//デバッグ用
+void TestMessage();
