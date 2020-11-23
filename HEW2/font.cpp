@@ -1,15 +1,9 @@
-
+ï»¿
 #include "font.h"
 #include <stdio.h>
 #include "debugPrintf.h"
 
-static LPD3DXFONT	pFont=NULL;
 static auto fontPath = "./font/PixelMplus-20130602/PixelMplus10-Regular.ttf";
-
-LPD3DXFONT GetFont() {
-		return pFont;
-}
-
 
 void InitFont() {
 	if (AddFontResourceEx(fontPath, FR_PRIVATE, NULL) <= 0) {
@@ -17,41 +11,39 @@ void InitFont() {
 		return;
 	}
 
+
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ÅŽgï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½æ‚¢
+	//pFont->PreloadText("",sizeof(""));
+}
+void UninitFont() {
+	if (RemoveFontResourceEx(fontPath, FR_PRIVATE, NULL) <= 0) {
+		DebugPrintf("error RemoveFontResourceEx\n");
+	}
+}
+
+void CreateFont(int height, int width, LPD3DXFONT* font) {
 	auto device = GetD3DDevice();
 
 	auto hr = D3DXCreateFont(
-		device,				// Direct3DƒfƒoƒCƒX
-		32,						// ‚‚³
-		15,						// •
-		FW_REGULAR,				// ƒtƒHƒ“ƒg‚Ì‘¾‚³ •’Ê
-		NULL,					// ‰ºü
-		FALSE,					// ŽÎ‘Ì
-		DEFAULT_CHARSET,		// •¶ŽšƒZƒbƒg
-		OUT_DEFAULT_PRECIS,		// o—Í§“x‚Í•’Ê
-		PROOF_QUALITY,			// •¶Žš•iŽ¿‚ðdŽ‹
-		FIXED_PITCH | FF_SCRIPT,	// ƒsƒbƒ`‚Æƒtƒ@ƒ~ƒŠ
-		"PixelMplus10",	// ƒtƒHƒ“ƒg–¼
-		&pFont);					
+		device,				// Direct3Dï¿½fï¿½oï¿½Cï¿½X
+		height,						// é«˜ã•
+		width,						// å¹…
+		FW_REGULAR,				// ï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½Ì‘ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		NULL,					// ï¿½ï¿½ï¿½ï¿½
+		FALSE,					// ï¿½Î‘ï¿½
+		DEFAULT_CHARSET,		// ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
+		OUT_DEFAULT_PRECIS,		// ï¿½oï¿½Íï¿½ï¿½xï¿½Í•ï¿½ï¿½ï¿½
+		PROOF_QUALITY,			// ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½ï¿½dï¿½ï¿½
+		FIXED_PITCH | FF_SCRIPT,	// ï¿½sï¿½bï¿½`ï¿½Æƒtï¿½@ï¿½~ï¿½ï¿½
+		"PixelMplus10",	// ï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½ï¿½
+		font);
 
 	if (FAILED(hr))
 	{
 		DebugPrintf("error font\n");
 		return;
 	}
-
-	//‚±‚±‚ÅŽg‚¤•¶Žš‚ðƒ[ƒh‚µ‚Ä‚¨‚­‚Æ‚æ‚è‚æ‚¢
-	//pFont->PreloadText("",sizeof(""));
 }
-void UninitFont() {
-	if (pFont != NULL) {
-		pFont->Release();
-		pFont = NULL;
-	}
-	if (RemoveFontResourceEx(fontPath, FR_PRIVATE, NULL) <= 0) {
-		DebugPrintf("error RemoveFontResourceEx\n");
-	}
-}
-
 //void DrawFont() {
 //	auto font = GetFont();
 //	LPD3DXSPRITE sprite = NULL;
@@ -60,10 +52,10 @@ void UninitFont() {
 //	sprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
 //
 //	RECT rc = {
-//	SCREEN_WIDTH / 2 - 400,		// ¶ã‚ÌxÀ•W
-//	SCREEN_HEIGHT / 2 + 250,		// ¶ã‚ÌyÀ•W
-//	SCREEN_WIDTH / 2 + 400,		// ‰E‰º‚ÌxÀ•W
-//	SCREEN_HEIGHT / 2 + 350		// ‰E‰º‚ÌyÀ•W
+//	SCREEN_WIDTH / 2 - 400,		// ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½W
+//	SCREEN_HEIGHT / 2 + 250,		// ï¿½ï¿½ï¿½ï¿½ï¿½yï¿½ï¿½ï¿½W
+//	SCREEN_WIDTH / 2 + 400,		// ï¿½Eï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½W
+//	SCREEN_HEIGHT / 2 + 350		// ï¿½Eï¿½ï¿½ï¿½ï¿½yï¿½ï¿½ï¿½W
 //	};
 //	auto hdc = font->GetDC();
 //
