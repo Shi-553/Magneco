@@ -64,11 +64,17 @@ void UpdateNPC() {
 
 	npc.aniFrame++;
 
-	//if (npc.trans.GetIntPos() == nextPos) {
-	if (npc.frame > 30) {
+	if (npc.frame > 29) {
+
+		npc.trans.pos = nextPos.ToD3DXVECTOR2();
+		npc.trans.UpdatePos();
+
+		if (GetMapType(npc.trans.GetIntPos()) == MAP_GOAL) {
+			GoNextScene(GameClearScene);
+		}
+
 
 		if (nextPosQueue.empty()) {
-			//npc.frame = 0;
 			return;
 		}
 
@@ -95,12 +101,6 @@ void UpdateNPC() {
 
 		npc.frame = 0;
 
-		if (GetMapType(npc.trans.GetIntPos()) == MAP_GOAL) {
-			GoNextScene(GameClearScene);
-		}
-
-
-		return;
 	}
 
 	npc.trans.pos += dir.ToD3DXVECTOR2() / 30;
@@ -111,24 +111,26 @@ void UpdateNPC() {
 
 void DrawNPC() {
 
-	//if () {
+	if (npc.frame > 29) {
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 7 % 15),
 			npcTextureVertical
 		);
 
 		DrawGameSprite(npcTextureIdWait, npc.trans.pos, 30, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
-	//}
-	/*else
+		DrawGameSprite(npcTextureIdShadow, npc.trans.pos, 30);
+	}
+	else
 	{
 		auto tPos = D3DXVECTOR2(
-			NPC_TEXTURE_WIDTH * (npc.frame / 32 % 6),
+			NPC_TEXTURE_WIDTH * (npc.frame / 15 % 6),
 			npcTextureVertical
 		);
 
-		DrawGameSprite(npcTextureIdMove, npc.trans.GetIntPos().ToD3DXVECTOR2(), 30, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
-	}*/
-	DrawGameSprite(npcTextureIdShadow, npc.trans.pos, 30);
+		DrawGameSprite(npcTextureIdMove, npc.trans.pos, 30, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
+		DrawGameSprite(npcTextureIdShadow, npc.trans.pos, 30);
+	}
+	
 }
 
 void UpdateNPCShortestPath(D3DXVECTOR2 beaconPos) {
