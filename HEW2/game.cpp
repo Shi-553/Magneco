@@ -65,9 +65,9 @@ void DrawGame()
 	DrawNPC();
 	DrawJudge();
 	DrawFlyingObject();
-	DrawMesseage("ああ", false);
-	DrawMesseage("あああ", true);
-	DrawMesseage("ああ", false);
+	DrawMesseage("ああ", D3DCOLOR_RGBA(255, 255, 255, 255));
+	DrawMesseage("ああ\nああ", D3DCOLOR_RGBA(255, 0, 0, 255));
+	DrawMesseage("ああ", D3DCOLOR_RGBA(255, 255, 255, 255));
 
 	//DebugPrintf("あああああ");
 }

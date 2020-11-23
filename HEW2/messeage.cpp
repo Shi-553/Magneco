@@ -5,6 +5,9 @@
 #include <d3dx9.h>
 #include "trans.h"
 
+#define FONT_WIDTH	(15)
+#define FONT_HEIGHT	(32)
+
 
 LPD3DXFONT font;
 INTVECTOR2 offset_pos;
@@ -31,26 +34,30 @@ void UpdateMesseage() {
 }
 
 
-void DrawMesseage(const char* str, bool red) {
+void DrawMesseage(const char* str, D3DCOLOR color) {
 
 	sprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
 
 	RECT rc = {
-	SCREEN_WIDTH / 2 - 400 + offset_pos.x * 18,		// 左上のx座標
-	SCREEN_HEIGHT / 2 + 250 + offset_pos.y * 32,	// 左上のy座標
-	SCREEN_WIDTH / 2 + 400 + offset_pos.x * 18,		// 右下のx座標
-	SCREEN_HEIGHT / 2 + 350 + offset_pos.y * 32		// 右下のy座標
+	SCREEN_WIDTH / 2 - 400 + offset_pos.x * FONT_WIDTH,		// 左上のx座標
+	SCREEN_HEIGHT / 2 + 250 + offset_pos.y * FONT_HEIGHT,	// 左上のy座標
+	SCREEN_WIDTH / 2 + 400 + offset_pos.x,					// 右下のx座標
+	SCREEN_HEIGHT / 2 + 350 + offset_pos.y + 800			// 右下のy座標
 	};
 
-	if (red) {
-		font->DrawTextA(sprite, str, -1, &rc, DT_LEFT, D3DCOLOR_RGBA(255, 0, 0, 255));
-	}
-	else {
-		font->DrawTextA(sprite, str, -1, &rc, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
-	}
+
+	font->DrawTextA(sprite, str, -1, &rc, DT_LEFT, color);
 	sprite->End();
 
-	offset_pos.x += strlen(str);
-
+	int len = strlen(str);
+	for (int i = 0; i < len; i++) {
+		if (str[i] == '\n') {
+			offset_pos.x = 0;
+			offset_pos.y++;
+		}
+		else {
+			offset_pos.x++;
+		}
+	}
 
 }
