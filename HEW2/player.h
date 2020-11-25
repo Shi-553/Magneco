@@ -10,6 +10,7 @@ struct Player {
 	std::list < FlyingObject > flyingObjectList;
 	INTVECTOR2 dir;
 	float speed;
+	int frame;
 };
 
 void InitPlayer();
