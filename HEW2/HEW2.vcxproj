@@ -167,6 +167,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="font.cpp" />
     <ClCompile Include="highlight.cpp" />
     <ClCompile Include="messeagebox.cpp" />
+    <ClCompile Include="messeage.cpp" />
     <ClCompile Include="selectButton.cpp" />
     <ClCompile Include="debugFont.cpp" />
     <ClCompile Include="flyingObject.cpp" />
@@ -196,7 +197,8 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="font.h" />
-    <ClInclude Include="highlight.h" />
+    <ClInclude Include="highlight.h" />  
+    <ClCompile Include="messeage.h" />
     <ClInclude Include="messeagebox.h" />
     <ClInclude Include="selectButton.h" />
     <ClInclude Include="config.h" />

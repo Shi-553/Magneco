@@ -82,6 +82,9 @@
     <ClCompile Include="font.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
+    <ClCompile Include="messeage.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
     <ClCompile Include="highlight.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
@@ -172,6 +175,9 @@
       <Filter>ヘッダー\others</Filter>
     </ClInclude>
     <ClInclude Include="font.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="messeage.h">
       <Filter>ヘッダー\others</Filter>
     </ClInclude>
     <ClInclude Include="highlight.h">
