@@ -55,13 +55,15 @@ void DrawGame()
 	DrawMap();
 	Grid_Draw();
 	DrawNPC();
-	DrawPlayer();
+	
 
 	DrawInput();
 
 	
 	DrawJudge();
 	DrawFlyingObject();
+
+	DrawPlayer();
 
 }
 

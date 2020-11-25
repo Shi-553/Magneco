@@ -25,6 +25,9 @@ void FourDir(std::queue<MapLabel>* mapQueue, MapLabel* label);
 #define NPC_TEXTURE_WIDTH 64
 #define NPC_TEXTURE_HEIGHT 64
 
+#define NPC_SIZE_WIDTH 88
+#define NPC_SIZE_HEIGHT 88
+
 static int npcTextureIdWait = TEXTURE_INVALID_ID;
 static int npcTextureIdMove = TEXTURE_INVALID_ID;
 static int npcTextureIdShadow = TEXTURE_INVALID_ID;
@@ -111,14 +114,18 @@ void UpdateNPC() {
 
 void DrawNPC() {
 
+	auto drawingPos = npc.trans.pos;
+	drawingPos.x -= 0.39f;
+	drawingPos.y -= 1.05f;
+
 	if (npc.frame > 29) {
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 7 % 15),
 			npcTextureVertical
 		);
 
-		DrawGameSprite(npcTextureIdWait, npc.trans.pos, 30, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
-		DrawGameSprite(npcTextureIdShadow, npc.trans.pos, 30);
+		DrawGameSprite(npcTextureIdWait, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
+		DrawGameSprite(npcTextureIdShadow, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT));
 	}
 	else
 	{
@@ -127,8 +134,8 @@ void DrawNPC() {
 			npcTextureVertical
 		);
 
-		DrawGameSprite(npcTextureIdMove, npc.trans.pos, 30, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
-		DrawGameSprite(npcTextureIdShadow, npc.trans.pos, 30);
+		DrawGameSprite(npcTextureIdMove, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
+		DrawGameSprite(npcTextureIdShadow, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT));
 	}
 	
 }
