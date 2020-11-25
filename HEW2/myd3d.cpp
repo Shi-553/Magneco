@@ -25,6 +25,7 @@ bool InitMyD3D(HWND hWnd) {
 	d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
 	d3dpp.BackBufferCount = 1;
 
+	d3dpp.MultiSampleType = D3DMULTISAMPLE_NONE;
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;//スワップ方法
 	d3dpp.Windowed = TRUE;
 	d3dpp.EnableAutoDepthStencil = TRUE;//深度バッファ・ステンシルバッファの使用1
@@ -46,9 +47,9 @@ bool InitMyD3D(HWND hWnd) {
 
 	//テクスチャフィルタリングの設定
 	//拡大縮小時にする補間と、それにミップマップを使うかどうか
-	//gPDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);//拡大時フィルタ
-	//gPDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);//縮小時フィルタ
-	//gPDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_POINT);//ミップマップフィルタ
+	d3dDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);//拡大時フィルタ
+	d3dDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);//縮小時フィルタ
+	d3dDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_POINT);//ミップマップフィルタ
 
 	d3dDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_MIRROR);
 	d3dDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_MIRROR);
