@@ -7,6 +7,7 @@ typedef struct NPC_tag {
 	float speed;
 	int frame;
 	int aniFrame;
+	bool isMove;
 }NPC;
 
 

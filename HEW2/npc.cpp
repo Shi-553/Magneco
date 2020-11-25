@@ -48,8 +48,9 @@ void InitNPC() {
 	npcTextureIdShadow = ReserveTextureLoadFile("texture/spr_shadow.png");
 	npc.speed = 1;
 	npc.trans.Init(2, 7);
-	npc.frame = 0;
+	npc.frame = 30;
 	npc.aniFrame = 0;
+	npc.isMove = false;
 	npcTextureVertical = 0;
 	nextPos = npc.trans.GetIntPos();
 	dir = INTVECTOR2(0, 0);
@@ -67,7 +68,7 @@ void UpdateNPC() {
 
 	npc.aniFrame++;
 
-	if (npc.frame > 29) {
+	if (npc.frame >= 30) {
 
 		npc.trans.pos = nextPos.ToD3DXVECTOR2();
 		npc.trans.UpdatePos();
@@ -78,8 +79,11 @@ void UpdateNPC() {
 
 
 		if (nextPosQueue.empty()) {
+			npc.isMove = false;
 			return;
 		}
+
+		npc.isMove = true;
 
 		 dir = nextPosQueue.top() - npc.trans.GetIntPos();
 	    
@@ -103,7 +107,6 @@ void UpdateNPC() {
 		nextPosQueue.pop();
 
 		npc.frame = 0;
-
 	}
 
 	npc.trans.pos += dir.ToD3DXVECTOR2() / 30;
@@ -118,7 +121,7 @@ void DrawNPC() {
 	drawingPos.x -= 0.39f;
 	drawingPos.y -= 1.05f;
 
-	if (npc.frame > 29) {
+	if (!npc.isMove) {
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 7 % 15),
 			npcTextureVertical
@@ -130,7 +133,7 @@ void DrawNPC() {
 	else
 	{
 		auto tPos = D3DXVECTOR2(
-			NPC_TEXTURE_WIDTH * (npc.frame / 15 % 6),
+			NPC_TEXTURE_WIDTH * (npc.aniFrame / 6 % 6),
 			npcTextureVertical
 		);
 
