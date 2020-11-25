@@ -18,7 +18,6 @@
 #include "map.h"
 #include "flyingObjectSponer.h"
 #include "grid.h"
-#include "messeage.h"
 #include "debugPrintf.h"
 
 
@@ -64,7 +63,6 @@ void DrawGame()
 	DrawJudge();
 	DrawFlyingObject();
 
-	TestMessage();
 }
 
 void UninitGame()
