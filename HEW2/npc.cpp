@@ -148,7 +148,7 @@ void DrawNPC() {
 	
 }
 
-void UpdateNPCShortestPath(D3DXVECTOR2 beaconPos) {
+void UpdateNPCShortestPath(INTVECTOR2 beaconPos) {
 	gBeaconPos = beaconPos;
 	UpdateNPCShortestPath();
 }
