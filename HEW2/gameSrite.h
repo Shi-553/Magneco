@@ -13,3 +13,6 @@
 void DrawGameSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 tPos, D3DXVECTOR2 tSize);
 
 void DrawGameSprite(int textureId, D3DXVECTOR2 pos, float z);
+
+void ScreenToGame(D3DXVECTOR2* screen, D3DXVECTOR2* game);
+void GameToScreen(D3DXVECTOR2* game, D3DXVECTOR2* screen);
