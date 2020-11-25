@@ -62,6 +62,8 @@ void InitNPC() {
 
 void UninitNPC() {
 	ReleaseTexture(npcTextureIdWait);
+	ReleaseTexture(npcTextureIdMove);
+	ReleaseTexture(npcTextureIdShadow);
 }
 
 void UpdateNPC() {

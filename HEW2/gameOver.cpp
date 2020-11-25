@@ -70,8 +70,10 @@ void UninitGameOver() {
 
 	ReleaseTexture(backgroundTexture);
 	ReleaseTexture(gameOverTextTexture);
-	ReleaseTexture(retryButton.textureId);
-	ReleaseTexture(returnTitleButton.textureId);
+	ReleaseTexture(quitTexture);
+	ReleaseTexture(quitPressedTexture);
+	ReleaseTexture(retryTexture);
+	ReleaseTexture(retryPressedTexture);
 
 }
 void DrawGameOver() {
