@@ -85,6 +85,12 @@
     <ClCompile Include="messeage.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
+    <ClCompile Include="highlight.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
+    <ClCompile Include="messeagebox.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -172,6 +178,12 @@
       <Filter>ヘッダー\others</Filter>
     </ClInclude>
     <ClInclude Include="messeage.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="highlight.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="messeagebox.h">
       <Filter>ヘッダー\others</Filter>
     </ClInclude>
   </ItemGroup>
