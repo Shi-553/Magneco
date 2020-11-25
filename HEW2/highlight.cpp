@@ -29,7 +29,7 @@ void DrawHighlight(D3DXVECTOR2 pos,float size,int count) {
 	ResetBackStencilBufferMask();
 }
 
-void DrawFrontBlack(D3DXCOLOR color) {
+void DrawForeground(D3DXCOLOR color) {
 	SetBackStencilBufferDraw();
 	SetSpriteColor(color);
 	DrawSprite(TEXTURE_INVALID_ID, {0,0 }, 100, { SCREEN_WIDTH,SCREEN_HEIGHT });
