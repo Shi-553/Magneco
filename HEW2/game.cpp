@@ -32,7 +32,6 @@ void InitGame()
 	InitFlyingObject();
 	InitFlyingSponer();
 	Grid_Initialize(GAME_SPRITE_WHIDTH, MAPCHIP_WIDTH, D3DCOLOR_RGBA(0, 197, 0, 255));
-	InitMesseage();
 
 	LoadTexture();
 	
@@ -51,7 +50,6 @@ void UpdateGame()
 	UpdateJudge();
 	UpdateFlyingObject();
 	UpdateFlyingSponer();
-	UpdateMesseage();
 }
 
 void DrawGame() 
@@ -65,16 +63,12 @@ void DrawGame()
 	DrawNPC();
 	DrawJudge();
 	DrawFlyingObject();
-	DrawMesseage("ああ", D3DCOLOR_RGBA(255, 255, 255, 255));
-	DrawMesseage("ああ\nああ", D3DCOLOR_RGBA(255, 0, 0, 255));
-	DrawMesseage("ああ", D3DCOLOR_RGBA(255, 255, 255, 255));
 
-	//DebugPrintf("あああああ");
+	TestMessage();
 }
 
 void UninitGame()
 {
-	UninitMesseage();
 	UninitInput();
 	UninitPlayer();
 	UninitNPC();
