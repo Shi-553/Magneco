@@ -32,7 +32,7 @@ void DrawHighlight(D3DXVECTOR2 pos,float size,int count) {
 void DrawFrontBlack(D3DXCOLOR color) {
 	SetBackStencilBufferDraw();
 	SetSpriteColor(color);
-	DrawSprite(NULL, {0,0 }, 100, { SCREEN_WIDTH,SCREEN_HEIGHT });
+	DrawSprite(TEXTURE_INVALID_ID, {0,0 }, 100, { SCREEN_WIDTH,SCREEN_HEIGHT });
 	SetSpriteColor(D3DCOLOR_RGBA(255,255,255,255));
 	ResetBackStencilBufferDraw();
 }
