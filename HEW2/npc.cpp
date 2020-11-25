@@ -137,6 +137,8 @@ void DrawNPC() {
 	}
 	else
 	{
+		DrawGameSprite(beaconTextureId, gBeaconPos.ToD3DXVECTOR2(), 30);
+
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 6 % 6),
 			npcTextureVertical
