@@ -105,24 +105,38 @@ int LoadTexture() {
 			//既に読み込まれている
 			continue;
 		}
+		//テクスチャサイズを取得
+		D3DXIMAGE_INFO info;
+		D3DXGetImageInfoFromFile(textures[i].filename, &info);
+		textures[i].size = (D3DXVECTOR2*)malloc(sizeof(D3DXVECTOR2));
+		if (textures[i].size == NULL) {
+			DebugPrintf("サイズ取得失敗 Index: %d ,Filename: %s\n", i, textures[i].filename);
+			errorCount++;
+			continue;
+		}
+		textures[i].size->x = info.Width;
+		textures[i].size->y = info.Height;
 
 		//動的にメモリを確保してそこに読み込んで、そのメモリからDirectXのテクスチャにすると効率がいい
 
-		HRESULT hr = D3DXCreateTextureFromFile(device, textures[i].filename, &textures[i].texture);
+		HRESULT hr = D3DXCreateTextureFromFileEx(device,
+			textures[i].filename, 
+			info.Width,info.Height, 
+			D3DX_DEFAULT,
+			0,
+			D3DFMT_UNKNOWN,
+			D3DPOOL_MANAGED, 
+			D3DX_DEFAULT, 
+			D3DX_DEFAULT,
+			0, 
+			NULL,
+			NULL,
+			&textures[i].texture);
 		//HRESULT hr = D3DXCreateTextureFromFileInMemory(device, textures[i].filename, &textures[i].texture);
 
 		if (FAILED(hr)) {
 			DebugPrintf("テクスチャ読み込み失敗 Index: %d ,Filename: %s\n", i, textures[i].filename);
 			errorCount++;
-		}
-		else {
-			//テクスチャサイズを取得
-			D3DXIMAGE_INFO info;
-			D3DXGetImageInfoFromFile(textures[i].filename, &info);
-			textures[i].size = (D3DXVECTOR2*)malloc(sizeof(D3DXVECTOR2));
-
-			textures[i].size->x = info.Width;
-			textures[i].size->y = info.Height;
 		}
 	}
 

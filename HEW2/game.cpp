@@ -1,4 +1,4 @@
-//ゲーム本体
+﻿//ゲーム本体
 // テストコメント
 // テスト２
 
@@ -18,6 +18,7 @@
 #include "map.h"
 #include "flyingObjectSponer.h"
 #include "grid.h"
+#include "debugPrintf.h"
 
 
 void InitGame() 
@@ -55,13 +56,15 @@ void DrawGame()
 	DrawMap();
 	Grid_Draw();
 	DrawNPC();
-	DrawPlayer();
+	
 
 	DrawInput();
 
 	
 	DrawJudge();
 	DrawFlyingObject();
+
+	DrawPlayer();
 
 }
 

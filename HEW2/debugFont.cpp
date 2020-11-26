@@ -16,11 +16,15 @@
 int textureId;
 
 void InitDebugFont() {
+#if defined(_DEBUG)||defined(DEBUG)
 	textureId = ReserveTextureLoadFile("texture/debug_font_32x64.png");
+#endif
 }
 
 void UninitDebugFont() {
+#if defined(_DEBUG)||defined(DEBUG)
 	ReleaseTexture(textureId);
+#endif
 }
 
 DEBUG_FONT_STATE DrawDebugFont(DEBUG_FONT_STATE* state, const char* str, va_list argp) {
@@ -90,8 +94,9 @@ DEBUG_FONT_STATE DrawDebugFont(DEBUG_FONT_STATE* state, const char* str, va_list
 	return s;
 
 #else
-	UNREFERENCED_PARAMETER(s);
+	UNREFERENCED_PARAMETER(state);
 	UNREFERENCED_PARAMETER(str);
+	UNREFERENCED_PARAMETER(argp);
 
 	return s;
 #endif
