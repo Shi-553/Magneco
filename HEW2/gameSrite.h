@@ -16,4 +16,4 @@ void DrawGameSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 tPos, D
 
 void DrawGameSprite(int textureId, D3DXVECTOR2 pos, float z);
 
-void DrawGameSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size);
+
