@@ -163,6 +163,6 @@ return &player;
 void PutBeacon() {
 	auto mapType = GetMapType(player.trans.GetIntPos());
 	if (mapType == MAP_BLOCK || mapType == MAP_GOAL) {
-		UpdateNPCShortestPath(player.trans.pos);
+		UpdateNPCShortestPath(player.trans.GetIntPos());
 	}
 }

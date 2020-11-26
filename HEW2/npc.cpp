@@ -28,6 +28,8 @@ void FourDir(std::queue<MapLabel>* mapQueue, MapLabel* label);
 #define NPC_SIZE_WIDTH 88
 #define NPC_SIZE_HEIGHT 88
 
+static int beaconTextureId = TEXTURE_INVALID_ID;
+
 static int npcTextureIdWait = TEXTURE_INVALID_ID;
 static int npcTextureIdMove = TEXTURE_INVALID_ID;
 static int npcTextureIdShadow = TEXTURE_INVALID_ID;
@@ -43,6 +45,8 @@ static INTVECTOR2 gBeaconPos;
 static int  npcTextureVertical = 0;
 
 void InitNPC() {
+	beaconTextureId = ReserveTextureLoadFile("texture/beacon01.png");
+
 	npcTextureIdWait = ReserveTextureLoadFile("texture/spr_rose_idle.png");
 	npcTextureIdMove = ReserveTextureLoadFile("texture/spr_rose_walk.png");
 	npcTextureIdShadow = ReserveTextureLoadFile("texture/spr_shadow.png");
@@ -62,8 +66,6 @@ void InitNPC() {
 
 void UninitNPC() {
 	ReleaseTexture(npcTextureIdWait);
-	ReleaseTexture(npcTextureIdMove);
-	ReleaseTexture(npcTextureIdShadow);
 }
 
 void UpdateNPC() {
@@ -134,6 +136,8 @@ void DrawNPC() {
 	}
 	else
 	{
+		DrawGameSprite(beaconTextureId, gBeaconPos.ToD3DXVECTOR2(), 30);
+
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 6 % 6),
 			npcTextureVertical
@@ -145,7 +149,7 @@ void DrawNPC() {
 	
 }
 
-void UpdateNPCShortestPath(D3DXVECTOR2 beaconPos) {
+void UpdateNPCShortestPath(INTVECTOR2 beaconPos) {
 	gBeaconPos = beaconPos;
 	UpdateNPCShortestPath();
 }
@@ -255,9 +259,9 @@ INTVECTOR2 FindNearestBlock() {
 }
 void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, MapLabel* nearest) {
 	auto mapType = GetMapType(label->pos);
-	//‚»‚±‚ª“ž’B‰Â”\‚È‚Æ‚«
+	//ãã“ãŒåˆ°é”å¯èƒ½ãªã¨ã
 	if (mapLabelList[label->pos.y][label->pos.x] > 0) {
-		//’u‚©‚È‚¢‚Æ‚¢‚¯‚È‚¢ƒuƒƒbƒN‚ª¡‚æ‚è­‚È‚¢‚©‚Ç‚¤‚©‚ÆA“¯‚¶‚È‚çƒr[ƒRƒ“‚©‚ç‚Ì‹——£‚ª’Z‚¢‚©‚Ç‚¤‚©
+		//ç½®ã‹ãªã„ã¨ã„ã‘ãªã„ãƒ–ãƒ­ãƒƒã‚¯ãŒä»Šã‚ˆã‚Šå°‘ãªã„ã‹ã©ã†ã‹ã¨ã€åŒã˜ãªã‚‰ãƒ“ãƒ¼ã‚³ãƒ³ã‹ã‚‰ã®è·é›¢ãŒçŸ­ã„ã‹ã©ã†ã‹
 		if (label->notBlockCount < nearest->notBlockCount || (label->notBlockCount == nearest->notBlockCount && label->label > nearest->label)) {
 			*nearest = *label;
 		}

@@ -16,7 +16,7 @@ void UpdateNPC();
 void DrawNPC();
 void UninitNPC();
 
-void UpdateNPCShortestPath(D3DXVECTOR2 beaconPos);
+void UpdateNPCShortestPath(INTVECTOR2 beaconPos);
 void UpdateNPCShortestPath();
 
 #endif // !_NPC_H
