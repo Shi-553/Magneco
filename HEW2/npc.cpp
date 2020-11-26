@@ -66,7 +66,6 @@ void InitNPC() {
 
 void UninitNPC() {
 	ReleaseTexture(npcTextureIdWait);
-	ReleaseTexture(beaconTextureId);
 }
 
 void UpdateNPC() {
@@ -260,9 +259,9 @@ INTVECTOR2 FindNearestBlock() {
 }
 void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, MapLabel* nearest) {
 	auto mapType = GetMapType(label->pos);
-	//‚»‚±‚ª“ž’B‰Â”\‚È‚Æ‚«
+	//ãã“ãŒåˆ°é”å¯èƒ½ãªã¨ã
 	if (mapLabelList[label->pos.y][label->pos.x] > 0) {
-		//’u‚©‚È‚¢‚Æ‚¢‚¯‚È‚¢ƒuƒƒbƒN‚ª¡‚æ‚è­‚È‚¢‚©‚Ç‚¤‚©‚ÆA“¯‚¶‚È‚çƒr[ƒRƒ“‚©‚ç‚Ì‹——£‚ª’Z‚¢‚©‚Ç‚¤‚©
+		//ç½®ã‹ãªã„ã¨ã„ã‘ãªã„ãƒ–ãƒ­ãƒƒã‚¯ãŒä»Šã‚ˆã‚Šå°‘ãªã„ã‹ã©ã†ã‹ã¨ã€åŒã˜ãªã‚‰ãƒ“ãƒ¼ã‚³ãƒ³ã‹ã‚‰ã®è·é›¢ãŒçŸ­ã„ã‹ã©ã†ã‹
 		if (label->notBlockCount < nearest->notBlockCount || (label->notBlockCount == nearest->notBlockCount && label->label > nearest->label)) {
 			*nearest = *label;
 		}

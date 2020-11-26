@@ -78,8 +78,10 @@ void UninitGameStart() {
 	ReleaseTexture(backGroundTexture);
 	ReleaseTexture(titleTextTexture);
 	ReleaseTexture(buttonDescriptionTexture);
-	ReleaseTexture(startButton.textureId);
-	ReleaseTexture(endButton.textureId);
+	ReleaseTexture(startTexture);
+	ReleaseTexture(startPressedTexture);
+	ReleaseTexture(endTexture);
+	ReleaseTexture(endPressedTexture);
 
 }
 void DrawGameStart() {
