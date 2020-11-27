@@ -7,6 +7,11 @@
 #define MAP_TEXTURE_WIDTH 32
 #define MAP_TEXTURE_HEIGHT 32
 
+#define MAP_GOAL_TEXTURE_HEIGHT 64
+
+#define MAP_GOAL_DRAW_SIZE_WIDTH 50
+#define MAP_GOAL_DRAW_SIZE_HEIGHT 100
+
 static Map initMapChipList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH]
 {
 	{{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},    {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},  {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},   {MAP_WALL, INTVECTOR2::GetUp()},   {MAP_WALL, INTVECTOR2::GetUp()}, {MAP_WALL, INTVECTOR2::GetUpperRightCorner()}},
@@ -26,6 +31,8 @@ static Map MapChipList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH];
 static int textureIds[MAP_MAX];
 static int map_textureIds;
 
+static int frame = 0;
+
 void InitMap(void)
 {
 	map_textureIds = ReserveTextureLoadFile("texture/”wŒi‚P.png");
@@ -35,7 +42,9 @@ void InitMap(void)
 	textureIds[MAP_BLOCK] = ReserveTextureLoadFile("texture/block02.png");
 	textureIds[MAP_WALL] = ReserveTextureLoadFile("texture/wall.png");
 	textureIds[MAP_ROCK] = ReserveTextureLoadFile("texture/brokenblock01.png");
-	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/wormhole01.png");
+	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/warpblock32_64_anime.png");
+
+	frame = 0;
 
 	for (int i = 0; i < MAPCHIP_HEIGHT; i++) {
 		for (int j = 0; j < MAPCHIP_WIDTH; j++) {
@@ -52,7 +61,7 @@ void UninitMap(void)
 
 void UpdateMap(void)
 {
-
+	frame++;
 }
 
 void DrawMap(void) 
@@ -71,7 +80,19 @@ void DrawMap(void)
 				DrawGameSprite(textureIds[MapChipList[j][i].type], D3DXVECTOR2(i, j), 100, tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_TEXTURE_HEIGHT));
 				continue;
 			}
-			DrawGameSprite(textureIds[MapChipList[j][i].type], D3DXVECTOR2(i, j), 100);
+
+			if (MapChipList[j][i].type == MAP_GOAL) {
+				auto tPos = D3DXVECTOR2(
+					MAP_TEXTURE_WIDTH * (frame / 15 % 8),
+					0
+				);
+
+				DrawGameSprite(textureIds[MapChipList[j][i].type], D3DXVECTOR2(i, j - 1), 100, D3DXVECTOR2(MAP_GOAL_DRAW_SIZE_WIDTH, MAP_GOAL_DRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_TEXTURE_HEIGHT));
+			}
+			else
+			{
+				DrawGameSprite(textureIds[MapChipList[j][i].type], D3DXVECTOR2(i, j), 100);
+			}
 		}
 	}
 }
