@@ -164,6 +164,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="enterBottonSprite.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="highlight.cpp" />
     <ClCompile Include="messeagebox.cpp" />
@@ -196,8 +197,9 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="trans.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="enterBottonSprite.h" />
     <ClInclude Include="font.h" />
-    <ClInclude Include="highlight.h" />  
+    <ClInclude Include="highlight.h" />
     <ClCompile Include="messeage.h" />
     <ClInclude Include="messeagebox.h" />
     <ClInclude Include="selectButton.h" />
