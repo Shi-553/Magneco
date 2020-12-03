@@ -31,5 +31,6 @@ void BlockDecision();
 Player* GetPlayer();
 
 void PutBeacon();
+void PurgePlayerFlyingObject();
 
 #endif // !_PLAYER_H

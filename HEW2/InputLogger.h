@@ -8,6 +8,7 @@ typedef enum VirtualKey {
 	MYVK_RIGHT,
 	MYVK_ENTER,
 	MYVK_BEACON,
+	MYVK_PURGE,
 
 #if _DEBUG
 	MYVK_GAME_CLEAR,

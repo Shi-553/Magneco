@@ -61,6 +61,7 @@ static KeyConversion KeyConversions[KEY_CONVERSIOINS_MAX]{
 	{MYVK_GAME_OVER,KK_F2},
 #endif
 	{MYVK_ENTER,KK_ENTER},
+	{MYVK_PURGE,KK_Q},
 };
 
 static AxisConversion AxisConversions[KEY_CONVERSIOINS_MAX]{
