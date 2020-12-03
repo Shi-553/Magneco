@@ -1,4 +1,4 @@
-#include "messeage.h"
+ï»¿#include "messeage.h"
 #include "font.h"
 #include"myd3d.h"
 #include "config.h"
@@ -10,15 +10,15 @@
 #define FONT_WIDTH	(long)(15 * 1.3)
 #define FONT_HEIGHT	(long)(32 * 1.3)
 
-#define FONT_COUNT_MAX_WIDTH (40)//”¼Šp30•¶š‚Ü‚Å
-#define FONT_COUNT_MAX_HEIGHT (6)//10s‚Ü‚Å
+#define FONT_COUNT_MAX_WIDTH (40)//åŠè§’30æ–‡å­—ã¾ã§
+#define FONT_COUNT_MAX_HEIGHT (6)//10è¡Œã¾ã§
 
-//‰¡•A‘å‚«‚­‚·‚é‚Æ¶‰E‚ÉL‚Ñ‚é
+//æ¨ªå¹…ã€å¤§ããã™ã‚‹ã¨å·¦å³ã«ä¼¸ã³ã‚‹
 #define RECT_WIDTH (FONT_WIDTH*FONT_COUNT_MAX_WIDTH)
-//‚‚³A‘å‚«‚­‚·‚é‚Æ‰º‚ÉL‚Ñ‚é
+//é«˜ã•ã€å¤§ããã™ã‚‹ã¨ä¸‹ã«ä¼¸ã³ã‚‹
 #define RECT_HEIGHT (FONT_HEIGHT*FONT_COUNT_MAX_HEIGHT)
 
-//’†S‚©‚ç‚Ç‚ê‚¾‚¯‰º‚É‚·‚é‚©
+//ä¸­å¿ƒã‹ã‚‰ã©ã‚Œã ã‘ä¸‹ã«ã™ã‚‹ã‹
 #define RECT_ADD_Y (75)
 
 void UpdateRect(RECT& rect);
@@ -49,10 +49,10 @@ void ClearMessageOffset() {
 
 void UpdateRect(RECT& rect) {
 	rect = {
-		(SCREEN_WIDTH - RECT_WIDTH) / 2 + offset.x * FONT_WIDTH,	         	// ¶ã‚ÌxÀ•W
-		SCREEN_HEIGHT / 2 + RECT_ADD_Y + offset.y * FONT_HEIGHT,				// ¶ã‚ÌyÀ•W
-		(SCREEN_WIDTH + RECT_WIDTH) / 2 ,		                                    // ‰E‰º‚ÌxÀ•W
-		SCREEN_HEIGHT / 2 + RECT_ADD_Y + RECT_HEIGHT 		                        // ‰E‰º‚ÌyÀ•W
+		(SCREEN_WIDTH - RECT_WIDTH) / 2 + offset.x * FONT_WIDTH,	         	// å·¦ä¸Šã®xåº§æ¨™
+		SCREEN_HEIGHT / 2 + RECT_ADD_Y + offset.y * FONT_HEIGHT,				// å·¦ä¸Šã®yåº§æ¨™
+		(SCREEN_WIDTH + RECT_WIDTH) / 2 ,		                                    // å³ä¸‹ã®xåº§æ¨™
+		SCREEN_HEIGHT / 2 + RECT_ADD_Y + RECT_HEIGHT 		                        // å³ä¸‹ã®yåº§æ¨™
 	};
 }
 
@@ -79,21 +79,25 @@ void DrawMessage(const char* str, va_list argp) {
 
 	int startIndex = 0;
 
-	for (int i = 0; i < length; i++) {//I—¹•¶š‚Ì1‚Â‘O‚Ü‚Å
-		//‰üs‚©
+	for (int i = 0; i < length; i++) {//çµ‚äº†æ–‡å­—ã®1ã¤å‰ã¾ã§
+		//æ”¹è¡Œã‹
 		bool isNewLine = buf[i] == '\n';
-		//ÅŒã‚©
+		//æœ€å¾Œã‹
 		bool isEnd = i == length - 1;
-		//Å‘å•¶š”‚©‚Ç‚¤‚©iÅ‘å‚©AÅ‘å‚©‚ç1‚Â‘O‚Å2ƒoƒCƒg•¶šj
-		bool isMax = (offset.x == FONT_COUNT_MAX_WIDTH) ||
+		//æœ€å¤§æ–‡å­—æ•°ã‹ã©ã†ã‹ï¼ˆæœ€å¤§ã‹ã€æœ€å¤§ã‹ã‚‰1ã¤å‰ã§2ãƒã‚¤ãƒˆæ–‡å­—ï¼‰
+		bool isM = (offset.x == FONT_COUNT_MAX_WIDTH);
+		bool isMax = isM ||
 			(offset.x == FONT_COUNT_MAX_WIDTH - 1 && _mbclen((BYTE*)&(buf[i])) == 2);
 
 		if (isNewLine || isMax || isEnd) {
+			if (isMax && !isM) {
+				i++;
+			}
 			font->DrawTextA(sprite,
 				&(buf[startIndex]),
 				i - startIndex,
 				&rc,
-				DT_LEFT,//¶Šñ‚¹
+				DT_LEFT,//å·¦å¯„ã›
 				color);
 
 			if (isNewLine || isMax) {
@@ -102,7 +106,7 @@ void DrawMessage(const char* str, va_list argp) {
 			}
 
 			if (isNewLine) {
-				startIndex = i + 1;//‰üs•¶š‚È‚ç‚»‚ê‚ğƒXƒLƒbƒv
+				startIndex = i + 1;//æ”¹è¡Œæ–‡å­—ãªã‚‰ãã‚Œã‚’ã‚¹ã‚­ãƒƒãƒ—
 			}
 			else {
 				startIndex = i;
@@ -111,7 +115,7 @@ void DrawMessage(const char* str, va_list argp) {
 			UpdateRect(rc);
 
 			if (!isEnd &&!isNewLine &&isMax) {
-				offset.x++;//ª‚±‚Ì‚Æ‚«‚±‚±‚Å1ŒÂ‰E‚Ö‚¸‚ç‚·‚Æ‚È‚º‚©‚¤‚Ü‚­‚¢‚­EEE
+				offset.x++;//â†‘ã“ã®ã¨ãã“ã“ã§1å€‹å³ã¸ãšã‚‰ã™ã¨ãªãœã‹ã†ã¾ãã„ããƒ»ãƒ»ãƒ»
 			}
 
 			continue;

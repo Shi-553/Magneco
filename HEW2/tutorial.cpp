@@ -106,7 +106,7 @@ void DrawTutorial()
 		DrawMesseageBox();
 
 		
-		DrawMessage("チュートリアルステージへようこそ！\n\nここではマグネッコでの操作やルールに\n\nついて説明していきます！");
+		DrawMessage("チュートリアルステージへようこそ！ここではマグネッコでの操作やルールに\n\nついて説明していきます！");
 
 		DrawEnterBottonSprite();
 	}
