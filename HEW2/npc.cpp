@@ -25,8 +25,8 @@ void FourDir(std::queue<MapLabel>* mapQueue, MapLabel* label);
 #define NPC_TEXTURE_WIDTH 64
 #define NPC_TEXTURE_HEIGHT 64
 
-#define NPC_SIZE_WIDTH 88
-#define NPC_SIZE_HEIGHT 88
+#define NPC_SIZE_WIDTH 1.76
+#define NPC_SIZE_HEIGHT 1.76
 
 static int beaconTextureId = TEXTURE_INVALID_ID;
 
