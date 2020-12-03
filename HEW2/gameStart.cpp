@@ -46,7 +46,7 @@ void InitGameStart() {
 	};
 
 	startButton.releasedCallback = []() {
-		GoNextScene(GameScene);
+		GoNextScene(TutorialScene);
 	};
 
 	endButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_START_BUTTON_HEIGHT + 32);

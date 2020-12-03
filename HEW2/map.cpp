@@ -80,7 +80,7 @@ void DrawMap(void)
 
 			if (MapChipList[j][i].type == MAP_GOAL) {
 				auto tPos = D3DXVECTOR2(
-					MAP_TEXTURE_WIDTH * (frame / 15 % 8),
+					MAP_TEXTURE_WIDTH * (frame / 8 % 8),
 					0
 				);
 

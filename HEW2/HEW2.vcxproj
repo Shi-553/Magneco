@@ -195,6 +195,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="gameStart.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="trans.cpp" />
+    <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="enterBottonSprite.h" />
@@ -229,6 +230,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="gameStart.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="trans.h" />
+    <ClInclude Include="tutorial.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

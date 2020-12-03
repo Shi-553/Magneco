@@ -91,9 +91,14 @@
     <ClCompile Include="messeagebox.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
-    <ClCompile Include="messeage.h" />
     <ClCompile Include="enterBottonSprite.cpp">
       <Filter>cpp\others</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>cpp\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="messeage.h">
+      <Filter>ヘッダー\others</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +194,9 @@
     </ClInclude>
     <ClInclude Include="enterBottonSprite.h">
       <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
+      <Filter>ヘッダー\scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -7,11 +7,11 @@
 #include <mbstring.h>
 
 
-#define FONT_WIDTH	(15)
-#define FONT_HEIGHT	(32)
+#define FONT_WIDTH	(long)(15 * 1.3)
+#define FONT_HEIGHT	(long)(32 * 1.3)
 
-#define FONT_COUNT_MAX_WIDTH (30)//”¼Šp30•¶Žš‚Ü‚Å
-#define FONT_COUNT_MAX_HEIGHT (10)//10s‚Ü‚Å
+#define FONT_COUNT_MAX_WIDTH (40)//”¼Šp30•¶Žš‚Ü‚Å
+#define FONT_COUNT_MAX_HEIGHT (6)//10s‚Ü‚Å
 
 //‰¡•A‘å‚«‚­‚·‚é‚Æ¶‰E‚ÉL‚Ñ‚é
 #define RECT_WIDTH (FONT_WIDTH*FONT_COUNT_MAX_WIDTH)
@@ -19,7 +19,7 @@
 #define RECT_HEIGHT (FONT_HEIGHT*FONT_COUNT_MAX_HEIGHT)
 
 //’†S‚©‚ç‚Ç‚ê‚¾‚¯‰º‚É‚·‚é‚©
-#define RECT_ADD_Y (0)
+#define RECT_ADD_Y (75)
 
 void UpdateRect(RECT& rect);
 
@@ -29,7 +29,7 @@ static LPD3DXSPRITE sprite;
 static D3DCOLOR color;
 
 
-void InitMesseage() {
+void InitMessage() {
 	CreateFont(FONT_HEIGHT, FONT_WIDTH, &font);
 	LPDIRECT3DDEVICE9 device = GetD3DDevice();
 	D3DXCreateSprite(device, &sprite);
@@ -38,12 +38,12 @@ void InitMesseage() {
 
 }
 
-void UninitMesseage() {
+void UninitMessage() {
 	sprite->Release();
 	font->Release();
 }
 
-void ClearMesseageOffset() {
+void ClearMessageOffset() {
 	offset = INTVECTOR2(0, 0);
 }
 
@@ -60,7 +60,7 @@ void SetMessageColor(D3DCOLOR c) {
 	color = c;
 }
 
-void DrawMesseage(const char* str, va_list argp) {
+void DrawMessage(const char* str, va_list argp) {
 	int length = _vscprintf(str, argp) + 1;// +1 '\0'
 	if (length <= 1) {
 		return;
@@ -126,36 +126,11 @@ void DrawMesseage(const char* str, va_list argp) {
 
 }
 
-void DrawMesseage(const char* str, ...) {
+void DrawMessage(const char* str, ...) {
 	va_list argp;
 	va_start(argp, str);
 
-	DrawMesseage(str, argp);
+	DrawMessage(str, argp);
 
 	va_end(argp);
-}
-
-
-void TestMessage() {
-#ifdef _DEBUG
-	InitMesseage();
-
-	ClearMesseageOffset();
-
-	SetMessageColor(D3DCOLOR_RGBA(0, 0, 0, 255));
-	DrawMesseage("1111111111\n11111111111%s11111111", "a‚ ‚ ‚ ");
-	DrawMesseage("‚ ‚¢‚¤%d‚¦6", 1515151);
-	DrawMesseage("‚ ‚¢‚¤‚¦6");
-	DrawMesseage("‚ ‚¢‚¤‚¦6");
-
-	SetMessageColor(D3DCOLOR_RGBA(0, 255, 255, 255));
-	DrawMesseage("‚ ‚¢‚¤‚¦6");
-	DrawMesseage("‚ ‚¢‚¤%.1f‚¦6", 1.54f);
-	DrawMesseage("‚ ‚¢‚¤‚¦5\n\n");
-
-	SetMessageColor(D3DCOLOR_RGBA(255, 255, 255, 255));
-	DrawMesseage("‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6");
-
-	UninitMesseage();
-#endif
 }
