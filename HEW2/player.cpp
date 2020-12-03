@@ -166,3 +166,7 @@ void PutBeacon() {
 		UpdateNPCShortestPath(player.trans.GetIntPos());
 	}
 }
+
+void PurgePlayerFlyingObject() {
+	player.flyingObjectList.clear();
+}
