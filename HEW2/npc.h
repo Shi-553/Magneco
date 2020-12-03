@@ -19,4 +19,6 @@ void UninitNPC();
 void UpdateNPCShortestPath(INTVECTOR2 beaconPos);
 void UpdateNPCShortestPath();
 
+void SecureMapLabelList();
+
 #endif // !_NPC_H

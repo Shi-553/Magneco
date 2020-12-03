@@ -3,6 +3,7 @@
 #include "texture.h"
 #include "gameSrite.h"
 #include "sprite.h"
+#include "npc.h"
 
 #define MAP_TEXTURE_WIDTH 32
 #define MAP_TEXTURE_HEIGHT 32
@@ -12,7 +13,7 @@
 #define MAP_GOAL_DRAW_SIZE_WIDTH 50
 #define MAP_GOAL_DRAW_SIZE_HEIGHT 100
 
-//static Map initMapChipList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH]
+//static Map initGetMap(GetMapHeight(),GetMapWidth())
 //{
 //	{{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},    {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},  {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},   {MAP_WALL, INTVECTOR2::GetUp()},   {MAP_WALL, INTVECTOR2::GetUp()}, {MAP_WALL, INTVECTOR2::GetUpperRightCorner()}},
 //	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
@@ -27,11 +28,13 @@
 //
 //};
 
-static Map MapChipList[MAPCHIP_HEIGHT][MAPCHIP_WIDTH] = {};
+static Map* MapChipList = NULL;
 static int textureIds[MAP_MAX];
 static int map_textureIds;
 
 static int frame = 0;
+static int mapHeight = 0;
+static int mapWidth = 0;
 
 void InitMap(void)
 {
@@ -46,14 +49,136 @@ void InitMap(void)
 
 	frame = 0;
 
-	MapInport("test.map");
+	//MapChipList[][] = {{NULL},{NULL}};
+
+
+	//MapChipList = new Map[mapHeight * mapWidth]{
+	//	{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},
+	//	{MAP_WALL, INTVECTOR2::GetUp()},
+	//{MAP_WALL, INTVECTOR2::GetUp()},
+	//{MAP_WALL, INTVECTOR2::GetUp()},
+ // {MAP_WALL, INTVECTOR2::GetUp()},
+	//{MAP_WALL, INTVECTOR2::GetUp()},
+	//{MAP_WALL, INTVECTOR2::GetUp()},
+ //  {MAP_WALL, INTVECTOR2::GetUp()},
+ //  {MAP_WALL, INTVECTOR2::GetUp()},
+ //{MAP_WALL, INTVECTOR2::GetUpperRightCorner()},
+
+	//		  {MAP_WALL, INTVECTOR2::GetRight()},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			 {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			  {MAP_BLOCK_NONE},
+	//			  {MAP_BLOCK_NONE},
+	//		 {MAP_WALL, INTVECTOR2::GetLeft()},
+
+	//		  {MAP_WALL, INTVECTOR2::GetRight()},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			 {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//					{MAP_GOAL},
+	//			  {MAP_BLOCK_NONE},
+	//		 {MAP_WALL, INTVECTOR2::GetLeft()},
+
+	//		  {MAP_WALL, INTVECTOR2::GetRight()},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			 {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			  {MAP_BLOCK_NONE},
+	//			  {MAP_BLOCK_NONE},
+	//		 {MAP_WALL, INTVECTOR2::GetLeft()},
+
+	//		  {MAP_WALL, INTVECTOR2::GetRight()},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			 {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			  {MAP_BLOCK_NONE},
+	//			  {MAP_BLOCK_NONE},
+	//		 {MAP_WALL, INTVECTOR2::GetLeft()},
+
+	//		  {MAP_WALL, INTVECTOR2::GetRight()},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//				   {MAP_ROCK},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			  {MAP_BLOCK_NONE},
+	//			  {MAP_BLOCK_NONE},
+	//		 {MAP_WALL, INTVECTOR2::GetLeft()},
+
+	//		  {MAP_WALL, INTVECTOR2::GetRight()},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			 {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			  {MAP_BLOCK_NONE},
+	//			  {MAP_BLOCK_NONE},
+	//		 {MAP_WALL, INTVECTOR2::GetLeft()},
+
+	//		  {MAP_WALL, INTVECTOR2::GetRight()},
+	//			   {MAP_BLOCK_NONE},
+	//					{MAP_BLOCK},
+	//			   {MAP_BLOCK_NONE},
+	//			 {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			  {MAP_BLOCK_NONE},
+	//			  {MAP_BLOCK_NONE},
+	//		 {MAP_WALL, INTVECTOR2::GetLeft()},
+
+	//		  {MAP_WALL, INTVECTOR2::GetRight()},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			 {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			   {MAP_BLOCK_NONE},
+	//			  {MAP_BLOCK_NONE},
+	//			  {MAP_BLOCK_NONE},
+	//		 {MAP_WALL, INTVECTOR2::GetLeft()},
+
+	//{MAP_WALL, INTVECTOR2::GetLowreLeftCorner()},
+ // {MAP_WALL, INTVECTOR2::GetDown()},
+ //{ MAP_WALL, INTVECTOR2::GetDown()},
+ // {MAP_WALL, INTVECTOR2::GetDown()},
+ //{MAP_WALL, INTVECTOR2::GetDown()},
+ //{MAP_WALL, INTVECTOR2::GetDown()},
+ // {MAP_WALL, INTVECTOR2::GetDown()},
+ //{MAP_WALL, INTVECTOR2::GetDown()},
+ //{MAP_WALL, INTVECTOR2::GetDown()},
+ //{MAP_WALL, INTVECTOR2::GetLowreRightCorner()},
+
+	//};
+
+	MapImport("test.map");
 
 }
 
 void UninitMap(void)
 {
-		ReleaseTexture(textureIds, MAP_MAX);
-		ReleaseTexture(map_textureIds);
+	ReleaseTexture(textureIds, MAP_MAX);
+	ReleaseTexture(map_textureIds);
+
+	if (MapChipList != NULL) {
+		delete[] MapChipList;
+		MapChipList = NULL;
+	}
+
 }
 
 void UpdateMap(void)
@@ -61,34 +186,35 @@ void UpdateMap(void)
 	frame++;
 }
 
-void DrawMap(void) 
+
+void DrawMap(void)
 {
 	DrawSprite(map_textureIds, { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT }, { 0,0 }, { SCREEN_WIDTH,SCREEN_HEIGHT });
 
-	for (int i = 0; i < MAPCHIP_HEIGHT; i++) {
-		for (int j = 0; j < MAPCHIP_WIDTH; j++) {
-			if (MapChipList[j][i].type == MAP_WALL) {
-				auto addDir = MapChipList[j][i].dir + INTVECTOR2(1, 1);
+	for (int i = 0; i < GetMapHeight(); i++) {
+		for (int j = 0; j < GetMapWidth(); j++) {
+			if (GetMap(j, i).type == MAP_WALL) {
+				auto addDir = GetMap(j, i).dir + INTVECTOR2(1, 1);
 				auto tPos = D3DXVECTOR2(
 					addDir.x * MAP_TEXTURE_WIDTH,               //0  1   2  
 					addDir.y * MAP_TEXTURE_HEIGHT               //0 0.3 0.6
 				);
 
-				DrawGameSprite(textureIds[MapChipList[j][i].type], D3DXVECTOR2(i, j), 100, tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_TEXTURE_HEIGHT));
+				DrawGameSprite(textureIds[GetMap(j, i).type], D3DXVECTOR2(i, j), 100, tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_TEXTURE_HEIGHT));
 				continue;
 			}
 
-			if (MapChipList[j][i].type == MAP_GOAL) {
+			if (GetMap(j, i).type == MAP_GOAL) {
 				auto tPos = D3DXVECTOR2(
 					MAP_TEXTURE_WIDTH * (frame / 15 % 8),
 					0
 				);
 
-				DrawGameSprite(textureIds[MapChipList[j][i].type], D3DXVECTOR2(i, j - 1), 100, D3DXVECTOR2(MAP_GOAL_DRAW_SIZE_WIDTH, MAP_GOAL_DRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_TEXTURE_HEIGHT));
+				DrawGameSprite(textureIds[GetMap(j, i).type], D3DXVECTOR2(i, j - 1), 100, D3DXVECTOR2(MAP_GOAL_DRAW_SIZE_WIDTH, MAP_GOAL_DRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_TEXTURE_HEIGHT));
 			}
 			else
 			{
-				DrawGameSprite(textureIds[MapChipList[j][i].type], D3DXVECTOR2(i, j), 100);
+				DrawGameSprite(textureIds[GetMap(j, i).type], D3DXVECTOR2(i, j), 100);
 			}
 		}
 	}
@@ -96,14 +222,14 @@ void DrawMap(void)
 
 void MapChange(FlyingObject flyingobject)
 {
-	auto intPos= flyingobject.trans.GetIntPos();
+	auto intPos = flyingobject.trans.GetIntPos();
 
-	if (intPos.x < 0 ||intPos.y < 0 || intPos.x >= MAPCHIP_WIDTH || intPos.y >= MAPCHIP_HEIGHT) {
+	if (intPos.x < 0 || intPos.y < 0 || intPos.x >= GetMapWidth() || intPos.y >= GetMapHeight()) {
 		return;
 	}
 
 	if (flyingobject.type == FLYING_OBJECT_BLOCK) {
-		MapChipList[intPos.y][intPos.x].type = MAP_BLOCK;
+		GetMap(intPos.y, intPos.x).type = MAP_BLOCK;
 	}
 }
 
@@ -112,16 +238,16 @@ bool MapFourDirectionsJudgment(INTVECTOR2 pos)
 	int x = pos.x;
 	int y = pos.y;
 
-	if (MapChipList[y + 1][x].type == MAP_BLOCK) {
+	if (GetMap(y + 1, x).type == MAP_BLOCK) {
 		return true;
 	}
-	if (MapChipList[y - 1][x].type == MAP_BLOCK) {
+	if (GetMap(y - 1, x).type == MAP_BLOCK) {
 		return true;
 	}
-	if (MapChipList[y][x + 1].type == MAP_BLOCK) {
+	if (GetMap(y, x + 1).type == MAP_BLOCK) {
 		return true;
 	}
-	if (MapChipList[y][x - 1].type == MAP_BLOCK) {
+	if (GetMap(y, x - 1).type == MAP_BLOCK) {
 		return true;
 	}
 
@@ -133,11 +259,11 @@ MapType GetMapType(INTVECTOR2 pos)
 	int x = pos.x;
 	int y = pos.y;
 
-	if (x < 0 || y < 0 || x >= MAPCHIP_WIDTH || y >= MAPCHIP_HEIGHT) {
+	if (x < 0 || y < 0 || x >= GetMapWidth() || y >= GetMapHeight()) {
 		return MAP_NONE;
 	}
 
-	return MapChipList[y][x].type;
+	return GetMap(y, x).type;
 }
 
 bool MapExport(const char* filename) {
@@ -151,13 +277,16 @@ bool MapExport(const char* filename) {
 	}
 
 	//	ファイルへの書き込み処理
-	fwrite(&MapChipList, sizeof(Map), MAPCHIP_HEIGHT * MAPCHIP_WIDTH, fp);
+	fwrite(&mapHeight, sizeof(int), 1, fp);
+	fwrite(&mapWidth, sizeof(int), 1, fp);
+
+	fwrite(MapChipList, sizeof(Map), mapHeight * mapWidth, fp);
 
 	fclose(fp);
 	return true;
 }
 
-bool MapInport(const char* filename) {
+bool MapImport(const char* filename) {
 	FILE* fp = NULL;
 
 	//	バイナリ読み込みモードでファイルを開く
@@ -168,9 +297,33 @@ bool MapInport(const char* filename) {
 	}
 
 	//	ファイルを読み込む処理
-	fread(&MapChipList, sizeof(Map), MAPCHIP_HEIGHT * MAPCHIP_WIDTH, fp);
+	fread(&mapHeight, sizeof(int), 1, fp);
+	fread(&mapWidth, sizeof(int), 1, fp);
+
+	if (MapChipList != NULL) {
+		delete[] MapChipList;
+		MapChipList = NULL;
+	}
+
+	MapChipList = new Map[mapHeight * mapWidth];
+
+	fread(MapChipList, sizeof(Map), mapHeight * mapWidth, fp);
+
+	SecureMapLabelList();
 
 	fclose(fp);
 	return true;
 
+}
+
+Map& GetMap(int y, int x) {
+	return MapChipList[y * mapWidth + x];
+}
+
+int GetMapHeight() {
+	return mapHeight;
+}
+
+int GetMapWidth() {
+	return mapWidth;
 }
