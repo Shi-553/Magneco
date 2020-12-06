@@ -173,6 +173,27 @@ void JudgePlayerandFlyingObjectHit() {
 
 	}
 
+	// purgeFlyingObjectとenemyの当たり判定
+	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
+		bool isMatched = false;
+		for (auto itr2 = player->purgeFlyingObjectList.begin(); itr2 != player->purgeFlyingObjectList.end(); itr2++) {
+			if (itr->type == FLYING_OBJECT_ENEMY) {
+				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
+					player->purgeFlyingObjectList.erase(itr2);
+					itr = flyingObjectList->erase(itr);
+					isMatched = true;
+					break;
+				}
+			}
+		}
+
+
+		if (!isMatched) {
+			itr++;
+		}
+
+	}
+
 
 
 
