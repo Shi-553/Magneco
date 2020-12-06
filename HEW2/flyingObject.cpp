@@ -54,14 +54,6 @@ void DrawFlyingObject() {
 }
 void UpdateFlyingObject() {
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
-		itr->trans.pos += itr->dir * GetDeltaTime();
-
-		itr->trans.UpdatePos();
-
-		if (itr->trans.pos.x > GetMapWidth() + FLYINGOBJECT_ADD_RANGE ||
-			itr->trans.pos.x < -GetMapWidth() - FLYINGOBJECT_ADD_RANGE ||
-			itr->trans.pos.y > GetMapHeight() + FLYINGOBJECT_ADD_RANGE ||
-			itr->trans.pos.y < -GetMapHeight() - FLYINGOBJECT_ADD_RANGE) {
 		if (UpdateFlyingObject(&*itr,1)) {
 			itr = flyingObjects.erase(itr);
 		}
@@ -77,10 +69,10 @@ bool UpdateFlyingObject(FlyingObject* flyingObject,float speed) {
 
 	flyingObject->trans.UpdatePos();
 
-	if (flyingObject->trans.pos.x > MAPCHIP_WIDTH + FLYINGOBJECT_ADD_RANGE ||
-		flyingObject->trans.pos.x < -MAPCHIP_WIDTH - FLYINGOBJECT_ADD_RANGE ||
-		flyingObject->trans.pos.y > MAPCHIP_HEIGHT + FLYINGOBJECT_ADD_RANGE ||
-		flyingObject->trans.pos.y < -MAPCHIP_HEIGHT - FLYINGOBJECT_ADD_RANGE) {
+	if (flyingObject->trans.pos.x > GetMapWidth() + FLYINGOBJECT_ADD_RANGE ||
+		flyingObject->trans.pos.x < -GetMapWidth() - FLYINGOBJECT_ADD_RANGE ||
+		flyingObject->trans.pos.y > GetMapHeight() + FLYINGOBJECT_ADD_RANGE ||
+		flyingObject->trans.pos.y < -GetMapHeight() - FLYINGOBJECT_ADD_RANGE) {
 		return true;
 	}
 	else {
