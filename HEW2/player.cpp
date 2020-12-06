@@ -22,25 +22,35 @@ static int  playerTextureVertical = 0;
 
 
 
-void InitPlayer(){
+void InitPlayer() {
 	textureId = ReserveTextureLoadFile("texture/player_32Å~32.png");
 
 	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();
-	player.dir = {0,0};
+	player.purgeFlyingObjectList.clear();
+	player.dir = { 0,0 };
 	player.speed = 0.1;
 	player.frame = 0;
 	playerTextureVertical = 0;
 }
 
-void UninitPlayer(){
+void UninitPlayer() {
 	ReleaseTexture(textureId);
 }
 
-void UpdatePlayer(){
+void UpdatePlayer() {
+	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
+		if (UpdateFlyingObject(&*itr, player.speed*60 / 2)) {
+			itr = player.purgeFlyingObjectList.erase(itr);
+		}
+		else {
+			itr++;
+		}
+	}
+
 	D3DXVECTOR2 one = player.dir.ToD3DXVECTOR2();
 	D3DXVec2Normalize(&one, &one);
-	
+
 
 	auto last = player.trans.pos;
 	auto move = one * player.speed * 60 * GetDeltaTime();
@@ -52,7 +62,7 @@ void UpdatePlayer(){
 	}
 
 	player.trans.pos.y += move.y;
-	 mapType = GetMapType(INTVECTOR2(player.trans.pos));
+	mapType = GetMapType(INTVECTOR2(player.trans.pos));
 	if (mapType == MAP_NONE || mapType == MAP_WALL) {
 		player.trans.pos.y = last.y;
 	}
@@ -61,7 +71,7 @@ void UpdatePlayer(){
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
-		itr->trans.pos +=  player.trans.pos-last;
+		itr->trans.pos += player.trans.pos - last;
 		itr->trans.UpdatePos();
 	}
 
@@ -71,49 +81,52 @@ void UpdatePlayer(){
 
 }
 
-void DrawPlayer(){
+void DrawPlayer() {
+	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); itr++) {
+		DrawFlyingObject(*itr);
+	}
 
 
 	auto tPos = D3DXVECTOR2(
 		PLAYER_TEXTURE_WIDTH * (player.frame / 16 % 4),
 		playerTextureVertical
-			);
+	);
 
-			DrawGameSprite(textureId, player.trans.pos - D3DXVECTOR2(0.5, 0.5), 30, tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+	DrawGameSprite(textureId, player.trans.pos - D3DXVECTOR2(0.5, 0.5), 30, tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
 
 
-    for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
-	itr != player.flyingObjectList.end(); itr++){
-	DrawFlyingObject(*itr);
-    }
+	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+		itr != player.flyingObjectList.end(); itr++) {
+		DrawFlyingObject(*itr);
+	}
 }
 
 
 
-void RotateLeftPlayer(){
+void RotateLeftPlayer() {
 
 }
 
-void RotateRightPlayer(){
+void RotateRightPlayer() {
 
 }
 
-void MoveUpPlayer(){
+void MoveUpPlayer() {
 	player.dir.y--;
 	playerTextureVertical = PLAYER_TEXTURE_HEIGHT * 3;
 }
 
-void MoveDownPlayer(){
+void MoveDownPlayer() {
 	player.dir.y++;
 	playerTextureVertical = 0;
 }
 
-void MoveLeftPlayer(){
+void MoveLeftPlayer() {
 	player.dir.x--;
 	playerTextureVertical = PLAYER_TEXTURE_HEIGHT;
 }
 
-void MoveRightPlayer(){
+void MoveRightPlayer() {
 	player.dir.x++;
 	playerTextureVertical = PLAYER_TEXTURE_HEIGHT * 2;
 }
@@ -125,12 +138,12 @@ void BlockDecision() {
 		itr != player.flyingObjectList.end(); itr++) {
 		MapType type;
 		type = GetMapType(itr->trans.GetIntPos());
-		if (type != MAP_BLOCK_NONE){
+		if (type != MAP_BLOCK_NONE) {
 			canBlockPut = false;
 			break;
 		}
 	}
-	if (canBlockPut == false){
+	if (canBlockPut == false) {
 		return;
 	}
 
@@ -156,8 +169,8 @@ void BlockDecision() {
 	UpdateNPCShortestPath();
 }
 
-Player* GetPlayer(){
-return &player;
+Player* GetPlayer() {
+	return &player;
 }
 
 void PutBeacon() {
@@ -168,5 +181,11 @@ void PutBeacon() {
 }
 
 void PurgePlayerFlyingObject() {
-	player.flyingObjectList.clear();
+	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();) {
+		itr->dir = itr->trans.pos - player.trans.pos;
+		itr->type = FLYING_OBJECT_PURGE_BLOCK;
+
+		player.purgeFlyingObjectList.push_back(*itr);
+		itr = player.flyingObjectList.erase(itr);
+	}
 }
