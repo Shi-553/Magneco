@@ -115,14 +115,6 @@ void GoNextScene(Scene scene, FadeMode mode) {
 	if (scene == currentScene)
 		return;
 
-	if (mode == FADE_NONE || mode == FADE_IN) {
-		if (NullScene < currentScene && currentScene < MaxScene) {
-			Uninits[currentScene]();
-		}
-		Inits[scene]();
-		currentScene = scene;
-	}
-
 	if (mode == FADE_IN) {
 		fade = 1;
 	}
@@ -130,6 +122,6 @@ void GoNextScene(Scene scene, FadeMode mode) {
 		fade = 0;
 	}
 
-	fadeMode = mode;
+	fadeMode = FADE_OUT;
 	nextScene = scene;
 }
