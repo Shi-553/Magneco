@@ -34,6 +34,8 @@ bool ReleaseInputLogger(VirtualKey key);
 int GetInputLoggerAxis(VirtualAxis axis);
 int GetInputLoggerAxisAmount(VirtualAxis axis);
 
+void DebugPrintInputLogger();
+
 void RecordStart( int frameMax);
 void RecordEnd();
 

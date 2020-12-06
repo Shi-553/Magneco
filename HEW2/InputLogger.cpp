@@ -9,7 +9,6 @@
 #define AXIS_CONVERSIOINS_MAX (8)
 
 
-
 typedef struct KeyConversion {
 	VirtualKey virtualKey;
 	int realKey;
@@ -186,6 +185,13 @@ int GetInputLoggerAxis(VirtualAxis axis) {
 }
 int GetInputLoggerAxisAmount(VirtualAxis axis) {
 	return  currentAxis[(int)axis]- previousAxis[(int)axis];
+}
+void DebugPrintInputLogger() {
+	for (int i = 0; i < KK_MAX; i++) {
+		if (Keyboard_IsKeyDown((Keyboard_Keys)i)) {
+			DebugPrintf("%d\n",i);
+		}
+	}
 }
 
 

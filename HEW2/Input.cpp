@@ -46,6 +46,7 @@ void UpdateInput() {
 	}
 
 #if _DEBUG
+	DebugPrintInputLogger();
 	if (TriggerInputLogger(MYVK_GAME_CLEAR)) {
 		GoNextScene(GameClearScene);
 	}
