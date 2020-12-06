@@ -96,6 +96,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 				itr->trans.Init(itr->trans.pos);
 
+				itr->type = FLYING_OBJECT_PLAYER_BLOCK;
 				player->flyingObjectList.push_back(*itr);
 				itr = flyingObjectList->erase(itr);
 			}
@@ -149,6 +150,7 @@ void JudgePlayerandFlyingObjectHit() {
 						}
 						itr->trans.UpdatePos();
 					}
+					itr->type = FLYING_OBJECT_PLAYER_BLOCK;
 
 					player->flyingObjectList.push_back(*itr);
 					itr = flyingObjectList->erase(itr);

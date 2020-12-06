@@ -228,8 +228,13 @@ void MapChange(FlyingObject flyingobject)
 		return;
 	}
 
+<<<<<<< HEAD
 	if (flyingobject.type == FLYING_OBJECT_BLOCK) {
 		GetMap(intPos.y, intPos.x).type = MAP_BLOCK;
+=======
+	if (flyingobject.type == FLYING_OBJECT_PLAYER_BLOCK) {
+		MapChipList[intPos.y][intPos.x].type = MAP_BLOCK;
+>>>>>>> プレイヤーにくっつぁE��瞬間色が変わるよぁE��した
 	}
 }
 
