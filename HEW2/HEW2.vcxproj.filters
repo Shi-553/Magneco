@@ -91,9 +91,11 @@
     <ClCompile Include="messeagebox.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
-    <ClCompile Include="messeage.h" />
     <ClCompile Include="enterBottonSprite.cpp">
       <Filter>cpp\others</Filter>
+    </ClCompile>
+    <ClCompile Include="messeage.h">
+      <Filter>ヘッダー\others</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
