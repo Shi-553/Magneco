@@ -68,4 +68,4 @@ cpp_space_pointer_reference_alignment = left
 cpp_space_around_ternary_operator = insert
 cpp_wrap_preserve_blocks = one_liners
 
-charset = utf-8
+charset = utf-8-bom
