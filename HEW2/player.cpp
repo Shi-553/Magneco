@@ -40,7 +40,7 @@ void UninitPlayer() {
 
 void UpdatePlayer() {
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
-		if (UpdateFlyingObject(&*itr, player.speed*60 / 2)) {
+		if (UpdateFlyingObject(&*itr, player.speed * 60 / 2)) {
 			itr = player.purgeFlyingObjectList.erase(itr);
 		}
 		else {
@@ -78,6 +78,7 @@ void UpdatePlayer() {
 	player.dir = { 0,0 };
 
 	player.frame++;
+
 
 }
 
@@ -182,7 +183,12 @@ void PutBeacon() {
 
 void PurgePlayerFlyingObject() {
 	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();) {
-		itr->dir = itr->trans.pos - player.trans.pos;
+		if (player.dir == INTVECTOR2(0, 0)) {
+			itr->dir = itr->trans.pos-player.trans.pos;
+		}
+		else {
+			itr->dir = player.dir.ToD3DXVECTOR2();
+		}
 		itr->type = FLYING_OBJECT_PURGE_BLOCK;
 
 		player.purgeFlyingObjectList.push_back(*itr);
