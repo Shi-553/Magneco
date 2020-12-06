@@ -223,4 +223,7 @@
       <UniqueIdentifier>{e9f5fb84-d649-4d2c-9bd0-d14d69acc49f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
+  </ItemGroup>
 </Project>
