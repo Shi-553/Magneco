@@ -1,4 +1,4 @@
-#include "config.h"
+﻿#include "config.h"
 #include "texture.h"
 #include "sprite.h"
 #include "flyingObject.h"
@@ -23,7 +23,7 @@ static int  playerTextureVertical = 0;
 
 
 void InitPlayer(){
-	textureId = ReserveTextureLoadFile("texture/player_32�~32.png");
+	textureId = ReserveTextureLoadFile("texture/player_32×32.png");
 
 	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();

@@ -1,4 +1,4 @@
-#include "config.h"
+﻿#include "config.h"
 #include "texture.h"
 #include "sprite.h"
 #include "myd3d.h"

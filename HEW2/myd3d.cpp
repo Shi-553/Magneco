@@ -1,4 +1,4 @@
-//Direct3D‚ÌŠj‚ğ‰Šú‰»
+ï»¿//Direct3Dã®æ ¸ã‚’åˆæœŸåŒ–
 
 #include <Windows.h>
 
@@ -11,11 +11,11 @@ static LPDIRECT3D9 d3d = NULL;
 static LPDIRECT3DDEVICE9 d3dDevice = NULL;
 
 
-//–ß‚è’l ¸”s:false
+//æˆ»ã‚Šå€¤ å¤±æ•—:false
 bool InitMyD3D(HWND hWnd) {
 	d3d = Direct3DCreate9(D3D_SDK_VERSION);
 	if (d3d == NULL) {
-		MessageBox(NULL, "Direct3DƒCƒ“ƒ^[ƒtƒF[ƒX‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½", "ƒGƒ‰[", MB_OK);
+		MessageBox(NULL, "Direct3Dã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ", "ã‚¨ãƒ©ãƒ¼", MB_OK);
 		return false;
 	}
 
@@ -26,49 +26,49 @@ bool InitMyD3D(HWND hWnd) {
 	d3dpp.BackBufferCount = 1;
 
 	d3dpp.MultiSampleType = D3DMULTISAMPLE_NONE;
-	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;//ƒXƒƒbƒv•û–@
+	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;//ã‚¹ãƒ¯ãƒƒãƒ—æ–¹æ³•
 	d3dpp.Windowed = TRUE;
-	d3dpp.EnableAutoDepthStencil = TRUE;//[“xƒoƒbƒtƒ@EƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@‚Ìg—p1
-	//d3dpp.AutoDepthStencilFormat = D3DFMT_D16;//[“xƒoƒbƒtƒ@EƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@‚ÌƒtƒH[ƒ}ƒbƒg
+	d3dpp.EnableAutoDepthStencil = TRUE;//æ·±åº¦ãƒãƒƒãƒ•ã‚¡ãƒ»ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡ã®ä½¿ç”¨1
+	//d3dpp.AutoDepthStencilFormat = D3DFMT_D16;//æ·±åº¦ãƒãƒƒãƒ•ã‚¡ãƒ»ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 
-	d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8;// 24ƒrƒbƒgZƒoƒbƒtƒ@8ƒrƒbƒgƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@ì¬
+	d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8;// 24ãƒ“ãƒƒãƒˆZãƒãƒƒãƒ•ã‚¡8ãƒ“ãƒƒãƒˆã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡ä½œæˆ
 
-	d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;//ƒtƒ‹ƒXƒNƒŠ[ƒ“‚Ì‚Æ‚«‚ÌƒŠƒtƒŒƒbƒVƒ…ƒŒ[ƒg
-	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;//Œã‚Å
+	d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;//ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã®ã¨ãã®ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ãƒ¬ãƒ¼ãƒˆ
+	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;//å¾Œã§
 
 	HRESULT hr;
 	hr = d3d->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &d3dDevice);
 
 	if (FAILED(hr)) {
-		MessageBox(NULL, "Direct3DƒfƒoƒCƒX‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½", "ƒGƒ‰[", MB_OK);
+		MessageBox(NULL, "Direct3Dãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ", "ã‚¨ãƒ©ãƒ¼", MB_OK);
 		return false;
 	}
 
 
-	//ƒeƒNƒXƒ`ƒƒƒtƒBƒ‹ƒ^ƒŠƒ“ƒO‚Ìİ’è
-	//Šg‘åk¬‚É‚·‚é•âŠÔ‚ÆA‚»‚ê‚Éƒ~ƒbƒvƒ}ƒbƒv‚ğg‚¤‚©‚Ç‚¤‚©
-	d3dDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);//Šg‘åƒtƒBƒ‹ƒ^
-	d3dDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);//k¬ƒtƒBƒ‹ƒ^
-	d3dDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_POINT);//ƒ~ƒbƒvƒ}ƒbƒvƒtƒBƒ‹ƒ^
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã®è¨­å®š
+	//æ‹¡å¤§ç¸®å°æ™‚ã«ã™ã‚‹è£œé–“ã¨ã€ãã‚Œã«ãƒŸãƒƒãƒ—ãƒãƒƒãƒ—ã‚’ä½¿ã†ã‹ã©ã†ã‹
+	d3dDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);//æ‹¡å¤§æ™‚ãƒ•ã‚£ãƒ«ã‚¿
+	d3dDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);//ç¸®å°æ™‚ãƒ•ã‚£ãƒ«ã‚¿
+	d3dDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_POINT);//ãƒŸãƒƒãƒ—ãƒãƒƒãƒ—ãƒ•ã‚£ãƒ«ã‚¿
 
 	d3dDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_MIRROR);
 	d3dDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_MIRROR);
 
-	//ƒAƒhƒŒƒbƒVƒ“ƒOƒ‚[ƒh‚Ìİ’è
-	//ƒeƒNƒXƒ`ƒƒ‚ÌƒAƒ‹ƒtƒ@’l‚ğg‚¦‚é
-	d3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);//ƒAƒ‹ƒtƒ@ƒuƒŒƒ“ƒhON
-	d3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);//ƒ\[ƒX‚Éƒ\[ƒX‚ÌƒAƒ‹ƒtƒ@‚ğ‚©‚¯‚é
-	d3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);//ƒ\[ƒX‚Ì‰º‚É‚ ‚é‚à‚Ì‚Íi‚P|ƒ\[ƒX‚ÌƒAƒ‹ƒtƒ@j‚ğ‚©‚¯‚é
+	//ã‚¢ãƒ‰ãƒ¬ãƒƒã‚·ãƒ³ã‚°ãƒ¢ãƒ¼ãƒ‰ã®è¨­å®š
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚¢ãƒ«ãƒ•ã‚¡å€¤ã‚’ä½¿ãˆã‚‹
+	d3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);//ã‚¢ãƒ«ãƒ•ã‚¡ãƒ–ãƒ¬ãƒ³ãƒ‰ON
+	d3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);//ã‚½ãƒ¼ã‚¹ã«ã‚½ãƒ¼ã‚¹ã®ã‚¢ãƒ«ãƒ•ã‚¡ã‚’ã‹ã‘ã‚‹
+	d3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);//ã‚½ãƒ¼ã‚¹ã®ä¸‹ã«ã‚ã‚‹ã‚‚ã®ã¯ï¼ˆï¼‘âˆ’ã‚½ãƒ¼ã‚¹ã®ã‚¢ãƒ«ãƒ•ã‚¡ï¼‰ã‚’ã‹ã‘ã‚‹
 	d3dDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);//
 
 
-	//ƒfƒtƒHƒ‹ƒg‚ÌƒeƒNƒXƒ`ƒƒƒXƒe[ƒWƒXƒe[ƒg
-	//F‚ğ‚Ç‚¤‚·‚é‚©ƒVƒF[ƒ_[g‚¤‚Æ—v‚ç‚È‚­‚È‚é
+	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¹ãƒ†ãƒ¼ãƒˆ
+	//è‰²ã‚’ã©ã†ã™ã‚‹ã‹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ä½¿ã†ã¨è¦ã‚‰ãªããªã‚‹
 	//RGB
 	//gPDevice->SetTextureStageState(0, D3DTSS_COLORARG0, D3DTA_CURRENT);
 	//gPDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
 	//gPDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_CURRENT);
-	//gPDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);//OP(‰‰Zq)SELECTARG1 ƒeƒNƒXƒ`ƒƒ‚¾‚¯ SELECTARG2 ’¸“_ƒJƒ‰[‚¾‚¯
+	//gPDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);//OP(æ¼”ç®—å­)SELECTARG1 ãƒ†ã‚¯ã‚¹ãƒãƒ£ã ã‘ SELECTARG2 é ‚ç‚¹ã‚«ãƒ©ãƒ¼ã ã‘
 
 	//ALPHA
 	//gPDevice->SetTextureStageState(0, D3DTSS_ALPHAARG0, D3DTA_CURRENT);
@@ -76,7 +76,7 @@ bool InitMyD3D(HWND hWnd) {
 	//gPDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
 	//gPDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 
-	//æZ‚É‚È‚é
+	//ä¹—ç®—ã«ãªã‚‹
 	d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 
 	return true;

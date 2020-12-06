@@ -1,4 +1,4 @@
-#ifndef MAP_H
+ï»¿#ifndef MAP_H
 #define MAP_H
 
 #include "myd3d.h"
@@ -9,12 +9,12 @@
 
 enum MapType
 {
-	MAP_NONE,    // –³Œø‚È’l
-	MAP_BLOCK_NONE,  // ƒuƒƒbƒN‚È‚µ
-	MAP_BLOCK,       // ƒuƒƒbƒN
-	MAP_WALL,     // •Ç
-	MAP_ROCK,        // Šâ
-	MAP_GOAL,        // ƒS[ƒ‹
+	MAP_NONE,    // ç„¡åŠ¹ãªå€¤
+	MAP_BLOCK_NONE,  // ãƒ–ãƒ­ãƒƒã‚¯ãªã—
+	MAP_BLOCK,       // ãƒ–ãƒ­ãƒƒã‚¯
+	MAP_WALL,     // å£
+	MAP_ROCK,        // å²©
+	MAP_GOAL,        // ã‚´ãƒ¼ãƒ«
 	MAP_MAX
 };
 
@@ -30,13 +30,13 @@ void UninitMap(void);
 void UpdateMap(void);
 void DrawMap(void);
 
-// ’u‚¢‚½‚Æ‚±‚ë‚Ìƒ}ƒbƒvƒ^ƒCƒv‚ğ•Ï‚¦‚é
+// ç½®ã„ãŸã¨ã“ã‚ã®ãƒãƒƒãƒ—ã‚¿ã‚¤ãƒ—ã‚’å¤‰ãˆã‚‹
 void MapChange(FlyingObject flyingobject);
 
-// 4•ûŒü‚ÉƒuƒƒbƒN‚ª‚ ‚é‚©‚Ì”»’è
+// 4æ–¹å‘ã«ãƒ–ãƒ­ãƒƒã‚¯ãŒã‚ã‚‹ã‹ã®åˆ¤å®š
 bool MapFourDirectionsJudgment(INTVECTOR2 pos);
 
-// ˆÊ’u‚ğw’è‚µ‚Äƒ}ƒbƒvƒ^ƒCƒv‚ğ•Ô‚·
+// ä½ç½®ã‚’æŒ‡å®šã—ã¦ãƒãƒƒãƒ—ã‚¿ã‚¤ãƒ—ã‚’è¿”ã™
 MapType GetMapType(INTVECTOR2 pos);
 
 bool MapExport(const char* filename);

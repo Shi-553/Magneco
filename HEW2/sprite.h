@@ -1,4 +1,4 @@
-#ifndef _SPRITE_H
+﻿#ifndef _SPRITE_H
 #define _SPRITE_H
 #include "myd3d.h"
 

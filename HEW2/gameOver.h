@@ -1,4 +1,4 @@
-#ifndef _GAME_OVER_H
+﻿#ifndef _GAME_OVER_H
 #define _GAME_OVER_H
 
 void InitGameOver();

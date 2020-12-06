@@ -1,4 +1,4 @@
-
+ï»¿
 #include "config.h"
 #include "sprite.h"
 #include "texture.h"
@@ -76,7 +76,7 @@ void DrawSceneManager() {
 
 void UpdateSceneManager() {
 
-	//ƒtƒF[ƒhƒAƒEƒg
+	//ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆ
 	if (fadeMode == FADE_OUT) {
 
 		fade += 0.02f;
@@ -84,7 +84,7 @@ void UpdateSceneManager() {
 		if (1 > fade) {
 			return;
 		}
-		//Š®‘S‚É^‚Á•‚É‚È‚Á‚½‚Æ‚«
+		//å®Œå…¨ã«çœŸã£é»’ã«ãªã£ãŸã¨ã
 		Uninits[currentScene]();
 		Inits[nextScene]();
 
@@ -94,7 +94,7 @@ void UpdateSceneManager() {
 		return;
 	}
 
-	//ƒtƒF[ƒhƒCƒ“
+	//ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³
 	if (fadeMode == FADE_IN) {
 		fade -= 0.02f;
 
@@ -107,7 +107,7 @@ void UpdateSceneManager() {
 		return;
 	}
 
-	//’Êí
+	//é€šå¸¸
 	Updates[currentScene]();
 }
 

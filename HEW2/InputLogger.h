@@ -1,4 +1,4 @@
-#ifndef _INPUT_LOGGER_H
+﻿#ifndef _INPUT_LOGGER_H
 #define _INPUT_LOGGER_H
 
 typedef enum VirtualKey {

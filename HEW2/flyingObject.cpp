@@ -1,4 +1,4 @@
-#include <list>
+ï»¿#include <list>
 #include "flyingObject.h"
 #include "texture.h"
 #include "myd3d.h"
@@ -7,7 +7,7 @@
 #include "map.h"
 #include "time.h"
 
-// flyingObject•`‰æ”ÍˆÍ‚Ì‰ÁZ•ª
+// flyingObjectæç”»ç¯„å›²ã®åŠ ç®—åˆ†
 #define FLYINGOBJECT_ADD_RANGE (5)
 
 

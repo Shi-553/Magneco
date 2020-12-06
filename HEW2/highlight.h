@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #include "myd3d.h"
 
-//ˆÊ’uA‘å‚«‚³Aƒsƒ{ƒbƒg‚ÌˆÊ’u(0~1)A‰½ŠpŒ`‚©AŠp“xiŒÊ“x–@j
+//ä½ç½®ã€å¤§ãã•ã€ãƒ”ãƒœãƒƒãƒˆã®ä½ç½®(0~1)ã€ä½•è§’å½¢ã‹ã€è§’åº¦ï¼ˆå¼§åº¦æ³•ï¼‰
 void DrawHighlight(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 pivot, int count, float startDegreeAngle);
 
 void DrawForeground(D3DCOLOR color);

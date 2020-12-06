@@ -1,7 +1,7 @@
-#ifndef _CONFIG_H
+ï»¿#ifndef _CONFIG_H
 #define _CONFIG_H
 
-//ƒQ[ƒ€‰æ–Ê‚ÌƒTƒCƒY
+//ã‚²ãƒ¼ãƒ ç”»é¢ã®ã‚µã‚¤ã‚º
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 

@@ -1,4 +1,4 @@
-#ifndef _GAME_CLEAR_H
+﻿#ifndef _GAME_CLEAR_H
 #define _GAME_CLEAR_H
 
 void InitGameClear();

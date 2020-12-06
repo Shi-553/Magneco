@@ -1,4 +1,4 @@
-// ƒeƒNƒXƒ`ƒƒŠÇ— 2020/6/26 ŽÄ“c°•F
+ï»¿// ãƒ†ã‚¯ã‚¹ãƒãƒ£ç®¡ç† 2020/6/26 æŸ´ç”°æ™´å½¦
 #ifndef _TEXTURE_H_
 #define _TEXTURE_H_
 
@@ -16,43 +16,43 @@ void UninitTexture();
 #define TEXTURE_FILENAME_MAX 256
 #define TEXTURE_INVALID_ID -1
 
-//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹‚Ì“Ç‚Ýž‚Ý—\–ñ
-//ˆø”Fƒtƒ@ƒCƒ‹–¼
-//–ß‚è’lFÅ‘åŠÇ—”‚ð’´‚¦‚Ä‚¢‚½‚çINVALID_TEXTURE_ID
+//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿äºˆç´„
+//å¼•æ•°ï¼šãƒ•ã‚¡ã‚¤ãƒ«å
+//æˆ»ã‚Šå€¤ï¼šæœ€å¤§ç®¡ç†æ•°ã‚’è¶…ãˆã¦ã„ãŸã‚‰INVALID_TEXTURE_ID
 int ReserveTextureLoadFile(const char* fileName);
 
 
-//—\–ñ‚³‚ê‚½ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹‚Ì“Ç‚Ýž‚Ý
-//–ß‚è’lF“Ç‚Ýž‚ß‚È‚©‚Á‚½ƒtƒ@ƒCƒ‹”
-//---------ƒfƒoƒCƒX‚ÌŽæ“¾‚ÉŽ¸”s‚·‚é‚Æ -1
+//äºˆç´„ã•ã‚ŒãŸãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
+//æˆ»ã‚Šå€¤ï¼šèª­ã¿è¾¼ã‚ãªã‹ã£ãŸãƒ•ã‚¡ã‚¤ãƒ«æ•°
+//---------ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—ã«å¤±æ•—ã™ã‚‹ã¨ -1
 int LoadTexture();
 
 
-//ƒeƒNƒXƒ`ƒƒ‚ð‘I‘ð‚µ‚Ä‰ð•ú
-//ˆø”1F‰ð•ú‚µ‚½‚¢ƒeƒNƒXƒ`ƒƒID
+//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’é¸æŠžã—ã¦è§£æ”¾
+//å¼•æ•°1ï¼šè§£æ”¾ã—ãŸã„ãƒ†ã‚¯ã‚¹ãƒãƒ£ID
 void ReleaseTexture(int textureIds);
 
 
-//ƒeƒNƒXƒ`ƒƒ‚ð‘I‘ð‚µ‚Ä‰ð•ú
-//ˆø”1F‰ð•ú‚µ‚½‚¢ƒeƒNƒXƒ`ƒƒID‚Ìæ“ªƒAƒhƒŒƒX
-//ˆø”2F‰ð•ú‚µ‚½‚¢ƒeƒNƒXƒ`ƒƒ”
+//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’é¸æŠžã—ã¦è§£æ”¾
+//å¼•æ•°1ï¼šè§£æ”¾ã—ãŸã„ãƒ†ã‚¯ã‚¹ãƒãƒ£IDã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹
+//å¼•æ•°2ï¼šè§£æ”¾ã—ãŸã„ãƒ†ã‚¯ã‚¹ãƒãƒ£æ•°
 void ReleaseTexture(int textureIds[], int count);
 
 
-//ƒeƒNƒXƒ`ƒƒ‚ð‘S‰ð•ú
+//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å…¨è§£æ”¾
 void ReleaseAllTexture();
 
 
-//ƒeƒNƒXƒ`ƒƒ‚Ì‘å‚«‚³‚ðŽæ“¾
-//ˆø”FƒeƒNƒXƒ`ƒƒID
-//–ß‚è’lFƒeƒNƒXƒ`ƒƒƒTƒCƒY
+//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®å¤§ãã•ã‚’å–å¾—
+//å¼•æ•°ï¼šãƒ†ã‚¯ã‚¹ãƒãƒ£ID
+//æˆ»ã‚Šå€¤ï¼šãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚µã‚¤ã‚º
 D3DXVECTOR2* GetTextureSize(int textureId);
 
 
-//ƒeƒNƒXƒ`ƒƒƒCƒ“ƒ^[ƒtƒF[ƒXƒ|ƒCƒ“ƒ^‚ÌŽæ“¾
-//ˆø”FƒeƒNƒXƒ`ƒƒID
-//–ß‚è’lFƒeƒNƒXƒ`ƒƒƒCƒ“ƒ^[ƒtƒF[ƒXƒ|ƒCƒ“ƒ^
-//---------ƒ_ƒ‚È‚çNULL
+//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ãƒã‚¤ãƒ³ã‚¿ã®å–å¾—
+//å¼•æ•°ï¼šãƒ†ã‚¯ã‚¹ãƒãƒ£ID
+//æˆ»ã‚Šå€¤ï¼šãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ãƒã‚¤ãƒ³ã‚¿
+//---------ãƒ€ãƒ¡ãªã‚‰NULL
 LPDIRECT3DTEXTURE9 GetTexture(int textureId);
 
 #endif // !_TEXTURE_H_

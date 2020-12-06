@@ -1,4 +1,4 @@
-#include "texture.h"
+ï»¿#include "texture.h"
 #include "config.h"
 #include "sprite.h"
 #include "InputLogger.h"
@@ -58,7 +58,7 @@ void InitGameClear()
 	AddButton(&returnTitleButton);
 	AddButton(&retryButton);
 
-	backgroundTexture = ReserveTextureLoadFile("texture/”wŒi‚P.png");
+	backgroundTexture = ReserveTextureLoadFile("texture/èƒŒæ™¯ï¼‘.png");
 	gameClearTexture = ReserveTextureLoadFile("texture/stageclear.png");
 
 	LoadTexture();

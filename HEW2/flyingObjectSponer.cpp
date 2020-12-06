@@ -1,4 +1,4 @@
-#include "flyingObjectSponer.h"
+ï»¿#include "flyingObjectSponer.h"
 #include "flyingObject.h"
 #include "map.h"
 
@@ -82,14 +82,14 @@ void UpdateFlyingSponer() {
 bool FlyingObjectSponerExport(const char* filename) {
 	FILE* fp = NULL;
 
-	//	ƒoƒCƒiƒŠ‘‚«‚İƒ‚[ƒh‚Åƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	//	ãƒã‚¤ãƒŠãƒªæ›¸ãè¾¼ã¿ãƒ¢ãƒ¼ãƒ‰ã§ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	fopen_s(&fp, filename, "wb");
 
 	if (fp == NULL) {
 		return false;
 	}
 
-	//	ƒtƒ@ƒCƒ‹‚Ö‚Ì‘‚«‚İˆ—
+	//	ãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®æ›¸ãè¾¼ã¿å‡¦ç†
 	fwrite(&sponeMax, sizeof(int), 1, fp);
 	fwrite(spones, sizeof(Spone), sponeMax, fp);
 
@@ -102,14 +102,14 @@ bool FlyingObjectSponerExport(const char* filename) {
 bool FlyingObjectSponerImport(const char* filename) {
 	FILE* fp = NULL;
 
-	//	ƒoƒCƒiƒŠ“Ç‚İ‚İƒ‚[ƒh‚Åƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	//	ãƒã‚¤ãƒŠãƒªèª­ã¿è¾¼ã¿ãƒ¢ãƒ¼ãƒ‰ã§ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	fopen_s(&fp, filename, "rb");
 
 	if (fp == NULL) {
 		return false;
 	}
 
-	//	ƒtƒ@ƒCƒ‹‚Ö‚Ì“Ç‚İ‚İˆ—
+	//	ãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®èª­ã¿è¾¼ã¿å‡¦ç†
 	fread(&sponeMax, sizeof(int), 1, fp);
 	spones = new Spone[sponeMax];
 	fread(spones, sizeof(Spone), sponeMax, fp);
