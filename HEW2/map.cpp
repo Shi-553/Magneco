@@ -38,7 +38,7 @@ static int mapWidth = 0;
 
 void InitMap(void)
 {
-	map_textureIds = ReserveTextureLoadFile("texture/�w�i�P.png");
+	map_textureIds = ReserveTextureLoadFile("texture/背景１.png");
 
 	textureIds[MAP_NONE] = ReserveTextureLoadFile("texture/MAP_NONE.png");
 	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE.png");
@@ -269,14 +269,14 @@ MapType GetMapType(INTVECTOR2 pos)
 bool MapExport(const char* filename) {
 	FILE* fp = NULL;
 
-	//	�o�C�i���������݃��[�h�Ńt�@�C����J��
+	//	バイナリ書き込みモードでファイルを開く
 	fopen_s(&fp, filename, "wb");
 
 	if (fp == NULL) {
 		return false;
 	}
 
-	//	�t�@�C���ւ̏������ݏ���
+	//	ファイルへの書き込み処理
 	fwrite(&mapHeight, sizeof(int), 1, fp);
 	fwrite(&mapWidth, sizeof(int), 1, fp);
 
@@ -289,14 +289,14 @@ bool MapExport(const char* filename) {
 bool MapImport(const char* filename) {
 	FILE* fp = NULL;
 
-	//	�o�C�i���ǂݍ��݃��[�h�Ńt�@�C����J��
+	//	バイナリ読み込みモードでファイルを開く
 	fopen_s(&fp, filename, "rb");
 
 	if (fp == NULL) {
 		return false;
 	}
 
-	//	�t�@�C����ǂݍ��ޏ���
+	//	ファイルを読み込む処理
 	fread(&mapHeight, sizeof(int), 1, fp);
 	fread(&mapWidth, sizeof(int), 1, fp);
 
