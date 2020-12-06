@@ -24,9 +24,6 @@ struct Map
 	INTVECTOR2 dir = INTVECTOR2::GetNone();
 };
 
-#define MAPCHIP_WIDTH  (10)
-#define MAPCHIP_HEIGHT (10)
-
 
 void InitMap(void);
 void UninitMap(void);
@@ -43,8 +40,11 @@ bool MapFourDirectionsJudgment(INTVECTOR2 pos);
 MapType GetMapType(INTVECTOR2 pos);
 
 bool MapExport(const char* filename);
-bool MapInport(const char* filename);
+bool MapImport(const char* filename);
 
+Map& GetMap(int y, int x);
 
+int GetMapHeight();
+int GetMapWidth();
 
 #endif // !MAP_H

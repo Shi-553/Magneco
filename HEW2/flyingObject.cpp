@@ -52,10 +52,10 @@ void UpdateFlyingObject(){
 
 		itr->trans.UpdatePos();
 
-		if (itr->trans.pos.x > MAPCHIP_WIDTH + FLYINGOBJECT_ADD_RANGE ||
-			itr->trans.pos.x < -MAPCHIP_WIDTH - FLYINGOBJECT_ADD_RANGE ||
-			itr->trans.pos.y > MAPCHIP_HEIGHT + FLYINGOBJECT_ADD_RANGE ||
-			itr->trans.pos.y < -MAPCHIP_HEIGHT - FLYINGOBJECT_ADD_RANGE) {
+		if (itr->trans.pos.x > GetMapWidth() + FLYINGOBJECT_ADD_RANGE ||
+			itr->trans.pos.x < -GetMapWidth() - FLYINGOBJECT_ADD_RANGE ||
+			itr->trans.pos.y > GetMapHeight() + FLYINGOBJECT_ADD_RANGE ||
+			itr->trans.pos.y < -GetMapHeight() - FLYINGOBJECT_ADD_RANGE) {
 			itr = flyingObjects.erase(itr);
 		}
 		else {
