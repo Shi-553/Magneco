@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "myd3d.h"
 #include <list>
 #include "trans.h"

@@ -1,4 +1,4 @@
-#include "config.h"
+﻿#include "config.h"
 #include "texture.h"
 #include "sprite.h"
 #include "myd3d.h"
@@ -143,7 +143,7 @@ void DrawNPC() {
 	}
 	else
 	{
-		DrawGameSprite(beaconTextureId, gBeaconPos.ToD3DXVECTOR2(), 30);
+		DrawGameSprite(beaconTextureId, gBeaconPos.ToD3DXVECTOR2() + D3DXVECTOR2(0.0f, -0.4f), 30);
 
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 6 % 6),

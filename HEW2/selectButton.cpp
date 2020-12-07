@@ -1,4 +1,4 @@
-#include "selectButton.h"
+ï»¿#include "selectButton.h"
 #include "sprite.h"
 #include <vector>
 
@@ -21,12 +21,12 @@ void DrawSelectButton() {
 	if (buttons.empty()) {
 		return;
 	}
-	//ƒtƒŒ[ƒ€‚Ì•`‰æ
+	//ãƒ•ãƒ¬ãƒ¼ãƒ ã®æç”»
 	auto selected = buttons[selectedIndex];
 	DrawSprite(selectFrameTextureId, selected->pos-D3DXVECTOR2(FRAME_WIDTH/2,FRAME_HEIGHT/2), selected->z, selected->size + D3DXVECTOR2(FRAME_WIDTH, FRAME_HEIGHT));
 
 
-	//ƒ{ƒ^ƒ“‚Ì•`‰æ
+	//ãƒœã‚¿ãƒ³ã®æç”»
 	for (auto itr = buttons.begin(); itr != buttons.end(); itr++) {
 		DrawSprite((*itr)->textureId, (*itr)->pos, (*itr)->z, (*itr)->size);
 	}

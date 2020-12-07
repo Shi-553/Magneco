@@ -1,4 +1,4 @@
-//
+ï»¿//
 
 #include "texture.h"
 #include "myd3d.h"
@@ -13,8 +13,8 @@ typedef struct Vertex2D_tag {
 }Vertex2D;
 
 #define FVF_VERTEX2D (D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1)
-//FVFFƒtƒŒƒLƒVƒuƒ‹ƒo[ƒeƒbƒNƒXƒtƒH[ƒ}ƒbƒg
-//RHW=1 ‚¾‚ÆÀ•W•ÏŠ·Ï‚Ý’¸“_‚¾‚ÆŠ¨ˆá‚¢‚·‚é
+//FVFï¼šãƒ•ãƒ¬ã‚­ã‚·ãƒ–ãƒ«ãƒãƒ¼ãƒ†ãƒƒã‚¯ã‚¹ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ
+//RHW=1 ã ã¨åº§æ¨™å¤‰æ›æ¸ˆã¿é ‚ç‚¹ã ã¨å‹˜é•ã„ã™ã‚‹
 
 
 LPDIRECT3DVERTEXBUFFER9 vertexBuffer1 = NULL;
@@ -50,7 +50,7 @@ void InitSprite() {
 	device->CreateVertexBuffer(sizeof(Vertex2D) * 4, D3DUSAGE_WRITEONLY, FVF_VERTEX2D, D3DPOOL_MANAGED, &vertexBuffer1, NULL);
 	device->CreateVertexBuffer(sizeof(Vertex2D) * 4, D3DUSAGE_WRITEONLY, FVF_VERTEX2D, D3DPOOL_MANAGED, &vertexBuffer2, NULL);
 
-	//                                                               «65536’¸“_‚Ü‚Å
+	//                                                               â†“65536é ‚ç‚¹ã¾ã§
 	device->CreateIndexBuffer(sizeof(WORD) * 6, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_MANAGED, &indexBuffer, NULL);
 }
 void UninitSprite() {
@@ -69,19 +69,19 @@ void UninitSprite() {
 	ReleaseAllTexture();
 }
 
-//UV 01 ƒTƒCƒYŒ´¡‘å DrawPrimitiveUP‚ðŽg—p
+//UV 01 ã‚µã‚¤ã‚ºåŽŸå¯¸å¤§ DrawPrimitiveUPã‚’ä½¿ç”¨
 void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, bool  flipLR ) {
 	LPDIRECT3DDEVICE9 d3dDevice = GetD3DDevice();
 
-	//‚±‚ÌƒeƒNƒXƒ`ƒƒŽg‚Á‚Ä[
+	//ã“ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ä½¿ã£ã¦ãƒ¼
 	d3dDevice->SetTexture(0, GetTexture(textureId));
 
 
-	//‚©‚ñ‚½‚ñ•`‰æ(’x‚¢)
-	//ƒfƒoƒCƒX‚ÌFVFÝ’è
+	//ã‹ã‚“ãŸã‚“æç”»(é…ã„)
+	//ãƒ‡ãƒã‚¤ã‚¹ã®FVFè¨­å®š
 	d3dDevice->SetFVF(FVF_VERTEX2D);
 
-	//ƒƒ‚ƒŠ‚É’¸“_ƒf[ƒ^ì‚é
+	//ãƒ¡ãƒ¢ãƒªã«é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ä½œã‚‹
 	Vertex2D vertexs[4];
 
 	D3DXVECTOR2* size = GetTextureSize(textureId);
@@ -100,22 +100,22 @@ void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, bool  flipLR ) {
 
 }
 
-// UV 01  DrawPrimitive‚ðŽg—p
+// UV 01  DrawPrimitiveã‚’ä½¿ç”¨
 void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, bool  flipLR ) {
 	LPDIRECT3DDEVICE9 d3dDevice = GetD3DDevice();
 
-	//‚±‚ÌƒeƒNƒXƒ`ƒƒŽg‚Á‚Ä[
+	//ã“ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ä½¿ã£ã¦ãƒ¼
 	d3dDevice->SetTexture(0, GetTexture(textureId));
 
 
-	//‚©‚ñ‚½‚ñ•`‰æ(’x‚¢)
-	//ƒfƒoƒCƒX‚ÌFVFÝ’è
+	//ã‹ã‚“ãŸã‚“æç”»(é…ã„)
+	//ãƒ‡ãƒã‚¤ã‚¹ã®FVFè¨­å®š
 	d3dDevice->SetFVF(FVF_VERTEX2D);
 
 
-	//VRAM‚É’¸“_ƒoƒbƒtƒ@‘‚«ž‚ÞI
+	//VRAMã«é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡æ›¸ãè¾¼ã‚€ï¼
 	Vertex2D* pV;
-	vertexBuffer1->Lock(0, 0, (void**)&pV, 0);//offset 0Asize 0‚Å‘SƒƒbƒN‚µ‚Ä‚é
+	vertexBuffer1->Lock(0, 0, (void**)&pV, 0);//offset 0ã€size 0ã§å…¨ãƒ­ãƒƒã‚¯ã—ã¦ã‚‹
 
 
 	SetSpritePos(pV, pos, z, size);
@@ -126,28 +126,28 @@ void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, bool 
 
 	vertexBuffer1->Unlock();
 
-	//‚±‚Ì’¸“_ƒoƒbƒtƒ@Žg‚Á‚ÄI
+	//ã“ã®é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ä½¿ã£ã¦ï¼
 	d3dDevice->SetStreamSource(0, vertexBuffer1, 0, sizeof(Vertex2D));
 
 
-	//•`‰æ
+	//æç”»
 	d3dDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 }
 
 
-// DrawIndexedPrimitiveUP‚ðŽg—p
+// DrawIndexedPrimitiveUPã‚’ä½¿ç”¨
 void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, D3DXVECTOR2 tPos, D3DXVECTOR2 tSize, bool  flipLR ){
 	LPDIRECT3DDEVICE9 d3dDevice = GetD3DDevice();
 
-	//‚±‚ÌƒeƒNƒXƒ`ƒƒŽg‚Á‚Ä[
+	//ã“ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ä½¿ã£ã¦ãƒ¼
 	d3dDevice->SetTexture(0, GetTexture(textureId));
 
 
-	//‚©‚ñ‚½‚ñ•`‰æ(’x‚¢)
-	//ƒfƒoƒCƒX‚ÌFVFÝ’è
+	//ã‹ã‚“ãŸã‚“æç”»(é…ã„)
+	//ãƒ‡ãƒã‚¤ã‚¹ã®FVFè¨­å®š
 	d3dDevice->SetFVF(FVF_VERTEX2D);
 
-	//ƒƒ‚ƒŠ‚É’¸“_ƒf[ƒ^ì‚é
+	//ãƒ¡ãƒ¢ãƒªã«é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ä½œã‚‹
 	Vertex2D vertexs[4];
 
 	SetSpritePos(vertexs,pos , z,size );
@@ -163,31 +163,31 @@ void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, D3DXV
 	SetSpriteUV(vertexs,* trueSize,tPos ,tSize, flipLR);
 
 
-	//ƒƒ‚ƒŠ‚ÉƒCƒ“ƒfƒbƒNƒXƒf[ƒ^ì‚é
-	//«65536’¸“_‚Ü‚Å
+	//ãƒ¡ãƒ¢ãƒªã«ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ä½œã‚‹
+	//â†“65536é ‚ç‚¹ã¾ã§
 	unsigned short indexs[] = { 0,1,2,1,3,2 };
 
-	//                                                                    «65536’¸“_‚Ü‚Å
+	//                                                                    â†“65536é ‚ç‚¹ã¾ã§
 	d3dDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, 4, 2, indexs, D3DFMT_INDEX16, vertexs, sizeof(Vertex2D));
 }
 
 
-//‰ñ“]‚à‚Å‚«‚é DrawIndexedPrimitive‚ðŽg—p
+//å›žè»¢ã‚‚ã§ãã‚‹ DrawIndexedPrimitiveã‚’ä½¿ç”¨
 void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, D3DXVECTOR2 tPos, D3DXVECTOR2 tSize, D3DXVECTOR2 cPos, float rad, bool  flipLR) {
 	LPDIRECT3DDEVICE9 d3dDevice = GetD3DDevice();
 
-	//‚±‚ÌƒeƒNƒXƒ`ƒƒŽg‚Á‚Ä[
+	//ã“ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ä½¿ã£ã¦ãƒ¼
 	d3dDevice->SetTexture(0, GetTexture(textureId));
 
 
-	//‚©‚ñ‚½‚ñ•`‰æ(’x‚¢)
-	//ƒfƒoƒCƒX‚ÌFVFÝ’è
+	//ã‹ã‚“ãŸã‚“æç”»(é…ã„)
+	//ãƒ‡ãƒã‚¤ã‚¹ã®FVFè¨­å®š
 	d3dDevice->SetFVF(FVF_VERTEX2D);
 
 
-	//VRAM‚É’¸“_ƒoƒbƒtƒ@‘‚«ž‚ÞI
+	//VRAMã«é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡æ›¸ãè¾¼ã‚€ï¼
 	Vertex2D* pV;
-	vertexBuffer1->Lock(0, 0, (void**)&pV, 0);//offset 0Asize 0‚Å‘SƒƒbƒN‚µ‚Ä‚é
+	vertexBuffer1->Lock(0, 0, (void**)&pV, 0);//offset 0ã€size 0ã§å…¨ãƒ­ãƒƒã‚¯ã—ã¦ã‚‹
 
 
 	SetSpritePos(pV, pos, z, size);
@@ -206,13 +206,13 @@ void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, D3DXV
 
 	vertexBuffer1->Unlock();
 
-	//‚±‚Ì’¸“_ƒoƒbƒtƒ@Žg‚Á‚ÄI
+	//ã“ã®é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ä½¿ã£ã¦ï¼
 	d3dDevice->SetStreamSource(0, vertexBuffer1, 0, sizeof(Vertex2D));
 
 
-	//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‘‚«ž‚ÞI
+	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡æ›¸ãè¾¼ã‚€ï¼
 	WORD* pI;
-	indexBuffer->Lock(0, 0, (void**)&pI, 0);//offset 0Asize 0‚Å‘SƒƒbƒN‚µ‚Ä‚é
+	indexBuffer->Lock(0, 0, (void**)&pI, 0);//offset 0ã€size 0ã§å…¨ãƒ­ãƒƒã‚¯ã—ã¦ã‚‹
 
 // { 0,1,2,1,3,2 };
 	pI[0] = 0;
@@ -223,32 +223,32 @@ void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, D3DXV
 	pI[5] = 2;
 	indexBuffer->Unlock();
 
-	//‚±‚ÌƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@Žg‚Á‚ÄI
+	//ã“ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ä½¿ã£ã¦ï¼
 	d3dDevice->SetIndices(indexBuffer);
 
 
-	//ƒx[ƒX‚ÌƒCƒ“ƒfƒbƒNƒXHAÅ¬ƒCƒ“ƒfƒbƒNƒXA’¸“_”AÅ‰‚ÌƒCƒ“ƒfƒbƒNƒXHAƒvƒŠƒ~ƒeƒBƒu(‚±‚Ìê‡ŽOŠpŒ`)‚Ì”
+	//ãƒ™ãƒ¼ã‚¹ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼Ÿã€æœ€å°ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã€é ‚ç‚¹æ•°ã€æœ€åˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼Ÿã€ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–(ã“ã®å ´åˆä¸‰è§’å½¢)ã®æ•°
 	d3dDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4,0,2);
 }
 
 
 
-//ƒ}ƒgƒŠƒbƒNƒX DrawIndexedPrimitive‚ðŽg—p
+//ãƒžãƒˆãƒªãƒƒã‚¯ã‚¹ DrawIndexedPrimitiveã‚’ä½¿ç”¨
 void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, D3DXVECTOR2 tPos, D3DXVECTOR2 tSize, D3DXVECTOR2 cPos, D3DXMATRIX* matrix,bool  flipLR) {
 	LPDIRECT3DDEVICE9 d3dDevice = GetD3DDevice();
 
-	//‚±‚ÌƒeƒNƒXƒ`ƒƒŽg‚Á‚Ä[
+	//ã“ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ä½¿ã£ã¦ãƒ¼
 	d3dDevice->SetTexture(0, GetTexture(textureId));
 
 
-	//‚©‚ñ‚½‚ñ•`‰æ(’x‚¢)
-	//ƒfƒoƒCƒX‚ÌFVFÝ’è
+	//ã‹ã‚“ãŸã‚“æç”»(é…ã„)
+	//ãƒ‡ãƒã‚¤ã‚¹ã®FVFè¨­å®š
 	d3dDevice->SetFVF(FVF_VERTEX2D);
 
 
-	//VRAM‚É’¸“_ƒoƒbƒtƒ@‘‚«ž‚ÞI
+	//VRAMã«é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡æ›¸ãè¾¼ã‚€ï¼
 	Vertex2D* pV;
-	vertexBuffer1->Lock(0, 0, (void**)&pV, 0);//offset 0Asize 0‚Å‘SƒƒbƒN‚µ‚Ä‚é
+	vertexBuffer1->Lock(0, 0, (void**)&pV, 0);//offset 0ã€size 0ã§å…¨ãƒ­ãƒƒã‚¯ã—ã¦ã‚‹
 
 
 	SetSpritePos(pV, pos, z, size);
@@ -267,13 +267,13 @@ void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, D3DXV
 
 	vertexBuffer1->Unlock();
 
-	//‚±‚Ì’¸“_ƒoƒbƒtƒ@Žg‚Á‚ÄI
+	//ã“ã®é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ä½¿ã£ã¦ï¼
 	d3dDevice->SetStreamSource(0, vertexBuffer1, 0, sizeof(Vertex2D));
 
 
-	//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‘‚«ž‚ÞI
+	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡æ›¸ãè¾¼ã‚€ï¼
 	WORD* pI;
-	indexBuffer->Lock(0, 0, (void**)&pI, 0);//offset 0Asize 0‚Å‘SƒƒbƒN‚µ‚Ä‚é
+	indexBuffer->Lock(0, 0, (void**)&pI, 0);//offset 0ã€size 0ã§å…¨ãƒ­ãƒƒã‚¯ã—ã¦ã‚‹
 
 // { 0,1,2,1,3,2 };
 	pI[0] = 0;
@@ -284,11 +284,11 @@ void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, D3DXV
 	pI[5] = 2;
 	indexBuffer->Unlock();
 
-	//‚±‚ÌƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@Žg‚Á‚ÄI
+	//ã“ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ä½¿ã£ã¦ï¼
 	d3dDevice->SetIndices(indexBuffer);
 
 
-	//ƒx[ƒX‚ÌƒCƒ“ƒfƒbƒNƒXHAÅ¬ƒCƒ“ƒfƒbƒNƒXA’¸“_”AÅ‰‚ÌƒCƒ“ƒfƒbƒNƒXHAƒvƒŠƒ~ƒeƒBƒu(‚±‚Ìê‡ŽOŠpŒ`)‚Ì”
+	//ãƒ™ãƒ¼ã‚¹ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼Ÿã€æœ€å°ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã€é ‚ç‚¹æ•°ã€æœ€åˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼Ÿã€ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–(ã“ã®å ´åˆä¸‰è§’å½¢)ã®æ•°
 	d3dDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4,0,2);
 }
 

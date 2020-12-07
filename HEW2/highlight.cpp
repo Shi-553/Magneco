@@ -1,4 +1,4 @@
-
+ï»¿
 #include "highlight.h"
 #include "config.h"
 #include "texture.h"
@@ -44,17 +44,17 @@ void SetBackStencilBufferMask()
 {
 	auto device = GetD3DDevice();
 
-	// Zƒoƒbƒtƒ@‚Ìİ’è‚ğ•ÏX‚·‚é‚Ì‚ÅAŒ»İ‚Ìó‘Ô‚ğ•Û‘¶‚µ‚Ä‚¨‚­
+	// Zãƒãƒƒãƒ•ã‚¡ã®è¨­å®šã‚’å¤‰æ›´ã™ã‚‹ã®ã§ã€ç¾åœ¨ã®çŠ¶æ…‹ã‚’ä¿å­˜ã—ã¦ãŠã
 	device->GetRenderState(D3DRS_ZENABLE, &g_dwCurZTest);
 	device->GetRenderState(D3DRS_ZFUNC, &g_dwCurZFunc);
 
-	// Zƒoƒbƒtƒ@‚É‘‚«‚Ü‚È‚¢‚æ‚¤‚É‚µ‚Ü‚·
+	// Zãƒãƒƒãƒ•ã‚¡ã«æ›¸ãè¾¼ã¾ãªã„ã‚ˆã†ã«ã—ã¾ã™
 	device->SetRenderState(D3DRS_ZENABLE, true);
 	device->SetRenderState(D3DRS_ZFUNC, D3DCMP_NEVER);
 
 
-	device->SetRenderState(D3DRS_STENCILENABLE, true);  // ƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@—LŒø
-	device->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_ALWAYS); // ƒXƒeƒ“ƒVƒ‹ƒeƒXƒg‚Íí‚És‚¤
+	device->SetRenderState(D3DRS_STENCILENABLE, true);  // ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡æœ‰åŠ¹
+	device->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_ALWAYS); // ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ†ã‚¹ãƒˆã¯å¸¸ã«è¡Œã†
 	device->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_REPLACE);
 	device->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_REPLACE);
 	device->SetRenderState(D3DRS_STENCILREF, 0x01);
@@ -93,16 +93,16 @@ void DrawCircle(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 pivot, int count,
 	}
 	auto d3dDevice = GetD3DDevice();
 
-	//‚±‚ÌƒeƒNƒXƒ`ƒƒg‚Á‚Ä[
+	//ã“ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ä½¿ã£ã¦ãƒ¼
 	d3dDevice->SetTexture(0, NULL);
 
-	//‚©‚ñ‚½‚ñ•`‰æ(’x‚¢)
-	//ƒfƒoƒCƒX‚ÌFVFİ’è
+	//ã‹ã‚“ãŸã‚“æç”»(é…ã„)
+	//ãƒ‡ãƒã‚¤ã‚¹ã®FVFè¨­å®š
 	d3dDevice->SetFVF(FVF_VERTEX2D);
 
-//’†S‚Å‚P+Šp‚Ì”+d•¡‚³‚¹‚é•ª‚P
+//ä¸­å¿ƒã§ï¼‘+è§’ã®æ•°+é‡è¤‡ã•ã›ã‚‹åˆ†ï¼‘
 	int vertexCount = count + 2;
-	//ƒƒ‚ƒŠ‚É’¸“_ƒf[ƒ^ì‚é
+	//ãƒ¡ãƒ¢ãƒªã«é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ä½œã‚‹
 	Vertex2D* vertexs = new Vertex2D[vertexCount];
 
 	vertexs[0].pos = D3DXVECTOR4(pos.x, pos.y, 0, 0);

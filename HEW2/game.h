@@ -1,4 +1,4 @@
-//ƒQ[ƒ€–{‘Ì
+ï»¿//ã‚²ãƒ¼ãƒ æœ¬ä½“
 
 #ifndef _GAME_H
 #define _GAME_H

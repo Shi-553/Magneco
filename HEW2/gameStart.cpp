@@ -1,4 +1,4 @@
-
+ï»¿
 #include "config.h"
 #include "texture.h"
 #include "sprite.h"
@@ -63,9 +63,9 @@ void InitGameStart() {
 	AddButton(&startButton);
 	AddButton(&endButton);
 
-	backGroundTexture = ReserveTextureLoadFile("texture/”wŒi‚P.png");
+	backGroundTexture = ReserveTextureLoadFile("texture/èƒŒæ™¯ï¼‘.png");
 
-	titleTextTexture = ReserveTextureLoadFile("texture/title_640~240.png");
+	titleTextTexture = ReserveTextureLoadFile("texture/title_640Ã—240.png");
 
 	buttonDescriptionTexture = ReserveTextureLoadFile("texture/tips.png");
 

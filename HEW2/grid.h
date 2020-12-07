@@ -1,13 +1,13 @@
-#ifndef GRID_H_
+ï»¿#ifndef GRID_H_
 #define GRID_H_
 
 #include <d3d9.h>
 
-// ƒOƒŠƒbƒh•`‰æƒ‚ƒWƒ…[ƒ‹‚Ì‰Šú‰»
+// ã‚°ãƒªãƒƒãƒ‰æç”»ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®åˆæœŸåŒ–
 //
-// size  ... ƒOƒŠƒbƒhƒTƒCƒY
-// count ... ˆê•Ó‚ÌƒOƒŠƒbƒh”
-// color ... ƒOƒŠƒbƒhƒJƒ‰[
+// size  ... ã‚°ãƒªãƒƒãƒ‰ã‚µã‚¤ã‚º
+// count ... ä¸€è¾ºã®ã‚°ãƒªãƒƒãƒ‰æ•°
+// color ... ã‚°ãƒªãƒƒãƒ‰ã‚«ãƒ©ãƒ¼
 
 void Grid_Initialize(float size, int count, D3DCOLOR color);
 

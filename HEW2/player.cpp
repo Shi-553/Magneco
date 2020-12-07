@@ -22,8 +22,8 @@ static int  playerTextureVertical = 0;
 
 
 
-void InitPlayer() {
-	textureId = ReserveTextureLoadFile("texture/player_32Å~32.png");
+void InitPlayer(){
+	textureId = ReserveTextureLoadFile("texture/player_32√ó32.png");
 
 	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();

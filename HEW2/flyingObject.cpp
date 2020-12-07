@@ -7,7 +7,7 @@
 #include "map.h"
 #include "time.h"
 
-// flyingObject�`��͈͂̉��Z��
+// flyingObject描画範囲の加算分
 #define FLYINGOBJECT_ADD_RANGE (5)
 
 
