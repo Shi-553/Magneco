@@ -1,4 +1,4 @@
-// ƒeƒNƒXƒ`ƒƒŠÇ— 2020/6/26 Ä“c°•F
+ï»¿// ãƒ†ã‚¯ã‚¹ãƒãƒ£ç®¡ç† 2020/6/26 æŸ´ç”°æ™´å½¦
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "texture.h"
@@ -16,7 +16,7 @@ typedef struct {
 
 void InitTextureStruct(Texture* t);
 
-// Texture\‘¢‘Ì‚Ì‰Šú‰»
+// Textureæ§‹é€ ä½“ã®åˆæœŸåŒ–
 void InitTextureStruct(Texture* t) {
 	if (t->texture != NULL) {
 		t->texture->Release();
@@ -34,7 +34,7 @@ void InitTextureStruct(Texture* t) {
 
 static Texture textures[TEXTURE_MAX];
 
-// texture.cpp‚Ì‰Šú‰»
+// texture.cppã®åˆæœŸåŒ–
 void InitTexture() {
 	for (int i = 0; i < TEXTURE_MAX; i++)
 	{
@@ -45,29 +45,29 @@ void UninitTexture() {
 }
 
 
-//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ—\–ñ
-//ˆø”Fƒtƒ@ƒCƒ‹–¼
-//–ß‚è’lFÅ‘åŠÇ—”‚ğ’´‚¦‚Ä‚¢‚½‚çINVALID_TEXTURE_ID
+//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿äºˆç´„
+//å¼•æ•°ï¼šãƒ•ã‚¡ã‚¤ãƒ«å
+//æˆ»ã‚Šå€¤ï¼šæœ€å¤§ç®¡ç†æ•°ã‚’è¶…ãˆã¦ã„ãŸã‚‰INVALID_TEXTURE_ID
 int ReserveTextureLoadFile(const char* filename) {
 
 	int freeIndex = -1;
 
-	//Šù‚É—\–ñ‚³‚ê‚Ä‚¢‚éê‡—\–ñ‚µ‚È‚¢
+	//æ—¢ã«äºˆç´„ã•ã‚Œã¦ã„ã‚‹å ´åˆäºˆç´„ã—ãªã„
 	for (int i = 0; i < TEXTURE_MAX; i++)
 	{
 		if (textures[i].referenceCount == 0) {
-			//•”‰®‚ª‹ó‚¢‚Ä‚¢‚é
+			//éƒ¨å±‹ãŒç©ºã„ã¦ã„ã‚‹
 			if (freeIndex == -1) {
 				freeIndex = i;
 			}
 			continue;
 		}
 
-		//ƒnƒbƒVƒ…‚ğì‚é‚Æ‘‚­‚È‚é
+		//ãƒãƒƒã‚·ãƒ¥ã‚’ä½œã‚‹ã¨æ—©ããªã‚‹
 		if (strcmp(filename, textures[i].filename) == 0) {
 			textures[i].referenceCount++;
 
-			//Šù‚É—\–ñ‚³‚ê‚Ä‚¢‚é
+			//æ—¢ã«äºˆç´„ã•ã‚Œã¦ã„ã‚‹
 			return i;
 		}
 	}
@@ -84,9 +84,9 @@ int ReserveTextureLoadFile(const char* filename) {
 }
 
 
-//—\–ñ‚³‚ê‚½ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
-//–ß‚è’lF“Ç‚İ‚ß‚È‚©‚Á‚½ƒtƒ@ƒCƒ‹”
-//---------ƒfƒoƒCƒX‚Ìæ“¾‚É¸”s‚·‚é‚Æ -1
+//äºˆç´„ã•ã‚ŒãŸãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
+//æˆ»ã‚Šå€¤ï¼šèª­ã¿è¾¼ã‚ãªã‹ã£ãŸãƒ•ã‚¡ã‚¤ãƒ«æ•°
+//---------ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—ã«å¤±æ•—ã™ã‚‹ã¨ -1
 int LoadTexture() {
 	LPDIRECT3DDEVICE9 device = GetD3DDevice();
 	if (device == NULL) {
@@ -98,26 +98,26 @@ int LoadTexture() {
 	for (int i = 0; i < TEXTURE_MAX; i++)
 	{
 		if (textures[i].filename[0] == '\0') {
-			//—\–ñ‚³‚ê‚Ä‚¢‚È‚¢
+			//äºˆç´„ã•ã‚Œã¦ã„ãªã„
 			continue;
 		}
 		if (textures[i].texture != NULL) {
-			//Šù‚É“Ç‚İ‚Ü‚ê‚Ä‚¢‚é
+			//æ—¢ã«èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹
 			continue;
 		}
-		//ƒeƒNƒXƒ`ƒƒƒTƒCƒY‚ğæ“¾
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚µã‚¤ã‚ºã‚’å–å¾—
 		D3DXIMAGE_INFO info;
 		D3DXGetImageInfoFromFile(textures[i].filename, &info);
 		textures[i].size = (D3DXVECTOR2*)malloc(sizeof(D3DXVECTOR2));
 		if (textures[i].size == NULL) {
-			DebugPrintf("ƒTƒCƒYæ“¾¸”s Index: %d ,Filename: %s\n", i, textures[i].filename);
+			DebugPrintf("ã‚µã‚¤ã‚ºå–å¾—å¤±æ•— Index: %d ,Filename: %s\n", i, textures[i].filename);
 			errorCount++;
 			continue;
 		}
 		textures[i].size->x = info.Width;
 		textures[i].size->y = info.Height;
 
-		//“®“I‚Éƒƒ‚ƒŠ‚ğŠm•Û‚µ‚Ä‚»‚±‚É“Ç‚İ‚ñ‚ÅA‚»‚Ìƒƒ‚ƒŠ‚©‚çDirectX‚ÌƒeƒNƒXƒ`ƒƒ‚É‚·‚é‚ÆŒø—¦‚ª‚¢‚¢
+		//å‹•çš„ã«ãƒ¡ãƒ¢ãƒªã‚’ç¢ºä¿ã—ã¦ãã“ã«èª­ã¿è¾¼ã‚“ã§ã€ãã®ãƒ¡ãƒ¢ãƒªã‹ã‚‰DirectXã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã«ã™ã‚‹ã¨åŠ¹ç‡ãŒã„ã„
 
 		HRESULT hr = D3DXCreateTextureFromFileEx(device,
 			textures[i].filename, 
@@ -135,7 +135,7 @@ int LoadTexture() {
 		//HRESULT hr = D3DXCreateTextureFromFileInMemory(device, textures[i].filename, &textures[i].texture);
 
 		if (FAILED(hr)) {
-			DebugPrintf("ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ¸”s Index: %d ,Filename: %s\n", i, textures[i].filename);
+			DebugPrintf("ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿å¤±æ•— Index: %d ,Filename: %s\n", i, textures[i].filename);
 			errorCount++;
 		}
 	}
@@ -143,8 +143,8 @@ int LoadTexture() {
 	return errorCount;
 }
 
-//ƒeƒNƒXƒ`ƒƒ‚ğ‘I‘ğ‚µ‚Ä‰ğ•ú
-//ˆø”1F‰ğ•ú‚µ‚½‚¢ƒeƒNƒXƒ`ƒƒ”
+//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’é¸æŠã—ã¦è§£æ”¾
+//å¼•æ•°1ï¼šè§£æ”¾ã—ãŸã„ãƒ†ã‚¯ã‚¹ãƒãƒ£æ•°
 void ReleaseTexture(int textureId) {
 	if (textureId < 0 || TEXTURE_MAX < textureId) {
 		return;
@@ -165,8 +165,8 @@ void ReleaseTexture(int textureId) {
 	InitTextureStruct(t);
 }
 
-//ˆø”1F‰ğ•ú‚µ‚½‚¢ƒeƒNƒXƒ`ƒƒID‚Ìæ“ªƒAƒhƒŒƒX
-//ˆø”2F‰ğ•ú‚µ‚½‚¢ƒeƒNƒXƒ`ƒƒ”
+//å¼•æ•°1ï¼šè§£æ”¾ã—ãŸã„ãƒ†ã‚¯ã‚¹ãƒãƒ£IDã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹
+//å¼•æ•°2ï¼šè§£æ”¾ã—ãŸã„ãƒ†ã‚¯ã‚¹ãƒãƒ£æ•°
 void ReleaseTexture(int textureIds[], int count) {
 	for (int i = 0; i < count; i++)
 	{
@@ -175,7 +175,7 @@ void ReleaseTexture(int textureIds[], int count) {
 	}
 }
 
-//ƒeƒNƒXƒ`ƒƒ‚ğ‘S‰ğ•ú
+//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å…¨è§£æ”¾
 void ReleaseAllTexture() {
 	for (int i = 0; i < TEXTURE_MAX; i++)
 	{
@@ -185,9 +185,9 @@ void ReleaseAllTexture() {
 }
 
 
-//ƒeƒNƒXƒ`ƒƒ‚ÌƒTƒCƒY‚ğæ“¾
-//ˆø”FƒeƒNƒXƒ`ƒƒID
-//–ß‚è’lFƒeƒNƒXƒ`ƒƒ‚ÌƒTƒCƒY
+//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚µã‚¤ã‚ºã‚’å–å¾—
+//å¼•æ•°ï¼šãƒ†ã‚¯ã‚¹ãƒãƒ£ID
+//æˆ»ã‚Šå€¤ï¼šãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚µã‚¤ã‚º
 D3DXVECTOR2* GetTextureSize(int textureId) {
 	if (textureId < 0 || TEXTURE_MAX < textureId) {
 		return NULL;
@@ -196,10 +196,10 @@ D3DXVECTOR2* GetTextureSize(int textureId) {
 	return textures[textureId].size;
 }
 
-//ƒeƒNƒXƒ`ƒƒƒCƒ“ƒ^[ƒtƒF[ƒXƒ|ƒCƒ“ƒ^‚Ìæ“¾
-//ˆø”FƒeƒNƒXƒ`ƒƒID
-//–ß‚è’lFƒeƒNƒXƒ`ƒƒƒCƒ“ƒ^[ƒtƒF[ƒXƒ|ƒCƒ“ƒ^
-//---------ƒ_ƒ‚È‚çNULL
+//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ãƒã‚¤ãƒ³ã‚¿ã®å–å¾—
+//å¼•æ•°ï¼šãƒ†ã‚¯ã‚¹ãƒãƒ£ID
+//æˆ»ã‚Šå€¤ï¼šãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ãƒã‚¤ãƒ³ã‚¿
+//---------ãƒ€ãƒ¡ãªã‚‰NULL
 LPDIRECT3DTEXTURE9 GetTexture(int textureId) {
 	if (textureId < 0 || TEXTURE_MAX < textureId) {
 		return NULL;

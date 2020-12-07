@@ -1,4 +1,4 @@
-#ifndef _MESSEAGE_BOX_H
+﻿#ifndef _MESSEAGE_BOX_H
 #define _MESSEAGE_BOX_H
 
 void InitMesseageBox();

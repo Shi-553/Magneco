@@ -1,4 +1,4 @@
-
+ï»¿
 #include "config.h"
 #include "texture.h"
 #include "sprite.h"
@@ -58,7 +58,7 @@ void InitGameOver() {
 	AddButton(&retryButton);
 	AddButton(&returnTitleButton);
 
-	backgroundTexture = ReserveTextureLoadFile("texture/”wŒi2.jpg");
+	backgroundTexture = ReserveTextureLoadFile("texture/èƒŒæ™¯2.jpg");
 
 	gameOverTextTexture = ReserveTextureLoadFile("texture/gameover.png");
 

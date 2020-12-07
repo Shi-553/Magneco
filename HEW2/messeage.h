@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <d3dx9.h>
 
@@ -13,5 +13,5 @@ void SetMessageColor(D3DCOLOR c);
 void DrawMesseage(const char* str, va_list argp);
 void DrawMesseage(const char* str, ...);
 
-//ƒfƒoƒbƒO—p
+//ãƒ‡ãƒãƒƒã‚°ç”¨
 void TestMessage();

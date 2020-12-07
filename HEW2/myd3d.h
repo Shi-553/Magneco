@@ -1,11 +1,11 @@
-
+ï»¿
 #ifndef _MY_D3D_H
 #define _MY_D3D_H
 
 #include <d3d9.h>
 #include <d3dx9.h>
 
-//–ß‚è’l Ž¸”s:false
+//æˆ»ã‚Šå€¤ å¤±æ•—:false
 bool InitMyD3D(HWND hWnd);
 
 void UninitMyD3D();

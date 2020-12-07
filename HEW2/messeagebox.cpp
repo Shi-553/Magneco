@@ -1,4 +1,4 @@
-#include "texture.h"
+﻿#include "texture.h"
 #include "config.h"
 #include "sprite.h"
 #include "InputLogger.h"

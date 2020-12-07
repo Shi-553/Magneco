@@ -1,4 +1,4 @@
-#ifndef _DEBUG_FONT_H
+﻿#ifndef _DEBUG_FONT_H
 #define _DEBUG_FONT_H
 #include "myd3d.h"
 

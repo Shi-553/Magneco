@@ -1,4 +1,4 @@
-#include "messeage.h"
+ï»¿#include "messeage.h"
 #include "font.h"
 #include"myd3d.h"
 #include "config.h"
@@ -10,15 +10,15 @@
 #define FONT_WIDTH	(15)
 #define FONT_HEIGHT	(32)
 
-#define FONT_COUNT_MAX_WIDTH (30)//”¼Šp30•¶Žš‚Ü‚Å
-#define FONT_COUNT_MAX_HEIGHT (10)//10s‚Ü‚Å
+#define FONT_COUNT_MAX_WIDTH (30)//åŠè§’30æ–‡å­—ã¾ã§
+#define FONT_COUNT_MAX_HEIGHT (10)//10è¡Œã¾ã§
 
-//‰¡•A‘å‚«‚­‚·‚é‚Æ¶‰E‚ÉL‚Ñ‚é
+//æ¨ªå¹…ã€å¤§ããã™ã‚‹ã¨å·¦å³ã«ä¼¸ã³ã‚‹
 #define RECT_WIDTH (FONT_WIDTH*FONT_COUNT_MAX_WIDTH)
-//‚‚³A‘å‚«‚­‚·‚é‚Æ‰º‚ÉL‚Ñ‚é
+//é«˜ã•ã€å¤§ããã™ã‚‹ã¨ä¸‹ã«ä¼¸ã³ã‚‹
 #define RECT_HEIGHT (FONT_HEIGHT*FONT_COUNT_MAX_HEIGHT)
 
-//’†S‚©‚ç‚Ç‚ê‚¾‚¯‰º‚É‚·‚é‚©
+//ä¸­å¿ƒã‹ã‚‰ã©ã‚Œã ã‘ä¸‹ã«ã™ã‚‹ã‹
 #define RECT_ADD_Y (0)
 
 void UpdateRect(RECT& rect);
@@ -49,10 +49,10 @@ void ClearMesseageOffset() {
 
 void UpdateRect(RECT& rect) {
 	rect = {
-		(SCREEN_WIDTH - RECT_WIDTH) / 2 + offset.x * FONT_WIDTH,	         	// ¶ã‚ÌxÀ•W
-		SCREEN_HEIGHT / 2 + RECT_ADD_Y + offset.y * FONT_HEIGHT,				// ¶ã‚ÌyÀ•W
-		(SCREEN_WIDTH + RECT_WIDTH) / 2 ,		                                    // ‰E‰º‚ÌxÀ•W
-		SCREEN_HEIGHT / 2 + RECT_ADD_Y + RECT_HEIGHT 		                        // ‰E‰º‚ÌyÀ•W
+		(SCREEN_WIDTH - RECT_WIDTH) / 2 + offset.x * FONT_WIDTH,	         	// å·¦ä¸Šã®xåº§æ¨™
+		SCREEN_HEIGHT / 2 + RECT_ADD_Y + offset.y * FONT_HEIGHT,				// å·¦ä¸Šã®yåº§æ¨™
+		(SCREEN_WIDTH + RECT_WIDTH) / 2 ,		                                    // å³ä¸‹ã®xåº§æ¨™
+		SCREEN_HEIGHT / 2 + RECT_ADD_Y + RECT_HEIGHT 		                        // å³ä¸‹ã®yåº§æ¨™
 	};
 }
 
@@ -79,12 +79,12 @@ void DrawMesseage(const char* str, va_list argp) {
 
 	int startIndex = 0;
 
-	for (int i = 0; i < length; i++) {//I—¹•¶Žš‚Ì1‚Â‘O‚Ü‚Å
-		//‰üs‚©
+	for (int i = 0; i < length; i++) {//çµ‚äº†æ–‡å­—ã®1ã¤å‰ã¾ã§
+		//æ”¹è¡Œã‹
 		bool isNewLine = buf[i] == '\n';
-		//ÅŒã‚©
+		//æœ€å¾Œã‹
 		bool isEnd = i == length - 1;
-		//Å‘å•¶Žš”‚©‚Ç‚¤‚©iÅ‘å‚©AÅ‘å‚©‚ç1‚Â‘O‚Å2ƒoƒCƒg•¶Žšj
+		//æœ€å¤§æ–‡å­—æ•°ã‹ã©ã†ã‹ï¼ˆæœ€å¤§ã‹ã€æœ€å¤§ã‹ã‚‰1ã¤å‰ã§2ãƒã‚¤ãƒˆæ–‡å­—ï¼‰
 		bool isMax = (offset.x == FONT_COUNT_MAX_WIDTH) ||
 			(offset.x == FONT_COUNT_MAX_WIDTH - 1 && _mbclen((BYTE*)&(buf[i])) == 2);
 
@@ -93,7 +93,7 @@ void DrawMesseage(const char* str, va_list argp) {
 				&(buf[startIndex]),
 				i - startIndex,
 				&rc,
-				DT_LEFT,//¶Šñ‚¹
+				DT_LEFT,//å·¦å¯„ã›
 				color);
 
 			if (isNewLine || isMax) {
@@ -102,7 +102,7 @@ void DrawMesseage(const char* str, va_list argp) {
 			}
 
 			if (isNewLine) {
-				startIndex = i + 1;//‰üs•¶Žš‚È‚ç‚»‚ê‚ðƒXƒLƒbƒv
+				startIndex = i + 1;//æ”¹è¡Œæ–‡å­—ãªã‚‰ãã‚Œã‚’ã‚¹ã‚­ãƒƒãƒ—
 			}
 			else {
 				startIndex = i;
@@ -111,7 +111,7 @@ void DrawMesseage(const char* str, va_list argp) {
 			UpdateRect(rc);
 
 			if (!isEnd &&!isNewLine &&isMax) {
-				offset.x++;//ª‚±‚Ì‚Æ‚«‚±‚±‚Å1ŒÂ‰E‚Ö‚¸‚ç‚·‚Æ‚È‚º‚©‚¤‚Ü‚­‚¢‚­EEE
+				offset.x++;//â†‘ã“ã®ã¨ãã“ã“ã§1å€‹å³ã¸ãšã‚‰ã™ã¨ãªãœã‹ã†ã¾ãã„ããƒ»ãƒ»ãƒ»
 			}
 
 			continue;
@@ -143,18 +143,18 @@ void TestMessage() {
 	ClearMesseageOffset();
 
 	SetMessageColor(D3DCOLOR_RGBA(0, 0, 0, 255));
-	DrawMesseage("1111111111\n11111111111%s11111111", "a‚ ‚ ‚ ");
-	DrawMesseage("‚ ‚¢‚¤%d‚¦6", 1515151);
-	DrawMesseage("‚ ‚¢‚¤‚¦6");
-	DrawMesseage("‚ ‚¢‚¤‚¦6");
+	DrawMesseage("1111111111\n11111111111%s11111111", "aã‚ã‚ã‚");
+	DrawMesseage("ã‚ã„ã†%dãˆ6", 1515151);
+	DrawMesseage("ã‚ã„ã†ãˆ6");
+	DrawMesseage("ã‚ã„ã†ãˆ6");
 
 	SetMessageColor(D3DCOLOR_RGBA(0, 255, 255, 255));
-	DrawMesseage("‚ ‚¢‚¤‚¦6");
-	DrawMesseage("‚ ‚¢‚¤%.1f‚¦6", 1.54f);
-	DrawMesseage("‚ ‚¢‚¤‚¦5\n\n");
+	DrawMesseage("ã‚ã„ã†ãˆ6");
+	DrawMesseage("ã‚ã„ã†%.1fãˆ6", 1.54f);
+	DrawMesseage("ã‚ã„ã†ãˆ5\n\n");
 
 	SetMessageColor(D3DCOLOR_RGBA(255, 255, 255, 255));
-	DrawMesseage("‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6‚ ‚¢‚¤‚¦6");
+	DrawMesseage("ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6ã‚ã„ã†ãˆ6");
 
 	UninitMesseage();
 #endif

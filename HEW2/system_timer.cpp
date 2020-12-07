@@ -1,6 +1,6 @@
-/*==============================================================================
+ï»¿/*==============================================================================
 
-   ƒVƒXƒeƒ€ƒ^ƒCƒ}[ [system_timer.h]
+   ã‚·ã‚¹ãƒ†ãƒ ã‚¿ã‚¤ãƒãƒ¼ [system_timer.h]
                                                          Author : Youhei Sato
                                                          Date   : 2018/06/17
 --------------------------------------------------------------------------------
@@ -10,27 +10,27 @@
 
 
 /*------------------------------------------------------------------------------
-   ƒOƒ[ƒoƒ‹•Ï”éŒ¾
+   ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°å®£è¨€
 ------------------------------------------------------------------------------*/
-static bool g_bTimerStopped = true; // ƒXƒgƒbƒvƒtƒ‰ƒO
-static LONGLONG g_TicksPerSec = 0;  // ‚P•bŠÔ‚ÌŒv‘ªŠÔ
-static LONGLONG g_StopTime;         // ƒXƒgƒbƒv‚µ‚½ŠÔ
-static LONGLONG g_LastElapsedTime;  // ÅŒã‚É‹L˜^‚µ‚½XVŠÔ
-static LONGLONG g_BaseTime;         // Šî–{ŠÔ
+static bool g_bTimerStopped = true; // ã‚¹ãƒˆãƒƒãƒ—ãƒ•ãƒ©ã‚°
+static LONGLONG g_TicksPerSec = 0;  // ï¼‘ç§’é–“ã®è¨ˆæ¸¬æ™‚é–“
+static LONGLONG g_StopTime;         // ã‚¹ãƒˆãƒƒãƒ—ã—ãŸæ™‚é–“
+static LONGLONG g_LastElapsedTime;  // æœ€å¾Œã«è¨˜éŒ²ã—ãŸæ›´æ–°æ™‚é–“
+static LONGLONG g_BaseTime;         // åŸºæœ¬æ™‚é–“
 
 
 /*------------------------------------------------------------------------------
-   ƒvƒƒgƒ^ƒCƒvéŒ¾
+   ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
 ------------------------------------------------------------------------------*/
-// ’â~‚µ‚Ä‚¢‚ê‚Î’â~ŠÔA‚»‚¤‚Å‚È‚¯‚ê‚ÎŒ»İ‚ÌŠÔ‚Ìæ“¾
+// åœæ­¢ã—ã¦ã„ã‚Œã°åœæ­¢æ™‚é–“ã€ãã†ã§ãªã‘ã‚Œã°ç¾åœ¨ã®æ™‚é–“ã®å–å¾—
 static LARGE_INTEGER GetAdjustedCurrentTime(void);
 
 
 /*------------------------------------------------------------------------------
-   ŠÖ”’è‹`
+   é–¢æ•°å®šç¾©
 ------------------------------------------------------------------------------*/
 
-// ƒVƒXƒeƒ€ƒ^ƒCƒ}[‚Ì‰Šú‰»
+// ã‚·ã‚¹ãƒ†ãƒ ã‚¿ã‚¤ãƒãƒ¼ã®åˆæœŸåŒ–
 void SystemTimer_Initialize(void)
 {
     g_bTimerStopped = true;
@@ -39,13 +39,13 @@ void SystemTimer_Initialize(void)
     g_LastElapsedTime = 0;
     g_BaseTime = 0;
 
-    // ‚•ª‰ğ”\ƒpƒtƒH[ƒ}ƒ“ƒXƒJƒEƒ“ƒ^ü”g”‚Ìæ“¾
+    // é«˜åˆ†è§£èƒ½ãƒ‘ãƒ•ã‚©ãƒ¼ãƒãƒ³ã‚¹ã‚«ã‚¦ãƒ³ã‚¿å‘¨æ³¢æ•°ã®å–å¾—
     LARGE_INTEGER ticksPerSec = { 0 };
     QueryPerformanceFrequency(&ticksPerSec);
     g_TicksPerSec = ticksPerSec.QuadPart;
 }
 
-// ƒVƒXƒeƒ€ƒ^ƒCƒ}[‚ÌƒŠƒZƒbƒg
+// ã‚·ã‚¹ãƒ†ãƒ ã‚¿ã‚¤ãƒãƒ¼ã®ãƒªã‚»ãƒƒãƒˆ
 void SystemTimer_Reset(void)
 {
     LARGE_INTEGER time = GetAdjustedCurrentTime();
@@ -55,16 +55,16 @@ void SystemTimer_Reset(void)
     g_bTimerStopped = false;
 }
 
-// ƒVƒXƒeƒ€ƒ^ƒCƒ}[‚ÌƒXƒ^[ƒg
+// ã‚·ã‚¹ãƒ†ãƒ ã‚¿ã‚¤ãƒãƒ¼ã®ã‚¹ã‚¿ãƒ¼ãƒˆ
 void SystemTimer_Start(void)
 {
-    // Œ»İ‚ÌŠÔ‚ğæ“¾
+    // ç¾åœ¨ã®æ™‚é–“ã‚’å–å¾—
     LARGE_INTEGER time = { 0 };
     QueryPerformanceCounter(&time);
 
-    // ¡‚Ü‚ÅŒv‘ª‚ªƒXƒgƒbƒv‚µ‚Ä‚¢‚½‚ç
+    // ä»Šã¾ã§è¨ˆæ¸¬ãŒã‚¹ãƒˆãƒƒãƒ—ã—ã¦ã„ãŸã‚‰
     if( g_bTimerStopped ) {
-        // ~‚Ü‚Á‚Ä‚¢‚½ŠÔ‚ğ·‚µˆø‚¢‚ÄŠî–{ŠÔ‚ğXV
+        // æ­¢ã¾ã£ã¦ã„ãŸæ™‚é–“ã‚’å·®ã—å¼•ã„ã¦åŸºæœ¬æ™‚é–“ã‚’æ›´æ–°
         g_BaseTime += time.QuadPart - g_StopTime;
     }
 
@@ -73,7 +73,7 @@ void SystemTimer_Start(void)
     g_bTimerStopped = false;
 }
 
-// ƒVƒXƒeƒ€ƒ^ƒCƒ}[‚ÌƒXƒgƒbƒv
+// ã‚·ã‚¹ãƒ†ãƒ ã‚¿ã‚¤ãƒãƒ¼ã®ã‚¹ãƒˆãƒƒãƒ—
 void SystemTimer_Stop(void)
 {
     if( g_bTimerStopped ) return;
@@ -81,17 +81,17 @@ void SystemTimer_Stop(void)
     LARGE_INTEGER time = { 0 };
     QueryPerformanceCounter(&time);
 
-    g_LastElapsedTime = g_StopTime = time.QuadPart; // ’â~ŠÔ‚ğ‹L˜^
+    g_LastElapsedTime = g_StopTime = time.QuadPart; // åœæ­¢æ™‚é–“ã‚’è¨˜éŒ²
     g_bTimerStopped = true;
 }
 
-// ƒVƒXƒeƒ€ƒ^ƒCƒ}[‚ğ0.1•bi‚ß‚é
+// ã‚·ã‚¹ãƒ†ãƒ ã‚¿ã‚¤ãƒãƒ¼ã‚’0.1ç§’é€²ã‚ã‚‹
 void SystemTimer_Advance(void)
 {
     g_StopTime += g_TicksPerSec / 10;
 }
 
-// Œv‘ªŠÔ‚ğæ“¾
+// è¨ˆæ¸¬æ™‚é–“ã‚’å–å¾—
 double SystemTimer_GetTime(void)
 {
     LARGE_INTEGER time = GetAdjustedCurrentTime();
@@ -99,7 +99,7 @@ double SystemTimer_GetTime(void)
     return (double)(time.QuadPart - g_BaseTime) / (double)g_TicksPerSec;
 }
 
-// Œ»İ‚ÌŠÔ‚ğæ“¾
+// ç¾åœ¨ã®æ™‚é–“ã‚’å–å¾—
 double SystemTimer_GetAbsoluteTime(void)
 {
     LARGE_INTEGER time = { 0 };
@@ -108,7 +108,7 @@ double SystemTimer_GetAbsoluteTime(void)
     return time.QuadPart / (double)g_TicksPerSec;
 }
 
-// Œo‰ßŠÔ‚Ìæ“¾
+// çµŒéæ™‚é–“ã®å–å¾—
 float SystemTimer_GetElapsedTime(void)
 {
     LARGE_INTEGER time = GetAdjustedCurrentTime();
@@ -116,10 +116,10 @@ float SystemTimer_GetElapsedTime(void)
     double elapsed_time = (float)((double)(time.QuadPart - g_LastElapsedTime) / (double)g_TicksPerSec);
     g_LastElapsedTime = time.QuadPart;
 
-    // ƒ^ƒCƒ}[‚ª³Šm‚Å‚ ‚é‚±‚Æ‚ğ•ÛØ‚·‚é‚½‚ß‚ÉAXVŠÔ‚ğ‚O‚ÉƒNƒ‰ƒ“ƒv‚·‚éB
-    // elapsed_time‚ÍAƒvƒƒZƒbƒT‚ªß“dƒ‚[ƒh‚É“ü‚é‚©A‰½‚ç‚©‚ÌŒ`‚Å•Ê‚ÌƒvƒƒZƒbƒT‚ÉƒVƒƒƒbƒtƒ‹‚³‚ê‚é‚ÆA‚±‚Ì”ÍˆÍŠO‚É‚È‚é‰Â”\«‚ª‚ ‚éB
-    // ‚æ‚Á‚ÄAƒƒCƒ“ƒXƒŒƒbƒh‚ÍSetThreadAffinityMask‚ğŒÄ‚Ño‚µ‚ÄA•Ê‚ÌƒvƒƒZƒbƒT‚ÉƒVƒƒƒbƒtƒ‹‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é•K—v‚ª‚ ‚éB
-    // ‘¼‚Ìƒ[ƒJ[ƒXƒŒƒbƒh‚ÍSetThreadAffinityMask‚ğŒÄ‚Ño‚·‚×‚«‚Å‚Í‚È‚­AƒƒCƒ“ƒXƒŒƒbƒh‚©‚çûW‚³‚ê‚½ƒ^ƒCƒ}[ƒf[ƒ^‚Ì‹¤—LƒRƒs[‚ğg—p‚·‚é‚±‚ÆB
+    // ã‚¿ã‚¤ãƒãƒ¼ãŒæ­£ç¢ºã§ã‚ã‚‹ã“ã¨ã‚’ä¿è¨¼ã™ã‚‹ãŸã‚ã«ã€æ›´æ–°æ™‚é–“ã‚’ï¼ã«ã‚¯ãƒ©ãƒ³ãƒ—ã™ã‚‹ã€‚
+    // elapsed_timeã¯ã€ãƒ—ãƒ­ã‚»ãƒƒã‚µãŒç¯€é›»ãƒ¢ãƒ¼ãƒ‰ã«å…¥ã‚‹ã‹ã€ä½•ã‚‰ã‹ã®å½¢ã§åˆ¥ã®ãƒ—ãƒ­ã‚»ãƒƒã‚µã«ã‚·ãƒ£ãƒƒãƒ•ãƒ«ã•ã‚Œã‚‹ã¨ã€ã“ã®ç¯„å›²å¤–ã«ãªã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã€‚
+    // ã‚ˆã£ã¦ã€ãƒ¡ã‚¤ãƒ³ã‚¹ãƒ¬ãƒƒãƒ‰ã¯SetThreadAffinityMaskã‚’å‘¼ã³å‡ºã—ã¦ã€åˆ¥ã®ãƒ—ãƒ­ã‚»ãƒƒã‚µã«ã‚·ãƒ£ãƒƒãƒ•ãƒ«ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
+    // ä»–ã®ãƒ¯ãƒ¼ã‚«ãƒ¼ã‚¹ãƒ¬ãƒƒãƒ‰ã¯SetThreadAffinityMaskã‚’å‘¼ã³å‡ºã™ã¹ãã§ã¯ãªãã€ãƒ¡ã‚¤ãƒ³ã‚¹ãƒ¬ãƒƒãƒ‰ã‹ã‚‰åé›†ã•ã‚ŒãŸã‚¿ã‚¤ãƒãƒ¼ãƒ‡ãƒ¼ã‚¿ã®å…±æœ‰ã‚³ãƒ”ãƒ¼ã‚’ä½¿ç”¨ã™ã‚‹ã“ã¨ã€‚
     if( elapsed_time < 0.0f ) {
         elapsed_time = 0.0f;
     }
@@ -127,13 +127,13 @@ float SystemTimer_GetElapsedTime(void)
     return (float)elapsed_time;
 }
 
-// ƒVƒXƒeƒ€ƒ^ƒCƒ}[‚ª~‚Ü‚Á‚Ä‚¢‚é‚©H
+// ã‚·ã‚¹ãƒ†ãƒ ã‚¿ã‚¤ãƒãƒ¼ãŒæ­¢ã¾ã£ã¦ã„ã‚‹ã‹ï¼Ÿ
 bool SystemTimer_IsStoped(void)
 {
     return g_bTimerStopped;
 }
 
-// Œ»İ‚ÌƒXƒŒƒbƒh‚ğ1‚Â‚ÌƒvƒƒZƒbƒTiŒ»İ‚ÌƒXƒŒƒbƒhj‚É§ŒÀ
+// ç¾åœ¨ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’1ã¤ã®ãƒ—ãƒ­ã‚»ãƒƒã‚µï¼ˆç¾åœ¨ã®ã‚¹ãƒ¬ãƒƒãƒ‰ï¼‰ã«åˆ¶é™
 void LimitThreadAffinityToCurrentProc(void)
 {
     HANDLE hCurrentProcess = GetCurrentProcess();
@@ -158,7 +158,7 @@ void LimitThreadAffinityToCurrentProc(void)
     CloseHandle(hCurrentProcess);
 }
 
-// ’â~‚µ‚Ä‚¢‚ê‚Î’â~ŠÔA‚»‚¤‚Å‚È‚¯‚ê‚ÎŒ»İ‚ÌŠÔ‚Ìæ“¾
+// åœæ­¢ã—ã¦ã„ã‚Œã°åœæ­¢æ™‚é–“ã€ãã†ã§ãªã‘ã‚Œã°ç¾åœ¨ã®æ™‚é–“ã®å–å¾—
 LARGE_INTEGER GetAdjustedCurrentTime(void)
 {
     LARGE_INTEGER time;

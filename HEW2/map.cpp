@@ -1,4 +1,4 @@
-#include "map.h"
+ï»¿#include "map.h"
 #include "myd3d.h"
 #include "texture.h"
 #include "gameSrite.h"
@@ -38,7 +38,7 @@ static int mapWidth = 0;
 
 void InitMap(void)
 {
-	map_textureIds = ReserveTextureLoadFile("texture/”wŒi‚P.png");
+	map_textureIds = ReserveTextureLoadFile("texture/èƒŒæ™¯ï¼‘.png");
 
 	textureIds[MAP_NONE] = ReserveTextureLoadFile("texture/MAP_NONE.png");
 	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE.png");
@@ -269,14 +269,14 @@ MapType GetMapType(INTVECTOR2 pos)
 bool MapExport(const char* filename) {
 	FILE* fp = NULL;
 
-	//	ƒoƒCƒiƒŠ‘‚«‚İƒ‚[ƒh‚Åƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	//	ãƒã‚¤ãƒŠãƒªæ›¸ãè¾¼ã¿ãƒ¢ãƒ¼ãƒ‰ã§ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	fopen_s(&fp, filename, "wb");
 
 	if (fp == NULL) {
 		return false;
 	}
 
-	//	ƒtƒ@ƒCƒ‹‚Ö‚Ì‘‚«‚İˆ—
+	//	ãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®æ›¸ãè¾¼ã¿å‡¦ç†
 	fwrite(&mapHeight, sizeof(int), 1, fp);
 	fwrite(&mapWidth, sizeof(int), 1, fp);
 
@@ -289,14 +289,14 @@ bool MapExport(const char* filename) {
 bool MapImport(const char* filename) {
 	FILE* fp = NULL;
 
-	//	ƒoƒCƒiƒŠ“Ç‚İ‚İƒ‚[ƒh‚Åƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	//	ãƒã‚¤ãƒŠãƒªèª­ã¿è¾¼ã¿ãƒ¢ãƒ¼ãƒ‰ã§ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	fopen_s(&fp, filename, "rb");
 
 	if (fp == NULL) {
 		return false;
 	}
 
-	//	ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Şˆ—
+	//	ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€å‡¦ç†
 	fread(&mapHeight, sizeof(int), 1, fp);
 	fread(&mapWidth, sizeof(int), 1, fp);
 

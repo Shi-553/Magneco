@@ -1,4 +1,4 @@
-#include "myd3d.h"
+ï»¿#include "myd3d.h"
 #include "gameSrite.h"
 #include <malloc.h>
 
@@ -50,12 +50,12 @@ void Grid_Draw(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetD3DDevice();
 
-	// ƒfƒoƒCƒX‚ÉFVF‚ÌÝ’è‚ð‚·‚é
+	// ãƒ‡ãƒã‚¤ã‚¹ã«FVFã®è¨­å®šã‚’ã™ã‚‹
 	pDevice->SetFVF(FVF_VERTEX2D);
 
-	// ƒfƒoƒCƒX‚ÉƒeƒNƒXƒ`ƒƒ‚ÌÝ’è‚ð‚·‚é
+	// ãƒ‡ãƒã‚¤ã‚¹ã«ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®è¨­å®šã‚’ã™ã‚‹
 	pDevice->SetTexture(0, NULL);
 
-	// ƒ|ƒŠƒSƒ“‚ð•`‰æ‚·‚é
+	// ãƒãƒªã‚´ãƒ³ã‚’æç”»ã™ã‚‹
 	pDevice->DrawPrimitiveUP(D3DPT_LINELIST, g_LineCount, g_pVertex, sizeof(Vertex2D));
 }

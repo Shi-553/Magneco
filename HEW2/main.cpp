@@ -1,6 +1,6 @@
-#define _CRT_SECURE_NO_WARNINGS
+ï»¿#define _CRT_SECURE_NO_WARNINGS
 
-//‹@íˆË‘¶‚Ìƒ‰ƒCƒuƒ‰ƒŠw’è
+//æ©Ÿç¨®ä¾å­˜ã®ãƒ©ã‚¤ãƒ–ãƒ©ãƒªæŒ‡å®š
 //#pragma comment(lib,"d3d9.lib")
 //#if  defined(DEBUG)||defined(_DEBUG)
 //#pragma comment(lib,"d3dx9d.lib")
@@ -13,7 +13,7 @@
 #include "debugPrintf.h"
 #include <d3d9.h>
 
-//”ŠwŒn‚Ìƒ‰ƒCƒuƒ‰ƒŠ DX11‚Æ‚©‚¾‚Æ‚Ü‚½•Ê‚ÉƒŠƒ“ƒN‚µ‚È‚¢‚Æ‚¢‚¯‚È‚¢
+//æ•°å­¦ç³»ã®ãƒ©ã‚¤ãƒ–ãƒ©ãƒª DX11ã¨ã‹ã ã¨ã¾ãŸåˆ¥ã«ãƒªãƒ³ã‚¯ã—ãªã„ã¨ã„ã‘ãªã„
 #include <d3dx9.h>
 
 #include "config.h"
@@ -31,7 +31,7 @@
 
 
 #define CLASS_NAME "GameWindow"
-#define WINDOW_CAPTION "ƒEƒCƒ“ƒhƒE•\¦ˆ—"
+#define WINDOW_CAPTION "ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦è¡¨ç¤ºå‡¦ç†"
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -57,13 +57,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	UNREFERENCED_PARAMETER(nCmdShow);
 
-	//ƒIƒŠƒWƒiƒ‹‚ÌƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚ğì‚Á‚Ä“o˜^
+	//ã‚ªãƒªã‚¸ãƒŠãƒ«ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã‚’ä½œã£ã¦ç™»éŒ²
 	WNDCLASS wc = {};
-	wc.lpfnWndProc = WndProc;                          //ƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ“o˜^
-	wc.lpszClassName = CLASS_NAME;                     //ƒIƒŠƒWƒiƒ‹ƒp[ƒc‚ÌƒNƒ‰ƒX–¼
-	wc.hInstance = hInstance;                          //ƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹‚ğ“o˜^
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);          //ƒ}ƒEƒ‹ƒJ[ƒ\ƒ‹‚Ìw’è
-	wc.hbrBackground = (HBRUSH)(COLOR_BACKGROUND + 1); //”wŒiF‚Ìİ’è   COLOR_BACKGROUND Œn‚Í +1 ‚µ‚È‚¢‚Æ‚¢‚¯‚È‚¢
+	wc.lpfnWndProc = WndProc;                          //ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ç™»éŒ²
+	wc.lpszClassName = CLASS_NAME;                     //ã‚ªãƒªã‚¸ãƒŠãƒ«ãƒ‘ãƒ¼ãƒ„ã®ã‚¯ãƒ©ã‚¹å
+	wc.hInstance = hInstance;                          //ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«ã‚’ç™»éŒ²
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);          //ãƒã‚¦ãƒ«ã‚«ãƒ¼ã‚½ãƒ«ã®æŒ‡å®š
+	wc.hbrBackground = (HBRUSH)(COLOR_BACKGROUND + 1); //èƒŒæ™¯è‰²ã®è¨­å®š   COLOR_BACKGROUND ç³»ã¯ +1 ã—ãªã„ã¨ã„ã‘ãªã„
 
 	RegisterClass(&wc);
 
@@ -76,9 +76,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	LONG windowHeight = rect.bottom - rect.top;
 
 
-	//1. ƒEƒCƒ“ƒhƒE‚Ì•A‚‚³‚Ìæ“¾FX
+	//1. ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®å¹…ã€é«˜ã•ã®å–å¾—è‰²ã€…
 
-	//API‚ğ—˜—p‚µ‚ÄƒEƒCƒ“ƒhƒE‚Ì•A‚‚³‚ğæ“¾
+	//APIã‚’åˆ©ç”¨ã—ã¦ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®å¹…ã€é«˜ã•ã‚’å–å¾—
 	//RECT desktopRect;
 	//GetWindowRect(GetDesktopWindow(), &desktopRect);
 
@@ -86,19 +86,19 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	//int desktopHeight = desktopRect.bottom - desktopRect.top;
 
 
-	//2. ƒfƒoƒCƒXiƒVƒXƒeƒ€j‚©‚çƒ‚ƒjƒ^[‰ğ‘œ“x‚ğæ“¾
+	//2. ãƒ‡ãƒã‚¤ã‚¹ï¼ˆã‚·ã‚¹ãƒ†ãƒ ï¼‰ã‹ã‚‰ãƒ¢ãƒ‹ã‚¿ãƒ¼è§£åƒåº¦ã‚’å–å¾—
 	int desktopWidth = GetSystemMetrics(SM_CXSCREEN);
 	int desktopHeight = GetSystemMetrics(SM_CYSCREEN);
 
 
-	//3. ƒfƒ…ƒAƒ‹ƒ‚ƒjƒ^[‚Ì^‚ñ’†i‚Ù‚Ú–ğ‚É—§‚½‚È‚¢j
+	//3. ãƒ‡ãƒ¥ã‚¢ãƒ«ãƒ¢ãƒ‹ã‚¿ãƒ¼ã®çœŸã‚“ä¸­ï¼ˆã»ã¼å½¹ã«ç«‹ãŸãªã„ï¼‰
 	//int virtualDesktopWidth = GetSystemMetrics(SM_CXVIRTUALSCREEN);
 	//int virtualDesktopHeight = GetSystemMetrics(SM_CYVIRTUALSCREEN);
 
 	//int virtualDesktopX = GetSystemMetrics(SM_XVIRTUALSCREEN);
 	//int virtualDesktopY = GetSystemMetrics(SM_YVIRTUALSCREEN);
 
-	//ƒEƒCƒ“ƒhƒE‚ğ^‚ñ’†‚É‚·‚é‚½‚ß‚ÌXY
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’çœŸã‚“ä¸­ã«ã™ã‚‹ãŸã‚ã®XY
 	int windowX = (desktopWidth - windowWidth) / 2;
 	if (windowX < 0)
 		windowX = 0;
@@ -108,28 +108,28 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		windowY = 0;
 
 
-	//ƒEƒCƒ“ƒhƒEì‚é
-	//ƒnƒ“ƒhƒ‹ = ƒ†ƒj[ƒN‚ÈID
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä½œã‚‹
+	//ãƒãƒ³ãƒ‰ãƒ« = ãƒ¦ãƒ‹ãƒ¼ã‚¯ãªID
 	HWND hWnd = CreateWindow(
-		CLASS_NAME,              //ƒEƒCƒ“ƒhƒE ƒNƒ‰ƒX
-		WINDOW_CAPTION,          //ƒEƒCƒ“ƒhƒE ƒeƒLƒXƒg(ã‚É‚Å‚Ä‚­‚é)
-		windowsStyle,     //ƒEƒCƒ“ƒhƒE ƒXƒ^ƒCƒ‹
+		CLASS_NAME,              //ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ ã‚¯ãƒ©ã‚¹
+		WINDOW_CAPTION,          //ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ ãƒ†ã‚­ã‚¹ãƒˆ(ä¸Šã«ã§ã¦ãã‚‹)
+		windowsStyle,     //ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ ã‚¹ã‚¿ã‚¤ãƒ«
 
-		//ƒTƒCƒY‚ÆˆÊ’u
-		windowX,   //‰æ–Ê‚Ì¶‚©‚ç‚Ì©g‚Ì¶‚ÌÀ•W
-		windowY,   //‰æ–Ê‚Ìã‚©‚ç‚Ì©g‚Ìã‚ÌÀ•W
+		//ã‚µã‚¤ã‚ºã¨ä½ç½®
+		windowX,   //ç”»é¢ã®å·¦ã‹ã‚‰ã®è‡ªèº«ã®å·¦ã®åº§æ¨™
+		windowY,   //ç”»é¢ã®ä¸Šã‹ã‚‰ã®è‡ªèº«ã®ä¸Šã®åº§æ¨™
 
-		windowWidth,   //ƒEƒCƒ“ƒhƒE‚Ì•
-		windowHeight,   //ƒEƒCƒ“ƒhƒE‚Ì‚‚³ (ƒtƒŒ[ƒ€‚ğŠÜ‚Ş)
+		windowWidth,   //ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®å¹…
+		windowHeight,   //ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®é«˜ã• (ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å«ã‚€)
 
-		NULL,            //e‚ÌƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹   
-		NULL,            //ƒƒjƒ…[ƒnƒ“ƒhƒ‹         ªuƒtƒ@ƒCƒ‹ •ÒW •\¦ ƒvƒƒWƒFƒNƒg...v
-		hInstance,       //ƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
-		NULL             //’Ç‰Á‚ÌƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒf[ƒ^ (‚Ù‚Úg‚í‚È‚¢)
+		NULL,            //è¦ªã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«   
+		NULL,            //ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ³ãƒ‰ãƒ«         â†‘ã€Œãƒ•ã‚¡ã‚¤ãƒ« ç·¨é›† è¡¨ç¤º ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆ...ã€
+		hInstance,       //ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
+		NULL             //è¿½åŠ ã®ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ (ã»ã¼ä½¿ã‚ãªã„)
 	);
 
 	if (hWnd == NULL) {
-		//ƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹‚ª‚È‚ñ‚©¶¬‚Å‚«‚È‚©‚Á‚½
+		//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«ãŒãªã‚“ã‹ç”Ÿæˆã§ããªã‹ã£ãŸ
 		return -1;
 	}
 
@@ -142,17 +142,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	UpdateWindow(hWnd);
 
 
-	//ƒEƒCƒ“ƒhƒEƒƒbƒZ[ƒW‚Ìæ“¾ 
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å–å¾— 
 	MSG msg = {};
-	while (TRUE) { //GetMessage“à‚ÅƒƒbƒZ[ƒW‘Ò‚¿‚µ‚Ä‚é
+	while (TRUE) { //GetMessageå†…ã§ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å¾…ã¡ã—ã¦ã‚‹
 
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			if (WM_QUIT == msg.message)
 				break;
 
-			TranslateMessage(&msg);//‚È‚ñ‚©–|–ó‚·‚é‚ñ‚¾‚©®‚¦‚é‚ñ‚¾‚©
+			TranslateMessage(&msg);//ãªã‚“ã‹ç¿»è¨³ã™ã‚‹ã‚“ã ã‹æ•´ãˆã‚‹ã‚“ã ã‹
 
-			DispatchMessage(&msg);//‚±‚ê‚ÅƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ‚ªŒÄ‚Î‚ê‚é
+			DispatchMessage(&msg);//ã“ã‚Œã§ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ãŒå‘¼ã°ã‚Œã‚‹
 		}
 		else {
 			double time = SystemTimer_GetTime();
@@ -175,7 +175,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg)
 	{
-		//ƒGƒXƒP[ƒv‚ÅI‚í‚éƒVƒ‡[ƒgƒJƒbƒg
+		//ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã§çµ‚ã‚ã‚‹ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆ
 	case WM_KEYDOWN:
 		if (wParam == VK_ESCAPE) {
 			SendMessage(hWnd, WM_CLOSE, 0, 0);
@@ -183,12 +183,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		break;
 
 	case WM_CLOSE:
-		if (MessageBox(hWnd, "I—¹‚µ‚Ä‚¢‚¢H", "Šm”F", MB_OKCANCEL | MB_DEFBUTTON2) == IDOK) {
+		if (MessageBox(hWnd, "çµ‚äº†ã—ã¦ã„ã„ï¼Ÿ", "ç¢ºèª", MB_OKCANCEL | MB_DEFBUTTON2) == IDOK) {
 			DestroyWindow(hWnd);
 		}
 		return 0;
 	case WM_DESTROY:
-		PostQuitMessage(0);   //WM_QUITƒƒbƒZ[ƒW‚Ì‘—M
+		PostQuitMessage(0);   //WM_QUITãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®é€ä¿¡
 		return 0;
 	}
 
@@ -205,7 +205,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	}
 	Mouse_ProcessMessage(uMsg, wParam, lParam);
 
-	//ƒfƒtƒHƒ‹ƒg‚ÌƒƒbƒZ[ƒWˆ—
+	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
@@ -220,7 +220,7 @@ bool Init(HWND hWnd) {
 
 	if (!InitMyD3D(hWnd)) {
 
-		MessageBox(NULL, "‰Šú‰»ƒGƒ‰[", "ƒGƒ‰[", MB_OK);
+		MessageBox(NULL, "åˆæœŸåŒ–ã‚¨ãƒ©ãƒ¼", "ã‚¨ãƒ©ãƒ¼", MB_OK);
 	}
 	InitFont();
 	InitTexture();
@@ -267,13 +267,13 @@ void Draw() {
 		return;
 	}
 
-	//‰æ–Ê‚ÌƒNƒŠƒABeginScene,EndScene‚ÌŠO‚É‘‚¢‚Ä
-	//‘æOˆø”F(Fƒoƒbƒtƒ@A[“x(Z)ƒoƒbƒtƒ@AƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@)
-	//‘ælˆø”F(‰½F‚ÅƒNƒŠƒA‚·‚é‚©)
-	//‘æŒÜˆø”F(Zƒoƒbƒtƒ@‚Ì‰Šú‰»Fè‘O 0`1 ‰œ)
-	//‘æ˜Zˆø”F(ƒXƒeƒ“ƒVƒ‹‚Ì‰Šú‰»—p)
+	//ç”»é¢ã®ã‚¯ãƒªã‚¢BeginScene,EndSceneã®å¤–ã«æ›¸ã„ã¦
+	//ç¬¬ä¸‰å¼•æ•°ï¼š(è‰²ãƒãƒƒãƒ•ã‚¡ã€æ·±åº¦(Z)ãƒãƒƒãƒ•ã‚¡ã€ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡)
+	//ç¬¬å››å¼•æ•°ï¼š(ä½•è‰²ã§ã‚¯ãƒªã‚¢ã™ã‚‹ã‹)
+	//ç¬¬äº”å¼•æ•°ï¼š(Zãƒãƒƒãƒ•ã‚¡ã®åˆæœŸåŒ–ï¼šæ‰‹å‰ 0ã€œ1 å¥¥)
+	//ç¬¬å…­å¼•æ•°ï¼š(ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã®åˆæœŸåŒ–ç”¨)
 	d3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL, D3DCOLOR_RGBA(30, 30, 80, 255), 1.0f, 0);
-	//•`‰æ–½—ß‚ğ’™‚ß‚Ä‚¢‚­
+	//æç”»å‘½ä»¤ã‚’è²¯ã‚ã¦ã„ã
 	d3dDevice->BeginScene();
 
 	DrawSceneManager();
@@ -286,10 +286,10 @@ void Draw() {
 
 
 
-	//’™‚ß‚é‚ÌI‚í‚è
+	//è²¯ã‚ã‚‹ã®çµ‚ã‚ã‚Š
 	d3dDevice->EndScene();
 
-	//–½—ß‚ğŠî‚Éƒoƒbƒtƒ@‚ÉŠG‚ğ•`‚¢‚ÄAè‘O‚ÌŠG‚Æ“ü‚ê‘Ö‚¦‚é
+	//å‘½ä»¤ã‚’åŸºã«ãƒãƒƒãƒ•ã‚¡ã«çµµã‚’æã„ã¦ã€æ‰‹å‰ã®çµµã¨å…¥ã‚Œæ›¿ãˆã‚‹
 	d3dDevice->Present(NULL, NULL, NULL, NULL);
 }
 
