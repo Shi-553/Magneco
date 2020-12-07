@@ -41,8 +41,12 @@ void UpdateInput() {
 	if (TriggerInputLogger(MYVK_BEACON)) {
 		PutBeacon();
 	}
+	if (TriggerInputLogger(MYVK_PURGE)) {
+		PurgePlayerFlyingObject();
+	}
 
 #if _DEBUG
+	DebugPrintInputLogger();
 	if (TriggerInputLogger(MYVK_GAME_CLEAR)) {
 		GoNextScene(GameClearScene);
 	}

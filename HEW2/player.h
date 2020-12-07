@@ -7,7 +7,8 @@
 
 struct Player {
 	TRANS trans;
-	std::list < FlyingObject > flyingObjectList;
+	std::list <FlyingObject> flyingObjectList;
+	std::list <FlyingObject> purgeFlyingObjectList;
 	INTVECTOR2 dir;
 	float speed;
 	int frame;
@@ -31,5 +32,6 @@ void BlockDecision();
 Player* GetPlayer();
 
 void PutBeacon();
+void PurgePlayerFlyingObject();
 
 #endif // !_PLAYER_H

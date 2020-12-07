@@ -228,7 +228,7 @@ void MapChange(FlyingObject flyingobject)
 		return;
 	}
 
-	if (flyingobject.type == FLYING_OBJECT_BLOCK) {
+	if (flyingobject.type == FLYING_OBJECT_PLAYER_BLOCK) {
 		GetMap(intPos.y, intPos.x).type = MAP_BLOCK;
 	}
 }

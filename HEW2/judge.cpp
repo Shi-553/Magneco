@@ -96,6 +96,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 				itr->trans.Init(itr->trans.pos);
 
+				itr->type = FLYING_OBJECT_PLAYER_BLOCK;
 				player->flyingObjectList.push_back(*itr);
 				itr = flyingObjectList->erase(itr);
 			}
@@ -149,6 +150,7 @@ void JudgePlayerandFlyingObjectHit() {
 						}
 						itr->trans.UpdatePos();
 					}
+					itr->type = FLYING_OBJECT_PLAYER_BLOCK;
 
 					player->flyingObjectList.push_back(*itr);
 					itr = flyingObjectList->erase(itr);
@@ -159,6 +161,27 @@ void JudgePlayerandFlyingObjectHit() {
 			else if (itr->type == FLYING_OBJECT_ENEMY) {
 				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
 					player->flyingObjectList.erase(itr2);
+					itr = flyingObjectList->erase(itr);
+					isMatched = true;
+					break;
+				}
+			}
+		}
+
+
+		if (!isMatched) {
+			itr++;
+		}
+
+	}
+
+	// purgeFlyingObjectとenemyの当たり判定
+	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
+		bool isMatched = false;
+		for (auto itr2 = player->purgeFlyingObjectList.begin(); itr2 != player->purgeFlyingObjectList.end(); itr2++) {
+			if (itr->type == FLYING_OBJECT_ENEMY) {
+				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
+					player->purgeFlyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
 					isMatched = true;
 					break;

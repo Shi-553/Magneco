@@ -9,7 +9,6 @@
 #define AXIS_CONVERSIOINS_MAX (8)
 
 
-
 typedef struct KeyConversion {
 	VirtualKey virtualKey;
 	int realKey;
@@ -55,12 +54,22 @@ static KeyConversion KeyConversions[KEY_CONVERSIOINS_MAX]{
 	{MYVK_DOWN,KK_S},
 	{MYVK_LEFT,KK_A},
 	{MYVK_RIGHT,KK_D},
+
+	{MYVK_ENTER,KK_ENTER},
+	{MYVK_ENTER,KK_DOWN},
+	{MYVK_ENTER,KK_UP},
+
+	{MYVK_BEACON,KK_OEMCLOSEBRACKETS},
 	{MYVK_BEACON,KK_SPACE},
+	{MYVK_BEACON,KK_LEFT},
+
+	{MYVK_PURGE,KK_OEMOPENBRACKETS},
+	{MYVK_PURGE,KK_Q},
+	{MYVK_PURGE,KK_RIGHT},
 #if _DEBUG
 	{MYVK_GAME_CLEAR,KK_F1},
 	{MYVK_GAME_OVER,KK_F2},
 #endif
-	{MYVK_ENTER,KK_ENTER},
 };
 
 static AxisConversion AxisConversions[KEY_CONVERSIOINS_MAX]{
@@ -185,6 +194,13 @@ int GetInputLoggerAxis(VirtualAxis axis) {
 }
 int GetInputLoggerAxisAmount(VirtualAxis axis) {
 	return  currentAxis[(int)axis]- previousAxis[(int)axis];
+}
+void DebugPrintInputLogger() {
+	for (int i = 0; i < KK_MAX; i++) {
+		if (Keyboard_IsKeyDown((Keyboard_Keys)i)) {
+			DebugPrintf("%d\n",i);
+		}
+	}
 }
 
 

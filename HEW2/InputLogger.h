@@ -8,6 +8,7 @@ typedef enum VirtualKey {
 	MYVK_RIGHT,
 	MYVK_ENTER,
 	MYVK_BEACON,
+	MYVK_PURGE,
 
 #if _DEBUG
 	MYVK_GAME_CLEAR,
@@ -32,6 +33,8 @@ bool TriggerInputLogger(VirtualKey key);
 bool ReleaseInputLogger(VirtualKey key);
 int GetInputLoggerAxis(VirtualAxis axis);
 int GetInputLoggerAxisAmount(VirtualAxis axis);
+
+void DebugPrintInputLogger();
 
 void RecordStart( int frameMax);
 void RecordEnd();
