@@ -15,6 +15,8 @@ static std::list<FlyingObject> flyingObjects;
 static int blockObjectTextureId = TEXTURE_INVALID_ID;
 static int enemyObjectTextureId = TEXTURE_INVALID_ID;
 static int anotherBlockObjectTextureId = TEXTURE_INVALID_ID;
+static int ufoObjectTextureId = TEXTURE_INVALID_ID;
+
 
 std::list<FlyingObject>* GetFlyingObjects() {
 	return &flyingObjects;
@@ -29,11 +31,13 @@ void InitFlyingObject() {
 	blockObjectTextureId = ReserveTextureLoadFile("texture/block01.png");
 	enemyObjectTextureId = ReserveTextureLoadFile("texture/jellyalien01.png");
 	anotherBlockObjectTextureId = ReserveTextureLoadFile("texture/block03.png");
+	ufoObjectTextureId = ReserveTextureLoadFile("texture/ufo.png");
 }
 void UninitFlyingObject() {
 	ReleaseTexture(blockObjectTextureId);
 	ReleaseTexture(enemyObjectTextureId);
 	ReleaseTexture(anotherBlockObjectTextureId);
+	ReleaseTexture(ufoObjectTextureId);
 }
 void DrawFlyingObject(FlyingObject flyingObject) {
 	if (flyingObject.type == FLYING_OBJECT_BLOCK) {
@@ -41,6 +45,9 @@ void DrawFlyingObject(FlyingObject flyingObject) {
 	}
 	if (flyingObject.type == FLYING_OBJECT_ENEMY) {
 		DrawGameSprite(enemyObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
+	}
+	if (flyingObject.type == FLYING_OBJECT_UFO) {
+		DrawGameSprite(ufoObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 	}
 	if (flyingObject.type == FLYING_OBJECT_PLAYER_BLOCK ||flyingObject.type == FLYING_OBJECT_PURGE_BLOCK) {
 		DrawGameSprite(anotherBlockObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);

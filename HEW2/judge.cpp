@@ -116,6 +116,17 @@ void JudgePlayerandFlyingObjectHit() {
 			}
 
 		}
+		else if (itr->type == FLYING_OBJECT_UFO) {
+			if (CheckBlockBlock(player->trans.pos, itr->trans.pos)) {
+				itr = flyingObjectList->erase(itr);
+				GoNextScene(GameOverScene, FADE_IN);
+				return;
+			}
+			else {
+				itr++;
+			}
+		}
+
 	}
 
 	// flyingObject同士の当たり判定
@@ -166,6 +177,15 @@ void JudgePlayerandFlyingObjectHit() {
 					break;
 				}
 			}
+			else if (itr->type == FLYING_OBJECT_UFO) {
+				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
+					player->flyingObjectList.erase(itr2);
+					itr = flyingObjectList->erase(itr);
+					isMatched = true;
+					break;
+				}
+			}
+
 		}
 
 
@@ -187,6 +207,15 @@ void JudgePlayerandFlyingObjectHit() {
 					break;
 				}
 			}
+			else if(itr->type == FLYING_OBJECT_UFO) {
+				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
+					player->purgeFlyingObjectList.erase(itr2);
+					itr = flyingObjectList->erase(itr);
+					isMatched = true;
+					break;
+				}
+			}
+
 		}
 
 
