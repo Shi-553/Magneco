@@ -5,6 +5,7 @@
 //----------------------------------------------------------------
 
 #include "player.h"
+#include "npc.h"
 #include "flyingObject.h"
 #include "judge.h"
 #include "game.h"
@@ -61,6 +62,7 @@ void JudgePlayerandFlyingObjectHit() {
 	Player* player = GetPlayer();
 	std::list<FlyingObject>* flyingObjectList = GetFlyingObjects();
 
+	NPC* npc = GetNPC();
 
 	// プレイヤーとflyingObjectの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
@@ -105,6 +107,7 @@ void JudgePlayerandFlyingObjectHit() {
 			}
 
 		}
+		// 敵とプレイヤー
 		else if (itr->type == FLYING_OBJECT_ENEMY) {
 			if (CheckBlockBlock(player->trans.pos, itr->trans.pos)) {
 				itr = flyingObjectList->erase(itr);
@@ -116,11 +119,15 @@ void JudgePlayerandFlyingObjectHit() {
 			}
 
 		}
+		// npcとufo
 		else if (itr->type == FLYING_OBJECT_UFO) {
-			if (CheckBlockBlock(player->trans.pos, itr->trans.pos)) {
-				itr = flyingObjectList->erase(itr);
-				GoNextScene(GameOverScene, FADE_IN);
-				return;
+			if (CheckBlockBlock(npc->trans.pos, itr->trans.pos)) {
+				if (npc->takeOutFrame >= TAKE_OUT_FRAME_LIMIT) {
+					itr = flyingObjectList->erase(itr);
+					GoNextScene(GameOverScene, FADE_IN);
+					return;
+				}
+
 			}
 			else {
 				itr++;
@@ -181,6 +188,7 @@ void JudgePlayerandFlyingObjectHit() {
 				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
 					player->flyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
+					npc->takeOutFrame = 0;
 					isMatched = true;
 					break;
 				}
@@ -195,7 +203,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 	}
 
-	// purgeFlyingObjectとenemyの当たり判定
+	// 引っ付いているFlyingObjectとenemyの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
 		for (auto itr2 = player->purgeFlyingObjectList.begin(); itr2 != player->purgeFlyingObjectList.end(); itr2++) {
@@ -211,6 +219,7 @@ void JudgePlayerandFlyingObjectHit() {
 				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
 					player->purgeFlyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
+					npc->takeOutFrame = 0;
 					isMatched = true;
 					break;
 				}

@@ -6,6 +6,7 @@
 #include "gameSrite.h"
 #include "map.h"
 #include "time.h"
+#include "npc.h"
 
 // flyingObject描画範囲の加算分
 #define FLYINGOBJECT_ADD_RANGE (5)
@@ -70,6 +71,10 @@ void UpdateFlyingObject() {
 	}
 }
 bool UpdateFlyingObject(FlyingObject* flyingObject,float speed) {
+	if (flyingObject->type == FLYING_OBJECT_UFO) {
+		flyingObject->dir = GetNPC()->trans.pos - flyingObject->trans.pos;
+
+	}
 	auto nomal = flyingObject->dir;
 	D3DXVec2Normalize(&nomal, &nomal);
 	flyingObject->trans.pos += nomal* speed * GetDeltaTime();

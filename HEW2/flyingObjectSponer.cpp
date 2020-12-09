@@ -22,7 +22,7 @@ void InitFlyingSponer() {
 
 	spones = new Spone[sponeMax]{
 	{100,{5.5,-3.5},FLYING_OBJECT_BLOCK,{0,1}},
-	{100,{0,4},FLYING_OBJECT_UFO,{1,0}},
+	{100,{0,4.5},FLYING_OBJECT_UFO,{1,0}},
 	{150,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0}},
 	{200,{13.5,5.5},FLYING_OBJECT_ENEMY,{-1,0}},
 	{250,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0}},

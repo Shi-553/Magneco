@@ -56,6 +56,7 @@ void InitNPC() {
 	npc.frame = 30;
 	npc.aniFrame = 0;
 	npc.isMove = false;
+	npc.takeOutFrame = 0;
 	npcTextureVertical = 0;
 	nextPos = npc.trans.GetIntPos();
 	dir = INTVECTOR2(0, 0);
@@ -371,4 +372,8 @@ void SecureMapLabelList() {
 	}
 
 	mapLabelList = new int[GetMapHeight() * GetMapWidth()];
+}
+
+NPC* GetNPC() {
+	return &npc;
 }

@@ -8,8 +8,10 @@ typedef struct NPC_tag {
 	int frame;
 	int aniFrame;
 	bool isMove;
+	int takeOutFrame;
 }NPC;
 
+#define TAKE_OUT_FRAME_LIMIT (7 * 60)
 
 void InitNPC();
 void UpdateNPC();
@@ -20,5 +22,7 @@ void UpdateNPCShortestPath(INTVECTOR2 beaconPos);
 void UpdateNPCShortestPath();
 
 void SecureMapLabelList();
+
+NPC* GetNPC();
 
 #endif // !_NPC_H
