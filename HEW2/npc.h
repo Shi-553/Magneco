@@ -21,4 +21,6 @@ void UpdateNPCShortestPath();
 
 void SecureMapLabelList();
 
+NPC* GetNpc();
+
 #endif // !_NPC_H

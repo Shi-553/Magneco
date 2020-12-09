@@ -5,3 +5,6 @@
 void DrawHighlight(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 pivot, int count, float startDegreeAngle);
 
 void DrawForeground(D3DCOLOR color);
+
+void SetBackStencilBufferMask();
+void ResetBackStencilBufferMask();
