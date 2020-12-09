@@ -15,9 +15,7 @@ struct Vertex2D{
 void DrawCircle(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 pivot, int count, float degreeAngle);
 
 void SetBackStencilBufferDraw();
-void SetBackStencilBufferMask();
 void ResetBackStencilBufferDraw();
-void ResetBackStencilBufferMask();
 
 
 void DrawHighlight(D3DXVECTOR2 pos,D3DXVECTOR2 size,D3DXVECTOR2 pivot,int count,float startDegreeAngle) {

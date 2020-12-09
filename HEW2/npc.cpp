@@ -372,3 +372,7 @@ void SecureMapLabelList() {
 
 	mapLabelList = new int[GetMapHeight() * GetMapWidth()];
 }
+
+NPC* GetNpc() {
+	return &npc;
+}
