@@ -74,10 +74,11 @@ inline OutputLogType& operator|= (OutputLogType& a, OutputLogType b) { return (O
 inline OutputLogType& operator&= (OutputLogType& a, OutputLogType b) { return (OutputLogType&)((int&)a &= (int)b); }
 inline OutputLogType& operator^= (OutputLogType& a, OutputLogType b) { return (OutputLogType&)((int&)a ^= (int)b); }
 inline bool operator! (OutputLogType a) { return !(bool)a; }
-//フラグがたってたらTRUE
-inline bool operator+ (OutputLogType a, OutputLogType b) { return ((int)a & (int)b); }
-//フラグがたってなかったらTRUE
-inline bool operator- (OutputLogType a, OutputLogType b) { return !((int)a & (int)b); }
+
+//フラグがどちらかたってたらTRUE
+inline bool operator+ (OutputLogType a, OutputLogType b) { return ((int)a | (int)b); }
+//フラグが両方たってたらTRUE
+inline bool operator* (OutputLogType a, OutputLogType b) { return ((int)a & (int)b); }
 
 
 void DebugPrintInputLogger(OutputLogType type);

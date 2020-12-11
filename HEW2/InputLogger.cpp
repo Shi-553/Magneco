@@ -379,32 +379,32 @@ void DebugPrintInputLogger(OutputLogType type) {
 
 	bool isDraw = false;
 	for (int i = 0; i < GAMEPAD_AXIS_MAX; i++) {
-		if (i < KK_MAX && OutputLogType::KEYBORAD + type) {
+		if (i < KK_MAX && OutputLogType::KEYBORAD * type) {
 			if (Keyboard_IsKeyDown((Keyboard_Keys)i)) {
 				DebugPrintf("%d,", i);
 				isDraw = true;
 			}
 		}
-		else if (i < MOUSE_BUTTONS_MAX && OutputLogType::MOUSE_BUTTON + type) {
+		else if (i < MOUSE_BUTTONS_MAX && OutputLogType::MOUSE_BUTTON * type) {
 			if (Mouse_IsKeyDown((Mouse_Buttons)i)) {
 				DebugPrintf("%d,", i);
 				isDraw = true;
 			}
 		}
-		else if (i < MOUSE_AXIS_MAX && OutputLogType::MOUSE_AXIS + type) {
+		else if (i < MOUSE_AXIS_MAX && OutputLogType::MOUSE_AXIS * type) {
 			auto mAxis = Mouse_GetAxis((Mouse_Axis)i);
 			if (mAxis != 0) {
 				DebugPrintf("%d : %d,", i, mAxis);
 				isDraw = true;
 			}
 		}
-		else if (i < GAMEPAD_BUTTONS_MAX && OutputLogType::GAMEPAD_BUTTON + type) {
+		else if (i < GAMEPAD_BUTTONS_MAX && OutputLogType::GAMEPAD_BUTTON * type) {
 			if (gamepad->IsButtonDown((GamepadButtons)i)) {
 				DebugPrintf("%d,", i);
 				isDraw = true;
 			}
 		}
-		else if (i < GAMEPAD_AXIS_MAX && OutputLogType::GAMEPAD_AXIS + type) {
+		else if (i < GAMEPAD_AXIS_MAX && OutputLogType::GAMEPAD_AXIS * type) {
 			auto gpAxis = gamepad->GetAxisInt((GamepadAxis)i);
 			if (gpAxis != 0) {
 				DebugPrintf("%d : %d,", i, gpAxis);
