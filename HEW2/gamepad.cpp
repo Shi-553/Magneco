@@ -1,9 +1,11 @@
-#include "gamepad.h"
+﻿#include "gamepad.h"
 #include "debugPrintf.h"
 
 
 
 bool Gamepad::Init(HWND hWnd, HINSTANCE hIns) {
+	Uninit();
+
 	this->hwnd = hWnd;
 
 	auto hr = DirectInput8Create(hIns,
@@ -31,7 +33,21 @@ bool Gamepad::Init(HWND hWnd, HINSTANCE hIns) {
 	return true;
 }
 
+void Gamepad::Uninit() {
+	padData = {};
+	isDataNone = true;
+	hwnd = NULL;
 
+	if (inputDeveice != NULL) {
+		inputDeveice->Unacquire();
+		inputDeveice->Release();
+		inputDeveice = NULL;
+	}
+	if (inputInterface != NULL) {
+		inputInterface->Release();
+		inputInterface = NULL;
+	}
+}
 
 BOOL CALLBACK Gamepad::DeviceFindCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef)
 {
@@ -60,14 +76,14 @@ bool Gamepad::DeviceInit() {
 		return false;
 	}
 
-	// �����[�h���Βl���[�h�Ƃ��Đݒ�
+	// 軸モードを絶対値モードとして設定
 	DIPROPDWORD diprop;
 	ZeroMemory(&diprop, sizeof(diprop));
 	diprop.diph.dwSize = sizeof(diprop);
 	diprop.diph.dwHeaderSize = sizeof(diprop.diph);
 	diprop.diph.dwHow = DIPH_DEVICE;
 	diprop.diph.dwObj = 0;
-	diprop.dwData = DIPROPAXISMODE_ABS;	// ��Βl���[�h�̎w��(DIPROPAXISMODE_REL�ɂ����瑊�Βl)
+	diprop.dwData = DIPROPAXISMODE_ABS;	// 絶対値モードの指定(DIPROPAXISMODE_RELにしたら相対値)
 
 	hr = inputDeveice->SetProperty(DIPROP_AXISMODE, &diprop.diph);
 	if (FAILED(hr))
@@ -75,14 +91,14 @@ bool Gamepad::DeviceInit() {
 		return false;
 	}
 
-	// X���̒l�͈̔͐ݒ�
+	// X軸の値の範囲設定
 	DIPROPRANGE diprg;
 	ZeroMemory(&diprg, sizeof(diprg));
 	diprg.diph.dwSize = sizeof(diprg);
 	diprg.diph.dwHeaderSize = sizeof(diprg.diph);
 	diprg.diph.dwHow = DIPH_BYOFFSET;
 	diprg.diph.dwObj = DIJOFS_X;
-	diprg.lMin = -(LONG)stickMax;
+	diprg.lMin = -stickMax;
 	diprg.lMax = stickMax;
 
 	hr = inputDeveice->SetProperty(DIPROP_RANGE, &diprg.diph);
@@ -91,7 +107,7 @@ bool Gamepad::DeviceInit() {
 		return false;
 	}
 
-	// Y���̒l�͈̔͐ݒ�
+	// Y軸の値の範囲設定
 	diprg.diph.dwObj = DIJOFS_Y;
 	hr = inputDeveice->SetProperty(DIPROP_RANGE, &diprg.diph);
 
@@ -100,7 +116,25 @@ bool Gamepad::DeviceInit() {
 		return false;
 	}
 
-	// �������[�h�̐ݒ�(�o�b�N�O���E���h�Ńf�o�C�X�擾���ł��邩�ǂ����A���̃A�v���Ƌ��L���邩�ǂ���)
+	// RX軸の値の範囲設定
+	diprg.diph.dwObj = DIJOFS_RX;
+	hr = inputDeveice->SetProperty(DIPROP_RANGE, &diprg.diph);
+
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	// RY軸の値の範囲設定
+	diprg.diph.dwObj = DIJOFS_RY;
+	hr = inputDeveice->SetProperty(DIPROP_RANGE, &diprg.diph);
+
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	// 協調モードの設定(バックグラウンドでデバイス取得ができるかどうか、他のアプリと共有するかどうか)
 	hr = inputDeveice->SetCooperativeLevel(
 		hwnd,
 		DISCL_EXCLUSIVE | DISCL_FOREGROUND
@@ -110,7 +144,7 @@ bool Gamepad::DeviceInit() {
 		return false;
 	}
 
-	//����J�n
+	//制御開始
 	hr = inputDeveice->Acquire();
 
 	if (FAILED(hr))
@@ -118,7 +152,7 @@ bool Gamepad::DeviceInit() {
 		return false;
 	}
 
-	//�|�[�����O�J�n
+	//ポーリング開始
 	hr = inputDeveice->Poll();
 
 	if (FAILED(hr))
@@ -133,6 +167,7 @@ bool Gamepad::Update() {
 	if (inputDeveice == NULL) {
 		return false;
 	}
+
 	HRESULT hr = inputDeveice->GetDeviceState(sizeof(DIJOYSTATE), &padData);
 
 	if (FAILED(hr))
@@ -150,11 +185,13 @@ bool Gamepad::Update() {
 }
 
 
-
+//エラーでfalse
 bool Gamepad::IsButtonDown(GamepadButtons button) {
 	if (isDataNone) {
 		return false;
 	}
+
+	//十字キー
 	if (GAMEPAD_UP <= button && button <= GAMEPAD_RIGHT) {
 		if (padData.rgdwPOV[0] == 0xFFFFFFFF)
 		{
@@ -181,18 +218,46 @@ bool Gamepad::IsButtonDown(GamepadButtons button) {
 
 		return false;
 	}
+
+	//その他のボタン
 	else if (GAMEPAD_XBUTTON1 <= button && button <= GAMEPAD_XBUTTON31) {
 		return padData.rgbButtons[button - GAMEPAD_XBUTTON1] & 0x80;
+	}
+
+	//軸が四方向に傾いてるかどうか
+	else if (GAMEPAD_LUP <= button && button <= GAMEPAD_LRRIGHT) {
+		GamepadAxis axis;
+		if (button == GAMEPAD_LUP || button == GAMEPAD_LDOWN) {
+			axis = GAMEPAD_LY;
+		}
+		else if (button == GAMEPAD_LLEFT || button == GAMEPAD_LRIGHT) {
+			axis = GAMEPAD_LX;
+		}
+		else if (button == GAMEPAD_LRUP || button == GAMEPAD_LRDOWN) {
+			axis = GAMEPAD_LRY;
+		}
+		else if (button == GAMEPAD_LRLEFT || button == GAMEPAD_LRRIGHT) {
+			axis = GAMEPAD_LRX;
+		}
+
+		if (button == GAMEPAD_LUP || button == GAMEPAD_LLEFT || button == GAMEPAD_LRUP || button == GAMEPAD_LRLEFT) {
+			return 0 > GetAxisInt(axis);
+		}
+		else {
+			return 0 < GetAxisInt(axis);
+		}
 	}
 
 	return false;
 }
 
+//エラーでfalseにしたいからIsButtonDownと別にした
 bool Gamepad::IsButtonUp(GamepadButtons button) {
 	if (isDataNone) {
 		return false;
 	}
 
+	//十字キー
 	if (GAMEPAD_UP <= button && button <= GAMEPAD_RIGHT) {
 		if (padData.rgdwPOV[0] == 0xFFFFFFFF)
 		{
@@ -219,8 +284,34 @@ bool Gamepad::IsButtonUp(GamepadButtons button) {
 
 		return true;
 	}
+
+	//その他のボタン
 	else if (GAMEPAD_XBUTTON1 <= button && button <= GAMEPAD_XBUTTON31) {
 		return !(padData.rgbButtons[button - GAMEPAD_XBUTTON1] & 0x80);
+	}
+
+	//軸が四方向に傾いてるかどうか
+	else if (GAMEPAD_LUP <= button && button <= GAMEPAD_LRRIGHT) {
+		GamepadAxis axis;
+		if (button == GAMEPAD_LUP || button == GAMEPAD_LDOWN) {
+			axis = GAMEPAD_LY;
+		}
+		else if (button == GAMEPAD_LLEFT || button == GAMEPAD_LRIGHT) {
+			axis = GAMEPAD_LX;
+		}
+		else if (button == GAMEPAD_LRUP || button == GAMEPAD_LRDOWN) {
+			axis = GAMEPAD_LRY;
+		}
+		else if (button == GAMEPAD_LRLEFT || button == GAMEPAD_LRRIGHT) {
+			axis = GAMEPAD_LRX;
+		}
+
+		if (button == GAMEPAD_LUP || button == GAMEPAD_LLEFT || button == GAMEPAD_LRUP || button == GAMEPAD_LRLEFT) {
+			return 0 <= GetAxisInt(axis);
+		}
+		else {
+			return 0 >= GetAxisInt(axis);
+		}
 	}
 
 	return false;
@@ -246,11 +337,11 @@ int Gamepad::GetAxisInt(GamepadAxis axis) {
 		break;
 
 	case GAMEPAD_LRX:
-		temp = ((padData.lRx / (31000.0f / (float)stickMax)) - 1000.0f);
+		temp = padData.lRx;
 		break;
 
 	case GAMEPAD_LRY:
-		temp = ((padData.lRy / (31000.0f / (float)stickMax)) - 1000.0f);
+		temp = padData.lRy;
 		break;
 
 	case GAMEPAD_LRZ:
