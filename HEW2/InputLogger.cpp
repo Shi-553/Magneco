@@ -3,10 +3,13 @@
 #include "InputLogger.h"
 #include "keyboard.h"
 #include "mouse.h"
+#include "gamepad.h"
 #include "debugPrintf.h"
+#include "config.h"
 
-#define KEY_CONVERSIOINS_MAX (16)
+#define KEY_CONVERSIOINS_MAX (32)
 #define AXIS_CONVERSIOINS_MAX (8)
+
 
 
 typedef struct KeyConversion {
@@ -28,25 +31,30 @@ enum LoggerMode
 
 static LoggerMode inputloggerMode = LOGGER_NORMAL;
 
-typedef unsigned short InputLoggerType;
+typedef unsigned long long InputLoggerType;
 
-static InputLoggerType current = 0;
+static InputLoggerType padData = 0;
 static InputLoggerType previous = 0;
 static InputLoggerType trigger = 0;
 static InputLoggerType release = 0;
 
 static InputLoggerType* recordCurrent = NULL;
 
-static int currentAxis[AXIS_CONVERSIOINS_MAX] = {};
-static int previousAxis[AXIS_CONVERSIOINS_MAX] = {};
+static int currentAxis[MYVA_MAX] = {};
+static int previousAxis[MYVA_MAX] = {};
+static int axisMaxs[MYVA_MAX] = {};
 
-static  int* recordCurrentAxis[AXIS_CONVERSIOINS_MAX] = {};
+
+static  int* recordCurrentAxis[MYVA_MAX] = {};
 
 static int recordFrame = 0;
 static int recordTraceFrame = 0;
 
 static char* recordFilename = NULL;
 static int gRecordframeMax = 0;
+
+
+static Gamepad* gamepad = Gamepad::GetInstance();
 
 
 static KeyConversion KeyConversions[KEY_CONVERSIOINS_MAX]{
@@ -72,19 +80,28 @@ static KeyConversion KeyConversions[KEY_CONVERSIOINS_MAX]{
 #endif
 };
 
-static AxisConversion AxisConversions[KEY_CONVERSIOINS_MAX]{
-	{MYVA_X,MOUSE_X},
-	{MYVA_Y,MOUSE_Y},
+static AxisConversion AxisConversions[AXIS_CONVERSIOINS_MAX]{
+	{MYVA_MX,MOUSE_X},
+	{MYVA_MY,MOUSE_Y},
+	{MYVA_GLX,GAMEPAD_LX},
+	{MYVA_GLY,GAMEPAD_LY},
+	{MYVA_GRX,GAMEPAD_LRX},
+	{MYVA_GRY,GAMEPAD_LRY},
 };
 
-void InitInputLogger() {
-	current = previous = trigger = release = 0;
-	ZeroMemory(currentAxis,sizeof(currentAxis));
-	ZeroMemory(previousAxis,sizeof(previousAxis));
+void InitInputLogger(HWND hWnd, HINSTANCE hIns) {
+	Keyboard_Initialize();
+	Mouse_Initialize(hWnd);
+	gamepad->Init(hWnd, hIns);
+
+
+	padData = previous = trigger = release = 0;
+	ZeroMemory(currentAxis, sizeof(currentAxis));
+	ZeroMemory(previousAxis, sizeof(previousAxis));
 
 	inputloggerMode = LOGGER_NORMAL;
 	recordCurrent = NULL;
-	for (size_t i = 0; i < AXIS_CONVERSIOINS_MAX; i++)
+	for (size_t i = 0; i < MYVA_MAX; i++)
 	{
 		free(recordCurrentAxis[i]);
 		recordCurrentAxis[i] = NULL;
@@ -102,24 +119,29 @@ void UninitInputLogger() {
 	free(recordCurrent);
 	recordCurrent = NULL;
 
-	for (size_t i = 0; i < AXIS_CONVERSIOINS_MAX; i++)
+	for (size_t i = 0; i < MYVA_MAX; i++)
 	{
 		free(recordCurrentAxis[i]);
 		recordCurrentAxis[i] = NULL;
 	}
 	free(recordFilename);
 	recordFilename = NULL;
+
+	Mouse_Finalize();
+
 }
 
 void UpdateInputLogger() {
+	gamepad->Update();
 
-	previous = current;
-	for (size_t i = 0; i < AXIS_CONVERSIOINS_MAX; i++) {
+	previous = padData;
+	for (size_t i = 0; i < MYVA_MAX; i++) {
 		previousAxis[i] = currentAxis[i];
+		currentAxis[i] = 0;
 	}
 
 	if (inputloggerMode == LOGGER_NORMAL || inputloggerMode == LOGGER_RECORD) {
-		current = 0;
+		padData = 0;
 
 		for (int i = 0; i < KEY_CONVERSIOINS_MAX; i++)
 		{
@@ -128,17 +150,22 @@ void UpdateInputLogger() {
 
 			if (KeyConversions[i].realKey < KK_MAX) {
 				if (Keyboard_IsKeyDown((Keyboard_Keys)KeyConversions[i].realKey)) {
-					current |= 1u << KeyConversions[i].virtualKey;
+					padData |= (InputLoggerType)(1u) << KeyConversions[i].virtualKey;
 				}
 			}
 			else if (KeyConversions[i].realKey < MOUSE_BUTTONS_MAX) {
 				if (Mouse_IsKeyDown((Mouse_Buttons)KeyConversions[i].realKey)) {
-					current |= 1u << KeyConversions[i].virtualKey;
+					padData |= (InputLoggerType)(1u) << KeyConversions[i].virtualKey;
+				}
+			}
+			else if (KeyConversions[i].realKey < GAMEPAD_BUTTONS_MAX) {
+				if (gamepad->IsButtonDown((GamepadButtons)KeyConversions[i].realKey)) {
+					padData |= (InputLoggerType)(1u) << KeyConversions[i].virtualKey;
 				}
 			}
 		}
 
-		for (int i = 0; i < KEY_CONVERSIOINS_MAX; i++)
+		for (int i = 0; i < AXIS_CONVERSIOINS_MAX; i++)
 		{
 			if (AxisConversions[i].realAxis == 0)
 				continue;
@@ -146,12 +173,23 @@ void UpdateInputLogger() {
 			if (AxisConversions[i].realAxis < MOUSE_AXIS_MAX) {
 				currentAxis[(int)AxisConversions[i].virtualAxis] = Mouse_GetAxis((Mouse_Axis)AxisConversions[i].realAxis);
 
+				if (AxisConversions[i].realAxis == MOUSE_X) {
+					axisMaxs[(int)AxisConversions[i].virtualAxis] = SCREEN_WIDTH;
+				}
+				else {
+					axisMaxs[(int)AxisConversions[i].virtualAxis] = SCREEN_HEIGHT;
+				}
+			}
+			else if (AxisConversions[i].realAxis < GAMEPAD_AXIS_MAX) {
+				currentAxis[(int)AxisConversions[i].virtualAxis] = gamepad->GetAxisInt((GamepadAxis)AxisConversions[i].realAxis);
+				axisMaxs[(int)AxisConversions[i].virtualAxis] = gamepad->stickMax;
+
 			}
 		}
 
 		if (inputloggerMode == LOGGER_RECORD) {
-			recordCurrent[recordFrame] = current;
-			for (size_t i = 0; i < AXIS_CONVERSIOINS_MAX; i++)
+			recordCurrent[recordFrame] = padData;
+			for (size_t i = 0; i < MYVA_MAX; i++)
 			{
 				recordCurrentAxis[i][recordFrame] = currentAxis[i];
 
@@ -164,9 +202,9 @@ void UpdateInputLogger() {
 	}
 
 	else if (inputloggerMode == LOGGER_TRACE) {
-		current = recordCurrent[recordTraceFrame];
+		padData = recordCurrent[recordTraceFrame];
 
-		for (size_t i = 0; i < AXIS_CONVERSIOINS_MAX; i++){
+		for (size_t i = 0; i < MYVA_MAX; i++) {
 			currentAxis[i] = recordCurrentAxis[i][recordTraceFrame];
 		}
 
@@ -176,33 +214,37 @@ void UpdateInputLogger() {
 			TraceEnd();
 		}
 	}
-	trigger = (previous ^ current) & current;
-	release = (previous ^ current) & previous;
+	trigger = (previous ^ padData) & padData;
+	release = (previous ^ padData) & previous;
 }
 
 bool PressInputLogger(VirtualKey key) {
-	return current & (1u << (int)key);
+	return padData & ((InputLoggerType)(1u) << (int)key);
 }
 bool TriggerInputLogger(VirtualKey key) {
-	return trigger & (1u << (int)key);
+	return trigger & ((InputLoggerType)(1u) << (int)key);
 }
 bool ReleaseInputLogger(VirtualKey key) {
-	return release & (1u << (int)key);
+	return release & ((InputLoggerType)(1u) << (int)key);
 }
-int GetInputLoggerAxis(VirtualAxis axis) {
+int GetInputLoggerAxisInt(VirtualAxis axis) {
 	return currentAxis[(int)axis];
 }
-int GetInputLoggerAxisAmount(VirtualAxis axis) {
-	return  currentAxis[(int)axis]- previousAxis[(int)axis];
+int GetInputLoggerAxisAmountInt(VirtualAxis axis) {
+	return  currentAxis[(int)axis] - previousAxis[(int)axis];
 }
-void DebugPrintInputLogger() {
-	for (int i = 0; i < KK_MAX; i++) {
-		if (Keyboard_IsKeyDown((Keyboard_Keys)i)) {
-			DebugPrintf("%d\n",i);
-		}
-	}
+float GetInputLoggerAxis(VirtualAxis axis) {
+	return GetInputLoggerAxisInt(axis) / (float)axisMaxs[(int)axis];
+
+}
+float GetInputLoggerAxisAmount(VirtualAxis axis) {
+	return GetInputLoggerAxisAmountInt(axis) / (float)axisMaxs[(int)axis];
 }
 
+void InputLoggerProcessMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+	Keyboard_ProcessMessage(uMsg, wParam, lParam);
+	Mouse_ProcessMessage(uMsg, wParam, lParam);
+}
 
 void RecordStart(int recordFrameMax) {
 	gRecordframeMax = recordFrameMax;
@@ -215,7 +257,7 @@ void RecordStart(int recordFrameMax) {
 	}
 
 
-	for (size_t i = 0; i < AXIS_CONVERSIOINS_MAX; i++)
+	for (size_t i = 0; i < MYVA_MAX; i++)
 	{
 		free(recordCurrentAxis[i]);
 
@@ -235,7 +277,7 @@ void RecordEnd() {
 	fwrite(&recordFrame, sizeof(recordFrame), 1, fp);
 
 	fwrite(recordCurrent, sizeof(InputLoggerType), recordFrame, fp);
-	for (size_t i = 0; i < AXIS_CONVERSIOINS_MAX; i++)
+	for (size_t i = 0; i < MYVA_MAX; i++)
 	{
 		fwrite(recordCurrentAxis[i], sizeof(recordCurrentAxis[i]), recordFrame, fp);
 	}
@@ -257,7 +299,7 @@ void RecordLoad() {
 		throw  "Out of memory";
 		return;
 	}
-	for (size_t i = 0; i < AXIS_CONVERSIOINS_MAX; i++)
+	for (size_t i = 0; i < MYVA_MAX; i++)
 	{
 		free(recordCurrentAxis[i]);
 
@@ -270,7 +312,7 @@ void RecordLoad() {
 
 	fread(recordCurrent, sizeof(InputLoggerType), recordFrame, fp);
 
-	for (size_t i = 0; i < AXIS_CONVERSIOINS_MAX; i++)
+	for (size_t i = 0; i < MYVA_MAX; i++)
 	{
 		fread(recordCurrentAxis[i], sizeof(recordCurrentAxis[i]), recordFrame, fp);
 	}
@@ -309,4 +351,13 @@ void SetRecordFilename(const char* f, size_t size) {
 		recordFilename[i] = f[i];
 	}
 	recordFilename[size] = '\0';
+}
+
+
+void DebugPrintInputLogger() {
+	for (int i = 0; i < KK_MAX; i++) {
+		if (Keyboard_IsKeyDown((Keyboard_Keys)i)) {
+			DebugPrintf("%d\n", i);
+		}
+	}
 }

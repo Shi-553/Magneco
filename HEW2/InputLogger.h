@@ -1,7 +1,7 @@
-﻿#ifndef _INPUT_LOGGER_H
-#define _INPUT_LOGGER_H
+﻿#pragma once
+#include <Windows.h>
 
-typedef enum VirtualKey {
+enum VirtualKey {
 	MYVK_UP,
 	MYVK_DOWN,
 	MYVK_LEFT,
@@ -18,23 +18,32 @@ typedef enum VirtualKey {
 	MYVK_MAX
 };
 
-typedef enum VirtualAxis {
-	MYVA_X ,
-	MYVA_Y ,
+enum VirtualAxis {
+	MYVA_MX,
+	MYVA_MY,
+	MYVA_GLX,
+	MYVA_GLY,
+	MYVA_GRX,
+	MYVA_GRY,
 	MYVA_MAX
 };
 
-void InitInputLogger();
+void InitInputLogger(HWND hWnd, HINSTANCE hIns);
 void UninitInputLogger();
 void UpdateInputLogger();
 
 bool PressInputLogger(VirtualKey key);
 bool TriggerInputLogger(VirtualKey key);
 bool ReleaseInputLogger(VirtualKey key);
-int GetInputLoggerAxis(VirtualAxis axis);
-int GetInputLoggerAxisAmount(VirtualAxis axis);
 
-void DebugPrintInputLogger();
+int GetInputLoggerAxisInt(VirtualAxis axis);
+int GetInputLoggerAxisAmountInt(VirtualAxis axis);
+float GetInputLoggerAxis(VirtualAxis axis);
+float GetInputLoggerAxisAmount(VirtualAxis axis);
+
+
+void InputLoggerProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);
+
 
 void RecordStart( int frameMax);
 void RecordEnd();
@@ -46,4 +55,5 @@ bool IsTrace();
 
 
 void SetRecordFilename(const char* f, size_t size);
-#endif // !_INPUT_LOGGER_H
+
+void DebugPrintInputLogger();

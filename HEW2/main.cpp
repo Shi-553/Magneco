@@ -22,8 +22,6 @@
 #include "texture.h"
 #include "debugFont.h"
 #include "system_timer.h"
-#include "keyboard.h"
-#include "mouse.h"
 #include "InputLogger.h"
 #include "sceneManager.h"
 #include "time.h"
@@ -37,7 +35,7 @@
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 
-static bool Init(HWND hWnd);
+static bool Init(HWND hWnd, HINSTANCE hIns);
 static void Update(void);
 static void Draw();
 static void Uninit(void);
@@ -133,7 +131,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		return -1;
 	}
 
-	if (!Init(hWnd)) {
+	if (!Init(hWnd,hInstance)) {
 		return -1;
 	}
 
@@ -192,31 +190,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		return 0;
 	}
 
-	switch (uMsg)
-	{
-	case WM_ACTIVATEAPP:
-	case WM_KEYDOWN:
-	case WM_SYSKEYDOWN:
-	case WM_KEYUP:
-	case WM_SYSKEYUP:
-		Keyboard_ProcessMessage(uMsg, wParam, lParam);
-
-		break;
-	}
-	Mouse_ProcessMessage(uMsg, wParam, lParam);
+	InputLoggerProcessMessage(uMsg, wParam, lParam);
 
 	//デフォルトのメッセージ処理
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
 
-bool Init(HWND hWnd) {
-	Keyboard_Initialize();
-	Mouse_Initialize(hWnd);
+bool Init(HWND hWnd,HINSTANCE hIns) {
 
 	InitTime(SystemTimer_GetTime());
 
-	InitInputLogger();
+	InitInputLogger(hWnd, hIns);
 
 	if (!InitMyD3D(hWnd)) {
 
