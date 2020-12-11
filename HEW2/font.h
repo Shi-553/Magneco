@@ -7,4 +7,4 @@ void InitFont();
 void UninitFont();
 
 
-void CreateFont(int height, int width, LPD3DXFONT* font);
+void MyCreateFont(int height, int width, LPD3DXFONT* font);

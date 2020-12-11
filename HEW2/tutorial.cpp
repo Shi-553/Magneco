@@ -70,7 +70,7 @@ void InitTutorial()
 	DBottonTexture = ReserveTextureLoadFile("texture/move_D.png");
 	GreatTexture = ReserveTextureLoadFile("texture/greattext384_128_01.png");
 
-	CreateFont(TUTPRIAL_FONT_HIGHT, TUTORIAL_FONT_WIDTH, &font);
+	MyCreateFont(TUTPRIAL_FONT_HIGHT, TUTORIAL_FONT_WIDTH, &font);
 	LPDIRECT3DDEVICE9 device = GetD3DDevice();
 	D3DXCreateSprite(device, &sprite);
 

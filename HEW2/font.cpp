@@ -21,7 +21,7 @@ void UninitFont() {
 	}
 }
 
-void CreateFont(int height, int width, LPD3DXFONT* font) {
+void MyCreateFont(int height, int width, LPD3DXFONT* font) {
 	auto device = GetD3DDevice();
 
 	auto hr = D3DXCreateFont(
