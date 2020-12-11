@@ -1,6 +1,4 @@
-﻿//
-
-#include "texture.h"
+﻿#include "texture.h"
 #include "myd3d.h"
 #include "debugPrintf.h"
 

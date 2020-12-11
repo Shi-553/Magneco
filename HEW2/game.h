@@ -1,6 +1,4 @@
-﻿//ゲーム本体
-
-#ifndef _GAME_H
+﻿#ifndef _GAME_H
 #define _GAME_H
 
 

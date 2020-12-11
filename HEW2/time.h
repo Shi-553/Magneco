@@ -1,5 +1,4 @@
-﻿
-#pragma once
+﻿#pragma once
 
 void InitTime(double currentTime);
 

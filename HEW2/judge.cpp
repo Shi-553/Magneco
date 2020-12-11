@@ -1,10 +1,4 @@
-﻿// --------------------------------------------------------------
-//  “–‚‚è”’è‚Ìˆ—[judge.cpp]
-// 
-//							Author:Kanna Noda
-//----------------------------------------------------------------
-
-#include "player.h"
+﻿#include "player.h"
 #include "flyingObject.h"
 #include "judge.h"
 #include "game.h"

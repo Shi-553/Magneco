@@ -1,5 +1,4 @@
-﻿// テクスチャ管理 2020/6/26 柴田晴彦
-#ifndef _TEXTURE_H_
+﻿#ifndef _TEXTURE_H_
 #define _TEXTURE_H_
 
 #include "myd3d.h"

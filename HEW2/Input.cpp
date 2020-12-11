@@ -1,10 +1,4 @@
-﻿// -------------------------------------------------------------------------
-//	入力をとる処理[Input.cpp]
-// 
-//						Author:Kanna Noda
-// -------------------------------------------------------------------------
-
-#include "Input.h"
+﻿#include "Input.h"
 #include "InputLogger.h"
 #include "player.h"
 #include "sceneManager.h"
