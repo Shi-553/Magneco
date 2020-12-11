@@ -75,8 +75,9 @@ void JudgePlayerandFlyingObjectHit() {
 				itr->trans.pos = player->trans.pos;
 				itr->trans.UpdatePos();
 
-				bool isMovePlayer = player->dir != INTVECTOR2(0, 0);
-				auto movePlayer = (player->dir).ToD3DXVECTOR2();
+				auto intDir = INTVECTOR2(player->dir);
+				bool isMovePlayer = intDir != INTVECTOR2(0, 0);
+				auto movePlayer = intDir.ToD3DXVECTOR2();
 
 				while (true) {
 					auto intPos = itr->trans.GetIntPos();
@@ -134,8 +135,9 @@ void JudgePlayerandFlyingObjectHit() {
 
 					itr->trans.UpdatePos();
 
-					bool isMovePlayer = player->dir != INTVECTOR2(0, 0);
-					auto movePlayer = player->dir.ToD3DXVECTOR2();
+					auto intDir = INTVECTOR2(player->dir);
+					bool isMovePlayer = intDir != INTVECTOR2(0, 0);
+					auto movePlayer = intDir.ToD3DXVECTOR2();
 
 					while (true) {
 						auto intPos = itr->trans.GetIntPos();
