@@ -12,12 +12,12 @@
 
 
 
-typedef struct KeyConversion {
+struct KeyConversion {
 	VirtualKey virtualKey;
 	int realKey;
 };
 
-typedef struct AxisConversion {
+struct AxisConversion {
 	VirtualAxis virtualAxis;
 	int realAxis;
 };

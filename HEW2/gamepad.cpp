@@ -159,6 +159,8 @@ bool Gamepad::DeviceInit() {
 	{
 		return false;
 	}
+
+	return true;
 }
 
 
@@ -321,7 +323,7 @@ int Gamepad::GetAxisInt(GamepadAxis axis) {
 	if (isDataNone) {
 		return 0;
 	}
-	float temp = 0;
+	LONG temp = 0;
 	switch (axis)
 	{
 	case GAMEPAD_LX:
@@ -360,18 +362,18 @@ int Gamepad::GetAxisInt(GamepadAxis axis) {
 		return 0;
 	}
 
-	temp = temp * 10.0f / 7.0f;
+	float temp2 = temp * 10.0f / 7.0f;
 
-	if (-unresponsiveRange < temp && temp < unresponsiveRange) {
+	if (-unresponsiveRange < temp2 && temp2 < unresponsiveRange) {
 		return 0;
 	}
-	if (-stickMax > temp) {
+	if (-stickMax > temp2) {
 		return -stickMax;
 	}
-	if (stickMax < temp) {
+	if (stickMax < temp2) {
 		return stickMax;
 	}
-	return temp;
+	return (int)temp2;
 }
 
 float Gamepad::GetAxis(GamepadAxis axis) {
