@@ -82,9 +82,6 @@
     <ClCompile Include="font.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
-    <ClCompile Include="messeage.cpp">
-      <Filter>cpp\others</Filter>
-    </ClCompile>
     <ClCompile Include="highlight.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
@@ -94,11 +91,11 @@
     <ClCompile Include="enterBottonSprite.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
-    <ClCompile Include="messeage.h">
-      <Filter>ヘッダー\others</Filter>
-    </ClCompile>
     <ClCompile Include="tutorial.cpp">
       <Filter>cpp\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="messeage.cpp">
+      <Filter>cpp\others</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +194,9 @@
     </ClInclude>
     <ClInclude Include="tutorial.h">
       <Filter>ヘッダー\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="messeage.h">
+      <Filter>ヘッダー\others</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

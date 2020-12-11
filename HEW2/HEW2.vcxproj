@@ -152,7 +152,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/executioncharset:utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -168,8 +168,8 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="enterBottonSprite.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="highlight.cpp" />
-    <ClCompile Include="messeagebox.cpp" />
     <ClCompile Include="messeage.cpp" />
+    <ClCompile Include="messeagebox.cpp" />
     <ClCompile Include="selectButton.cpp" />
     <ClCompile Include="debugFont.cpp" />
     <ClCompile Include="flyingObject.cpp" />
@@ -202,7 +202,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="enterBottonSprite.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="highlight.h" />
-    <ClCompile Include="messeage.h" />
+    <ClInclude Include="messeage.h" />
     <ClInclude Include="messeagebox.h" />
     <ClInclude Include="selectButton.h" />
     <ClInclude Include="config.h" />
