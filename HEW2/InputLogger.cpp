@@ -63,17 +63,37 @@ static KeyConversion KeyConversions[KEY_CONVERSIOINS_MAX]{
 	{MYVK_LEFT,KK_A},
 	{MYVK_RIGHT,KK_D},
 
+	{MYVK_UP,GAMEPAD_UP},
+	{MYVK_DOWN,GAMEPAD_DOWN},
+	{MYVK_LEFT,GAMEPAD_LEFT},
+	{MYVK_RIGHT,GAMEPAD_RIGHT},
+
+	{MYVK_UP,GAMEPAD_LUP},
+	{MYVK_DOWN,GAMEPAD_LDOWN},
+	{MYVK_LEFT,GAMEPAD_LLEFT},
+	{MYVK_RIGHT,GAMEPAD_LRIGHT},
+
 	{MYVK_ENTER,KK_ENTER},
 	{MYVK_ENTER,KK_DOWN},
 	{MYVK_ENTER,KK_UP},
+	{MYVK_ENTER,277},
+	{MYVK_ENTER,271},
 
 	{MYVK_BEACON,KK_OEMCLOSEBRACKETS},
 	{MYVK_BEACON,KK_SPACE},
 	{MYVK_BEACON,KK_LEFT},
+	{MYVK_BEACON,276},
+	{MYVK_BEACON,273},
+	{MYVK_BEACON,272},
 
 	{MYVK_PURGE,KK_OEMOPENBRACKETS},
 	{MYVK_PURGE,KK_Q},
 	{MYVK_PURGE,KK_RIGHT},
+	{MYVK_PURGE,275},
+	{MYVK_PURGE,270},
+	{MYVK_PURGE,274},
+
+	{MYVK_PAUSE,278},
 #if _DEBUG
 	{MYVK_GAME_CLEAR,KK_F1},
 	{MYVK_GAME_OVER,KK_F2},
@@ -354,10 +374,48 @@ void SetRecordFilename(const char* f, size_t size) {
 }
 
 
-void DebugPrintInputLogger() {
-	for (int i = 0; i < KK_MAX; i++) {
-		if (Keyboard_IsKeyDown((Keyboard_Keys)i)) {
-			DebugPrintf("%d\n", i);
+void DebugPrintInputLogger(OutputLogType type) {
+#ifdef _DEBUG
+
+	bool isDraw = false;
+	for (int i = 0; i < GAMEPAD_AXIS_MAX; i++) {
+		if (i < KK_MAX && OutputLogType::KEYBORAD + type) {
+			if (Keyboard_IsKeyDown((Keyboard_Keys)i)) {
+				DebugPrintf("%d,", i);
+				isDraw = true;
+			}
+		}
+		else if (i < MOUSE_BUTTONS_MAX && OutputLogType::MOUSE_BUTTON + type) {
+			if (Mouse_IsKeyDown((Mouse_Buttons)i)) {
+				DebugPrintf("%d,", i);
+				isDraw = true;
+			}
+		}
+		else if (i < MOUSE_AXIS_MAX && OutputLogType::MOUSE_AXIS + type) {
+			auto mAxis = Mouse_GetAxis((Mouse_Axis)i);
+			if (mAxis != 0) {
+				DebugPrintf("%d : %d,", i, mAxis);
+				isDraw = true;
+			}
+		}
+		else if (i < GAMEPAD_BUTTONS_MAX && OutputLogType::GAMEPAD_BUTTON + type) {
+			if (gamepad->IsButtonDown((GamepadButtons)i)) {
+				DebugPrintf("%d,", i);
+				isDraw = true;
+			}
+		}
+		else if (i < GAMEPAD_AXIS_MAX && OutputLogType::GAMEPAD_AXIS + type) {
+			auto gpAxis = gamepad->GetAxisInt((GamepadAxis)i);
+			if (gpAxis != 0) {
+				DebugPrintf("%d : %d,", i, gpAxis);
+				isDraw = true;
+			}
 		}
 	}
+
+	if (isDraw) {
+		DebugPrintf("\n");
+	}
+
+#endif // _DEBUG
 }

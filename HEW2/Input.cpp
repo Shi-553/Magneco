@@ -60,9 +60,13 @@ void UpdateInput() {
 	if (TriggerInputLogger(MYVK_PURGE)) {
 		PurgePlayerFlyingObject();
 	}
+	if (ReleaseInputLogger(MYVK_PAUSE)) {
+		PostQuitMessage(0);
+	}
 
 #if _DEBUG
-	DebugPrintInputLogger();
+	DebugPrintInputLogger(OutputLogType::GAMEPAD_AXIS);
+
 	if (TriggerInputLogger(MYVK_GAME_CLEAR)) {
 		GoNextScene(GameClearScene);
 	}

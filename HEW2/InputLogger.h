@@ -10,6 +10,8 @@ enum VirtualKey {
 	MYVK_BEACON,
 	MYVK_PURGE,
 
+	MYVK_PAUSE,
+
 #if _DEBUG
 	MYVK_GAME_CLEAR,
 	MYVK_GAME_OVER,
@@ -45,7 +47,7 @@ float GetInputLoggerAxisAmount(VirtualAxis axis);
 void InputLoggerProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);
 
 
-void RecordStart( int frameMax);
+void RecordStart(int frameMax);
 void RecordEnd();
 
 void RecordLoad();
@@ -56,4 +58,26 @@ bool IsTrace();
 
 void SetRecordFilename(const char* f, size_t size);
 
-void DebugPrintInputLogger();
+
+enum class OutputLogType {
+	KEYBORAD = 1 << 0,
+	MOUSE_BUTTON = 1 << 1,
+	MOUSE_AXIS = 1 << 2,
+	GAMEPAD_BUTTON = 1 << 3,
+	GAMEPAD_AXIS = 1 << 4
+};
+inline OutputLogType operator~ (OutputLogType a) { return (OutputLogType)~(int)a; }
+inline OutputLogType operator| (OutputLogType a, OutputLogType b) { return (OutputLogType)((int)a | (int)b); }
+inline OutputLogType operator& (OutputLogType a, OutputLogType b) { return (OutputLogType)((int)a & (int)b); }
+inline OutputLogType operator^ (OutputLogType a, OutputLogType b) { return (OutputLogType)((int)a ^ (int)b); }
+inline OutputLogType& operator|= (OutputLogType& a, OutputLogType b) { return (OutputLogType&)((int&)a |= (int)b); }
+inline OutputLogType& operator&= (OutputLogType& a, OutputLogType b) { return (OutputLogType&)((int&)a &= (int)b); }
+inline OutputLogType& operator^= (OutputLogType& a, OutputLogType b) { return (OutputLogType&)((int&)a ^= (int)b); }
+inline bool operator! (OutputLogType a) { return !(bool)a; }
+//フラグがたってたらTRUE
+inline bool operator+ (OutputLogType a, OutputLogType b) { return ((int)a & (int)b); }
+//フラグがたってなかったらTRUE
+inline bool operator- (OutputLogType a, OutputLogType b) { return !((int)a & (int)b); }
+
+
+void DebugPrintInputLogger(OutputLogType type);
