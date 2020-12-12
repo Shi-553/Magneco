@@ -11,77 +11,77 @@ struct Spone {
 };
 
 static Spone* spones = NULL;
-static Spone* items = NULL;
 static int frame = 0;
 static int sponeIndex = 0;
-static int sponeMax = 26;
-static int itemMax = 3;
+static int sponeMax = 0;
+
+//static Spone initSpone[28]{
+//	{0,{2.5,1.5},FLYING_OBJECT_ITEM_ADD_SPEED,{0,0}},
+//	{0,{5.5,5.5},FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE,{0,0}},
+//	{0,{7.5,7.5},FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE,{0,0}},
+//	{100,{5.5,-3.5},FLYING_OBJECT_BLOCK,{0,1}},
+//	{150,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0}},
+//	{200,{13.5,5.5},FLYING_OBJECT_ENEMY,{-1,0}},
+//	{250,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0}},
+//	{300,{8.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
+//	{350,{3.5,-3.5},FLYING_OBJECT_ENEMY,{0,1}},
+//	{400,{2.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
+//	{450,{13.5,3.5},FLYING_OBJECT_BLOCK,{-1,0}},
+//	{500,{5.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
+//	{550,{-3.5,6.5},FLYING_OBJECT_ENEMY,{0,1}},
+//	{600,{3.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
+//	{650,{13.5,7.5},FLYING_OBJECT_BLOCK,{-1,0}},
+//	{700,{-3.5,5.5},FLYING_OBJECT_BLOCK,{1,0}},
+//	{750,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0}},
+//	{800,{3.5,13.5},FLYING_OBJECT_ENEMY,{0,-1}},
+//	{850,{13.5,5.5},FLYING_OBJECT_BLOCK,{-1,0}},
+//	{900,{2.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
+//	{950,{8.5,-3.5},FLYING_OBJECT_ENEMY,{0,1}},
+//	{1000,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0}},
+//	{1050,{13.5,3.5},FLYING_OBJECT_BLOCK,{-1,0}},
+//	{1100,{6.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
+//	{1150,{4.5,-3.5},FLYING_OBJECT_ENEMY,{0,1}},
+//	{1200,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0}},
+//	{1250,{7.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}}
+//};
 
 void InitFlyingSponer() {
 	frame = 0;
 	sponeIndex = 0;
 	spones = NULL;
-	items = NULL;
 
-	/*items = new Spone[itemMax]{
-	{0,{2.5,1.5},FLYING_OBJECT_ITEM_ADD_SPEED,{0,0}},
-	{0,{5.5,5.5},FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE,{0,0}},
-	{0,{7.5,7.5},FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE,{0,0}},
-	};
-
-	spones = new Spone[sponeMax]{
-	{100,{5.5,-3.5},FLYING_OBJECT_BLOCK,{0,1}},
-	{150,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0}},
-	{200,{13.5,5.5},FLYING_OBJECT_ENEMY,{-1,0}},
-	{250,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0}},
-	{300,{8.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
-	{350,{3.5,-3.5},FLYING_OBJECT_ENEMY,{0,1}},
-	{400,{2.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
-	{450,{13.5,3.5},FLYING_OBJECT_BLOCK,{-1,0}},
-	{500,{5.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
-	{550,{-3.5,6.5},FLYING_OBJECT_ENEMY,{0,1}},
-	{600,{3.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
-	{650,{13.5,7.5},FLYING_OBJECT_BLOCK,{-1,0}},
-	{700,{-3.5,5.5},FLYING_OBJECT_BLOCK,{1,0}},
-	{750,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0}},
-	{800,{3.5,13.5},FLYING_OBJECT_ENEMY,{0,-1}},
-	{850,{13.5,5.5},FLYING_OBJECT_BLOCK,{-1,0}},
-	{900,{2.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
-	{950,{8.5,-3.5},FLYING_OBJECT_ENEMY,{0,1}},
-	{1000,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0}},
-	{1050,{13.5,3.5},FLYING_OBJECT_BLOCK,{-1,0}},
-	{1100,{6.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
-	{1150,{4.5,-3.5},FLYING_OBJECT_ENEMY,{0,1}},
-	{1200,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0}},
-	{1250,{7.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
-	{-1,  {-3.5,2.5},FLYING_OBJECT_BLOCK,{0,0}}
-
-	};*/
+	spones = new Spone[sponeMax];
+	//CopyMemory(spones, initSpone, sizeof(Spone)* sponeMax);
 
 	FlyingObjectSponerImport("stage/test/test.flyingObjectSponer");
 
-	if (items == NULL) {
+	if (spones == NULL) {
 		return;
 	}
-	for (int i = 0; i < itemMax; i++)
+	//アイテムを配置
+	for (int i = 0; i < sponeMax; i++)
 	{
-		FlyingObject f = { TRANS(items[i].initPos),items[i].type, items[i].dir };
+		if (spones[i].frame != 0) {
+			break;
+		}
+		FlyingObject f = { TRANS(spones[i].initPos),spones[i].type, spones[i].dir };
 		AddFlyingObjects(&f);
+		sponeIndex++;
 		
 	}
 }
 void UninitFlyingSponer() {
-	if (items != NULL) {
-		delete[] items;
-		items = NULL;
-	}
 	if (spones != NULL) {
 		delete[] spones;
 		spones = NULL;
 	}
 }
 void UpdateFlyingSponer() {
-	while (spones[sponeIndex].frame != -1 && (spones[sponeIndex].frame != 0)) {
+	while (sponeIndex < sponeMax) {
+		if (spones[sponeIndex].frame == 0) {
+			sponeIndex++;
+			continue;
+		}
 		if (spones[sponeIndex].frame <= frame) {
 			FlyingObject f = {TRANS(spones[sponeIndex].initPos),spones[sponeIndex].type, spones[sponeIndex].dir};
 			AddFlyingObjects(&f);
@@ -93,7 +93,7 @@ void UpdateFlyingSponer() {
 	}
 
 	frame++;
-	if (spones[sponeIndex].frame == -1){
+	if (sponeIndex== sponeMax){
 		frame = 0;
 		sponeIndex = 0;
 	}
@@ -112,9 +112,6 @@ bool FlyingObjectSponerExport(const char* filename) {
 	}
 
 	//	ファイルへの書き込み処理
-	fwrite(&itemMax, sizeof(int), 1, fp);
-	fwrite(items, sizeof(Spone), itemMax, fp);
-
 	fwrite(&sponeMax, sizeof(int), 1, fp);
 	fwrite(spones, sizeof(Spone), sponeMax, fp);
 
@@ -137,10 +134,6 @@ bool FlyingObjectSponerImport(const char* filename) {
 	}
 
 	//	ファイルへの読み込み処理
-	fread(&itemMax, sizeof(int), 1, fp);
-	items = new Spone[itemMax];
-	fread(items, sizeof(Spone), itemMax, fp);
-
 	fread(&sponeMax, sizeof(int), 1, fp);
 	spones = new Spone[sponeMax];
 	fread(spones, sizeof(Spone), sponeMax, fp);
