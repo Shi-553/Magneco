@@ -75,9 +75,17 @@ void JudgePlayerandFlyingObjectHit() {
 				itr->trans.pos = player->trans.pos;
 				itr->trans.UpdatePos();
 
-				auto intDir = INTVECTOR2(player->dir);
-				bool isMovePlayer = intDir != INTVECTOR2(0, 0);
-				auto movePlayer = intDir.ToD3DXVECTOR2();
+
+				bool isMovePlayer = player->dir != D3DXVECTOR2(0, 0);
+				D3DXVECTOR2 movePlayer = D3DXVECTOR2(0, 0);
+				if (isMovePlayer) {
+					if (fabsf(player->dir.x) > fabsf(player->dir.y)) {
+						movePlayer.x = player->dir.x > 0 ? 1 : -1;
+					}
+					else {
+						movePlayer.y = player->dir.y > 0 ? 1 : -1;
+					}
+				}
 
 				while (true) {
 					auto intPos = itr->trans.GetIntPos();
@@ -135,10 +143,16 @@ void JudgePlayerandFlyingObjectHit() {
 
 					itr->trans.UpdatePos();
 
-					auto intDir = INTVECTOR2(player->dir);
-					bool isMovePlayer = intDir != INTVECTOR2(0, 0);
-					auto movePlayer = intDir.ToD3DXVECTOR2();
-
+					bool isMovePlayer = player->dir != D3DXVECTOR2(0, 0);
+					D3DXVECTOR2 movePlayer = D3DXVECTOR2(0, 0);
+					if (isMovePlayer) {
+						if (fabsf(player->dir.x)> fabsf(player->dir.y)) {
+							movePlayer.x = player->dir.x > 0 ? 1 : -1;
+						}
+						else {
+							movePlayer.y = player->dir.y > 0 ? 1 : -1;
+						}
+					}
 					while (true) {
 						auto intPos = itr->trans.GetIntPos();
 						if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, &intPos)) {
