@@ -395,7 +395,7 @@ void DebugPrintInputLogger(OutputLogType type) {
 		else if (i < MOUSE_AXIS_MAX && OutputLogType::MOUSE_AXIS * type) {
 			auto mAxis = Mouse_GetAxis((Mouse_Axis)i);
 			if (mAxis != 0) {
-				DebugPrintf("%d : %d,", i, mAxis);
+				DebugPrintf("%d[%d],", i, mAxis);
 				isDraw = true;
 			}
 		}
@@ -408,7 +408,7 @@ void DebugPrintInputLogger(OutputLogType type) {
 		else if (i < GAMEPAD_AXIS_MAX && OutputLogType::GAMEPAD_AXIS * type) {
 			auto gpAxis = gamepad->GetAxisInt((GamepadAxis)i);
 			if (gpAxis != 0) {
-				DebugPrintf("%d : %d,", i, gpAxis);
+				DebugPrintf("%d[%d],", i, gpAxis);
 				isDraw = true;
 			}
 		}
