@@ -6,6 +6,7 @@
 #include "gamepad.h"
 #include "debugPrintf.h"
 #include "config.h"
+#include "bitFlagsScopedEnum.h"
 
 #define KEY_CONVERSIOINS_MAX (32)
 #define AXIS_CONVERSIOINS_MAX (8)

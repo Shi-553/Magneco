@@ -204,6 +204,9 @@
     <ClInclude Include="gamepad.h">
       <Filter>ヘッダー\others</Filter>
     </ClInclude>
+    <ClInclude Include="bitFlagsScopedEnum.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダー">

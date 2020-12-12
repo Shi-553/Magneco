@@ -200,6 +200,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bitFlagsScopedEnum.h" />
     <ClInclude Include="enterBottonSprite.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="gamepad.h" />

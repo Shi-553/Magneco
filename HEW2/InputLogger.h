@@ -66,19 +66,7 @@ enum class OutputLogType {
 	GAMEPAD_BUTTON = 1 << 3,
 	GAMEPAD_AXIS = 1 << 4
 };
-inline OutputLogType operator~ (OutputLogType a) { return (OutputLogType)~(int)a; }
-inline OutputLogType operator| (OutputLogType a, OutputLogType b) { return (OutputLogType)((int)a | (int)b); }
-inline OutputLogType operator& (OutputLogType a, OutputLogType b) { return (OutputLogType)((int)a & (int)b); }
-inline OutputLogType operator^ (OutputLogType a, OutputLogType b) { return (OutputLogType)((int)a ^ (int)b); }
-inline OutputLogType& operator|= (OutputLogType& a, OutputLogType b) { return (OutputLogType&)((int&)a |= (int)b); }
-inline OutputLogType& operator&= (OutputLogType& a, OutputLogType b) { return (OutputLogType&)((int&)a &= (int)b); }
-inline OutputLogType& operator^= (OutputLogType& a, OutputLogType b) { return (OutputLogType&)((int&)a ^= (int)b); }
-inline bool operator! (OutputLogType a) { return !(bool)a; }
 
-//フラグがどちらかたってたらTRUE
-inline bool operator+ (OutputLogType a, OutputLogType b) { return ((int)a | (int)b); }
-//フラグが両方たってたらTRUE
-inline bool operator* (OutputLogType a, OutputLogType b) { return ((int)a & (int)b); }
 
 
 void DebugPrintInputLogger(OutputLogType type);
