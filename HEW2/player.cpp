@@ -66,12 +66,12 @@ void UpdatePlayer() {
 			itr++;
 		}
 	}
-
+	auto dir = player.dir;
 	D3DXVec2Normalize(&player.dir, &player.dir);
 
 
 	auto last = player.trans.pos;
-	auto move = player.dir * player.speed * 60 * GetDeltaTime();
+	auto move = dir * player.speed * 60 * GetDeltaTime();
 
 	player.trans.pos.x += move.x;
 	auto mapType = GetMapType(INTVECTOR2(player.trans.pos));
