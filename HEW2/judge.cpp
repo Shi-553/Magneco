@@ -125,6 +125,9 @@ void JudgePlayerandFlyingObjectHit() {
 			}
 
 		}
+		else {
+			itr++;
+		}
 	}
 
 	// flyingObject同士の当たり判定
