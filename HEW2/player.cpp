@@ -1,4 +1,4 @@
-#include "config.h"
+﻿#include "config.h"
 #include "texture.h"
 #include "sprite.h"
 #include "flyingObject.h"
@@ -29,9 +29,10 @@ void InitPlayer(){
 	player.flyingObjectList.clear();
 	player.purgeFlyingObjectList.clear();
 	player.dir = { 0,0 };
-	player.speed = 0.1;
+	player.speed = 6;
 	player.frame = 0;
 	playerTextureVertical = 0;
+	player.blockMax = 4;
 }
 
 void UninitPlayer() {
@@ -40,7 +41,7 @@ void UninitPlayer() {
 
 void UpdatePlayer() {
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
-		if (UpdateFlyingObject(&*itr, player.speed * 60 / 2)) {
+		if (UpdateFlyingObject(&*itr, player.speed  / 2)) {
 			itr = player.purgeFlyingObjectList.erase(itr);
 		}
 		else {
@@ -53,7 +54,7 @@ void UpdatePlayer() {
 
 
 	auto last = player.trans.pos;
-	auto move = one * player.speed * 60 * GetDeltaTime();
+	auto move = one * player.speed  * GetDeltaTime();
 
 	player.trans.pos.x += move.x;
 	auto mapType = GetMapType(INTVECTOR2(player.trans.pos));

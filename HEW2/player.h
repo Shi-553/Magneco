@@ -12,6 +12,7 @@ struct Player {
 	INTVECTOR2 dir;
 	float speed;
 	int frame;
+	int blockMax;
 };
 
 void InitPlayer();
