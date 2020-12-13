@@ -9,7 +9,7 @@ struct Player {
 	TRANS trans;
 	std::list <FlyingObject> flyingObjectList;
 	std::list <FlyingObject> purgeFlyingObjectList;
-	INTVECTOR2 dir;
+	D3DXVECTOR2 dir;
 	float speed;
 	int frame;
 	int blockMax;
@@ -27,6 +27,7 @@ void MoveUpPlayer();
 void MoveDownPlayer();
 void MoveLeftPlayer();
 void MoveRightPlayer();
+void MovePlayer(D3DXVECTOR2 dir);
 
 void BlockDecision();
 
