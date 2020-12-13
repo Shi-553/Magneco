@@ -12,6 +12,7 @@ struct Player {
 	D3DXVECTOR2 dir;
 	float speed;
 	int frame;
+	int blockMax;
 };
 
 void InitPlayer();

@@ -84,10 +84,6 @@ void UpdateNPC() {
 		npc.trans.pos = nextPos.ToD3DXVECTOR2();
 		npc.trans.UpdatePos();
 
-		if (GetMapType(npc.trans.GetIntPos()) == MAP_GOAL) {
-			GoNextScene(GameClearScene);
-		}
-
 
 		if (nextPosQueue.empty()) {
 			npc.isMove = false;
