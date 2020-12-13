@@ -193,28 +193,32 @@ void DrawMap(void)
 
 	for (int i = 0; i < GetMapHeight(); i++) {
 		for (int j = 0; j < GetMapWidth(); j++) {
-			if (GetMap(j, i).type == MAP_WALL) {
-				auto addDir = GetMap(j, i).dir + INTVECTOR2(1, 1);
+			Map* map = GetMap(INTVECTOR2(i, j));
+			if (map == NULL) {
+				continue;
+			}
+			if (map->type == MAP_WALL) {
+				auto addDir = map->dir + INTVECTOR2(1, 1);
 				auto tPos = D3DXVECTOR2(
 					addDir.x * MAP_TEXTURE_WIDTH,               //0  1   2  
 					addDir.y * MAP_TEXTURE_HEIGHT               //0 0.3 0.6
 				);
 
-				DrawGameSprite(textureIds[GetMap(j, i).type], D3DXVECTOR2(i, j), 100, tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_TEXTURE_HEIGHT));
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(i, j), 100, tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_TEXTURE_HEIGHT));
 				continue;
 			}
 
-			if (GetMap(j, i).type == MAP_GOAL) {
+			if (map->type == MAP_GOAL) {
 				auto tPos = D3DXVECTOR2(
 					MAP_TEXTURE_WIDTH * (frame / 8 % 8),
 					0
 				);
 
-				DrawGameSprite(textureIds[GetMap(j, i).type], D3DXVECTOR2(i, j - 1), 100, D3DXVECTOR2(MAP_GOAL_DRAW_SIZE_WIDTH, MAP_GOAL_DRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_TEXTURE_HEIGHT));
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(i, j - 1), 100, D3DXVECTOR2(MAP_GOAL_DRAW_SIZE_WIDTH, MAP_GOAL_DRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_TEXTURE_HEIGHT));
 			}
 			else
 			{
-				DrawGameSprite(textureIds[GetMap(j, i).type], D3DXVECTOR2(i, j), 100);
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(i, j), 100);
 			}
 		}
 	}
@@ -228,8 +232,10 @@ void MapChange(FlyingObject flyingobject)
 		return;
 	}
 
+	Map* map = GetMap(intPos);
+
 	if (flyingobject.type == FLYING_OBJECT_PLAYER_BLOCK) {
-		GetMap(intPos.y, intPos.x).type = MAP_BLOCK;
+		map->type = MAP_BLOCK;
 	}
 }
 
@@ -238,16 +244,24 @@ bool MapFourDirectionsJudgment(INTVECTOR2 pos)
 	int x = pos.x;
 	int y = pos.y;
 
-	if (GetMap(y + 1, x).type == MAP_BLOCK) {
+	Map* map = GetMap(INTVECTOR2(x, y + 1));
+
+	if (map != NULL && map->type == MAP_BLOCK) {
 		return true;
 	}
-	if (GetMap(y - 1, x).type == MAP_BLOCK) {
+
+	map = GetMap(INTVECTOR2(x, y - 1));
+	if (map != NULL && map->type == MAP_BLOCK) {
 		return true;
 	}
-	if (GetMap(y, x + 1).type == MAP_BLOCK) {
+
+	map = GetMap(INTVECTOR2(x + 1, y));
+	if (map != NULL && map->type == MAP_BLOCK) {
 		return true;
 	}
-	if (GetMap(y, x - 1).type == MAP_BLOCK) {
+
+	map = GetMap(INTVECTOR2(x - 1, y));
+	if (map != NULL && map->type == MAP_BLOCK) {
 		return true;
 	}
 
@@ -256,14 +270,13 @@ bool MapFourDirectionsJudgment(INTVECTOR2 pos)
 
 MapType GetMapType(INTVECTOR2 pos)
 {
-	int x = pos.x;
-	int y = pos.y;
 
-	if (x < 0 || y < 0 || x >= GetMapWidth() || y >= GetMapHeight()) {
+	Map* map = GetMap(pos);
+	if (map == NULL) {
 		return MAP_NONE;
 	}
 
-	return GetMap(y, x).type;
+	return map->type;
 }
 
 bool MapExport(const char* filename) {
@@ -316,8 +329,13 @@ bool MapImport(const char* filename) {
 
 }
 
-Map& GetMap(int y, int x) {
-	return MapChipList[y * mapWidth + x];
+Map* GetMap(INTVECTOR2 pos) {
+
+	if (pos.x < 0 || pos.y < 0 || pos.x >= GetMapWidth() || pos.y >= GetMapHeight()) {
+		return NULL;
+	}
+
+	return &MapChipList[pos.y * mapWidth + pos.x];
 }
 
 int GetMapHeight() {

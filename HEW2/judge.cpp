@@ -251,10 +251,10 @@ void JudgePlayerandFlyingObjectHit() {
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end();) {
 		bool isMatched = false;
 		if (itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
-			Map& map = GetMap(itr->trans.GetIntPos().y, itr->trans.GetIntPos().x);
-			if (map.type == MAP_BLOCK) {
+			Map *map = GetMap(itr->trans.GetIntPos());
+			if (map != NULL && map->type == MAP_BLOCK) {
 				itr = flyingObjectList->erase(itr);
-				map.type = MAP_BLOCK_NONE;
+				map->type = MAP_BLOCK_NONE;
 				isMatched = true;
 				continue;
 			}

@@ -42,7 +42,7 @@ MapType GetMapType(INTVECTOR2 pos);
 bool MapExport(const char* filename);
 bool MapImport(const char* filename);
 
-Map& GetMap(int y, int x);
+Map* GetMap(INTVECTOR2 pos);
 
 int GetMapHeight();
 int GetMapWidth();
