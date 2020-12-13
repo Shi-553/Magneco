@@ -255,7 +255,7 @@ void Draw() {
 	//画面のクリアBeginScene,EndSceneの外に書いて
 	//第三引数：(色バッファ、深度(Z)バッファ、ステンシルバッファ)
 	//第四引数：(何色でクリアするか)
-	//第五引数：(Zバッファの初期化：手前 0〜1 奥)
+	//第五引数：(Zバッファの初期化：手前 0～1 奥)
 	//第六引数：(ステンシルの初期化用)
 	d3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL, D3DCOLOR_RGBA(30, 30, 80, 255), 1.0f, 0);
 	//描画命令を貯めていく

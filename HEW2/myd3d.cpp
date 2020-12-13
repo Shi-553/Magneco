@@ -58,7 +58,7 @@ bool InitMyD3D(HWND hWnd) {
 	//テクスチャのアルファ値を使える
 	d3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);//アルファブレンドON
 	d3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);//ソースにソースのアルファをかける
-	d3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);//ソースの下にあるものは（１−ソースのアルファ）をかける
+	d3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);//ソースの下にあるものは（１～ソースのアルファ）をかける
 	d3dDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);//
 
 

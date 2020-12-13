@@ -1,10 +1,4 @@
-﻿// --------------------------------------------------------------
-//  時間です[time.h]
-// 
-//							Author:Kanna Noda
-//----------------------------------------------------------------
-
-#include "time.h"
+﻿#include "time.h"
 #include "debugPrintf.h"
 
 static double g_lastUpdateTime;

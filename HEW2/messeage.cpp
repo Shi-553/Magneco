@@ -32,7 +32,7 @@ static D3DCOLOR color;
 
 
 void InitMesseage() {
-	CreateFont(FONT_HEIGHT, FONT_WIDTH, &font);
+	MyCreateFont(FONT_HEIGHT, FONT_WIDTH, &font);
 	LPDIRECT3DDEVICE9 device = GetD3DDevice();
 	D3DXCreateSprite(device, &sprite);
 
