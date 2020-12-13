@@ -13,28 +13,13 @@
 #define MAP_GOAL_DRAW_SIZE_WIDTH 1
 #define MAP_GOAL_DRAW_SIZE_HEIGHT 2
 
-//static Map initGetMap(GetMapHeight(),GetMapWidth())
-//{
-//	{{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},    {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},  {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},   {MAP_WALL, INTVECTOR2::GetUp()},   {MAP_WALL, INTVECTOR2::GetUp()}, {MAP_WALL, INTVECTOR2::GetUpperRightCorner()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                        {MAP_GOAL},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                       {MAP_ROCK},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                        {MAP_BLOCK},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{{MAP_WALL, INTVECTOR2::GetLowreLeftCorner()},  {MAP_WALL, INTVECTOR2::GetDown()}, { MAP_WALL, INTVECTOR2::GetDown()},  {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetDown()},  {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetLowreRightCorner()}},
-//
-//};
-
 static Map* MapChipList = NULL;
 static int textureIds[MAP_MAX];
 static int map_textureIds;
 
 static int frame = 0;
-static int mapHeight = 0;
-static int mapWidth = 0;
+static int mapHeight = 10;
+static int mapWidth = 10;
 
 void InitMap(void)
 {
@@ -46,124 +31,124 @@ void InitMap(void)
 	textureIds[MAP_WALL] = ReserveTextureLoadFile("texture/wall.png");
 	textureIds[MAP_ROCK] = ReserveTextureLoadFile("texture/brokenblock01.png");
 	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/warpblock32_64_anime.png");
+	textureIds[MAP_CHEST_CLOSE] = ReserveTextureLoadFile("texture/chestClose.png");
+	textureIds[MAP_CHEST_OPEN] = ReserveTextureLoadFile("texture/chestOpen.png");
 
 	frame = 0;
 
-	//MapChipList[][] = {{NULL},{NULL}};
 
+	/*MapChipList = new Map[10 * 10]{
+		{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUpperRightCorner()},
 
-	//MapChipList = new Map[mapHeight * mapWidth]{
-	//	{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUpperRightCorner()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_CHEST_CLOSE,{},FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_GOAL},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_GOAL},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_CHEST_CLOSE,{},FLYING_OBJECT_ITEM_ADD_SPEED},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_CHEST_CLOSE,{},FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_ROCK},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_ROCK},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetLowreLeftCorner()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetLowreRightCorner()},
 
-	//	{MAP_WALL, INTVECTOR2::GetLowreLeftCorner()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetLowreRightCorner()},
-
-	//};
+	};*/
 
 	MapImport("stage/test/test.map");
 
@@ -326,4 +311,33 @@ int GetMapHeight() {
 
 int GetMapWidth() {
 	return mapWidth;
+}
+
+
+bool CanGoNPCMapType(MapType type) {
+	switch (type)
+	{
+	case MAP_BLOCK:
+	case MAP_GOAL:
+	case MAP_CHEST_CLOSE:
+	case MAP_CHEST_OPEN:
+		return true;
+		break;
+	default:
+		return false;
+		break;
+	}
+}
+
+void OpenChest(INTVECTOR2 pos) {
+	if (GetMapType(pos) != MAP_CHEST_CLOSE) {
+		return;
+	}
+	Map& map = GetMap(pos.y, pos.x);
+	map.type = MAP_CHEST_OPEN;
+	auto p = pos.ToD3DXVECTOR2();
+	p.x += 0.5;
+	p.y -= 0.5;
+	FlyingObject f = { TRANS(p),(FlyingObjectType)map.param,{0,0} };
+	AddFlyingObjects(&f);
 }

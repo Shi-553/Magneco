@@ -60,66 +60,75 @@ void JudgePlayerandFlyingObjectHit() {
 
 	// プレイヤーとflyingObjectの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
+		if (!CheckBlockBlock(player->trans.pos, itr->trans.pos)) {
+			itr++;
+			continue;
+		}
 		if (itr->type == FLYING_OBJECT_BLOCK) {
 			if (player->flyingObjectList.size() >= player->blockMax) {
 				itr++;
 				continue;
 			}
-			if (CheckBlockBlock(player->trans.pos, itr->trans.pos)) {
-				auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
+			auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
 
-				itr->trans.pos = player->trans.pos;
-				itr->trans.UpdatePos();
+			itr->trans.pos = player->trans.pos;
+			itr->trans.UpdatePos();
 
 
-				bool isMovePlayer = player->dir != D3DXVECTOR2(0, 0);
-				D3DXVECTOR2 movePlayer = D3DXVECTOR2(0, 0);
+			bool isMovePlayer = player->dir != D3DXVECTOR2(0, 0);
+			D3DXVECTOR2 movePlayer = D3DXVECTOR2(0, 0);
+			if (isMovePlayer) {
+				if (fabsf(player->dir.x) > fabsf(player->dir.y)) {
+					movePlayer.x = player->dir.x > 0 ? 1 : -1;
+				}
+				else {
+					movePlayer.y = player->dir.y > 0 ? 1 : -1;
+				}
+			}
+
+			while (true) {
+				auto intPos = itr->trans.GetIntPos();
+				if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, &intPos)) {
+					break;
+				}
+
 				if (isMovePlayer) {
-					if (fabsf(player->dir.x) > fabsf(player->dir.y)) {
-						movePlayer.x = player->dir.x > 0 ? 1 : -1;
-					}
-					else {
-						movePlayer.y = player->dir.y > 0 ? 1 : -1;
-					}
+					itr->trans.pos += movePlayer;
 				}
-
-				while (true) {
-					auto intPos = itr->trans.GetIntPos();
-					if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, &intPos)) {
-						break;
-					}
-
-					if (isMovePlayer) {
-						itr->trans.pos += movePlayer;
-					}
-					else {
-						itr->trans.pos += move;
-					}
-					itr->trans.UpdatePos();
-					intPos = itr->trans.GetIntPos();
+				else {
+					itr->trans.pos += move;
 				}
-
-				itr->trans.Init(itr->trans.pos);
-
-				itr->type = FLYING_OBJECT_PLAYER_BLOCK;
-				player->flyingObjectList.push_back(*itr);
-				itr = flyingObjectList->erase(itr);
+				itr->trans.UpdatePos();
+				intPos = itr->trans.GetIntPos();
 			}
-			else {
-				itr++;
-			}
+
+			itr->trans.Init(itr->trans.pos);
+
+			itr->type = FLYING_OBJECT_PLAYER_BLOCK;
+			player->flyingObjectList.push_back(*itr);
+			itr = flyingObjectList->erase(itr);
+
 
 		}
 		else if (itr->type == FLYING_OBJECT_ENEMY) {
-			if (CheckBlockBlock(player->trans.pos, itr->trans.pos)) {
-				itr = flyingObjectList->erase(itr);
-				GoNextScene(GameOverScene, FADE_IN);
-				return;
+			itr = flyingObjectList->erase(itr);
+			GoNextScene(GameOverScene, FADE_IN);
+			return;
+
+		}
+		else if (IsFlyingObjectItem(itr->type)) {
+			if (itr->type == FLYING_OBJECT_ITEM_ADD_SPEED) {
+				player->speed++;
 			}
-			else {
-				itr++;
+			else if (itr->type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
+				player->blockMax++;
+			}
+			else if (itr->type == FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE) {
+
 			}
 
+			itr = flyingObjectList->erase(itr);
+			continue;
 		}
 		else {
 			itr++;
@@ -145,7 +154,7 @@ void JudgePlayerandFlyingObjectHit() {
 					bool isMovePlayer = player->dir != D3DXVECTOR2(0, 0);
 					D3DXVECTOR2 movePlayer = D3DXVECTOR2(0, 0);
 					if (isMovePlayer) {
-						if (fabsf(player->dir.x)> fabsf(player->dir.y)) {
+						if (fabsf(player->dir.x) > fabsf(player->dir.y)) {
 							movePlayer.x = player->dir.x > 0 ? 1 : -1;
 						}
 						else {
@@ -220,30 +229,10 @@ void JudgePlayerandFlyingObjectHit() {
 		GoNextScene(GameClearScene);
 	}
 
-
-	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
-		bool isMatched = false;
-		if (itr->trans.GetIntPos() == npc->trans.GetIntPos()) {
-			if (itr->type == FLYING_OBJECT_ITEM_ADD_SPEED) {
-				player->speed++;
-			}
-			else if (itr->type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
-				player->blockMax++;
-			}
-			else if (itr->type == FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE) {
-
-			}
-			else {
-				itr++;
-				continue;
-			}
-
-			itr = flyingObjectList->erase(itr);
-			continue;
-		}
-		itr++;
-
-
+	if (GetMapType(npc->trans.GetIntPos()) == MAP_CHEST_CLOSE) {
+		OpenChest(npc->trans.GetIntPos());
 	}
+
+
 }
 

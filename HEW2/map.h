@@ -15,6 +15,8 @@ enum MapType
 	MAP_WALL,     // 壁
 	MAP_ROCK,        // 岩
 	MAP_GOAL,        // ゴール
+	MAP_CHEST_CLOSE,        // 宝箱閉じてる
+	MAP_CHEST_OPEN,        // 宝箱開いてる
 	MAP_MAX
 };
 
@@ -22,6 +24,7 @@ struct Map
 {
 	MapType type;
 	INTVECTOR2 dir = INTVECTOR2::GetNone();
+	int param=0;
 };
 
 
@@ -47,4 +50,6 @@ Map& GetMap(int y, int x);
 int GetMapHeight();
 int GetMapWidth();
 
+bool CanGoNPCMapType(MapType type);
+void OpenChest(INTVECTOR2 pos);
 #endif // !MAP_H
