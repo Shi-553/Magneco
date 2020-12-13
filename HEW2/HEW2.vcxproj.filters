@@ -97,6 +97,9 @@
     <ClCompile Include="messeage.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
+    <ClCompile Include="gamepad.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -196,6 +199,12 @@
       <Filter>ヘッダー\scenes</Filter>
     </ClInclude>
     <ClInclude Include="messeage.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="gamepad.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="bitFlagsScopedEnum.h">
       <Filter>ヘッダー\others</Filter>
     </ClInclude>
   </ItemGroup>

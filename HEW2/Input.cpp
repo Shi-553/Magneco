@@ -28,6 +28,22 @@ void UpdateInput() {
 		MoveRightPlayer();
 	}
 
+	//if (GetInputLoggerAxis(MYVA_GLY)<0) {
+	//	MoveUpPlayer();
+	//}
+	//if (GetInputLoggerAxis(MYVA_GLY) > 0) {
+	//	MoveDownPlayer();
+	//}
+	//if (GetInputLoggerAxis(MYVA_GLX) < 0) {
+	//	MoveLeftPlayer();
+	//}
+	//if (GetInputLoggerAxis(MYVA_GLX) > 0) {
+	//	MoveRightPlayer();
+	//}
+	MovePlayer(D3DXVECTOR2(
+		GetInputLoggerAxis(MYVA_GLX),
+		GetInputLoggerAxis(MYVA_GLY) ));
+
 	// ブロックの決定（現時点ではpressにしてます）
 	if (TriggerInputLogger(MYVK_ENTER)) {
 		BlockDecision();
@@ -38,9 +54,13 @@ void UpdateInput() {
 	if (TriggerInputLogger(MYVK_PURGE)) {
 		PurgePlayerFlyingObject();
 	}
+	if (ReleaseInputLogger(MYVK_PAUSE)) {
+		PostQuitMessage(0);
+	}
 
 #if _DEBUG
-	DebugPrintInputLogger();
+	DebugPrintInputLogger(OutputLogType::GAMEPAD_AXIS);
+
 	if (TriggerInputLogger(MYVK_GAME_CLEAR)) {
 		GoNextScene(GameClearScene);
 	}

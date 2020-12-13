@@ -11,6 +11,7 @@
 #include "npc.h"
 #include "debugPrintf.h"
 #include "time.h"
+#include <math.h>
 
 #define PLAYER_TEXTURE_WIDTH 32
 #define PLAYER_TEXTURE_HEIGHT 32
@@ -22,7 +23,7 @@ static int  playerTextureVertical = 0;
 
 
 
-void InitPlayer(){
+void InitPlayer() {
 	textureId = ReserveTextureLoadFile("texture/player_32×32.png");
 
 	player.trans.Init(3.5, 3.5);
@@ -39,6 +40,24 @@ void UninitPlayer() {
 }
 
 void UpdatePlayer() {
+	if (player.dir.x != 0 || player.dir.y != 0) {
+		if (fabsf(player.dir.y) > fabsf(player.dir.x)) {
+			if (0 < player.dir.y) {
+				playerTextureVertical = 0;
+			}
+			else {
+				playerTextureVertical = PLAYER_TEXTURE_HEIGHT * 3;
+			}
+		}
+		else {
+			if (0 < player.dir.x) {
+				playerTextureVertical = PLAYER_TEXTURE_HEIGHT * 2;
+			}
+			else {
+				playerTextureVertical = PLAYER_TEXTURE_HEIGHT;
+			}
+		}
+	}
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
 		if (UpdateFlyingObject(&*itr, player.speed * 60 / 2)) {
 			itr = player.purgeFlyingObjectList.erase(itr);
@@ -47,13 +66,12 @@ void UpdatePlayer() {
 			itr++;
 		}
 	}
-
-	D3DXVECTOR2 one = player.dir.ToD3DXVECTOR2();
-	D3DXVec2Normalize(&one, &one);
+	auto dir = player.dir;
+	D3DXVec2Normalize(&player.dir, &player.dir);
 
 
 	auto last = player.trans.pos;
-	auto move = one * player.speed * 60 * GetDeltaTime();
+	auto move = dir * player.speed * 60 * GetDeltaTime();
 
 	player.trans.pos.x += move.x;
 	auto mapType = GetMapType(INTVECTOR2(player.trans.pos));
@@ -114,22 +132,22 @@ void RotateRightPlayer() {
 
 void MoveUpPlayer() {
 	player.dir.y--;
-	playerTextureVertical = PLAYER_TEXTURE_HEIGHT * 3;
 }
 
 void MoveDownPlayer() {
 	player.dir.y++;
-	playerTextureVertical = 0;
 }
 
 void MoveLeftPlayer() {
 	player.dir.x--;
-	playerTextureVertical = PLAYER_TEXTURE_HEIGHT;
 }
-
 void MoveRightPlayer() {
 	player.dir.x++;
-	playerTextureVertical = PLAYER_TEXTURE_HEIGHT * 2;
+}
+
+
+void MovePlayer(D3DXVECTOR2 dir) {
+	player.dir = dir;
 }
 
 void BlockDecision() {
@@ -183,11 +201,11 @@ void PutBeacon() {
 
 void PurgePlayerFlyingObject() {
 	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();) {
-		if (player.dir == INTVECTOR2(0, 0)) {
-			itr->dir = itr->trans.pos-player.trans.pos;
+		if (INTVECTOR2(player.dir) == INTVECTOR2(0, 0)) {
+			itr->dir = itr->trans.pos - player.trans.pos;
 		}
 		else {
-			itr->dir = player.dir.ToD3DXVECTOR2();
+			itr->dir = player.dir;
 		}
 		itr->type = FLYING_OBJECT_PURGE_BLOCK;
 
