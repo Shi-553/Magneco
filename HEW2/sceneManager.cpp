@@ -62,12 +62,15 @@ void InitSceneManager(Scene startScene) {
 }
 
 void UninitSceneManager() {
-	Uninits[currentScene]();
+	if (NullScene < currentScene && currentScene < MaxScene) {
+		Uninits[currentScene]();
+	}
 }
 
 void DrawSceneManager() {
-	Draws[currentScene]();
-
+	if (NullScene < currentScene && currentScene < MaxScene) {
+		Draws[currentScene]();
+	}
 	if (fade > 0) {
 		int a = (int)(fade * 255);
 		if (a > 255)
@@ -90,8 +93,12 @@ void UpdateSceneManager() {
 			return;
 		}
 		//完全に真っ黒になったとき
-		Uninits[currentScene]();
-		Inits[nextScene]();
+		if (NullScene < currentScene && currentScene < MaxScene) {
+			Uninits[currentScene]();
+		}
+		if (NullScene < nextScene && nextScene < MaxScene) {
+			Inits[nextScene]();
+		}
 
 		currentScene = nextScene;
 		fadeMode = FADE_IN;
@@ -113,7 +120,9 @@ void UpdateSceneManager() {
 	}
 
 	//通常
-	Updates[currentScene]();
+	if (NullScene < currentScene && currentScene < MaxScene) {
+		Updates[currentScene]();
+	}
 }
 
 void GoNextScene(Scene scene, FadeMode mode) {
