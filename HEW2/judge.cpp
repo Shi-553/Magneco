@@ -122,6 +122,7 @@ void JudgePlayerandFlyingObjectHit() {
 		// npcとufo
 		else if (itr->type == FLYING_OBJECT_UFO) {
 			if (CheckBlockBlock(npc->trans.pos, itr->trans.pos)) {
+				npc->takeOutFrame++;
 				if (npc->takeOutFrame >= TAKE_OUT_FRAME_LIMIT) {
 					itr = flyingObjectList->erase(itr);
 					GoNextScene(GameOverScene, FADE_IN);
