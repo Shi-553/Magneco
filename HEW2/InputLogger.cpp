@@ -8,7 +8,7 @@
 #include "config.h"
 #include "bitFlagsScopedEnum.h"
 
-#define KEY_CONVERSIOINS_MAX (32)
+#define KEY_CONVERSIOINS_MAX (64)
 #define AXIS_CONVERSIOINS_MAX (8)
 
 
@@ -95,9 +95,16 @@ static KeyConversion KeyConversions[KEY_CONVERSIOINS_MAX]{
 	{MYVK_PURGE,270},
 
 	{MYVK_PAUSE,278},
+
+	{MYVK_CONTROL,KK_LEFTCONTROL},
 #if _DEBUG
 	{MYVK_GAME_CLEAR,KK_F1},
 	{MYVK_GAME_OVER,KK_F2},
+	{MYVK_STAGE_EDTIOR,KK_F3},
+
+	{MYVK_LEFT_CLICK,MOUSE_LEFT},
+	{MYVK_SAVE,KK_S},
+	{MYVK_LOAD,KK_L},
 #endif
 };
 

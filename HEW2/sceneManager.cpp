@@ -9,6 +9,7 @@
 #include "gameOver.h"
 #include "gameClear.h"
 #include "tutorial.h"
+#include "stageEditor.h"
 
 
 typedef void (*SceneFunc)(void);
@@ -19,7 +20,8 @@ static const SceneFunc Inits[]{
 		InitGame,
 		InitGameClear,
 		InitGameOver,
-		InitTutorial
+		InitTutorial,
+		InitStageEditor
 };
 
 static const SceneFunc Uninits[]{
@@ -27,7 +29,8 @@ static const SceneFunc Uninits[]{
 		UninitGame,
 		UninitGameClear,
 		UninitGameOver,
-		UninitTutorial
+		UninitTutorial,
+		UninitStageEditor
 };
 
 static const SceneFunc Updates[]{
@@ -35,7 +38,8 @@ static const SceneFunc Updates[]{
 		UpdateGame,
 		UpdateGameClear,
 		UpdateGameOver,
-		UpdateTutorial
+		UpdateTutorial,
+		UpdateStageEditor
 };
 
 static const SceneFunc Draws[]{
@@ -43,7 +47,8 @@ static const SceneFunc Draws[]{
 		DrawGame,
 		DrawGameClear,
 		DrawGameOver,
-		DrawTutorial
+		DrawTutorial,
+		DrawStageEditor
 };
 
 Scene currentScene;

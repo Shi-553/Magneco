@@ -100,6 +100,12 @@
     <ClCompile Include="gamepad.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
+    <ClCompile Include="stageEditor.cpp">
+      <Filter>cpp\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="mapEditor.cpp">
+      <Filter>cpp\scenes\stageEditor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -207,6 +213,12 @@
     <ClInclude Include="bitFlagsScopedEnum.h">
       <Filter>ヘッダー\others</Filter>
     </ClInclude>
+    <ClInclude Include="stageEditor.h">
+      <Filter>ヘッダー\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="mapEditor.h">
+      <Filter>ヘッダー\scenes\stageEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダー">
@@ -238,6 +250,12 @@
     </Filter>
     <Filter Include="ヘッダー\others">
       <UniqueIdentifier>{e9f5fb84-d649-4d2c-9bd0-d14d69acc49f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー\scenes\stageEditor">
+      <UniqueIdentifier>{8894e286-62c5-4ddc-aa2e-daa6af255e41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\scenes\stageEditor">
+      <UniqueIdentifier>{ccad7b26-5141-4836-92f4-f423fb105c04}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

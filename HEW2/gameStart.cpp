@@ -131,4 +131,7 @@ void UpdateGameStart() {
 		isChange = true;
 
 	}
+	if (TriggerInputLogger(MYVK_STAGE_EDTIOR)) {
+		GoNextScene(StageEditorScene);
+	}
 }
