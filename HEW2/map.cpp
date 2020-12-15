@@ -33,8 +33,8 @@ static int textureIds[MAP_MAX];
 static int map_textureIds;
 
 static int frame = 0;
-static int mapHeight = 0;
-static int mapWidth = 0;
+static int mapHeight = 10;
+static int mapWidth = 10;
 
 void InitMap(void)
 {
@@ -49,124 +49,121 @@ void InitMap(void)
 
 	frame = 0;
 
-	//MapChipList[][] = {{NULL},{NULL}};
 
+	MapChipList = new Map[mapHeight * mapWidth]{
+		{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUp()},
+		{MAP_WALL, INTVECTOR2::GetUpperRightCorner()},
 
-	//MapChipList = new Map[mapHeight * mapWidth]{
-	//	{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUp()},
-	//	{MAP_WALL, INTVECTOR2::GetUpperRightCorner()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_GOAL},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_GOAL},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_ROCK},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_ROCK},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetRight()},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},
+		{MAP_WALL, INTVECTOR2::GetLeft()},
 
-	//	{MAP_WALL, INTVECTOR2::GetRight()},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_BLOCK_NONE},
-	//	{MAP_WALL, INTVECTOR2::GetLeft()},
+		{MAP_WALL, INTVECTOR2::GetLowreLeftCorner()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetDown()},
+		{MAP_WALL, INTVECTOR2::GetLowreRightCorner()},
 
-	//	{MAP_WALL, INTVECTOR2::GetLowreLeftCorner()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetDown()},
-	//	{MAP_WALL, INTVECTOR2::GetLowreRightCorner()},
+	};
 
-	//};
-
-	MapImport("stage/test/test.map");
-
+	SecureMapLabelList();
 }
 
 void UninitMap(void)
@@ -266,15 +263,7 @@ MapType GetMapType(INTVECTOR2 pos)
 	return GetMap(y, x).type;
 }
 
-bool MapExport(const char* filename) {
-	FILE* fp = NULL;
-
-	//	バイナリ書き込みモードでファイルを開く
-	fopen_s(&fp, filename, "wb");
-
-	if (fp == NULL) {
-		return false;
-	}
+bool MapExport(FILE* fp) {
 
 	//	ファイルへの書き込み処理
 	fwrite(&mapHeight, sizeof(int), 1, fp);
@@ -282,36 +271,28 @@ bool MapExport(const char* filename) {
 
 	fwrite(MapChipList, sizeof(Map), mapHeight * mapWidth, fp);
 
-	fclose(fp);
 	return true;
 }
 
-bool MapImport(const char* filename) {
-	FILE* fp = NULL;
-
-	//	バイナリ読み込みモードでファイルを開く
-	fopen_s(&fp, filename, "rb");
-
-	if (fp == NULL) {
-		return false;
-	}
-
-	//	ファイルを読み込む処理
-	fread(&mapHeight, sizeof(int), 1, fp);
-	fread(&mapWidth, sizeof(int), 1, fp);
+bool MapImport(FILE* fp) {
 
 	if (MapChipList != NULL) {
 		delete[] MapChipList;
 		MapChipList = NULL;
 	}
 
+	//	ファイルを読み込む処理
+	fread(&mapHeight, sizeof(int), 1, fp);
+	fread(&mapWidth, sizeof(int), 1, fp);
+
+
 	MapChipList = new Map[mapHeight * mapWidth];
+
 
 	fread(MapChipList, sizeof(Map), mapHeight * mapWidth, fp);
 
 	SecureMapLabelList();
 
-	fclose(fp);
 	return true;
 
 }
