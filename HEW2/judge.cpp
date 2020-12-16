@@ -110,7 +110,7 @@ void JudgePlayerandFlyingObjectHit() {
 			}
 
 		}
-		else if (itr->type == FLYING_OBJECT_ENEMY) {
+		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 			if (CheckBlockBlock(player->trans.pos, itr->trans.pos)) {
 				itr = flyingObjectList->erase(itr);
 				GoNextScene(GameOverScene, FADE_IN);
@@ -173,7 +173,7 @@ void JudgePlayerandFlyingObjectHit() {
 					break;
 				}
 			}
-			else if (itr->type == FLYING_OBJECT_ENEMY) {
+			else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
 					player->flyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
@@ -194,7 +194,7 @@ void JudgePlayerandFlyingObjectHit() {
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
 		for (auto itr2 = player->purgeFlyingObjectList.begin(); itr2 != player->purgeFlyingObjectList.end(); itr2++) {
-			if (itr->type == FLYING_OBJECT_ENEMY) {
+			if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
 					player->purgeFlyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
@@ -244,6 +244,22 @@ void JudgePlayerandFlyingObjectHit() {
 		itr++;
 
 
+	}
+
+
+	// enemyFlyingObjectと設置ブロックの当たり判定
+	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end();) {
+		bool isMatched = false;
+		if (itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
+			Map *map = GetMap(itr->trans.GetIntPos());
+			if (map != NULL && map->type == MAP_BLOCK) {
+				itr = flyingObjectList->erase(itr);
+				map->type = MAP_BLOCK_NONE;
+				isMatched = true;
+				continue;
+			}
+		}
+		itr++;
 	}
 }
 

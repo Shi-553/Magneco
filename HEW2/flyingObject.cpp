@@ -18,6 +18,7 @@ static int anotherBlockObjectTextureId = TEXTURE_INVALID_ID;
 static int addSpeedItemTextureId = TEXTURE_INVALID_ID;
 static int addMaguneticForceItemTextureId = TEXTURE_INVALID_ID;
 static int changeBlockUnbreakableItemTextureId = TEXTURE_INVALID_ID;
+static int enemyBreakBlockObjectTextureId = TEXTURE_INVALID_ID;
 
 std::list<FlyingObject>* GetFlyingObjects() {
 	return &flyingObjects;
@@ -36,6 +37,7 @@ void InitFlyingObject() {
 	addSpeedItemTextureId = ReserveTextureLoadFile("texture/hane.png");
 	addMaguneticForceItemTextureId = ReserveTextureLoadFile("texture/maguneticPower.png");
 	changeBlockUnbreakableItemTextureId = ReserveTextureLoadFile("texture/changeUnbreakable.png");
+	enemyBreakBlockObjectTextureId = ReserveTextureLoadFile("texture/meteorite_1.png");
 }
 void UninitFlyingObject() {
 	ReleaseTexture(blockObjectTextureId);
@@ -44,6 +46,7 @@ void UninitFlyingObject() {
 	ReleaseTexture(addSpeedItemTextureId);
 	ReleaseTexture(addMaguneticForceItemTextureId);
 	ReleaseTexture(changeBlockUnbreakableItemTextureId);
+	ReleaseTexture(enemyBreakBlockObjectTextureId);
 }
 void DrawFlyingObject(FlyingObject flyingObject) {
 	if (flyingObject.type == FLYING_OBJECT_BLOCK) {
@@ -64,6 +67,9 @@ void DrawFlyingObject(FlyingObject flyingObject) {
 	}
 	if (flyingObject.type == FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE) {
 		DrawGameSprite(changeBlockUnbreakableItemTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
+	}
+	if (flyingObject.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
+		DrawGameSprite(enemyBreakBlockObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 	}
 }
 void DrawFlyingObject() {
