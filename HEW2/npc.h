@@ -23,4 +23,7 @@ void SecureMapLabelList();
 
 NPC* GetNpc();
 
+bool NPCExport(FILE* fp);
+bool NPCImport(FILE* fp);
+
 #endif // !_NPC_H
