@@ -17,7 +17,7 @@ static int blockObjectTextureId = TEXTURE_INVALID_ID;
 static int enemyObjectTextureId = TEXTURE_INVALID_ID;
 static int anotherBlockObjectTextureId = TEXTURE_INVALID_ID;
 static int ufoObjectTextureId = TEXTURE_INVALID_ID;
-bool existsUFO = false;
+static bool existsUFO = false;
 static int addSpeedItemTextureId = TEXTURE_INVALID_ID;
 static int addMaguneticForceItemTextureId = TEXTURE_INVALID_ID;
 static int changeBlockUnbreakableItemTextureId = TEXTURE_INVALID_ID;
@@ -35,8 +35,8 @@ void AddFlyingObjects(FlyingObject* flyingObject) {
 		}
 		existsUFO = true;
 	}
-		flyingObjects.push_back(*flyingObject);
-	
+	flyingObjects.push_back(*flyingObject);
+
 }
 
 void InitFlyingObject() {
@@ -72,7 +72,7 @@ void DrawFlyingObject(FlyingObject flyingObject) {
 	if (flyingObject.type == FLYING_OBJECT_UFO) {
 		DrawGameSprite(ufoObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 	}
-	if (flyingObject.type == FLYING_OBJECT_PLAYER_BLOCK ||flyingObject.type == FLYING_OBJECT_PURGE_BLOCK) {
+	if (flyingObject.type == FLYING_OBJECT_PLAYER_BLOCK || flyingObject.type == FLYING_OBJECT_PURGE_BLOCK) {
 		DrawGameSprite(anotherBlockObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 	}
 
@@ -97,7 +97,7 @@ void DrawFlyingObject() {
 }
 void UpdateFlyingObject() {
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
-		if (UpdateFlyingObject(&*itr,1)) {
+		if (UpdateFlyingObject(&*itr, 1)) {
 			itr = flyingObjects.erase(itr);
 		}
 		else {
@@ -105,14 +105,14 @@ void UpdateFlyingObject() {
 		}
 	}
 }
-bool UpdateFlyingObject(FlyingObject* flyingObject,float speed) {
+bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 	if (flyingObject->type == FLYING_OBJECT_UFO) {
 		flyingObject->dir = (GetNpc()->trans.pos + ADD_UFO_POS) - flyingObject->trans.pos;
 
 	}
 	auto nomal = flyingObject->dir;
 	D3DXVec2Normalize(&nomal, &nomal);
-	flyingObject->trans.pos += nomal* speed * GetDeltaTime();
+	flyingObject->trans.pos += nomal * speed * GetDeltaTime();
 
 	flyingObject->trans.UpdatePos();
 

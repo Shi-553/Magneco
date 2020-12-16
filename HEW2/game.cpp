@@ -30,7 +30,7 @@ void InitGame()
 
 	LoadTexture();
 
-	StageImport("stage/test.stage");
+	//StageImport("stage/test.stage");
 	//StageExport("stage/test.stage");
 }
 
