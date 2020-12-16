@@ -2,6 +2,7 @@
 #include "map.h"
 #include "flyingObjectSponer.h"
 #include "npc.h"
+#include "player.h"
 
 bool StageExport(const char* filename) {
 	FILE* fp = NULL;
@@ -13,6 +14,7 @@ bool StageExport(const char* filename) {
 		return false;
 	}
 
+	PlayerExport(fp);
 	NPCExport(fp);
 	MapExport(fp);
 	FlyingObjectSponerExport(fp);
@@ -31,6 +33,7 @@ bool StageImport(const char* filename) {
 		return false;
 	}
 
+	PlayerImport(fp);
 	NPCImport(fp);
 	MapImport(fp);
 	FlyingObjectSponerImport(fp);

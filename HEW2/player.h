@@ -36,4 +36,7 @@ Player* GetPlayer();
 void PutBeacon();
 void PurgePlayerFlyingObject();
 
+bool PlayerExport(FILE* fp);
+bool PlayerImport(FILE* fp);
+
 #endif // !_PLAYER_H
