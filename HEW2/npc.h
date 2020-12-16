@@ -23,6 +23,9 @@ void UpdateNPCShortestPath();
 
 void SecureMapLabelList();
 
-NPC* GetNPC();
+NPC* GetNpc();
+
+bool NPCExport(FILE* fp);
+bool NPCImport(FILE* fp);
 
 #endif // !_NPC_H

@@ -1,9 +1,4 @@
-﻿//ゲーム本体
-// テストコメント
-// テスト２
-
-//リモート・マスターからブランチ分けて追加
-#include "config.h"
+﻿#include "config.h"
 #include "texture.h"
 #include "sprite.h"
 #include "debugFont.h"
@@ -19,6 +14,7 @@
 #include "flyingObjectSponer.h"
 #include "grid.h"
 #include "debugPrintf.h"
+#include "importExport.h"
 
 
 void InitGame() 
@@ -33,7 +29,9 @@ void InitGame()
 	Grid_Initialize(GAME_SPRITE_WHIDTH, GetMapWidth(), D3DCOLOR_RGBA(0, 197, 0, 255));
 
 	LoadTexture();
-	
+
+	StageImport("stage/test.stage");
+	//StageExport("stage/test.stage");
 }
 
 void UpdateGame() 

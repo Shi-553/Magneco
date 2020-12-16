@@ -152,7 +152,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/executioncharset:utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -167,9 +167,11 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
   <ItemGroup>
     <ClCompile Include="enterBottonSprite.cpp" />
     <ClCompile Include="font.cpp" />
+    <ClCompile Include="gamepad.cpp" />
     <ClCompile Include="highlight.cpp" />
-    <ClCompile Include="messeagebox.cpp" />
+    <ClCompile Include="importExport.cpp" />
     <ClCompile Include="messeage.cpp" />
+    <ClCompile Include="messeagebox.cpp" />
     <ClCompile Include="selectButton.cpp" />
     <ClCompile Include="debugFont.cpp" />
     <ClCompile Include="flyingObject.cpp" />
@@ -196,12 +198,16 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="gameStart.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="trans.cpp" />
+    <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bitFlagsScopedEnum.h" />
     <ClInclude Include="enterBottonSprite.h" />
     <ClInclude Include="font.h" />
+    <ClInclude Include="gamepad.h" />
     <ClInclude Include="highlight.h" />
-    <ClCompile Include="messeage.h" />
+    <ClInclude Include="importExport.h" />
+    <ClInclude Include="messeage.h" />
     <ClInclude Include="messeagebox.h" />
     <ClInclude Include="selectButton.h" />
     <ClInclude Include="config.h" />
@@ -230,6 +236,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="gameStart.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="trans.h" />
+    <ClInclude Include="tutorial.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

@@ -11,7 +11,8 @@ enum MapType
 {
 	MAP_NONE,    // 無効な値
 	MAP_BLOCK_NONE,  // ブロックなし
-	MAP_BLOCK,       // ブロック
+	MAP_BLOCK,      // 壊れるブロック
+	MAP_UNBREAKABLE_BLOCK,       // 壊れないブロック
 	MAP_WALL,     // 壁
 	MAP_ROCK,        // 岩
 	MAP_GOAL,        // ゴール
@@ -39,10 +40,10 @@ bool MapFourDirectionsJudgment(INTVECTOR2 pos);
 // 位置を指定してマップタイプを返す
 MapType GetMapType(INTVECTOR2 pos);
 
-bool MapExport(const char* filename);
-bool MapImport(const char* filename);
+bool MapExport(FILE* fp);
+bool MapImport(FILE* fp);
 
-Map& GetMap(int y, int x);
+Map* GetMap(INTVECTOR2 pos);
 
 int GetMapHeight();
 int GetMapWidth();

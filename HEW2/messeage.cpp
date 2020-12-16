@@ -7,11 +7,12 @@
 #include <mbstring.h>
 
 
-#define FONT_WIDTH	(15)
-#define FONT_HEIGHT	(32)
 
-#define FONT_COUNT_MAX_WIDTH (30)//半角30文字まで
-#define FONT_COUNT_MAX_HEIGHT (10)//10行まで
+#define FONT_WIDTH	(long)(15 * 1.2)
+#define FONT_HEIGHT	(long)(32 * 1.2)
+
+#define FONT_COUNT_MAX_WIDTH (45)//半角30文字まで
+#define FONT_COUNT_MAX_HEIGHT (6)//10行まで
 
 //横幅、大きくすると左右に伸びる
 #define RECT_WIDTH (FONT_WIDTH*FONT_COUNT_MAX_WIDTH)
@@ -19,7 +20,8 @@
 #define RECT_HEIGHT (FONT_HEIGHT*FONT_COUNT_MAX_HEIGHT)
 
 //中心からどれだけ下にするか
-#define RECT_ADD_Y (0)
+#define RECT_ADD_Y (75)
+
 
 void UpdateRect(RECT& rect);
 
@@ -30,7 +32,7 @@ static D3DCOLOR color;
 
 
 void InitMesseage() {
-	CreateFont(FONT_HEIGHT, FONT_WIDTH, &font);
+	MyCreateFont(FONT_HEIGHT, FONT_WIDTH, &font);
 	LPDIRECT3DDEVICE9 device = GetD3DDevice();
 	D3DXCreateSprite(device, &sprite);
 
@@ -84,11 +86,17 @@ void DrawMesseage(const char* str, va_list argp) {
 		bool isNewLine = buf[i] == '\n';
 		//最後か
 		bool isEnd = i == length - 1;
-		//最大文字数かどうか（最大か、最大から1つ前で2バイト文字）
-		bool isMax = (offset.x == FONT_COUNT_MAX_WIDTH) ||
+
+        //最大文字数かどうか（最大か、最大から1つ前で2バイト文字）
+		bool isM = (offset.x == FONT_COUNT_MAX_WIDTH);
+		bool isMax = isM ||
 			(offset.x == FONT_COUNT_MAX_WIDTH - 1 && _mbclen((BYTE*)&(buf[i])) == 2);
 
 		if (isNewLine || isMax || isEnd) {
+			if (isMax && !isM) {
+				i++;
+			}
+
 			font->DrawTextA(sprite,
 				&(buf[startIndex]),
 				i - startIndex,

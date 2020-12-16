@@ -12,7 +12,7 @@ void InitFont() {
 	}
 
 
-	//�����Ŏg����������[�h���Ă����Ƃ��悢
+	//ここで使う文字をロードしておくと効率いい
 	//pFont->PreloadText("",sizeof(""));
 }
 void UninitFont() {
@@ -21,21 +21,21 @@ void UninitFont() {
 	}
 }
 
-void CreateFont(int height, int width, LPD3DXFONT* font) {
+void MyCreateFont(int height, int width, LPD3DXFONT* font) {
 	auto device = GetD3DDevice();
 
 	auto hr = D3DXCreateFont(
-		device,				// Direct3D�f�o�C�X
+		device,				
 		height,						// 高さ
 		width,						// 幅
-		FW_REGULAR,				// �t�H���g�̑��� ����
-		NULL,					// ����
-		FALSE,					// �Α�
-		DEFAULT_CHARSET,		// �����Z�b�g
-		OUT_DEFAULT_PRECIS,		// �o�͐��x�͕���
-		PROOF_QUALITY,			// �����i����d��
-		FIXED_PITCH | FF_SCRIPT,	// �s�b�`�ƃt�@�~��
-		"PixelMplus10",	// �t�H���g��
+		FW_REGULAR,				
+		NULL,					
+		FALSE,					
+		DEFAULT_CHARSET,		// 文字コード
+		OUT_DEFAULT_PRECIS,		
+		PROOF_QUALITY,			
+		FIXED_PITCH | FF_SCRIPT,	//ピッチとファミリ
+		"PixelMplus10",	// 使うフォント
 		font);
 
 	if (FAILED(hr))
@@ -44,22 +44,3 @@ void CreateFont(int height, int width, LPD3DXFONT* font) {
 		return;
 	}
 }
-//void DrawFont() {
-//	auto font = GetFont();
-//	LPD3DXSPRITE sprite = NULL;
-//	D3DXCreateSprite(d3dDevice, &sprite);
-//
-//	sprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
-//
-//	RECT rc = {
-//	SCREEN_WIDTH / 2 - 400,		// �����x���W
-//	SCREEN_HEIGHT / 2 + 250,		// �����y���W
-//	SCREEN_WIDTH / 2 + 400,		// �E����x���W
-//	SCREEN_HEIGHT / 2 + 350		// �E����y���W
-//	};
-//	auto hdc = font->GetDC();
-//
-//	font->DrawTextA(sprite, "unicode support", -1, &rc, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));
-//	sprite->End();
-//	sprite->Release();
-//}

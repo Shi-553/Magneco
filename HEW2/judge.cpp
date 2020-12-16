@@ -1,19 +1,14 @@
-﻿// --------------------------------------------------------------
-//  “–‚‚è”’è‚Ìˆ—[judge.cpp]
-// 
-//							Author:Kanna Noda
-//----------------------------------------------------------------
-
-#include "player.h"
+﻿#include "player.h"
 #include "npc.h"
 #include "flyingObject.h"
 #include "judge.h"
 #include "game.h"
 #include "sceneManager.h"
 #include "trans.h"
-#include "debugPrintf.h"
+#include "map.h"
+#include "npc.h"
 
-#define MAX_BLOCK (4)
+
 
 bool CheckCollision(std::list<FlyingObject>* flyingObjectList, INTVECTOR2* pos);
 bool CheckBlockBlock(D3DXVECTOR2& pos1, D3DXVECTOR2& pos2);
@@ -40,18 +35,18 @@ static float colllisionSize = 0.3;
 bool CheckBlockBlock(D3DXVECTOR2& pos1, D3DXVECTOR2& pos2) {
 	return (
 		(
-			(pos1.x - colllisionSize <= pos2.x - colllisionSize && pos2.x - colllisionSize <= pos1.x + colllisionSize)||
+			(pos1.x - colllisionSize <= pos2.x - colllisionSize && pos2.x - colllisionSize <= pos1.x + colllisionSize) ||
 			(pos1.x - colllisionSize <= pos2.x + colllisionSize && pos2.x + colllisionSize <= pos1.x + colllisionSize)
-		)&&
+			) &&
 		(
-			(pos1.y - colllisionSize <= pos2.y - colllisionSize && pos2.y - colllisionSize <= pos1.y + colllisionSize)||
+			(pos1.y - colllisionSize <= pos2.y - colllisionSize && pos2.y - colllisionSize <= pos1.y + colllisionSize) ||
 			(pos1.y - colllisionSize <= pos2.y + colllisionSize && pos2.y + colllisionSize <= pos1.y + colllisionSize)
-		)
+			)
 		);
 }
 bool CheckCollision(std::list<FlyingObject>* flyingObjectList, INTVECTOR2* pos) {
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); itr++) {
-		if (itr->trans.GetIntPos()== *pos) {
+		if (itr->trans.GetIntPos() == *pos) {
 			return true;
 		}
 	}
@@ -63,13 +58,13 @@ void JudgePlayerandFlyingObjectHit() {
 	Player* player = GetPlayer();
 	std::list<FlyingObject>* flyingObjectList = GetFlyingObjects();
 
-	NPC* npc = GetNPC();
+	NPC* npc = GetNpc();
 
 
 	// プレイヤーとflyingObjectの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		if (itr->type == FLYING_OBJECT_BLOCK) {
-			if (player->flyingObjectList.size() >= MAX_BLOCK) {
+			if (player->flyingObjectList.size() >= player->blockMax) {
 				itr++;
 				continue;
 			}
@@ -79,8 +74,17 @@ void JudgePlayerandFlyingObjectHit() {
 				itr->trans.pos = player->trans.pos;
 				itr->trans.UpdatePos();
 
-				bool isMovePlayer = player->dir != INTVECTOR2(0, 0);
-				auto movePlayer = (player->dir).ToD3DXVECTOR2();
+
+				bool isMovePlayer = player->dir != D3DXVECTOR2(0, 0);
+				D3DXVECTOR2 movePlayer = D3DXVECTOR2(0, 0);
+				if (isMovePlayer) {
+					if (fabsf(player->dir.x) > fabsf(player->dir.y)) {
+						movePlayer.x = player->dir.x > 0 ? 1 : -1;
+					}
+					else {
+						movePlayer.y = player->dir.y > 0 ? 1 : -1;
+					}
+				}
 
 				while (true) {
 					auto intPos = itr->trans.GetIntPos();
@@ -110,7 +114,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 		}
 		// 敵(ufo&enemy)とプレイヤー
-		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO) {
+		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO|| itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 			if (CheckBlockBlock(player->trans.pos, itr->trans.pos)) {
 				itr = flyingObjectList->erase(itr);
 				GoNextScene(GameOverScene, FADE_IN);
@@ -121,6 +125,7 @@ void JudgePlayerandFlyingObjectHit() {
 			}
 
 		}
+	
 		// npcとufo
 		else if (itr->type == FLYING_OBJECT_UFO) {
 			D3DXVECTOR2 shiftPos = itr->trans.pos - ADD_UFO_POS;
@@ -135,6 +140,9 @@ void JudgePlayerandFlyingObjectHit() {
 			}
 			itr++;
 		}
+		else {
+			itr++;
+		}
 
 	}
 
@@ -143,7 +151,7 @@ void JudgePlayerandFlyingObjectHit() {
 		bool isMatched = false;
 		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
 			if (itr->type == FLYING_OBJECT_BLOCK) {
-				if (player->flyingObjectList.size() >= MAX_BLOCK) {
+				if (player->flyingObjectList.size() >= player->blockMax) {
 					break;
 				}
 				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
@@ -154,9 +162,16 @@ void JudgePlayerandFlyingObjectHit() {
 
 					itr->trans.UpdatePos();
 
-					bool isMovePlayer = player->dir != INTVECTOR2(0, 0);
-					auto movePlayer = player->dir.ToD3DXVECTOR2();
-
+					bool isMovePlayer = player->dir != D3DXVECTOR2(0, 0);
+					D3DXVECTOR2 movePlayer = D3DXVECTOR2(0, 0);
+					if (isMovePlayer) {
+						if (fabsf(player->dir.x)> fabsf(player->dir.y)) {
+							movePlayer.x = player->dir.x > 0 ? 1 : -1;
+						}
+						else {
+							movePlayer.y = player->dir.y > 0 ? 1 : -1;
+						}
+					}
 					while (true) {
 						auto intPos = itr->trans.GetIntPos();
 						if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, &intPos)) {
@@ -178,7 +193,7 @@ void JudgePlayerandFlyingObjectHit() {
 					break;
 				}
 			}
-			else if (itr->type == FLYING_OBJECT_ENEMY) {
+			else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
 					player->flyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
@@ -210,7 +225,7 @@ void JudgePlayerandFlyingObjectHit() {
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
 		for (auto itr2 = player->purgeFlyingObjectList.begin(); itr2 != player->purgeFlyingObjectList.end(); itr2++) {
-			if (itr->type == FLYING_OBJECT_ENEMY) {
+			if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
 					player->purgeFlyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
@@ -238,8 +253,54 @@ void JudgePlayerandFlyingObjectHit() {
 
 	}
 
-	DebugPrintf("%d", npc->takeOutFrame);
 
 
+	//NPCとの当たり判定
+
+	if (GetMapType(npc->trans.GetIntPos()) == MAP_GOAL) {
+		GoNextScene(GameClearScene);
+	}
+
+
+	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
+		bool isMatched = false;
+		if (itr->trans.GetIntPos() == npc->trans.GetIntPos()) {
+			if (itr->type == FLYING_OBJECT_ITEM_ADD_SPEED) {
+				player->speed++;
+			}
+			else if (itr->type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
+				player->blockMax++;
+			}
+			else if (itr->type == FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE) {
+
+			}
+			else {
+				itr++;
+				continue;
+			}
+
+			itr = flyingObjectList->erase(itr);
+			continue;
+		}
+		itr++;
+
+
+	}
+
+
+	// enemyFlyingObjectと設置ブロックの当たり判定
+	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end();) {
+		bool isMatched = false;
+		if (itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
+			Map *map = GetMap(itr->trans.GetIntPos());
+			if (map != NULL && map->type == MAP_BLOCK) {
+				itr = flyingObjectList->erase(itr);
+				map->type = MAP_BLOCK_NONE;
+				isMatched = true;
+				continue;
+			}
+		}
+		itr++;
+	}
 }
 

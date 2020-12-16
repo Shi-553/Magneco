@@ -82,9 +82,6 @@
     <ClCompile Include="font.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
-    <ClCompile Include="messeage.cpp">
-      <Filter>cpp\others</Filter>
-    </ClCompile>
     <ClCompile Include="highlight.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
@@ -94,8 +91,17 @@
     <ClCompile Include="enterBottonSprite.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
-    <ClCompile Include="messeage.h">
-      <Filter>ヘッダー\others</Filter>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>cpp\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="messeage.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
+    <ClCompile Include="gamepad.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
+    <ClCompile Include="importExport.cpp">
+      <Filter>cpp\scenes\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +197,21 @@
     </ClInclude>
     <ClInclude Include="enterBottonSprite.h">
       <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
+      <Filter>ヘッダー\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="messeage.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="gamepad.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="bitFlagsScopedEnum.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="importExport.h">
+      <Filter>ヘッダー\scenes\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
