@@ -11,6 +11,7 @@
 #include "game.h"
 #include "sceneManager.h"
 #include "trans.h"
+#include "debugPrintf.h"
 
 #define MAX_BLOCK (4)
 
@@ -64,6 +65,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 	NPC* npc = GetNPC();
 
+
 	// プレイヤーとflyingObjectの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		if (itr->type == FLYING_OBJECT_BLOCK) {
@@ -107,8 +109,8 @@ void JudgePlayerandFlyingObjectHit() {
 			}
 
 		}
-		// 敵とプレイヤー
-		else if (itr->type == FLYING_OBJECT_ENEMY) {
+		// 敵(ufo&enemy)とプレイヤー
+		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO) {
 			if (CheckBlockBlock(player->trans.pos, itr->trans.pos)) {
 				itr = flyingObjectList->erase(itr);
 				GoNextScene(GameOverScene, FADE_IN);
@@ -121,7 +123,8 @@ void JudgePlayerandFlyingObjectHit() {
 		}
 		// npcとufo
 		else if (itr->type == FLYING_OBJECT_UFO) {
-			if (CheckBlockBlock(npc->trans.pos, itr->trans.pos)) {
+			D3DXVECTOR2 shiftPos = itr->trans.pos - ADD_UFO_POS;
+			if (CheckBlockBlock(npc->trans.pos, shiftPos)) {
 				npc->takeOutFrame++;
 				if (npc->takeOutFrame >= TAKE_OUT_FRAME_LIMIT) {
 					itr = flyingObjectList->erase(itr);
@@ -130,14 +133,12 @@ void JudgePlayerandFlyingObjectHit() {
 				}
 
 			}
-			else {
-				itr++;
-			}
+			itr++;
 		}
 
 	}
 
-	// flyingObject同士の当たり判定
+	// 引っ付いてるFlyingObjectとenemyの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
 		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
@@ -191,6 +192,7 @@ void JudgePlayerandFlyingObjectHit() {
 					itr = flyingObjectList->erase(itr);
 					npc->takeOutFrame = 0;
 					isMatched = true;
+					DestroyUFO();
 					break;
 				}
 			}
@@ -204,7 +206,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 	}
 
-	// 引っ付いているFlyingObjectとenemyの当たり判定
+	// パージされたFlyingObjectとenemyの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
 		for (auto itr2 = player->purgeFlyingObjectList.begin(); itr2 != player->purgeFlyingObjectList.end(); itr2++) {
@@ -222,6 +224,7 @@ void JudgePlayerandFlyingObjectHit() {
 					itr = flyingObjectList->erase(itr);
 					npc->takeOutFrame = 0;
 					isMatched = true;
+					DestroyUFO();
 					break;
 				}
 			}
@@ -235,7 +238,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 	}
 
-
+	DebugPrintf("%d", npc->takeOutFrame);
 
 
 }

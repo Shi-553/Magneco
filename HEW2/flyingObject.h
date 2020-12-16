@@ -3,6 +3,7 @@
 #include <list>
 #include "trans.h"
 
+#define ADD_UFO_POS (D3DXVECTOR2(0.5f, -1.0f))
 
 enum FlyingObjectType
 {
@@ -34,3 +35,4 @@ void DrawFlyingObject(FlyingObject flyingObject);
 
 
 bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
+void DestroyUFO();

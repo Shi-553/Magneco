@@ -17,6 +17,7 @@ static int blockObjectTextureId = TEXTURE_INVALID_ID;
 static int enemyObjectTextureId = TEXTURE_INVALID_ID;
 static int anotherBlockObjectTextureId = TEXTURE_INVALID_ID;
 static int ufoObjectTextureId = TEXTURE_INVALID_ID;
+bool existsUFO = false;
 
 
 std::list<FlyingObject>* GetFlyingObjects() {
@@ -24,7 +25,14 @@ std::list<FlyingObject>* GetFlyingObjects() {
 }
 
 void AddFlyingObjects(FlyingObject* flyingObject) {
-	flyingObjects.push_back(*flyingObject);
+	if (flyingObject->type == FLYING_OBJECT_UFO) {// ufo画面上にない場合
+		if (existsUFO) {
+			return;
+		}
+		existsUFO = true;
+	}
+		flyingObjects.push_back(*flyingObject);
+	
 }
 
 void InitFlyingObject() {
@@ -33,6 +41,7 @@ void InitFlyingObject() {
 	enemyObjectTextureId = ReserveTextureLoadFile("texture/jellyalien01.png");
 	anotherBlockObjectTextureId = ReserveTextureLoadFile("texture/block03.png");
 	ufoObjectTextureId = ReserveTextureLoadFile("texture/ufo.png");
+	existsUFO = false;
 }
 void UninitFlyingObject() {
 	ReleaseTexture(blockObjectTextureId);
@@ -72,7 +81,7 @@ void UpdateFlyingObject() {
 }
 bool UpdateFlyingObject(FlyingObject* flyingObject,float speed) {
 	if (flyingObject->type == FLYING_OBJECT_UFO) {
-		flyingObject->dir = GetNPC()->trans.pos - flyingObject->trans.pos;
+		flyingObject->dir = (GetNPC()->trans.pos + ADD_UFO_POS) - flyingObject->trans.pos;
 
 	}
 	auto nomal = flyingObject->dir;
@@ -91,4 +100,8 @@ bool UpdateFlyingObject(FlyingObject* flyingObject,float speed) {
 		return false;
 	}
 
+}
+
+void DestroyUFO() {
+	existsUFO = false;
 }

@@ -11,7 +11,7 @@ typedef struct NPC_tag {
 	int takeOutFrame;
 }NPC;
 
-#define TAKE_OUT_FRAME_LIMIT (7 * 60)
+#define TAKE_OUT_FRAME_LIMIT (10 * 60)
 
 void InitNPC();
 void UpdateNPC();
