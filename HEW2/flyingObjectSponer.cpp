@@ -13,19 +13,15 @@ struct Spone {
 static Spone* spones = NULL;
 static int frame = 0;
 static int sponeIndex = 0;
-static int sponeMax = 28;
+static int sponeMax = 24;
 
-static Spone initSpone[28]{
-	{0,{2.5,1.5},FLYING_OBJECT_ITEM_ADD_SPEED,{0,0}},
-	{0,{5.5,5.5},FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE,{0,0}},
-	{0,{7.5,7.5},FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE,{0,0}},
-	{100,{5.5,-3.5},FLYING_OBJECT_BLOCK,{0,1}},
+static Spone initSpone[24]{
+	{100,{5.5,-3.5},FLYING_OBJECT_UFO,{0,1}},
 	{150,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0}},
 	{200,{13.5,7.5},FLYING_OBJECT_ENEMY_BREAK_BLOCK,{-1,0}},
 	{250,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0}},
 	{300,{8.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
 	{350,{3.5,-3.5},FLYING_OBJECT_ENEMY,{0,1}},
-	{400,{2.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
 	{450,{13.5,3.5},FLYING_OBJECT_BLOCK,{-1,0}},
 	{500,{5.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
 	{550,{2.5,13.5},FLYING_OBJECT_ENEMY_BREAK_BLOCK,{0,-1}},
@@ -33,6 +29,7 @@ static Spone initSpone[28]{
 	{650,{13.5,7.5},FLYING_OBJECT_BLOCK,{-1,0}},
 	{700,{-3.5,5.5},FLYING_OBJECT_BLOCK,{1,0}},
 	{750,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0}},
+	{400,{2.5,13.5},FLYING_OBJECT_UFO,{0,-1}},
 	{800,{3.5,13.5},FLYING_OBJECT_ENEMY,{0,-1}},
 	{850,{13.5,5.5},FLYING_OBJECT_BLOCK,{-1,0}},
 	{900,{2.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},

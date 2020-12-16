@@ -6,6 +6,7 @@
 #include "gameSrite.h"
 #include "map.h"
 #include "time.h"
+#include "npc.h"
 
 // flyingObject描画範囲の加算分
 #define FLYINGOBJECT_ADD_RANGE (5)
@@ -15,17 +16,27 @@ static std::list<FlyingObject> flyingObjects;
 static int blockObjectTextureId = TEXTURE_INVALID_ID;
 static int enemyObjectTextureId = TEXTURE_INVALID_ID;
 static int anotherBlockObjectTextureId = TEXTURE_INVALID_ID;
+static int ufoObjectTextureId = TEXTURE_INVALID_ID;
+static bool existsUFO = false;
 static int addSpeedItemTextureId = TEXTURE_INVALID_ID;
 static int addMaguneticForceItemTextureId = TEXTURE_INVALID_ID;
 static int changeBlockUnbreakableItemTextureId = TEXTURE_INVALID_ID;
 static int enemyBreakBlockObjectTextureId = TEXTURE_INVALID_ID;
+
 
 std::list<FlyingObject>* GetFlyingObjects() {
 	return &flyingObjects;
 }
 
 void AddFlyingObjects(FlyingObject* flyingObject) {
+	if (flyingObject->type == FLYING_OBJECT_UFO) {// ufo画面上にない場合
+		if (existsUFO) {
+			return;
+		}
+		existsUFO = true;
+	}
 	flyingObjects.push_back(*flyingObject);
+
 }
 
 void InitFlyingObject() {
@@ -33,6 +44,8 @@ void InitFlyingObject() {
 	blockObjectTextureId = ReserveTextureLoadFile("texture/block01.png");
 	enemyObjectTextureId = ReserveTextureLoadFile("texture/jellyalien01.png");
 	anotherBlockObjectTextureId = ReserveTextureLoadFile("texture/block03.png");
+	ufoObjectTextureId = ReserveTextureLoadFile("texture/ufo.png");
+	existsUFO = false;
 
 	addSpeedItemTextureId = ReserveTextureLoadFile("texture/hane.png");
 	addMaguneticForceItemTextureId = ReserveTextureLoadFile("texture/maguneticPower.png");
@@ -47,6 +60,7 @@ void UninitFlyingObject() {
 	ReleaseTexture(addMaguneticForceItemTextureId);
 	ReleaseTexture(changeBlockUnbreakableItemTextureId);
 	ReleaseTexture(enemyBreakBlockObjectTextureId);
+	ReleaseTexture(ufoObjectTextureId);
 }
 void DrawFlyingObject(FlyingObject flyingObject) {
 	if (flyingObject.type == FLYING_OBJECT_BLOCK) {
@@ -55,7 +69,10 @@ void DrawFlyingObject(FlyingObject flyingObject) {
 	if (flyingObject.type == FLYING_OBJECT_ENEMY) {
 		DrawGameSprite(enemyObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 	}
-	if (flyingObject.type == FLYING_OBJECT_PLAYER_BLOCK ||flyingObject.type == FLYING_OBJECT_PURGE_BLOCK) {
+	if (flyingObject.type == FLYING_OBJECT_UFO) {
+		DrawGameSprite(ufoObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
+	}
+	if (flyingObject.type == FLYING_OBJECT_PLAYER_BLOCK || flyingObject.type == FLYING_OBJECT_PURGE_BLOCK) {
 		DrawGameSprite(anotherBlockObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 	}
 
@@ -80,7 +97,7 @@ void DrawFlyingObject() {
 }
 void UpdateFlyingObject() {
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
-		if (UpdateFlyingObject(&*itr,1)) {
+		if (UpdateFlyingObject(&*itr, 1)) {
 			itr = flyingObjects.erase(itr);
 		}
 		else {
@@ -88,10 +105,14 @@ void UpdateFlyingObject() {
 		}
 	}
 }
-bool UpdateFlyingObject(FlyingObject* flyingObject,float speed) {
+bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
+	if (flyingObject->type == FLYING_OBJECT_UFO) {
+		flyingObject->dir = (GetNpc()->trans.pos + ADD_UFO_POS) - flyingObject->trans.pos;
+
+	}
 	auto nomal = flyingObject->dir;
 	D3DXVec2Normalize(&nomal, &nomal);
-	flyingObject->trans.pos += nomal* speed * GetDeltaTime();
+	flyingObject->trans.pos += nomal * speed * GetDeltaTime();
 
 	flyingObject->trans.UpdatePos();
 
@@ -105,4 +126,8 @@ bool UpdateFlyingObject(FlyingObject* flyingObject,float speed) {
 		return false;
 	}
 
+}
+
+void DestroyUFO() {
+	existsUFO = false;
 }
