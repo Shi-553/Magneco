@@ -11,7 +11,8 @@ enum MapType
 {
 	MAP_NONE,    // 無効な値
 	MAP_BLOCK_NONE,  // ブロックなし
-	MAP_BLOCK,       // ブロック
+	MAP_BLOCK,      // 壊れるブロック
+	MAP_UNBREAKABLE_BLOCK,       // 壊れないブロック
 	MAP_WALL,     // 壁
 	MAP_ROCK,        // 岩
 	MAP_GOAL,        // ゴール

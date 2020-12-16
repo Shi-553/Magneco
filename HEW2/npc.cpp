@@ -191,28 +191,28 @@ void UpdateNPCShortestPath() {
 		auto right = current;
 		right.x ++;
 		auto mapType = GetMapType(right);
-		if (GetMapLabel(right.y,right.x) == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
+		if (GetMapLabel(right.y,right.x) == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL || mapType == MAP_UNBREAKABLE_BLOCK)) {
 			current = right;
 			continue;
 		}
 		auto bottom = current;
 		bottom.y++;
 		mapType = GetMapType(bottom);
-		if (GetMapLabel(bottom.y ,bottom.x) == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
+		if (GetMapLabel(bottom.y ,bottom.x) == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL || mapType == MAP_UNBREAKABLE_BLOCK)) {
 			current = bottom;
 			continue;
 		}
 		auto left = current;
 		left.x--;
 		mapType = GetMapType(left);
-		if (GetMapLabel(left.y,left.x) == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
+		if (GetMapLabel(left.y,left.x) == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL || mapType == MAP_UNBREAKABLE_BLOCK)) {
 			current = left;
 			continue;
 		}
 		auto top = current;
 		top.y--;
 		mapType = GetMapType(top);
-		if (GetMapLabel(top.y,top.x) == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL)) {
+		if (GetMapLabel(top.y,top.x) == label - 1 && (mapType == MAP_BLOCK || mapType == MAP_GOAL || mapType == MAP_UNBREAKABLE_BLOCK)) {
 			current = top;
 			continue;
 		}
@@ -348,7 +348,7 @@ bool FindShortestPath() {
 }
 void FourDir(std::queue<MapLabel>* mapQueue, MapLabel* label) {
 	auto mapType = GetMapType(label->pos);
-	if ((mapType == MAP_BLOCK || mapType == MAP_GOAL) && GetMapLabel(label->pos.y,label->pos.x) == 0) {
+	if ((mapType == MAP_BLOCK || mapType == MAP_GOAL || mapType == MAP_UNBREAKABLE_BLOCK) && GetMapLabel(label->pos.y,label->pos.x) == 0) {
 		mapQueue->push(*label);
 
 		GetMapLabel(label->pos.y,label->pos.x) = label->label;

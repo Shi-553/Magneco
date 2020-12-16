@@ -195,7 +195,7 @@ Player* GetPlayer() {
 
 void PutBeacon() {
 	auto mapType = GetMapType(player.trans.GetIntPos());
-	if (mapType == MAP_BLOCK || mapType == MAP_GOAL) {
+	if (mapType == MAP_BLOCK || mapType == MAP_GOAL || mapType == MAP_UNBREAKABLE_BLOCK) {
 		UpdateNPCShortestPath(player.trans.GetIntPos());
 	}
 }

@@ -22,7 +22,7 @@
 //	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
 //	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                       {MAP_ROCK},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
 //	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                        {MAP_BLOCK},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
+//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},            {MAP_UNBREAKABLE_BLOCK},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
 //	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
 //	{{MAP_WALL, INTVECTOR2::GetLowreLeftCorner()},  {MAP_WALL, INTVECTOR2::GetDown()}, { MAP_WALL, INTVECTOR2::GetDown()},  {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetDown()},  {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetLowreRightCorner()}},
 //
@@ -43,6 +43,7 @@ void InitMap(void)
 	textureIds[MAP_NONE] = ReserveTextureLoadFile("texture/MAP_NONE.png");
 	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE.png");
 	textureIds[MAP_BLOCK] = ReserveTextureLoadFile("texture/block02.png");
+	textureIds[MAP_UNBREAKABLE_BLOCK] = ReserveTextureLoadFile("texture/unbreakableBlock.png");
 	textureIds[MAP_WALL] = ReserveTextureLoadFile("texture/wall.png");
 	textureIds[MAP_ROCK] = ReserveTextureLoadFile("texture/brokenblock01.png");
 	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/warpblock32_64_anime.png");
@@ -130,7 +131,7 @@ void InitMap(void)
 
 		{MAP_WALL, INTVECTOR2::GetRight()},
 		{MAP_BLOCK_NONE},
-		{MAP_BLOCK},
+		{MAP_UNBREAKABLE_BLOCK},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
@@ -243,22 +244,22 @@ bool MapFourDirectionsJudgment(INTVECTOR2 pos)
 
 	Map* map = GetMap(INTVECTOR2(x, y + 1));
 
-	if (map != NULL && map->type == MAP_BLOCK) {
+	if (map != NULL && (map->type == MAP_BLOCK || map->type == MAP_UNBREAKABLE_BLOCK)) {
 		return true;
 	}
 
 	map = GetMap(INTVECTOR2(x, y - 1));
-	if (map != NULL && map->type == MAP_BLOCK) {
+	if (map != NULL && (map->type == MAP_BLOCK || map->type == MAP_UNBREAKABLE_BLOCK)) {
 		return true;
 	}
 
 	map = GetMap(INTVECTOR2(x + 1, y));
-	if (map != NULL && map->type == MAP_BLOCK) {
+	if (map != NULL && (map->type == MAP_BLOCK || map->type == MAP_UNBREAKABLE_BLOCK)) {
 		return true;
 	}
 
 	map = GetMap(INTVECTOR2(x - 1, y));
-	if (map != NULL && map->type == MAP_BLOCK) {
+	if (map != NULL && (map->type == MAP_BLOCK || map->type == MAP_UNBREAKABLE_BLOCK)) {
 		return true;
 	}
 
