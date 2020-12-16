@@ -229,7 +229,7 @@ void JudgePlayerandFlyingObjectHit() {
 		GoNextScene(GameClearScene);
 	}
 
-	if (GetMapType(npc->trans.GetIntPos()) == MAP_CHEST_CLOSE) {
+	if (GetMapType(npc->trans.GetIntPos()) == MAP_CHEST_CLOSED) {
 		OpenChest(npc->trans.GetIntPos());
 	}
 

@@ -13,6 +13,8 @@
 #define MAP_GOAL_DRAW_SIZE_WIDTH 1
 #define MAP_GOAL_DRAW_SIZE_HEIGHT 2
 
+bool CanAttachedMapType(MapType type);
+
 static Map* MapChipList = NULL;
 static int textureIds[MAP_MAX];
 static int map_textureIds;
@@ -28,16 +30,17 @@ void InitMap(void)
 	textureIds[MAP_NONE] = ReserveTextureLoadFile("texture/MAP_NONE.png");
 	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE.png");
 	textureIds[MAP_BLOCK] = ReserveTextureLoadFile("texture/block02.png");
+	textureIds[MAP_UNBREAKABLE_BLOCK] = ReserveTextureLoadFile("texture/unbreakableBlock.png");
 	textureIds[MAP_WALL] = ReserveTextureLoadFile("texture/wall.png");
 	textureIds[MAP_ROCK] = ReserveTextureLoadFile("texture/brokenblock01.png");
 	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/warpblock32_64_anime.png");
-	textureIds[MAP_CHEST_CLOSE] = ReserveTextureLoadFile("texture/chestClose.png");
-	textureIds[MAP_CHEST_OPEN] = ReserveTextureLoadFile("texture/chestOpen.png");
+	textureIds[MAP_CHEST_CLOSED] = ReserveTextureLoadFile("texture/chestClose.png");
+	textureIds[MAP_CHEST_OPENED] = ReserveTextureLoadFile("texture/chestOpen.png");
 
 	frame = 0;
 
 
-	/*MapChipList = new Map[10 * 10]{
+	MapChipList = new Map[mapHeight * mapWidth]{
 		{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},
 		{MAP_WALL, INTVECTOR2::GetUp()},
 		{MAP_WALL, INTVECTOR2::GetUp()},
@@ -64,7 +67,7 @@ void InitMap(void)
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
-		{MAP_CHEST_CLOSE,{},FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE},
+		{MAP_CHEST_CLOSED,{},FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_GOAL},
@@ -77,20 +80,20 @@ void InitMap(void)
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
-		{MAP_CHEST_CLOSE,{},FLYING_OBJECT_ITEM_ADD_SPEED},
 		{MAP_BLOCK_NONE},
-		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},	
+		{MAP_CHEST_CLOSED,{},FLYING_OBJECT_ITEM_ADD_SPEED},
 		{MAP_WALL, INTVECTOR2::GetLeft()},
 
 		{MAP_WALL, INTVECTOR2::GetRight()},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
-		{MAP_CHEST_CLOSE,{},FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
-		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},	
+		{MAP_CHEST_CLOSED,{},FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE},
 		{MAP_WALL, INTVECTOR2::GetLeft()},
 
 		{MAP_WALL, INTVECTOR2::GetRight()},
@@ -117,7 +120,7 @@ void InitMap(void)
 
 		{MAP_WALL, INTVECTOR2::GetRight()},
 		{MAP_BLOCK_NONE},
-		{MAP_BLOCK},
+		{MAP_UNBREAKABLE_BLOCK},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
@@ -148,10 +151,9 @@ void InitMap(void)
 		{MAP_WALL, INTVECTOR2::GetDown()},
 		{MAP_WALL, INTVECTOR2::GetLowreRightCorner()},
 
-	};*/
+	};
 
-	MapImport("stage/test/test.map");
-
+	SecureMapLabelList();
 }
 
 void UninitMap(void)
@@ -178,28 +180,32 @@ void DrawMap(void)
 
 	for (int i = 0; i < GetMapHeight(); i++) {
 		for (int j = 0; j < GetMapWidth(); j++) {
-			if (GetMap(j, i).type == MAP_WALL) {
-				auto addDir = GetMap(j, i).dir + INTVECTOR2(1, 1);
+			Map* map = GetMap(INTVECTOR2(i, j));
+			if (map == NULL) {
+				continue;
+			}
+			if (map->type == MAP_WALL) {
+				auto addDir = map->dir + INTVECTOR2(1, 1);
 				auto tPos = D3DXVECTOR2(
 					addDir.x * MAP_TEXTURE_WIDTH,               //0  1   2  
 					addDir.y * MAP_TEXTURE_HEIGHT               //0 0.3 0.6
 				);
 
-				DrawGameSprite(textureIds[GetMap(j, i).type], D3DXVECTOR2(i, j), 100, tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_TEXTURE_HEIGHT));
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(i, j), 100, tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_TEXTURE_HEIGHT));
 				continue;
 			}
 
-			if (GetMap(j, i).type == MAP_GOAL) {
+			if (map->type == MAP_GOAL) {
 				auto tPos = D3DXVECTOR2(
 					MAP_TEXTURE_WIDTH * (frame / 8 % 8),
 					0
 				);
 
-				DrawGameSprite(textureIds[GetMap(j, i).type], D3DXVECTOR2(i, j - 1), 100, D3DXVECTOR2(MAP_GOAL_DRAW_SIZE_WIDTH, MAP_GOAL_DRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_TEXTURE_HEIGHT));
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(i, j - 1), 100, D3DXVECTOR2(MAP_GOAL_DRAW_SIZE_WIDTH, MAP_GOAL_DRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_TEXTURE_HEIGHT));
 			}
 			else
 			{
-				DrawGameSprite(textureIds[GetMap(j, i).type], D3DXVECTOR2(i, j), 100);
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(i, j), 100);
 			}
 		}
 	}
@@ -207,14 +213,16 @@ void DrawMap(void)
 
 void MapChange(FlyingObject flyingobject)
 {
-	auto intPos = flyingobject.trans.GetIntPos();
+	auto& intPos = flyingobject.trans.GetIntPos();
 
 	if (intPos.x < 0 || intPos.y < 0 || intPos.x >= GetMapWidth() || intPos.y >= GetMapHeight()) {
 		return;
 	}
 
-	if (flyingobject.type == FLYING_OBJECT_PLAYER_BLOCK) {
-		GetMap(intPos.y, intPos.x).type = MAP_BLOCK;
+	Map* map = GetMap(intPos);
+
+	if (map != NULL && flyingobject.type == FLYING_OBJECT_PLAYER_BLOCK) {
+		map->type = MAP_BLOCK;
 	}
 }
 
@@ -223,16 +231,24 @@ bool MapFourDirectionsJudgment(INTVECTOR2 pos)
 	int x = pos.x;
 	int y = pos.y;
 
-	if (GetMap(y + 1, x).type == MAP_BLOCK) {
+	Map* map = GetMap(INTVECTOR2(x, y + 1));
+
+	if (map != NULL && CanAttachedMapType(map->type)) {
 		return true;
 	}
-	if (GetMap(y - 1, x).type == MAP_BLOCK) {
+
+	map = GetMap(INTVECTOR2(x, y - 1));
+	if (map != NULL && CanAttachedMapType(map->type)) {
 		return true;
 	}
-	if (GetMap(y, x + 1).type == MAP_BLOCK) {
+
+	map = GetMap(INTVECTOR2(x + 1, y));
+	if (map != NULL && CanAttachedMapType(map->type)) {
 		return true;
 	}
-	if (GetMap(y, x - 1).type == MAP_BLOCK) {
+
+	map = GetMap(INTVECTOR2(x - 1, y));
+	if (map != NULL && CanAttachedMapType(map->type)) {
 		return true;
 	}
 
@@ -241,25 +257,16 @@ bool MapFourDirectionsJudgment(INTVECTOR2 pos)
 
 MapType GetMapType(INTVECTOR2 pos)
 {
-	int x = pos.x;
-	int y = pos.y;
 
-	if (x < 0 || y < 0 || x >= GetMapWidth() || y >= GetMapHeight()) {
+	Map* map = GetMap(pos);
+	if (map == NULL) {
 		return MAP_NONE;
 	}
 
-	return GetMap(y, x).type;
+	return map->type;
 }
 
-bool MapExport(const char* filename) {
-	FILE* fp = NULL;
-
-	//	バイナリ書き込みモードでファイルを開く
-	fopen_s(&fp, filename, "wb");
-
-	if (fp == NULL) {
-		return false;
-	}
+bool MapExport(FILE* fp) {
 
 	//	ファイルへの書き込み処理
 	fwrite(&mapHeight, sizeof(int), 1, fp);
@@ -267,42 +274,39 @@ bool MapExport(const char* filename) {
 
 	fwrite(MapChipList, sizeof(Map), mapHeight * mapWidth, fp);
 
-	fclose(fp);
 	return true;
 }
 
-bool MapImport(const char* filename) {
-	FILE* fp = NULL;
-
-	//	バイナリ読み込みモードでファイルを開く
-	fopen_s(&fp, filename, "rb");
-
-	if (fp == NULL) {
-		return false;
-	}
-
-	//	ファイルを読み込む処理
-	fread(&mapHeight, sizeof(int), 1, fp);
-	fread(&mapWidth, sizeof(int), 1, fp);
+bool MapImport(FILE* fp) {
 
 	if (MapChipList != NULL) {
 		delete[] MapChipList;
 		MapChipList = NULL;
 	}
 
+	//	ファイルを読み込む処理
+	fread(&mapHeight, sizeof(int), 1, fp);
+	fread(&mapWidth, sizeof(int), 1, fp);
+
+
 	MapChipList = new Map[mapHeight * mapWidth];
+
 
 	fread(MapChipList, sizeof(Map), mapHeight * mapWidth, fp);
 
 	SecureMapLabelList();
 
-	fclose(fp);
 	return true;
 
 }
 
-Map& GetMap(int y, int x) {
-	return MapChipList[y * mapWidth + x];
+Map* GetMap(INTVECTOR2 pos) {
+
+	if (pos.x < 0 || pos.y < 0 || pos.x >= GetMapWidth() || pos.y >= GetMapHeight()) {
+		return NULL;
+	}
+
+	return &MapChipList[pos.y * mapWidth + pos.x];
 }
 
 int GetMapHeight() {
@@ -313,14 +317,29 @@ int GetMapWidth() {
 	return mapWidth;
 }
 
-
 bool CanGoNPCMapType(MapType type) {
 	switch (type)
 	{
 	case MAP_BLOCK:
 	case MAP_GOAL:
-	case MAP_CHEST_CLOSE:
-	case MAP_CHEST_OPEN:
+	case MAP_CHEST_CLOSED:
+	case MAP_CHEST_OPENED:
+	case MAP_UNBREAKABLE_BLOCK:
+		return true;
+		break;
+	default:
+		return false;
+		break;
+	}
+}
+
+bool CanAttachedMapType(MapType type) {
+	switch (type)
+	{
+	case MAP_BLOCK:
+	case MAP_GOAL:
+	case MAP_CHEST_OPENED:
+	case MAP_UNBREAKABLE_BLOCK:
 		return true;
 		break;
 	default:
@@ -330,14 +349,14 @@ bool CanGoNPCMapType(MapType type) {
 }
 
 void OpenChest(INTVECTOR2 pos) {
-	if (GetMapType(pos) != MAP_CHEST_CLOSE) {
+	Map* map = GetMap(pos);
+	if (map == NULL || map->type != MAP_CHEST_CLOSED) {
 		return;
 	}
-	Map& map = GetMap(pos.y, pos.x);
-	map.type = MAP_CHEST_OPEN;
+	map->type = MAP_CHEST_OPENED;
 	auto p = pos.ToD3DXVECTOR2();
 	p.x += 0.5;
 	p.y -= 0.5;
-	FlyingObject f = { TRANS(p),(FlyingObjectType)map.param,{0,0} };
+	FlyingObject f = { TRANS(p),(FlyingObjectType)map->param,{0,0} };
 	AddFlyingObjects(&f);
 }
