@@ -39,8 +39,8 @@ bool MapFourDirectionsJudgment(INTVECTOR2 pos);
 // 位置を指定してマップタイプを返す
 MapType GetMapType(INTVECTOR2 pos);
 
-bool MapExport(const char* filename);
-bool MapImport(const char* filename);
+bool MapExport(FILE* fp);
+bool MapImport(FILE* fp);
 
 Map* GetMap(INTVECTOR2 pos);
 

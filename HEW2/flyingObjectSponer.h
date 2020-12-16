@@ -1,8 +1,9 @@
 ﻿#pragma once
+#include <stdio.h>
 
 void InitFlyingSponer();
 void UninitFlyingSponer();
 void UpdateFlyingSponer();
 
-bool FlyingObjectSponerExport(const char* filename);
-bool FlyingObjectSponerImport(const char* filename);
+bool FlyingObjectSponerExport(FILE* fp);
+bool FlyingObjectSponerImport(FILE* fp);

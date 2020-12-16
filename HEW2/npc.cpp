@@ -372,3 +372,23 @@ void SecureMapLabelList() {
 NPC* GetNpc() {
 	return &npc;
 }
+
+
+bool NPCExport(FILE* fp) {
+
+	INTVECTOR2 pos = npc.trans.GetIntPos();
+	//	ファイルへの書き込み処理
+	fwrite(&pos, sizeof(INTVECTOR2), 1, fp);
+
+	return true;
+}
+
+
+bool NPCImport(FILE* fp) {
+	INTVECTOR2 pos;
+	//	ファイルへの読み込み処理
+	fread(&pos, sizeof(INTVECTOR2), 1, fp);
+	npc.trans.Init(pos);
+
+	return true;
+}
