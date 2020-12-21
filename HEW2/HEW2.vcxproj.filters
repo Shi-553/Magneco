@@ -100,6 +100,9 @@
     <ClCompile Include="gamepad.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
+    <ClCompile Include="importExport.cpp">
+      <Filter>cpp\scenes\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -206,6 +209,9 @@
     </ClInclude>
     <ClInclude Include="bitFlagsScopedEnum.h">
       <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="importExport.h">
+      <Filter>ヘッダー\scenes\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

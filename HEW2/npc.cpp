@@ -56,6 +56,7 @@ void InitNPC() {
 	npc.frame = 30;
 	npc.aniFrame = 0;
 	npc.isMove = false;
+	npc.takeOutFrame = 0;
 	npcTextureVertical = 0;
 	nextPos = npc.trans.GetIntPos();
 	dir = INTVECTOR2(0, 0);
@@ -371,4 +372,24 @@ void SecureMapLabelList() {
 
 NPC* GetNpc() {
 	return &npc;
+}
+
+
+bool NPCExport(FILE* fp) {
+
+	INTVECTOR2 pos = npc.trans.GetIntPos();
+	//	ファイルへの書き込み処理
+	fwrite(&pos, sizeof(INTVECTOR2), 1, fp);
+
+	return true;
+}
+
+
+bool NPCImport(FILE* fp) {
+	INTVECTOR2 pos;
+	//	ファイルへの読み込み処理
+	fread(&pos, sizeof(INTVECTOR2), 1, fp);
+	npc.trans.Init(pos);
+
+	return true;
 }
