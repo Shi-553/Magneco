@@ -5,6 +5,8 @@
 #include "InputLogger.h"
 #include "gameSrite.h"
 #include "debugPrintf.h"
+#include "npc.h"
+#include "player.h"
 
 
 #define CREATE_MAP_TEXTURE_WIDTH 32
@@ -32,6 +34,8 @@ struct ScreenMap {
 };
 
 static int textureIds[MAP_MAX];
+static int playerTextureId;
+static int npcTextureId;
 static int frame = 0;
 
 static INTVECTOR2 createWallDir = { -1,-1 };
@@ -51,6 +55,9 @@ static bool isDrag = false;
 static D3DXVECTOR2 dragStartPos = {};
 static D3DXVECTOR2 lastMousePos = {};
 
+static bool isPlayerEdit = false;
+static bool isNPCEdit = false;
+
 ScreenMap CheckCreateMap(D3DXVECTOR2 pos);
 D3DXVECTOR2 GetCreateMapPos(MapType type);
 void DrawMapScreen(const ScreenMap& map);
@@ -63,11 +70,15 @@ void InitMapEditor() {
 		textureIds[i] = GetMapTextureId((MapType)i);
 	}
 	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE_ERASE.png");
+	playerTextureId= ReserveTextureLoadFile("texture/player_32×32.png");
+	npcTextureId= ReserveTextureLoadFile("texture/spr_rose_idle.png");
 
 	frame = 0;
 	isDrag = false;
 	isCreate = false;
 	isTemp = false;
+	isPlayerEdit = false;
+	isNPCEdit = false;
 	
 }
 void UninitMapEditor() {
@@ -89,151 +100,210 @@ void DrawMapEditor() {
 		map.pos -= D3DXVECTOR2(CREATE_MAP_WIDTH, CREATE_MAP_HEIGHT)/2;
 		DrawMapScreen(map);
 	}
+
+	auto screenPos = GetCreateMapPos((MapType)-3);
+
+	DrawSprite(playerTextureId, screenPos
+		, 10, { 50,50 }, { 0, 0 }, { 32,32 });
+
+	screenPos = GetCreateMapPos((MapType)-2);
+	DrawSprite(npcTextureId, screenPos 
+		, 10, { 50 ,50 }, { 0, 0 }, { 64,64 });
+
+	if (isPlayerEdit) {
+		DrawSprite(playerTextureId, D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY)) - D3DXVECTOR2(32/2,32/2)
+			, 10, { 50,50 }, { 0, 0 }, {32,32});
+	}
+	else {
+		DrawPlayer();
+	}
+
+	if (isNPCEdit) {
+		DrawSprite(npcTextureId, D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY)) - D3DXVECTOR2(50 * 1.76 /2,( 50 * 1.76 /2)+20)
+			, 10, { 50* 1.76,50* 1.76 }, { 0, 0 }, {64,64});
+	}
+	else {
+		DrawNPC();
+	}
 }
 void UpdateMapEditor() {
 	frame++;
 	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));
+	
+	if (!isPlayerEdit && !isNPCEdit) {
 
-	if (TriggerInputLogger(MYVK_LEFT_CLICK)) {
-		dragStartPos = mousePos;
-	}
-	if (PressInputLogger(MYVK_LEFT_CLICK)) {
-		if (!isDrag) {
-			auto diff = mousePos - dragStartPos;
-			float diffLength = D3DXVec2Length(&diff);
-			if (diffLength > START_DRAG_LENGTH) {
-				isDrag = true;
-
-				if (currentMap.map.type == MAP_NONE) {
-
-					ScreenMap matchedMap = CheckMap(mousePos);
-					if (matchedMap.map.type != MAP_NONE && matchedMap.map.type != MAP_BLOCK_NONE) {
-						auto gamePos = ScreenToGamePos(matchedMap.pos);
-						tempMapPos = gamePos;
-						Map* map = GetMap(gamePos);
-						if (map != NULL) {
-							map->type = MAP_BLOCK_NONE;
-							currentMap = matchedMap;
-							isCreate = false;
-							isTemp = true;
-						}
-					}
-				}
-			}
+		if (TriggerInputLogger(MYVK_LEFT_CLICK)) {
+			dragStartPos = mousePos;
 		}
-		if (isDrag && !isTemp) {
-			auto diff = mousePos - lastMousePos;
-			D3DXVECTOR2 diffNomal;
-			D3DXVec2Normalize(&diffNomal, &diff);
-			float diffLength = D3DXVec2Length(&diff);
+		if (PressInputLogger(MYVK_LEFT_CLICK)) {
+			if (!isDrag) {
+				auto diff = mousePos - dragStartPos;
+				float diffLength = D3DXVec2Length(&diff);
+				if (diffLength > START_DRAG_LENGTH) {
+					isDrag = true;
 
-			auto pos = lastMousePos;
-			for (int i = 0; i < diffLength; i += DRAG_LENGTH)
-			{
-				pos += diffNomal * DRAG_LENGTH;
+					if (currentMap.map.type == MAP_NONE) {
 
-				ScreenMap matchedMap = CheckMap(pos);
-
-				//今持ってる
-				if (currentMap.map.type != MAP_NONE) {
-					if (matchedMap.map.type != MAP_NONE) {
-						//チェンジ
-						auto gamePos = ScreenToGamePos(matchedMap.pos);
-						Map* map = GetMap(gamePos);
-						if (map != NULL) {
-							*map = currentMap.map;
-						}
-					}
-				}
-			}
-
-		}
-	}
-	if (ReleaseInputLogger(MYVK_LEFT_CLICK)) {
-		if (!isDrag || isTemp) {
-			ScreenMap matchedCreateMap = CheckCreateMap(mousePos);
-			ScreenMap matchedMap = CheckMap(mousePos);
-			//DebugPrintf("%d %f %f,", matchedCreateMap.map.type, matchedCreateMap.pos.x, matchedCreateMap.pos.y);
-			DebugPrintf("%d %f %f,", matchedMap.map.type, matchedMap.pos.x, matchedMap.pos.y);
-			DebugPrintf("\n");
-
-			//ドラッグでチェンジ
-			if (isTemp ) {
-				if (matchedMap.map.type == MAP_NONE) {
-					Map* map = GetMap(tempMapPos);
-					if (map != NULL) {
-						*map = currentMap.map;
-					}
-				}
-				else {
-					Map* map = GetMap(tempMapPos);
-					if (map != NULL) {
-						*map = matchedMap.map;
-					}
-
-					auto gamePos = ScreenToGamePos(matchedMap.pos);
-					 map = GetMap(gamePos);
-					if (map != NULL) {
-						*map = currentMap.map;
-					}
-
-				}
-					currentMap.map.type = MAP_NONE;
-				isCreate = false;
-				isTemp = false;
-			}
-			else {
-
-				//今持ってる
-				if (currentMap.map.type != MAP_NONE) {
-					if (matchedMap.map.type != MAP_NONE) {
-						//置く
-						auto gamePos = ScreenToGamePos(matchedMap.pos);
-						Map* map = GetMap(gamePos);
-						if (map != NULL) {
-							*map = currentMap.map;
-
-							if (!isCreate) {
-								currentMap.map.type = MAP_NONE;
+						ScreenMap matchedMap = CheckMap(mousePos);
+						if (matchedMap.map.type != MAP_NONE && matchedMap.map.type != MAP_BLOCK_NONE) {
+							auto gamePos = ScreenToGamePos(matchedMap.pos);
+							tempMapPos = gamePos;
+							Map* map = GetMap(gamePos);
+							if (map != NULL) {
+								map->type = MAP_BLOCK_NONE;
+								currentMap = matchedMap;
+								isCreate = false;
+								isTemp = true;
 							}
 						}
 					}
-					else {
-						//離す
-						currentMap.map.type = MAP_NONE;
-					}
-				}else
-					//マップを取る
-					if (matchedMap.map.type != MAP_NONE && matchedMap.map.type != MAP_BLOCK_NONE) {
-						auto gamePos = ScreenToGamePos(matchedMap.pos);
-						Map* map = GetMap(gamePos);
-						if (map != NULL) {
-							map->type = MAP_BLOCK_NONE;
-							currentMap = matchedMap;
-							isCreate = false;
-							isTemp = false;
+				}
+			}
+			if (isDrag && !isTemp) {
+				auto diff = mousePos - lastMousePos;
+				D3DXVECTOR2 diffNomal;
+				D3DXVec2Normalize(&diffNomal, &diff);
+				float diffLength = D3DXVec2Length(&diff);
+
+				auto pos = lastMousePos;
+				for (int i = 0; i < diffLength; i += DRAG_LENGTH)
+				{
+					pos += diffNomal * DRAG_LENGTH;
+
+					ScreenMap matchedMap = CheckMap(pos);
+
+					//今持ってる
+					if (currentMap.map.type != MAP_NONE) {
+						if (matchedMap.map.type != MAP_NONE) {
+							//チェンジ
+							auto gamePos = ScreenToGamePos(matchedMap.pos);
+							Map* map = GetMap(gamePos);
+							if (map != NULL) {
+								*map = currentMap.map;
+							}
 						}
 					}
-
-				//作るところから取る
-				if (matchedCreateMap.map.type != MAP_NONE) {
-					currentMap = matchedCreateMap;
-					isCreate = true;
-					isTemp = false;
 				}
 
 			}
 		}
+		if (ReleaseInputLogger(MYVK_LEFT_CLICK)) {
 
-		if (isDrag) {
-			isDrag = false;
+			auto screenPos = GetCreateMapPos((MapType)-3);
+			if (CheckSquare(mousePos, screenPos, {50,50})) {
+				isPlayerEdit = true;
+			}
+			screenPos = GetCreateMapPos((MapType)-2);
+			if (CheckSquare(mousePos, screenPos, {50,50})) {
+				isNPCEdit = true;
+			}
+
+			if (!isDrag || isTemp) {
+				ScreenMap matchedCreateMap = CheckCreateMap(mousePos);
+				ScreenMap matchedMap = CheckMap(mousePos);
+				//DebugPrintf("%d %f %f,", matchedCreateMap.map.type, matchedCreateMap.pos.x, matchedCreateMap.pos.y);
+				DebugPrintf("%d %f %f,", matchedMap.map.type, matchedMap.pos.x, matchedMap.pos.y);
+				DebugPrintf("\n");
+
+				//ドラッグでチェンジ
+				if (isTemp) {
+					if (matchedMap.map.type == MAP_NONE) {
+						Map* map = GetMap(tempMapPos);
+						if (map != NULL) {
+							*map = currentMap.map;
+						}
+					}
+					else {
+						Map* map = GetMap(tempMapPos);
+						if (map != NULL) {
+							*map = matchedMap.map;
+						}
+
+						auto gamePos = ScreenToGamePos(matchedMap.pos);
+						map = GetMap(gamePos);
+						if (map != NULL) {
+							*map = currentMap.map;
+						}
+
+					}
+					currentMap.map.type = MAP_NONE;
+					isCreate = false;
+					isTemp = false;
+				}
+				else {
+
+					//今持ってる
+					if (currentMap.map.type != MAP_NONE) {
+						if (matchedMap.map.type != MAP_NONE) {
+							//置く
+							auto gamePos = ScreenToGamePos(matchedMap.pos);
+							Map* map = GetMap(gamePos);
+							if (map != NULL) {
+								*map = currentMap.map;
+
+								if (!isCreate) {
+									currentMap.map.type = MAP_NONE;
+								}
+							}
+						}
+						else {
+							//離す
+							currentMap.map.type = MAP_NONE;
+						}
+					}
+					else
+						//マップを取る
+						if (matchedMap.map.type != MAP_NONE && matchedMap.map.type != MAP_BLOCK_NONE) {
+							auto gamePos = ScreenToGamePos(matchedMap.pos);
+							Map* map = GetMap(gamePos);
+							if (map != NULL) {
+								map->type = MAP_BLOCK_NONE;
+								currentMap = matchedMap;
+								isCreate = false;
+								isTemp = false;
+							}
+						}
+
+					//作るところから取る
+					if (matchedCreateMap.map.type != MAP_NONE) {
+						currentMap = matchedCreateMap;
+						isCreate = true;
+						isTemp = false;
+					}
+
+				}
+			}
+
+			if (isDrag) {
+				isDrag = false;
+			}
+		}
+
+		if (currentMap.map.type != MAP_NONE) {
+			currentMap.pos = mousePos;
+		}
+
+	}
+	else {
+		if (ReleaseInputLogger(MYVK_LEFT_CLICK)) {
+			ScreenMap matchedMap = CheckMap(mousePos);
+			auto scPos = INTVECTOR2( ScreenToGamePos(matchedMap.pos));
+
+			if (matchedMap.map.type != MAP_NONE) {
+				if (isPlayerEdit) {
+					GetPlayer()->trans.Init(scPos);
+					GetPlayer()->trans.pos += D3DXVECTOR2(0.5, 0.5);
+					isPlayerEdit = false;
+				}
+				if (isNPCEdit) {
+					GetNpc()->trans.Init(scPos);
+
+					isNPCEdit = false;
+				}
+
+			}
 		}
 	}
-	if (currentMap.map.type != MAP_NONE) {
-		currentMap.pos = mousePos;
-	}
-
-
 
 	lastMousePos = mousePos;
 }
