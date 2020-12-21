@@ -117,8 +117,11 @@ void JudgePlayerandFlyingObjectHit() {
 		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO|| itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 			if (CheckBlockBlock(player->trans.pos, itr->trans.pos)) {
 				itr = flyingObjectList->erase(itr);
-				GoNextScene(GameOverScene, FADE_IN);
-				return;
+				for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end();) {
+					itr2 = player->flyingObjectList.erase(itr2);
+				}
+				//GoNextScene(GameOverScene, FADE_IN);
+				//return;
 			}
 			else {
 				itr++;
