@@ -81,6 +81,7 @@ void UpdateStageEditor() {
 	//UpdateFlyingObject();
 	//UpdateFlyingSponer();
 
+#if _DEBUG
 	if (PressInputLogger(MYVK_CONTROL) && TriggerInputLogger(MYVK_SAVE)) {
 		StageExport();
 
@@ -88,5 +89,6 @@ void UpdateStageEditor() {
 	if (PressInputLogger(MYVK_CONTROL) && TriggerInputLogger(MYVK_LOAD)) {
 		StageImport();
 	}
+#endif // _DEBUG
 }
 

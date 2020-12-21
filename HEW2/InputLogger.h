@@ -14,6 +14,7 @@ enum VirtualKey {
 
 	MYVK_CONTROL,
 
+	MYVK_LEFT_CLICK,
 #if _DEBUG
 	MYVK_START,
 	MYVK_GAME_CLEAR,
@@ -21,7 +22,6 @@ enum VirtualKey {
 	MYVK_STAGE_EDTIOR,
 	MYVK_GAME,
 
-	MYVK_LEFT_CLICK,
 	MYVK_SAVE,
 	MYVK_LOAD,
 #endif // _DEBUG
