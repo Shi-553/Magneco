@@ -58,17 +58,9 @@ void UpdateInput() {
 		PostQuitMessage(0);
 	}
 
-#if _DEBUG
-	DebugPrintInputLogger(OutputLogType::GAMEPAD_AXIS);
-
-	if (TriggerInputLogger(MYVK_GAME_CLEAR)) {
-		GoNextScene(GameClearScene);
-	}
-
-	if (TriggerInputLogger(MYVK_GAME_OVER)) {
-		GoNextScene(GameOverScene);
-	}
-#endif
+#ifdef _DEBUG
+	//DebugPrintInputLogger(OutputLogType::GAMEPAD_AXIS);
+#endif // _DEBUG
 }
 
 void DrawInput() {

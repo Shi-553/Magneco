@@ -17,33 +17,41 @@
 #include "grid.h"
 #include "debugPrintf.h"
 #include "mapEditor.h"
+#include "importExport.h"
+#include "InputLogger.h"
+#include "sceneManager.h"
 
 void InitStageEditor() {
-	//InitPlayer();
+	InitPlayer();
 	//InitInput();
-	//InitNPC();
+	InitNPC();
 	InitMap();
 	//InitJudge();
-	//InitFlyingObject();
-	//InitFlyingSponer();
+	InitFlyingObject();
+	InitFlyingSponer();
+
 	InitMapEditor();
 
 	Grid_Initialize(GAME_SPRITE_WHIDTH, GetMapWidth(), D3DCOLOR_RGBA(0, 197, 0, 255));
 
 	LoadTexture();
+
+	SetStagePath("stage/edit.stage");
+
+	StageImport();
 }
 
 void UninitStageEditor() {
 	//UninitInput();
-	//UninitPlayer();
-	//UninitNPC();
+	UninitPlayer();
+	UninitNPC();
 	UninitMapEditor();
 
 	UninitJudge();
 	Grid_Finalize();
 	UninitMap();
-	//UninitFlyingObject();
-	//UninitFlyingSponer();
+	UninitFlyingObject();
+	UninitFlyingSponer();
 }
 
 void DrawStageEditor() {
@@ -73,5 +81,12 @@ void UpdateStageEditor() {
 	//UpdateFlyingObject();
 	//UpdateFlyingSponer();
 
+	if (PressInputLogger(MYVK_CONTROL) && TriggerInputLogger(MYVK_SAVE)) {
+		StageExport();
+
+	}
+	if (PressInputLogger(MYVK_CONTROL) && TriggerInputLogger(MYVK_LOAD)) {
+		StageImport();
+	}
 }
 

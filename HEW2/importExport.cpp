@@ -3,12 +3,17 @@
 #include "flyingObjectSponer.h"
 #include "npc.h"
 #include "player.h"
+#include "importExport.h"
 
-bool StageExport(const char* filename) {
+static const char* gFilename;
+void SetStagePath(const char* filename) {
+	gFilename = filename;
+}
+bool StageExport() {
 	FILE* fp = NULL;
 
 	//	バイナリ書き込みモードでファイルを開く
-	fopen_s(&fp, filename, "wb");
+	fopen_s(&fp, gFilename, "wb");
 
 	if (fp == NULL) {
 		return false;
@@ -23,11 +28,11 @@ bool StageExport(const char* filename) {
 
 	return true;
 }
-bool StageImport(const char* filename) {
+bool StageImport() {
 	FILE* fp = NULL;
 
 	//	バイナリ読み込みモードでファイルを開く
-	fopen_s(&fp, filename, "rb");
+	fopen_s(&fp, gFilename, "rb");
 
 	if (fp == NULL) {
 		return false;
@@ -36,6 +41,7 @@ bool StageImport(const char* filename) {
 	PlayerImport(fp);
 	NPCImport(fp);
 	MapImport(fp);
+	SecureMapLabelList();
 	FlyingObjectSponerImport(fp);
 
 	fclose(fp);

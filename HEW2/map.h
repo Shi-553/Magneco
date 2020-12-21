@@ -53,4 +53,5 @@ int GetMapWidth();
 
 bool CanGoNPCMapType(MapType type);
 void OpenChest(INTVECTOR2 pos);
+int GetMapTextureId(MapType type);
 #endif // !MAP_H

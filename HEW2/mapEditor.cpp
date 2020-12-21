@@ -58,19 +58,17 @@ ScreenMap CheckMap(D3DXVECTOR2 pos);
 bool CheckSquare(const D3DXVECTOR2& target, const D3DXVECTOR2& leftUpPos, const  D3DXVECTOR2& size);
 
 void InitMapEditor() {
-	textureIds[MAP_NONE] = ReserveTextureLoadFile("texture/MAP_NONE.png");
+	for (int i = 0; i < MAP_MAX; i++)
+	{
+		textureIds[i] = GetMapTextureId((MapType)i);
+	}
 	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE_ERASE.png");
-	textureIds[MAP_BLOCK] = ReserveTextureLoadFile("texture/block02.png");
-	textureIds[MAP_WALL] = ReserveTextureLoadFile("texture/wall.png");
-	textureIds[MAP_ROCK] = ReserveTextureLoadFile("texture/brokenblock01.png");
-	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/warpblock32_64_anime.png");
 
 	frame = 0;
 	isDrag = false;
 	isCreate = false;
 	isTemp = false;
-
-	MapImport("stage/edit/edit.map");
+	
 }
 void UninitMapEditor() {
 	ReleaseTexture(textureIds, MAP_MAX);
@@ -112,11 +110,13 @@ void UpdateMapEditor() {
 					if (matchedMap.map.type != MAP_NONE && matchedMap.map.type != MAP_BLOCK_NONE) {
 						auto gamePos = ScreenToGamePos(matchedMap.pos);
 						tempMapPos = gamePos;
-						Map& map = GetMap(gamePos.y, gamePos.x);
-						map.type = MAP_BLOCK_NONE;
-						currentMap = matchedMap;
-						isCreate = false;
-						isTemp = true;
+						Map* map = GetMap(gamePos);
+						if (map != NULL) {
+							map->type = MAP_BLOCK_NONE;
+							currentMap = matchedMap;
+							isCreate = false;
+							isTemp = true;
+						}
 					}
 				}
 			}
@@ -139,8 +139,10 @@ void UpdateMapEditor() {
 					if (matchedMap.map.type != MAP_NONE) {
 						//チェンジ
 						auto gamePos = ScreenToGamePos(matchedMap.pos);
-						Map& map = GetMap(gamePos.y, gamePos.x);
-						map = currentMap.map;
+						Map* map = GetMap(gamePos);
+						if (map != NULL) {
+							*map = currentMap.map;
+						}
 					}
 				}
 			}
@@ -158,14 +160,22 @@ void UpdateMapEditor() {
 			//ドラッグでチェンジ
 			if (isTemp ) {
 				if (matchedMap.map.type == MAP_NONE) {
-					GetMap(tempMapPos.y, tempMapPos.x) = currentMap.map;
+					Map* map = GetMap(tempMapPos);
+					if (map != NULL) {
+						*map = currentMap.map;
+					}
 				}
 				else {
-					GetMap(tempMapPos.y, tempMapPos.x) = matchedMap.map;
+					Map* map = GetMap(tempMapPos);
+					if (map != NULL) {
+						*map = matchedMap.map;
+					}
 
 					auto gamePos = ScreenToGamePos(matchedMap.pos);
-					Map& map = GetMap(gamePos.y, gamePos.x);
-					map = currentMap.map;
+					 map = GetMap(gamePos);
+					if (map != NULL) {
+						*map = currentMap.map;
+					}
 
 				}
 					currentMap.map.type = MAP_NONE;
@@ -179,17 +189,13 @@ void UpdateMapEditor() {
 					if (matchedMap.map.type != MAP_NONE) {
 						//置く
 						auto gamePos = ScreenToGamePos(matchedMap.pos);
-						Map& map = GetMap(gamePos.y, gamePos.x);
-						Map t = map;
-						map = currentMap.map;
+						Map* map = GetMap(gamePos);
+						if (map != NULL) {
+							*map = currentMap.map;
 
-						if (!isCreate) {
-							//if (t.type == MAP_BLOCK_NONE) {
+							if (!isCreate) {
 								currentMap.map.type = MAP_NONE;
-							//}
-							//else {
-							//	currentMap.map = t;
-							//}
+							}
 						}
 					}
 					else {
@@ -200,11 +206,13 @@ void UpdateMapEditor() {
 					//マップを取る
 					if (matchedMap.map.type != MAP_NONE && matchedMap.map.type != MAP_BLOCK_NONE) {
 						auto gamePos = ScreenToGamePos(matchedMap.pos);
-						Map& map = GetMap(gamePos.y, gamePos.x);
-						map.type = MAP_BLOCK_NONE;
-						currentMap = matchedMap;
-						isCreate = false;
-						isTemp = false;
+						Map* map = GetMap(gamePos);
+						if (map != NULL) {
+							map->type = MAP_BLOCK_NONE;
+							currentMap = matchedMap;
+							isCreate = false;
+							isTemp = false;
+						}
 					}
 
 				//作るところから取る
@@ -226,13 +234,6 @@ void UpdateMapEditor() {
 	}
 
 
-	if (PressInputLogger(MYVK_CONTROL) && TriggerInputLogger(MYVK_SAVE)) {
-		MapExport("stage/edit/edit.map");
-
-	}
-	if (PressInputLogger(MYVK_CONTROL) && TriggerInputLogger(MYVK_LOAD)) {
-		MapImport("stage/edit/edit.map");
-	}
 
 	lastMousePos = mousePos;
 }
@@ -273,8 +274,13 @@ ScreenMap CheckMap(D3DXVECTOR2 pos) {
 		return {};
 	}
 	auto screenPos = GameToScreenPos(gamePos);
-	return { GetMap(gamePos.y,gamePos.x),screenPos };
-
+	auto m = GetMap(gamePos);
+	if (m != NULL) {
+		return { *m,screenPos };
+	}
+	else {
+		return { {},screenPos };
+	}
 }
 
 bool CheckSquare(const D3DXVECTOR2& target, const D3DXVECTOR2& leftUpPos, const  D3DXVECTOR2& size) {

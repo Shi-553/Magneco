@@ -10,6 +10,8 @@
 #include "gameClear.h"
 #include "tutorial.h"
 #include "stageEditor.h"
+#include "InputLogger.h"
+#include "importExport.h"
 
 
 typedef void (*SceneFunc)(void);
@@ -64,6 +66,8 @@ void InitSceneManager(Scene startScene) {
 	currentScene = nextScene = NullScene;
 	fadeMode = FADE_NONE;
 	GoNextScene(startScene, FADE_IN);
+
+	SetStagePath("stage/edit.stage");
 }
 
 void UninitSceneManager() {
@@ -128,6 +132,30 @@ void UpdateSceneManager() {
 	if (NullScene < currentScene && currentScene < MaxScene) {
 		Updates[currentScene]();
 	}
+
+#ifdef _DEBUG
+
+
+	if (PressInputLogger(MYVK_START)) {
+		GoNextScene(GameStartScene);
+	}
+	if (PressInputLogger(MYVK_GAME)) {
+		GoNextScene(GameScene);
+	}
+
+	if (TriggerInputLogger(MYVK_STAGE_EDTIOR)) {
+		GoNextScene(StageEditorScene);
+	}
+
+	if (TriggerInputLogger(MYVK_GAME_CLEAR)) {
+		GoNextScene(GameClearScene);
+	}
+
+	if (TriggerInputLogger(MYVK_GAME_OVER)) {
+		GoNextScene(GameOverScene);
+	}
+#endif // _DEBUG
+
 }
 
 void GoNextScene(Scene scene, FadeMode mode) {

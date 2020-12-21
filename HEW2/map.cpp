@@ -39,7 +39,11 @@ void InitMap(void)
 
 	frame = 0;
 
-
+	
+	if (MapChipList != NULL) {
+		delete[] MapChipList;
+		MapChipList = NULL;
+	}
 	MapChipList = new Map[mapHeight * mapWidth]{
 		{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},
 		{MAP_WALL, INTVECTOR2::GetUp()},
@@ -291,7 +295,6 @@ bool MapImport(FILE* fp) {
 
 	fread(MapChipList, sizeof(Map), mapHeight * mapWidth, fp);
 
-	SecureMapLabelList();
 
 	return true;
 
@@ -355,4 +358,12 @@ void OpenChest(INTVECTOR2 pos) {
 	p.y -= 0.5;
 	FlyingObject f = { TRANS(p),(FlyingObjectType)map->param,{0,0} };
 	AddFlyingObjects(&f);
+}
+
+
+int GetMapTextureId(MapType type) {
+	if (type < MAP_NONE || MAP_MAX <= type) {
+		return TEXTURE_INVALID_ID;
+	}
+	return textureIds[(int)type];
 }
