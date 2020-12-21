@@ -49,12 +49,13 @@ void InitFlyingSponer() {
 	frame = 0;
 	sponeIndex = 0;
 	spones = NULL;
+	spones = new Spone[sponeMax];
 
-
+	CopyMemory(spones, initSpone, sizeof(Spone)* sponeMax);
 }
 		
-	}
-}
+	
+
 void UninitFlyingSponer() {
 	if (spones != NULL) {
 		delete[] spones;

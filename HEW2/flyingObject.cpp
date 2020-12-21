@@ -131,7 +131,7 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 void DestroyUFO() {
 	existsUFO = false;
 }
-}
+
 
 
 bool IsFlyingObjectItem(FlyingObjectType type) {
