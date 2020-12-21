@@ -100,10 +100,10 @@
     <ClCompile Include="gamepad.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
-    <ClCompile Include="stageEditor.cpp">
-      <Filter>cpp\scenes</Filter>
-    </ClCompile>
     <ClCompile Include="mapEditor.cpp">
+      <Filter>cpp\scenes\stageEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="stageEditor.cpp">
       <Filter>cpp\scenes\stageEditor</Filter>
     </ClCompile>
   </ItemGroup>
@@ -213,10 +213,10 @@
     <ClInclude Include="bitFlagsScopedEnum.h">
       <Filter>ヘッダー\others</Filter>
     </ClInclude>
-    <ClInclude Include="stageEditor.h">
-      <Filter>ヘッダー\scenes</Filter>
-    </ClInclude>
     <ClInclude Include="mapEditor.h">
+      <Filter>ヘッダー\scenes\stageEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="stageEditor.h">
       <Filter>ヘッダー\scenes\stageEditor</Filter>
     </ClInclude>
   </ItemGroup>
