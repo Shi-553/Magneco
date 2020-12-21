@@ -40,4 +40,7 @@ void DrawFlyingObject(FlyingObject flyingObject);
 
 
 bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
+
+bool IsFlyingObjectItem(FlyingObjectType type);
+bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
 void DestroyUFO();

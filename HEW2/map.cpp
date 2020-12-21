@@ -13,20 +13,7 @@
 #define MAP_GOAL_DRAW_SIZE_WIDTH 1
 #define MAP_GOAL_DRAW_SIZE_HEIGHT 2
 
-//static Map initGetMap(GetMapHeight(),GetMapWidth())
-//{
-//	{{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},    {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},  {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},    {MAP_WALL, INTVECTOR2::GetUp()},   {MAP_WALL, INTVECTOR2::GetUp()},   {MAP_WALL, INTVECTOR2::GetUp()}, {MAP_WALL, INTVECTOR2::GetUpperRightCorner()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                        {MAP_GOAL},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                       {MAP_ROCK},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},            {MAP_UNBREAKABLE_BLOCK},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{          {MAP_WALL, INTVECTOR2::GetRight()},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                 {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                   {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},                  {MAP_BLOCK_NONE},             {MAP_WALL, INTVECTOR2::GetLeft()}},
-//	{{MAP_WALL, INTVECTOR2::GetLowreLeftCorner()},  {MAP_WALL, INTVECTOR2::GetDown()}, { MAP_WALL, INTVECTOR2::GetDown()},  {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetDown()},  {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetDown()}, {MAP_WALL, INTVECTOR2::GetLowreRightCorner()}},
-//
-//};
+bool CanAttachedMapType(MapType type);
 
 static Map* MapChipList = NULL;
 static int textureIds[MAP_MAX];
@@ -47,6 +34,8 @@ void InitMap(void)
 	textureIds[MAP_WALL] = ReserveTextureLoadFile("texture/wall.png");
 	textureIds[MAP_ROCK] = ReserveTextureLoadFile("texture/brokenblock01.png");
 	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/warpblock32_64_anime.png");
+	textureIds[MAP_CHEST_CLOSED] = ReserveTextureLoadFile("texture/chestClose.png");
+	textureIds[MAP_CHEST_OPENED] = ReserveTextureLoadFile("texture/chestOpen.png");
 
 	frame = 0;
 
@@ -78,7 +67,7 @@ void InitMap(void)
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
-		{MAP_BLOCK_NONE},
+		{MAP_CHEST_CLOSED,{},FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_GOAL},
@@ -92,8 +81,8 @@ void InitMap(void)
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
-		{MAP_BLOCK_NONE},
-		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},	
+		{MAP_CHEST_CLOSED,{},FLYING_OBJECT_ITEM_ADD_SPEED},
 		{MAP_WALL, INTVECTOR2::GetLeft()},
 
 		{MAP_WALL, INTVECTOR2::GetRight()},
@@ -103,8 +92,8 @@ void InitMap(void)
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
-		{MAP_BLOCK_NONE},
-		{MAP_BLOCK_NONE},
+		{MAP_BLOCK_NONE},	
+		{MAP_CHEST_CLOSED,{},FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE},
 		{MAP_WALL, INTVECTOR2::GetLeft()},
 
 		{MAP_WALL, INTVECTOR2::GetRight()},
@@ -224,15 +213,12 @@ void DrawMap(void)
 
 void MapChange(FlyingObject flyingobject)
 {
-	auto intPos = flyingobject.trans.GetIntPos();
+	auto& intPos = flyingobject.trans.GetIntPos();
 
-	if (intPos.x < 0 || intPos.y < 0 || intPos.x >= GetMapWidth() || intPos.y >= GetMapHeight()) {
-		return;
-	}
 
 	Map* map = GetMap(intPos);
 
-	if (flyingobject.type == FLYING_OBJECT_PLAYER_BLOCK) {
+	if (map != NULL && flyingobject.type == FLYING_OBJECT_PLAYER_BLOCK) {
 		map->type = MAP_BLOCK;
 	}
 }
@@ -244,22 +230,22 @@ bool MapFourDirectionsJudgment(INTVECTOR2 pos)
 
 	Map* map = GetMap(INTVECTOR2(x, y + 1));
 
-	if (map != NULL && (map->type == MAP_BLOCK || map->type == MAP_UNBREAKABLE_BLOCK)) {
+	if (map != NULL && CanAttachedMapType(map->type)) {
 		return true;
 	}
 
 	map = GetMap(INTVECTOR2(x, y - 1));
-	if (map != NULL && (map->type == MAP_BLOCK || map->type == MAP_UNBREAKABLE_BLOCK)) {
+	if (map != NULL && CanAttachedMapType(map->type)) {
 		return true;
 	}
 
 	map = GetMap(INTVECTOR2(x + 1, y));
-	if (map != NULL && (map->type == MAP_BLOCK || map->type == MAP_UNBREAKABLE_BLOCK)) {
+	if (map != NULL && CanAttachedMapType(map->type)) {
 		return true;
 	}
 
 	map = GetMap(INTVECTOR2(x - 1, y));
-	if (map != NULL && (map->type == MAP_BLOCK || map->type == MAP_UNBREAKABLE_BLOCK)) {
+	if (map != NULL && CanAttachedMapType(map->type)) {
 		return true;
 	}
 
@@ -326,4 +312,47 @@ int GetMapHeight() {
 
 int GetMapWidth() {
 	return mapWidth;
+}
+
+bool CanGoNPCMapType(MapType type) {
+	switch (type)
+	{
+	case MAP_BLOCK:
+	case MAP_GOAL:
+	case MAP_CHEST_CLOSED:
+	case MAP_CHEST_OPENED:
+	case MAP_UNBREAKABLE_BLOCK:
+		return true;
+		break;
+	default:
+		return false;
+		break;
+	}
+}
+
+bool CanAttachedMapType(MapType type) {
+	switch (type)
+	{
+	case MAP_BLOCK:
+	case MAP_CHEST_OPENED:
+	case MAP_UNBREAKABLE_BLOCK:
+		return true;
+		break;
+	default:
+		return false;
+		break;
+	}
+}
+
+void OpenChest(INTVECTOR2 pos) {
+	Map* map = GetMap(pos);
+	if (map == NULL || map->type != MAP_CHEST_CLOSED) {
+		return;
+	}
+	map->type = MAP_CHEST_OPENED;
+	auto p = pos.ToD3DXVECTOR2();
+	p.x += 0.5;
+	p.y -= 0.5;
+	FlyingObject f = { TRANS(p),(FlyingObjectType)map->param,{0,0} };
+	AddFlyingObjects(&f);
 }
