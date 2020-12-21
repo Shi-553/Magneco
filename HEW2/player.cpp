@@ -195,7 +195,7 @@ Player* GetPlayer() {
 
 void PutBeacon() {
 	auto mapType = GetMapType(player.trans.GetIntPos());
-	if (mapType == MAP_BLOCK || mapType == MAP_GOAL) {
+	if (CanGoNPCMapType(mapType)) {
 		UpdateNPCShortestPath(player.trans.GetIntPos());
 	}
 }
@@ -213,4 +213,22 @@ void PurgePlayerFlyingObject() {
 		player.purgeFlyingObjectList.push_back(*itr);
 		itr = player.flyingObjectList.erase(itr);
 	}
+}
+bool PlayerExport(FILE* fp) {
+
+	D3DXVECTOR2 pos = player.trans.pos;
+	//	ファイルへの書き込み処理
+	fwrite(&pos, sizeof(D3DXVECTOR2), 1, fp);
+
+	return true;
+}
+
+
+bool PlayerImport(FILE* fp) {
+	D3DXVECTOR2 pos;
+	//	ファイルへの読み込み処理
+	fread(&pos, sizeof(D3DXVECTOR2), 1, fp);
+	player.trans.Init(pos);
+
+	return true;
 }
