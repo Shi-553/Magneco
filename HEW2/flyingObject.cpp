@@ -131,3 +131,17 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 void DestroyUFO() {
 	existsUFO = false;
 }
+
+
+
+bool IsFlyingObjectItem(FlyingObjectType type) {
+	switch (type)
+	{
+	case FLYING_OBJECT_ITEM_ADD_SPEED:
+	case FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE:
+	case FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE:
+		return true;
+	default:
+		return false;
+	}
+}

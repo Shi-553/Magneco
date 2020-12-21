@@ -41,17 +41,21 @@ static Spone initSpone[24]{
 	{1200,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0}},
 	{1250,{7.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}}
 };
+//	{1200,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0}},
+//	{1250,{7.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}}
+//};
 
 void InitFlyingSponer() {
 	frame = 0;
 	sponeIndex = 0;
 	spones = NULL;
-
 	spones = new Spone[sponeMax];
+
 	CopyMemory(spones, initSpone, sizeof(Spone)* sponeMax);
-
-
 }
+		
+	
+
 void UninitFlyingSponer() {
 	if (spones != NULL) {
 		delete[] spones;
