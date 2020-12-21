@@ -8,7 +8,7 @@ void InitInput() {
 
 }
 
-void UninitInput(){
+void UninitInput() {
 
 }
 
@@ -40,9 +40,13 @@ void UpdateInput() {
 	//if (GetInputLoggerAxis(MYVA_GLX) > 0) {
 	//	MoveRightPlayer();
 	//}
-	MovePlayer(D3DXVECTOR2(
+	auto gamepadAxis = D3DXVECTOR2(
 		GetInputLoggerAxis(MYVA_GLX),
-		GetInputLoggerAxis(MYVA_GLY) ));
+		GetInputLoggerAxis(MYVA_GLY));
+
+	if (gamepadAxis.x != 0 || gamepadAxis.y != 0) {
+		MovePlayer(gamepadAxis);
+	}
 
 	// ブロックの決定（現時点ではpressにしてます）
 	if (TriggerInputLogger(MYVK_ENTER)) {
