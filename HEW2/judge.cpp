@@ -117,10 +117,11 @@ void JudgePlayerandFlyingObjectHit() {
 		// 敵(ufo&enemy)とプレイヤー
 		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 			itr = flyingObjectList->erase(itr);
-			GoNextScene(GameOverScene, FADE_IN);
-			return;
-		}
+			player->flyingObjectList.clear();
 
+			//GoNextScene(GameOverScene, FADE_IN);
+			//return;
+		}
 		else if (IsFlyingObjectItem(itr->type)) {
 			if (itr->type == FLYING_OBJECT_ITEM_ADD_SPEED) {
 				player->speed++;
@@ -261,7 +262,7 @@ void JudgePlayerandFlyingObjectHit() {
 	}
 
 
-		// npcとufo
+	// npcとufo
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		if (itr->type == FLYING_OBJECT_UFO) {
 			D3DXVECTOR2 shiftPos = itr->trans.pos - ADD_UFO_POS;
@@ -275,25 +276,25 @@ void JudgePlayerandFlyingObjectHit() {
 
 			}
 		}
-			itr++;
+		itr++;
 	}
 
 
 
 
-// enemyFlyingObjectと設置ブロックの当たり判定
-for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end();) {
-	bool isMatched = false;
-	if (itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
-		Map* map = GetMap(itr->trans.GetIntPos());
-		if (map != NULL && map->type == MAP_BLOCK) {
-			itr = flyingObjectList->erase(itr);
-			map->type = MAP_BLOCK_NONE;
-			isMatched = true;
-			continue;
+	// enemyFlyingObjectと設置ブロックの当たり判定
+	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end();) {
+		bool isMatched = false;
+		if (itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
+			Map* map = GetMap(itr->trans.GetIntPos());
+			if (map != NULL && map->type == MAP_BLOCK) {
+				itr = flyingObjectList->erase(itr);
+				map->type = MAP_BLOCK_NONE;
+				isMatched = true;
+				continue;
+			}
 		}
+		itr++;
 	}
-	itr++;
-}
 }
 
