@@ -6,6 +6,7 @@
 #include "trans.h"
 #include "map.h"
 #include "npc.h"
+#include "debugPrintf.h"
 
 
 

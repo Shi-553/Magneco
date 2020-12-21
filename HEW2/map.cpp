@@ -337,7 +337,6 @@ bool CanAttachedMapType(MapType type) {
 	switch (type)
 	{
 	case MAP_BLOCK:
-	case MAP_GOAL:
 	case MAP_CHEST_OPENED:
 	case MAP_UNBREAKABLE_BLOCK:
 		return true;

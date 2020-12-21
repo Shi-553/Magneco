@@ -117,7 +117,7 @@ void UpdateNPC() {
 	}
 
 	npc.trans.pos += dir.ToD3DXVECTOR2() / 30;
-	npc.trans.UpdatePos();
+
 
 	npc.frame++;
 }
