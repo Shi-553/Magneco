@@ -215,9 +215,6 @@ void MapChange(FlyingObject flyingobject)
 {
 	auto& intPos = flyingobject.trans.GetIntPos();
 
-	if (intPos.x < 0 || intPos.y < 0 || intPos.x >= GetMapWidth() || intPos.y >= GetMapHeight()) {
-		return;
-	}
 
 	Map* map = GetMap(intPos);
 
