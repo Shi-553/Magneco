@@ -67,12 +67,13 @@ void UpdatePlayer() {
 			itr++;
 		}
 	}
-	auto dir = player.dir;
-	D3DXVec2Normalize(&player.dir, &player.dir);
 
-
+	auto length=D3DXVec2Length(&player.dir);
+	if (length > 1.0f) {
+		player.dir /= length;
+	}
 	auto last = player.trans.pos;
-	auto move = dir * player.speed  * GetDeltaTime();
+	auto move = player.dir * player.speed  * GetDeltaTime();
 
 	player.trans.pos.x += move.x;
 	auto mapType = GetMapType(INTVECTOR2(player.trans.pos));
@@ -202,12 +203,7 @@ void PutBeacon() {
 
 void PurgePlayerFlyingObject() {
 	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();) {
-		if (INTVECTOR2(player.dir) == INTVECTOR2(0, 0)) {
-			itr->dir = itr->trans.pos - player.trans.pos;
-		}
-		else {
-			itr->dir = player.dir;
-		}
+		itr->dir = itr->trans.pos - player.trans.pos;
 		itr->type = FLYING_OBJECT_PURGE_BLOCK;
 
 		player.purgeFlyingObjectList.push_back(*itr);
