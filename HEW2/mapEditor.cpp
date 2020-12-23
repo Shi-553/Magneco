@@ -127,6 +127,18 @@ void DrawMapEditor() {
 	}
 }
 void UpdateMapEditor() {
+	if (TriggerInputLogger(MYVK_ARROW_UP)) {
+		SetMapHeight(GetMapHeight()+1);
+	}
+	if (TriggerInputLogger(MYVK_ARROW_DOWN)) {
+		SetMapHeight(GetMapHeight() -1);
+	}
+	if (TriggerInputLogger(MYVK_ARROW_LEFT)) {
+		SetMapWidth(GetMapWidth() - 1);
+	}
+	if (TriggerInputLogger(MYVK_ARROW_RIGHT)) {
+		SetMapWidth(GetMapWidth() + 1);
+	}
 	frame++;
 	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));
 	
