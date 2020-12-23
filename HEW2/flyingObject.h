@@ -24,6 +24,7 @@ typedef struct FlyingObject
 	TRANS trans;
 	FlyingObjectType type;
 	D3DXVECTOR2 dir;
+	int id;
 
 };
 
@@ -43,4 +44,7 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
 
 bool IsFlyingObjectItem(FlyingObjectType type);
 bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
+
+void BackFlyingObject(int frame);
+
 void DestroyUFO();

@@ -20,6 +20,7 @@
 #include "importExport.h"
 #include "InputLogger.h"
 #include "sceneManager.h"
+#include "flyingObjectEditor.h"
 
 void InitStageEditor() {
 	InitPlayer();
@@ -31,6 +32,7 @@ void InitStageEditor() {
 	InitFlyingSponer();
 
 	InitMapEditor();
+	InitFlyingObjectEditor();
 
 	Grid_Initialize(GAME_SPRITE_WHIDTH, GetMapWidth(), D3DCOLOR_RGBA(0, 197, 0, 255));
 
@@ -38,7 +40,7 @@ void InitStageEditor() {
 
 	SetStagePath("stage/edit.stage");
 
-	StageImport();
+	//StageImport();
 }
 
 void UninitStageEditor() {
@@ -46,6 +48,7 @@ void UninitStageEditor() {
 	UninitPlayer();
 	UninitNPC();
 	UninitMapEditor();
+	UninitFlyingObjectEditor();
 
 	UninitJudge();
 	Grid_Finalize();
@@ -60,6 +63,7 @@ void DrawStageEditor() {
 	//DrawNPC();
 
 	DrawMapEditor();
+	DrawFlyingObjectEditor();
 	//DrawInput();
 
 
@@ -77,6 +81,7 @@ void UpdateStageEditor() {
 
 	//UpdateNPC();
 	UpdateMapEditor();
+	UpdateFlyingObjectEditor();
 	//UpdateJudge();
 	//UpdateFlyingObject();
 	//UpdateFlyingSponer();

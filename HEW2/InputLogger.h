@@ -16,6 +16,7 @@ enum VirtualKey {
 
 	MYVK_LEFT_CLICK,
 	MYVK_RIGHT_CLICK,
+
 #if _DEBUG
 	MYVK_START,
 	MYVK_GAME_CLEAR,
@@ -25,6 +26,10 @@ enum VirtualKey {
 
 	MYVK_SAVE,
 	MYVK_LOAD,
+
+	MYVK_START_STOP,
+	MYVK_FIRST_START,
+	MYVK_L,
 
 	MYVK_ARROW_UP,
 	MYVK_ARROW_DOWN,
@@ -39,11 +44,13 @@ enum VirtualKey {
 enum VirtualAxis {
 	MYVA_MX,
 	MYVA_MY,
+	MYVA_MW,
+
 	MYVA_GLX,
 	MYVA_GLY,
 	MYVA_GRX,
 	MYVA_GRY,
-	MYVA_MAX
+	MYVA_MAX,
 };
 
 void InitInputLogger(HWND hWnd, HINSTANCE hIns);
