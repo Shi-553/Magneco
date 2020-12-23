@@ -9,6 +9,7 @@ enum Scene
 	GameClearScene,
 	GameOverScene,
 	TutorialScene,
+	StageEditorScene,
 	MaxScene
 };
 enum FadeMode {
