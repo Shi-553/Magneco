@@ -6,6 +6,8 @@
 using namespace std;
 
 
+void CheckSpone();
+
 static vector<Spone> spones;
 static int frame = 0;
 static int sponeIndex = 0;
@@ -58,6 +60,17 @@ void InitFlyingSponer() {
 void UninitFlyingSponer() {
 }
 void UpdateFlyingSponer() {
+	CheckSpone();
+	frame++;
+
+	if (isLoop && sponeIndex == spones.size()) {
+		frame = 0;
+		sponeIndex = 0;
+	}
+
+
+}
+void CheckSpone() {
 	while (sponeIndex < spones.size()) {
 		if (spones[sponeIndex].frame <= frame) {
 			FlyingObject f = { TRANS(spones[sponeIndex].initPos),spones[sponeIndex].type, spones[sponeIndex].dir,sponeIndex };
@@ -68,19 +81,16 @@ void UpdateFlyingSponer() {
 			break;
 		}
 	}
-
-	frame++;
-
-	if (isLoop && sponeIndex == spones.size()) {
-		frame = 0;
-		sponeIndex = 0;
-	}
-
-
 }
 
 void AddFlyingObjectSponer(Spone s) {
-	spones.push_back(s);
+	for (auto itr = spones.begin(); itr != spones.end(); itr++) {
+		if (itr->frame > s.frame) {
+			spones.insert(itr, s);
+			CheckSpone();
+			break;
+		}
+	}
 }
 
 Spone* GetFlyingObjectSponer(int index) {
@@ -141,8 +151,7 @@ void SetFlyingObjectSponeFrame(int f) {
 
 	if (frame < f) {
 		frame = f;
-		frame--;
-		UpdateFlyingSponer();
+		CheckSpone();
 	}
 	else {
 	if (f < 0) {

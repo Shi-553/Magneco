@@ -16,6 +16,8 @@ void UpdateFlyingSponer();
 void SetFlyingObjectSponerLoop(bool f);
 bool GetFlyingObjectSponerLoop();
 
+void AddFlyingObjectSponer(Spone s);
+
 bool FlyingObjectSponerExport(FILE* fp);
 bool FlyingObjectSponerImport(FILE* fp);
 

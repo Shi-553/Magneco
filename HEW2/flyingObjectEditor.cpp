@@ -6,6 +6,8 @@
 #include "debugFont.h"
 #include "texture.h"
 #include "sprite.h"
+#include "stageEditor.h"
+#include "gameSrite.h"
 
 #define CREATE_FLYING_OBJECT_TEXTURE_WIDTH 32
 #define CREATE_FLYING_OBJECT_TEXTURE_HEIGHT 32
@@ -21,11 +23,15 @@
 
 D3DXVECTOR2 GetCreateFlyingObjectPos(int type);
 void DrawFlyingObjectScreen(const Spone& map);
-
+Spone CheckCreateFlyingObject(D3DXVECTOR2 pos);
 static bool isPlay = false;
+static bool isDrag = false;
 
 static Spone creates[FLYING_OBJECT_MAX];
 static int textureIds[FLYING_OBJECT_MAX];
+
+static Spone current;
+static D3DXVECTOR2 startDrag;
 
 
 void InitFlyingObjectEditor(){
@@ -47,7 +53,9 @@ void InitFlyingObjectEditor(){
 	}
 }
 void UninitFlyingObjectEditor(){
-	ReleaseTexture(textureIds, FLYING_OBJECT_MAX);
+	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
+		ReleaseTexture(textureIds[i]);
+	}
 }
 
 void DrawFlyingObjectEditor(){
@@ -59,6 +67,12 @@ void DrawFlyingObjectEditor(){
 
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
 		DrawFlyingObjectScreen(creates[i]);
+	}
+
+	if (current.type != FLYING_OBJECT_NONE) {
+		Spone s = current;
+		s.initPos = GameToScreenPos(s.initPos)- D3DXVECTOR2(CREATE_FLYING_OBJECT_WIDTH, CREATE_FLYING_OBJECT_HEIGHT)/2;
+		DrawFlyingObjectScreen(s);
 	}
 }
 void UpdateFlyingObjectEditor(){
@@ -93,9 +107,57 @@ void UpdateFlyingObjectEditor(){
 		UpdateFlyingObject();
 	}
 
-	bool CheckSquare(const D3DXVECTOR2 & target, const D3DXVECTOR2 & leftUpPos, const  D3DXVECTOR2 & size);
+	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));
+
+	if (TriggerInputLogger(MYVK_LEFT_CLICK)) {
+		startDrag = mousePos;
+		isDrag = true;
+	}
+	if (current.type != FLYING_OBJECT_NONE && !isDrag) {
+		current.initPos = ScreenToGamePos(mousePos);
+	}
+	if (ReleaseInputLogger(MYVK_LEFT_CLICK)) {
+		isDrag = false;
+		if (current.type==FLYING_OBJECT_NONE) {
+			current = CheckCreateFlyingObject(mousePos);
+		}
+		else {
+			auto diff = startDrag-mousePos;
+			if (diff.x < -25) {
+				current.dir.x = 1;
+			}
+			else if (diff.x > 25) {
+				current.dir.x = -1;
+			}
+			else {
+				current.dir.x = 0;
+			}
+			if (diff.y < -25) {
+				current.dir.y = 1;
+			}
+			else if (diff.y > 25) {
+				current.dir.y = -1;
+			}
+			else {
+				current.dir.y = 0;
+			}
+			current.frame = GetFlyingObjectSponeFrame();
+			AddFlyingObjectSponer(current);
+			current.type = FLYING_OBJECT_NONE;
+		}
+		
+	}
 }
 
+
+Spone CheckCreateFlyingObject(D3DXVECTOR2 pos) {
+	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
+		if (CheckSquare(pos,creates[i].initPos, { CREATE_FLYING_OBJECT_WIDTH ,CREATE_FLYING_OBJECT_HEIGHT})) {
+			return creates[i];
+		}
+	}
+	return {};
+}
 D3DXVECTOR2 GetCreateFlyingObjectPos(int type) {
 	D3DXVECTOR2 pos;
 	if (type % 2 == 0) {
@@ -113,7 +175,7 @@ D3DXVECTOR2 GetCreateFlyingObjectPos(int type) {
 
 void DrawFlyingObjectScreen(const Spone& map) {
 
-	D3DXVECTOR2 size = { CREATE_FLYING_OBJECT_WIDTH,CREATE_FLYING_OBJECT_HEIGHT };
+	D3DXVECTOR2 size = D3DXVECTOR2( CREATE_FLYING_OBJECT_WIDTH,CREATE_FLYING_OBJECT_HEIGHT );
 
 	D3DXVECTOR2 tPos = { 0,0 };
 	D3DXVECTOR2 tSize = { CREATE_FLYING_OBJECT_TEXTURE_WIDTH,CREATE_FLYING_OBJECT_TEXTURE_HEIGHT };

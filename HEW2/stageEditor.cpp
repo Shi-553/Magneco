@@ -40,7 +40,7 @@ void InitStageEditor() {
 
 	SetStagePath("stage/edit.stage");
 
-	//StageImport();
+	StageImport();
 }
 
 void UninitStageEditor() {
@@ -97,3 +97,9 @@ void UpdateStageEditor() {
 #endif // _DEBUG
 }
 
+
+
+bool CheckSquare(const D3DXVECTOR2& target, const D3DXVECTOR2& leftUpPos, const  D3DXVECTOR2& size) {
+	return (leftUpPos.x < target.x) && (target.x < leftUpPos.x + size.x) &&
+		(leftUpPos.y < target.y) && (target.y < leftUpPos.y + size.y);
+}
