@@ -15,6 +15,7 @@
 
 #define PLAYER_TEXTURE_WIDTH 32
 #define PLAYER_TEXTURE_HEIGHT 32
+#define DEFAULT_PUT_REQUIRED_FRAME (3 * 60)
 
 static int textureId = TEXTURE_INVALID_ID;
 static Player player;
@@ -102,7 +103,7 @@ void UpdatePlayer() {
 	if (player.isPut) {
 		player.putFrame++;
 	}
-	if (player.putFrame >= BLOCK_PUT_FRAME) {
+	if (player.putFrame >= DEFAULT_PUT_REQUIRED_FRAME) {
 		BlockDecision();
 	}
 	player.dir = { 0,0 };

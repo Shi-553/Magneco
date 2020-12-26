@@ -5,8 +5,6 @@
 #include "trans.h"
 #pragma once
 
-#define BLOCK_PUT_FRAME (3 * 60)
-
 struct Player {
 	TRANS trans;
 	std::list <FlyingObject> flyingObjectList;
@@ -17,6 +15,7 @@ struct Player {
 	int blockMax;
 	bool isPut;
 	int putFrame;
+	int putRequiredFrame;
 };
 
 void InitPlayer();
