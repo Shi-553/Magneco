@@ -32,7 +32,7 @@ void InitStageEditor() {
 
 	InitMapEditor();
 
-	Grid_Initialize(GAME_SPRITE_WHIDTH, GetMapWidth(), D3DCOLOR_RGBA(0, 197, 0, 255));
+	//Grid_Initialize(GAME_SPRITE_WHIDTH, GetMapWidth(), D3DCOLOR_RGBA(0, 197, 0, 255));
 
 	LoadTexture();
 
