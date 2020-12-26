@@ -107,7 +107,10 @@ void UpdateFlyingObjectEditor(){
 		UpdateFlyingObject();
 	}
 
+}
+bool CheckMouseFlyingObjectEditor(){
 	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));
+	bool ret=false;
 
 	if (TriggerInputLogger(MYVK_LEFT_CLICK)) {
 		startDrag = mousePos;
@@ -118,11 +121,12 @@ void UpdateFlyingObjectEditor(){
 	}
 	if (ReleaseInputLogger(MYVK_LEFT_CLICK)) {
 		isDrag = false;
-		if (current.type==FLYING_OBJECT_NONE) {
+		if (current.type == FLYING_OBJECT_NONE) {
 			current = CheckCreateFlyingObject(mousePos);
 		}
 		else {
-			auto diff = startDrag-mousePos;
+			ret = true;
+			auto diff = startDrag - mousePos;
 			if (diff.x < -25) {
 				current.dir.x = 1;
 			}
@@ -145,8 +149,13 @@ void UpdateFlyingObjectEditor(){
 			AddFlyingObjectSponer(current);
 			current.type = FLYING_OBJECT_NONE;
 		}
-		
+
 	}
+
+	if (current.type != FLYING_OBJECT_NONE) {
+		ret = true;
+	}
+	return ret;
 }
 
 

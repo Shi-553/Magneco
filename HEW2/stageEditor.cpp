@@ -80,8 +80,16 @@ void UpdateStageEditor() {
 	//UpdateInput();
 
 	//UpdateNPC();
-	UpdateMapEditor();
 	UpdateFlyingObjectEditor();
+	UpdateMapEditor();
+
+	if (CheckMouseFlyingObjectEditor()) {
+		return;
+	}
+
+	if (CheckMouseMapEditor()) {
+		return;
+	}
 	//UpdateJudge();
 	//UpdateFlyingObject();
 	//UpdateFlyingSponer();

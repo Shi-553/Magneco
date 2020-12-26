@@ -162,7 +162,10 @@ void UpdateMapEditor() {
 		SetMapWidth(GetMapWidth() + 1);
 	}
 	frame++;
+}
+bool CheckMouseMapEditor() {
 	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));
+	bool ret = false;
 
 	if (!isPlayerEdit && !isNPCEdit) {
 
@@ -357,6 +360,7 @@ void UpdateMapEditor() {
 	}
 
 	lastMousePos = mousePos;
+	return ret;
 }
 
 D3DXVECTOR2 GetCreateMapPos(MapType type) {
