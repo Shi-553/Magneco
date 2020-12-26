@@ -15,7 +15,8 @@ struct Player {
 	float speed;
 	int frame;
 	int blockMax;
-	int blockPutFrame;
+	bool isPut;
+	int putFrame;
 };
 
 void InitPlayer();
@@ -41,5 +42,8 @@ void PurgePlayerFlyingObject();
 
 bool PlayerExport(FILE* fp);
 bool PlayerImport(FILE* fp);
+
+void MakePut();
+void PutCansel();
 
 #endif // !_PLAYER_H
