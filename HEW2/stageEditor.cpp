@@ -14,7 +14,6 @@
 
 #include "map.h"
 #include "flyingObjectSponer.h"
-#include "grid.h"
 #include "debugPrintf.h"
 #include "mapEditor.h"
 #include "importExport.h"
@@ -48,7 +47,6 @@ void UninitStageEditor() {
 	UninitMapEditor();
 
 	UninitJudge();
-	Grid_Finalize();
 	UninitMap();
 	UninitFlyingObject();
 	UninitFlyingSponer();
@@ -56,7 +54,6 @@ void UninitStageEditor() {
 
 void DrawStageEditor() {
 	DrawMap();
-	Grid_Draw();
 	//DrawNPC();
 
 	DrawMapEditor();

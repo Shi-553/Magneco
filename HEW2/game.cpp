@@ -12,7 +12,6 @@
 
 #include "map.h"
 #include "flyingObjectSponer.h"
-#include "grid.h"
 #include "debugPrintf.h"
 #include "importExport.h"
 
@@ -53,7 +52,6 @@ void UpdateGame()
 void DrawGame() 
 {
 	DrawMap();
-	Grid_Draw();
 	DrawNPC();
 	
 
@@ -73,7 +71,6 @@ void UninitGame()
 	UninitPlayer();
 	UninitNPC();
 	UninitJudge();
-	Grid_Finalize();
 	UninitMap();
 
 	UninitFlyingObject();

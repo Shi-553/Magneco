@@ -21,7 +21,6 @@
 
 #include "map.h"
 #include "flyingObjectSponer.h"
-#include "grid.h"
 #include "debugPrintf.h"
 
 #include "messeagebox.h"
@@ -104,7 +103,6 @@ void UninitTutorial()
 	UninitPlayer();
 	UninitNPC();
 	UninitJudge();
-	Grid_Finalize();
 	UninitMap();
 
 	UninitFlyingObject();
@@ -125,7 +123,6 @@ void UninitTutorial()
 void DrawTutorial()
 {
 	DrawMap();
-	Grid_Draw();
 
 
 	DrawInput();

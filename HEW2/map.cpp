@@ -4,7 +4,6 @@
 #include "gameSrite.h"
 #include "sprite.h"
 #include "npc.h"
-#include "grid.h"
 
 #define MAP_TEXTURE_WIDTH 32
 #define MAP_TEXTURE_HEIGHT 32
