@@ -152,6 +152,10 @@ void SetFlyingObjectSponeFrame(int f) {
 	if (frame < f) {
 		frame = f;
 		CheckSpone();
+		if (isLoop && sponeIndex == spones.size()) {
+			frame = 0;
+			sponeIndex = 0;
+		}
 	}
 	else {
 	if (f < 0) {
