@@ -188,6 +188,7 @@ void BlockDecision() {
 	player.flyingObjectList.clear();
 
 	UpdateNPCShortestPath();
+	player.blockPutFrame = 0;
 }
 
 Player* GetPlayer() {

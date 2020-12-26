@@ -48,9 +48,16 @@ void UpdateInput() {
 		MovePlayer(gamepadAxis);
 	}
 
+	Player* player = GetPlayer();
 	// ブロックの決定（現時点ではpressにしてます）
-	if (TriggerInputLogger(MYVK_ENTER)) {
-		BlockDecision();
+	if (PressInputLogger(MYVK_ENTER)) {
+		player->blockPutFrame++;
+		if (player->blockPutFrame >= BLOCK_PUT_FRAME) {
+			BlockDecision();
+		}
+	}
+	else {
+		player->blockPutFrame = 0;
 	}
 	if (TriggerInputLogger(MYVK_BEACON)) {
 		PutBeacon();
