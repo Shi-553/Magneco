@@ -50,13 +50,14 @@ void UpdateInput() {
 
 	if (gamepadAxis.x != 0 || gamepadAxis.y != 0) {
 		MovePlayer(gamepadAxis);
+		PutCansel();
 	}
 
 	// ブロックの決定
-	if (PressInputLogger(MYVK_ENTER)) {
+	if (TriggerInputLogger(MYVK_ENTER)) {
 		MakePut();
 	}
-	else {
+	if (ReleaseInputLogger(MYVK_ENTER)) {
 		PutCansel();
 	}
 	if (TriggerInputLogger(MYVK_BEACON)) {

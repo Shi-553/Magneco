@@ -33,8 +33,6 @@ void MoveLeftPlayer();
 void MoveRightPlayer();
 void MovePlayer(D3DXVECTOR2 dir);
 
-void BlockDecision();
-
 Player* GetPlayer();
 
 void PutBeacon();

@@ -21,6 +21,7 @@ static Player player;
 
 static int  playerTextureVertical = 0;
 
+void BlockDecision();
 
 
 void InitPlayer() {
