@@ -68,8 +68,8 @@ void JudgePlayerandFlyingObjectHit() {
 			itr++;
 			continue;
 		}
-		if (itr->type == FLYING_OBJECT_BLOCK || player->isPut) {
-			if (player->flyingObjectList.size() >= player->blockMax) {
+		if (itr->type == FLYING_OBJECT_BLOCK) {
+			if (player->flyingObjectList.size() >= player->blockMax || player->isPut) {
 				itr++;
 				continue;
 			}
