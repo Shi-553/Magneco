@@ -5,6 +5,8 @@
 #include "trans.h"
 #pragma once
 
+#define DEFAULT_PUT_REQUIRED_FRAME (3 * 60)
+
 struct Player {
 	TRANS trans;
 	std::list <FlyingObject> flyingObjectList;

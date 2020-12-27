@@ -15,7 +15,6 @@
 
 #define PLAYER_TEXTURE_WIDTH 32
 #define PLAYER_TEXTURE_HEIGHT 32
-#define DEFAULT_PUT_REQUIRED_FRAME (3 * 60)
 
 static int textureId = TEXTURE_INVALID_ID;
 static Player player;
