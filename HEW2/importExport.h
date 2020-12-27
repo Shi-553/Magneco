@@ -1,5 +1,6 @@
 ﻿#pragma once
 
 
-bool StageExport(const char* filename);
-bool StageImport(const char* filename);
+void SetStagePath(const char* filename);
+bool StageExport();
+bool StageImport();

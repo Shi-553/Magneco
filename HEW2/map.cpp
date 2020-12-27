@@ -41,6 +41,10 @@ void InitMap(void)
 	frame = 0;
 
 
+	if (MapChipList != NULL) {
+		delete[] MapChipList;
+		MapChipList = NULL;
+	}
 	MapChipList = new Map[mapHeight * mapWidth]{
 		{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},
 		{MAP_WALL, INTVECTOR2::GetUp()},
@@ -82,7 +86,7 @@ void InitMap(void)
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
-		{MAP_BLOCK_NONE},	
+		{MAP_BLOCK_NONE},
 		{MAP_CHEST_CLOSED,{},FLYING_OBJECT_ITEM_ADD_SPEED},
 		{MAP_WALL, INTVECTOR2::GetLeft()},
 
@@ -93,8 +97,8 @@ void InitMap(void)
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
-		{MAP_BLOCK_NONE},	
 		{MAP_BLOCK_NONE},
+		{MAP_CHEST_CLOSED,{},FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE},
 		{MAP_WALL, INTVECTOR2::GetLeft()},
 
 		{MAP_WALL, INTVECTOR2::GetRight()},
@@ -179,9 +183,9 @@ void DrawMap(void)
 {
 	DrawSprite(map_textureIds, { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT }, { 0,0 }, { SCREEN_WIDTH,SCREEN_HEIGHT });
 
-	for (int i = 0; i < GetMapHeight(); i++) {
-		for (int j = 0; j < GetMapWidth(); j++) {
-			Map* map = GetMap(INTVECTOR2(i, j));
+	for (int i = 0; i < mapHeight; i++) {
+		for (int j = 0; j < mapWidth; j++) {
+			Map* map = GetMap(INTVECTOR2(j, i));
 			if (map == NULL) {
 				continue;
 			}
@@ -192,7 +196,7 @@ void DrawMap(void)
 					addDir.y * MAP_TEXTURE_HEIGHT               //0 0.3 0.6
 				);
 
-				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(i, j), 100, tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_TEXTURE_HEIGHT));
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j, i), 100, tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_TEXTURE_HEIGHT));
 				continue;
 			}
 
@@ -202,11 +206,11 @@ void DrawMap(void)
 					0
 				);
 
-				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(i, j - 1), 100, D3DXVECTOR2(MAP_GOAL_DRAW_SIZE_WIDTH, MAP_GOAL_DRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_TEXTURE_HEIGHT));
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j,i-1), 100, D3DXVECTOR2(MAP_GOAL_DRAW_SIZE_WIDTH, MAP_GOAL_DRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_TEXTURE_HEIGHT));
 			}
 			else
 			{
-				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(i, j), 100);
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j, i), 100);
 			}
 		}
 	}
@@ -296,7 +300,6 @@ bool MapImport(FILE* fp) {
 
 	fread(MapChipList, sizeof(Map), mapHeight * mapWidth, fp);
 
-	SecureMapLabelList();
 
 	return true;
 
@@ -304,7 +307,7 @@ bool MapImport(FILE* fp) {
 
 Map* GetMap(INTVECTOR2 pos) {
 
-	if (pos.x < 0 || pos.y < 0 || pos.x >= GetMapWidth() || pos.y >= GetMapHeight()) {
+	if (pos.x < 0 || pos.y < 0 || pos.x >= mapWidth || pos.y >= mapHeight) {
 		return NULL;
 	}
 
@@ -317,6 +320,68 @@ int GetMapHeight() {
 
 int GetMapWidth() {
 	return mapWidth;
+}
+
+void SetMapHeight(int h) {
+	if (h <= 0 || h == mapHeight) {
+		return;
+	}
+
+	Map* temp = new Map[mapWidth * h];
+
+	for (int i = 0; i < h; i++) {
+		for (int j = 0; j < mapWidth; j++) {
+			if (i < mapHeight) {
+				temp[i * mapWidth + j] = MapChipList[i * mapWidth + j];
+			}
+			else {
+				temp[i * mapWidth + j].dir = INTVECTOR2(0, 0);
+				temp[i * mapWidth + j].param = 0;
+				temp[i * mapWidth + j].type = MAP_BLOCK_NONE;
+
+			}
+		}
+	}
+	if (MapChipList != NULL) {
+		delete[] MapChipList;
+		MapChipList = NULL;
+	}
+	mapHeight = h;
+
+	MapChipList = temp;
+	//Grid_Finalize();
+	//Grid_Initialize(GAME_SPRITE_WHIDTH, mapHeight<mapWidth?mapWidth:mapHeight, D3DCOLOR_RGBA(0, 197, 0, 255));
+}
+
+void SetMapWidth(int w) {
+	if (w <= 0 || w == mapWidth) {
+		return;
+	}
+	Map* temp = new Map[mapHeight * w];
+
+	for (int i = 0; i < mapHeight; i++) {
+		for (int j = 0; j < w; j++) {
+			if (j < mapWidth) {
+				temp[i * w + j] = MapChipList[i * mapWidth + j];
+			}
+			else {
+				temp[i * w + j].dir = INTVECTOR2(0, 0);
+				temp[i * w + j].param = 0;
+				temp[i * w + j].type = MAP_BLOCK_NONE;
+
+			}
+		}
+	}
+	if (MapChipList != NULL) {
+		delete[] MapChipList;
+		MapChipList = NULL;
+	}
+	mapWidth = w;
+
+	MapChipList = temp;
+	//Grid_Finalize();
+	//Grid_Initialize(GAME_SPRITE_WHIDTH, mapHeight < mapWidth ? mapWidth : mapHeight, D3DCOLOR_RGBA(0, 197, 0, 255));
+
 }
 
 bool CanGoNPCMapType(MapType type) {
@@ -361,4 +426,12 @@ void OpenChest(INTVECTOR2 pos) {
 	p.y -= 0.5;
 	FlyingObject f = { TRANS(p),(FlyingObjectType)map->param,{0,0} };
 	AddFlyingObjects(&f);
+}
+
+
+int GetMapTextureId(MapType type) {
+	if (type < MAP_NONE || MAP_MAX <= type) {
+		return TEXTURE_INVALID_ID;
+	}
+	return textureIds[(int)type];
 }

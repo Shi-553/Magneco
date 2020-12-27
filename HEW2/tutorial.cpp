@@ -21,7 +21,6 @@
 
 #include "map.h"
 #include "flyingObjectSponer.h"
-#include "grid.h"
 #include "debugPrintf.h"
 
 #include "messeagebox.h"
@@ -90,7 +89,7 @@ void InitTutorial()
 	InitFont();
 	InitMesseage();
 	InitMesseageBox();
-	Grid_Initialize(GAME_SPRITE_WHIDTH, GetMapWidth(), D3DCOLOR_RGBA(0, 197, 0, 255));
+	//Grid_Initialize(GAME_SPRITE_WHIDTH, GetMapWidth(), D3DCOLOR_RGBA(0, 197, 0, 255));
 
 	aniFrame = 0;
 	frame = 1;
@@ -104,7 +103,6 @@ void UninitTutorial()
 	UninitPlayer();
 	UninitNPC();
 	UninitJudge();
-	Grid_Finalize();
 	UninitMap();
 
 	UninitFlyingObject();
@@ -125,7 +123,6 @@ void UninitTutorial()
 void DrawTutorial()
 {
 	DrawMap();
-	Grid_Draw();
 
 
 	DrawInput();

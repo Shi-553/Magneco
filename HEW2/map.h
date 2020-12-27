@@ -51,7 +51,11 @@ Map* GetMap(INTVECTOR2 pos);
 
 int GetMapHeight();
 int GetMapWidth();
+void SetMapHeight(int h);
+
+void SetMapWidth(int w);
 
 bool CanGoNPCMapType(MapType type);
 void OpenChest(INTVECTOR2 pos);
+int GetMapTextureId(MapType type);
 #endif // !MAP_H

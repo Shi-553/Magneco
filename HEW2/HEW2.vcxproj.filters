@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="grid.cpp">
-      <Filter>cpp\scenes\game</Filter>
-    </ClCompile>
     <ClCompile Include="game.cpp">
       <Filter>cpp\scenes\game</Filter>
     </ClCompile>
@@ -100,8 +97,17 @@
     <ClCompile Include="gamepad.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
+    <ClCompile Include="mapEditor.cpp">
+      <Filter>cpp\scenes\stageEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="stageEditor.cpp">
+      <Filter>cpp\scenes\stageEditor</Filter>
+    </ClCompile>
     <ClCompile Include="importExport.cpp">
       <Filter>cpp\scenes\game</Filter>
+    </ClCompile>
+    <ClCompile Include="flyingObjectEditor.cpp">
+      <Filter>cpp\scenes\stageEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -118,9 +124,6 @@
       <Filter>ヘッダー\scenes\game</Filter>
     </ClInclude>
     <ClInclude Include="gameSrite.h">
-      <Filter>ヘッダー\scenes\game</Filter>
-    </ClInclude>
-    <ClInclude Include="grid.h">
       <Filter>ヘッダー\scenes\game</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
@@ -210,8 +213,17 @@
     <ClInclude Include="bitFlagsScopedEnum.h">
       <Filter>ヘッダー\others</Filter>
     </ClInclude>
+    <ClInclude Include="mapEditor.h">
+      <Filter>ヘッダー\scenes\stageEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="stageEditor.h">
+      <Filter>ヘッダー\scenes\stageEditor</Filter>
+    </ClInclude>
     <ClInclude Include="importExport.h">
       <Filter>ヘッダー\scenes\game</Filter>
+    </ClInclude>
+    <ClInclude Include="flyingObjectEditor.h">
+      <Filter>ヘッダー\scenes\stageEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +256,12 @@
     </Filter>
     <Filter Include="ヘッダー\others">
       <UniqueIdentifier>{e9f5fb84-d649-4d2c-9bd0-d14d69acc49f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー\scenes\stageEditor">
+      <UniqueIdentifier>{8894e286-62c5-4ddc-aa2e-daa6af255e41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\scenes\stageEditor">
+      <UniqueIdentifier>{ccad7b26-5141-4836-92f4-f423fb105c04}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

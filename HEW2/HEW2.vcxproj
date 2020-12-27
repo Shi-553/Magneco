@@ -170,9 +170,11 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="enterBottonSprite.cpp" />
+    <ClCompile Include="flyingObjectEditor.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="gamepad.cpp" />
     <ClCompile Include="highlight.cpp" />
+    <ClCompile Include="mapEditor.cpp" />
     <ClCompile Include="importExport.cpp" />
     <ClCompile Include="messeage.cpp" />
     <ClCompile Include="messeagebox.cpp" />
@@ -184,7 +186,6 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="gameClear.cpp" />
     <ClCompile Include="gameOver.cpp" />
     <ClCompile Include="gameSprite.cpp" />
-    <ClCompile Include="grid.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InputLogger.cpp" />
     <ClCompile Include="judge.cpp" />
@@ -197,6 +198,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="player.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="stageEditor.cpp" />
     <ClCompile Include="system_timer.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="gameStart.cpp" />
@@ -207,10 +209,12 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
   <ItemGroup>
     <ClInclude Include="bitFlagsScopedEnum.h" />
     <ClInclude Include="enterBottonSprite.h" />
+    <ClInclude Include="flyingObjectEditor.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="gamepad.h" />
     <ClInclude Include="highlight.h" />
     <ClInclude Include="importExport.h" />
+    <ClInclude Include="mapEditor.h" />
     <ClInclude Include="messeage.h" />
     <ClInclude Include="messeagebox.h" />
     <ClInclude Include="selectButton.h" />
@@ -223,7 +227,6 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="gameClear.h" />
     <ClInclude Include="gameOver.h" />
     <ClInclude Include="gameSrite.h" />
-    <ClInclude Include="grid.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputLogger.h" />
     <ClInclude Include="judge.h" />
@@ -235,6 +238,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="player.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="stageEditor.h" />
     <ClInclude Include="system_timer.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="gameStart.h" />
