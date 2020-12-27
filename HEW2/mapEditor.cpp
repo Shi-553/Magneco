@@ -7,6 +7,7 @@
 #include "debugPrintf.h"
 #include "npc.h"
 #include "player.h"
+#include "stageEditor.h"
 
 
 #define CREATE_MAP_TEXTURE_WIDTH 32
@@ -66,7 +67,6 @@ ScreenMap CheckCreateMap(D3DXVECTOR2 pos);
 D3DXVECTOR2 GetCreateMapPos(MapType type);
 void DrawMapScreen(const ScreenMap& map);
 ScreenMap CheckMap(D3DXVECTOR2 pos);
-bool CheckSquare(const D3DXVECTOR2& target, const D3DXVECTOR2& leftUpPos, const  D3DXVECTOR2& size);
 
 void InitMapEditor() {
 	for (int i = 0; i < MAP_MAX; i++)
@@ -162,7 +162,10 @@ void UpdateMapEditor() {
 		SetMapWidth(GetMapWidth() + 1);
 	}
 	frame++;
+}
+bool CheckMouseMapEditor() {
 	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));
+	bool ret = false;
 
 	if (!isPlayerEdit && !isNPCEdit) {
 
@@ -357,6 +360,7 @@ void UpdateMapEditor() {
 	}
 
 	lastMousePos = mousePos;
+	return ret;
 }
 
 D3DXVECTOR2 GetCreateMapPos(MapType type) {
@@ -392,10 +396,6 @@ ScreenMap CheckMap(D3DXVECTOR2 pos) {
 	return { GetMap(gamePos),screenPos };
 }
 
-bool CheckSquare(const D3DXVECTOR2& target, const D3DXVECTOR2& leftUpPos, const  D3DXVECTOR2& size) {
-	return (leftUpPos.x < target.x) && (target.x < leftUpPos.x + size.x) &&
-		(leftUpPos.y < target.y) && (target.y < leftUpPos.y + size.y);
-}
 
 void DrawMapScreen(const ScreenMap& map) {
 

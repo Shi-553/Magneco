@@ -19,6 +19,7 @@
 #include "importExport.h"
 #include "InputLogger.h"
 #include "sceneManager.h"
+#include "flyingObjectEditor.h"
 
 void InitStageEditor() {
 	InitPlayer();
@@ -30,6 +31,7 @@ void InitStageEditor() {
 	InitFlyingSponer();
 
 	InitMapEditor();
+	InitFlyingObjectEditor();
 
 	//Grid_Initialize(GAME_SPRITE_WHIDTH, GetMapWidth(), D3DCOLOR_RGBA(0, 197, 0, 255));
 
@@ -45,6 +47,7 @@ void UninitStageEditor() {
 	UninitPlayer();
 	UninitNPC();
 	UninitMapEditor();
+	UninitFlyingObjectEditor();
 
 	UninitJudge();
 	UninitMap();
@@ -57,6 +60,7 @@ void DrawStageEditor() {
 	//DrawNPC();
 
 	DrawMapEditor();
+	DrawFlyingObjectEditor();
 	//DrawInput();
 
 
@@ -73,7 +77,16 @@ void UpdateStageEditor() {
 	//UpdateInput();
 
 	//UpdateNPC();
+	UpdateFlyingObjectEditor();
 	UpdateMapEditor();
+
+	if (CheckMouseFlyingObjectEditor()) {
+		return;
+	}
+
+	if (CheckMouseMapEditor()) {
+		return;
+	}
 	//UpdateJudge();
 	//UpdateFlyingObject();
 	//UpdateFlyingSponer();
@@ -89,3 +102,9 @@ void UpdateStageEditor() {
 #endif // _DEBUG
 }
 
+
+
+bool CheckSquare(const D3DXVECTOR2& target, const D3DXVECTOR2& leftUpPos, const  D3DXVECTOR2& size) {
+	return (leftUpPos.x < target.x) && (target.x < leftUpPos.x + size.x) &&
+		(leftUpPos.y < target.y) && (target.y < leftUpPos.y + size.y);
+}
