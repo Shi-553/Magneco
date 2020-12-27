@@ -222,6 +222,10 @@ void MapChange(FlyingObject flyingobject)
 	if (map != NULL && flyingobject.type == FLYING_OBJECT_PLAYER_BLOCK) {
 		map->type = MAP_BLOCK;
 	}
+	if (map != NULL && flyingobject.type == FLYING_OBJECT_CHECKPOINT_OFF) {
+		map->type = MAP_CHAECKPOINT_OFF;
+	}
+
 }
 
 bool MapFourDirectionsJudgment(INTVECTOR2 pos)

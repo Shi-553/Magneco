@@ -139,7 +139,7 @@ bool IsFlyingObjectItem(FlyingObjectType type) {
 	{
 	case FLYING_OBJECT_ITEM_ADD_SPEED:
 	case FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE:
-	case FLYING_OBJECT_CHECKPOINT_OFF:
+	//case FLYING_OBJECT_CHECKPOINT_OFF:
 		return true;
 	default:
 		return false;
