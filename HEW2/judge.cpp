@@ -129,7 +129,7 @@ void JudgePlayerandFlyingObjectHit() {
 			else if (itr->type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
 				player->blockMax++;
 			}
-			else if (itr->type == FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE) {
+			else if (itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
 
 			}
 

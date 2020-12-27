@@ -30,7 +30,8 @@ void InitMap(void)
 	textureIds[MAP_NONE] = ReserveTextureLoadFile("texture/MAP_NONE.png");
 	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE.png");
 	textureIds[MAP_BLOCK] = ReserveTextureLoadFile("texture/block02.png");
-	textureIds[MAP_UNBREAKABLE_BLOCK] = ReserveTextureLoadFile("texture/unbreakableBlock.png");
+	textureIds[MAP_CHAECKPOINT_ON] = ReserveTextureLoadFile("texture/checkpoint_on.png");
+	textureIds[MAP_CHAECKPOINT_OFF] = ReserveTextureLoadFile("texture/checkpoint_off.png");
 	textureIds[MAP_WALL] = ReserveTextureLoadFile("texture/wall.png");
 	textureIds[MAP_ROCK] = ReserveTextureLoadFile("texture/brokenblock01.png");
 	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/warpblock32_64_anime.png");
@@ -93,7 +94,7 @@ void InitMap(void)
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},	
-		{MAP_CHEST_CLOSED,{},FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE},
+		{MAP_CHEST_CLOSED,{},FLYING_OBJECT_CHECKPOINT_OFF},
 		{MAP_WALL, INTVECTOR2::GetLeft()},
 
 		{MAP_WALL, INTVECTOR2::GetRight()},
@@ -120,7 +121,7 @@ void InitMap(void)
 
 		{MAP_WALL, INTVECTOR2::GetRight()},
 		{MAP_BLOCK_NONE},
-		{MAP_UNBREAKABLE_BLOCK},
+		{MAP_CHAECKPOINT_ON},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
 		{MAP_BLOCK_NONE},
@@ -321,7 +322,7 @@ bool CanGoNPCMapType(MapType type) {
 	case MAP_GOAL:
 	case MAP_CHEST_CLOSED:
 	case MAP_CHEST_OPENED:
-	case MAP_UNBREAKABLE_BLOCK:
+	case MAP_CHAECKPOINT_ON:
 		return true;
 		break;
 	default:
@@ -335,7 +336,7 @@ bool CanAttachedMapType(MapType type) {
 	{
 	case MAP_BLOCK:
 	case MAP_CHEST_OPENED:
-	case MAP_UNBREAKABLE_BLOCK:
+	case MAP_CHAECKPOINT_ON:
 		return true;
 		break;
 	default:
