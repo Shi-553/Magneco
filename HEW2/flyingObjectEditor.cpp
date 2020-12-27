@@ -48,8 +48,8 @@ void InitFlyingObjectEditor(){
 	textureIds[FLYING_OBJECT_PURGE_BLOCK] = ReserveTextureLoadFile("texture/block03.png");
 	textureIds[FLYING_OBJECT_ITEM_ADD_SPEED] = ReserveTextureLoadFile("texture/hane.png");
 	textureIds[FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE] = ReserveTextureLoadFile("texture/maguneticPower.png");
-	textureIds[FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE] = ReserveTextureLoadFile("texture/changeUnbreakable.png");
-	
+	textureIds[FLYING_OBJECT_CHECKPOINT_OFF] = ReserveTextureLoadFile("texture/checkpoint_off.png");
+
 	eraseTextureId = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE_ERASE.png");
 
 
