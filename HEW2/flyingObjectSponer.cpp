@@ -1,19 +1,20 @@
 ﻿#include "flyingObjectSponer.h"
-#include "flyingObject.h"
 #include "map.h"
+#include <vector>
+#include "debugPrintf.h"
+
+using namespace std;
 
 
-struct Spone {
-	int frame;
-	D3DXVECTOR2 initPos;
-	FlyingObjectType type;
-	D3DXVECTOR2 dir;
-};
+void CheckSpone();
 
-static Spone* spones = NULL;
+static vector<SponeId> spones;
 static int frame = 0;
 static int sponeIndex = 0;
-static int sponeMax = 24;
+
+static bool isLoop = true;
+
+static int currentSponeId = 1;
 
 static Spone initSpone[24]{
 	{100,{5.5,-3.5},FLYING_OBJECT_UFO,{0,1}},
@@ -48,28 +49,34 @@ static Spone initSpone[24]{
 void InitFlyingSponer() {
 	frame = 0;
 	sponeIndex = 0;
-	spones = NULL;
-	spones = new Spone[sponeMax];
+	spones.clear();
 
-	CopyMemory(spones, initSpone, sizeof(Spone)* sponeMax);
-}
-		
-	
-
-void UninitFlyingSponer() {
-	if (spones != NULL) {
-		delete[] spones;
-		spones = NULL;
+	for (int i = 0; i < 24; i++)
+	{
+		spones.push_back({ initSpone[i],currentSponeId });
+		currentSponeId++;
 	}
 }
+
+
+
+void UninitFlyingSponer() {
+}
 void UpdateFlyingSponer() {
-	while (sponeIndex < sponeMax) {
-		if (spones[sponeIndex].frame == 0) {
-			sponeIndex++;
-			continue;
-		}
-		if (spones[sponeIndex].frame <= frame) {
-			FlyingObject f = {TRANS(spones[sponeIndex].initPos),spones[sponeIndex].type, spones[sponeIndex].dir};
+	CheckSpone();
+	frame++;
+
+	if (isLoop && sponeIndex == spones.size()) {
+		frame = 0;
+		sponeIndex = 0;
+	}
+
+
+}
+void CheckSpone() {
+	while (sponeIndex < spones.size()) {
+		if (spones[sponeIndex].s.frame <= frame) {
+			FlyingObject f = { TRANS(spones[sponeIndex].s.initPos),spones[sponeIndex].s.type, spones[sponeIndex].s.dir, spones[sponeIndex].id };
 			AddFlyingObjects(&f);
 			sponeIndex++;
 		}
@@ -77,36 +84,123 @@ void UpdateFlyingSponer() {
 			break;
 		}
 	}
+}
 
-	frame++;
-	if (sponeIndex== sponeMax){
-		frame = 0;
-		sponeIndex = 0;
+void AddFlyingObjectSponer(Spone s) {
+	if (spones.size() == 0) {
+		spones.push_back({ s,currentSponeId });
+		CheckSpone();
+		currentSponeId++;
+		return;
 	}
+	for (auto itr = spones.begin(); itr != spones.end(); itr++) {
+		if (itr->s.frame > s.frame) {
+			spones.insert(itr, { s,currentSponeId });
+			CheckSpone();
+			currentSponeId++;
+			return;
+		}
+	}
+	spones.push_back({ s,currentSponeId });
+	CheckSpone();
+	currentSponeId++;
+}
 
+void RemoveFlyingObjectSponer(int id) {
+	int index = 0;
+	for (auto itr = spones.begin(); itr != spones.end(); itr++) {
+		if (itr->id==id) {
+			spones.erase(itr);
+			if (index < sponeIndex) {
+				sponeIndex--;
+			}
+			break;
+		}
+		index++;
+	}
+}
 
+void SetFlyingObjectSponerLoop(bool f) {
+	isLoop = f;
+}
+
+bool GetFlyingObjectSponerLoop() {
+	return isLoop;
 }
 
 bool FlyingObjectSponerExport(FILE* fp) {
 
 	//	ファイルへの書き込み処理
-	fwrite(&sponeMax, sizeof(int), 1, fp);
-	fwrite(spones, sizeof(Spone), sponeMax, fp);
+	int size = spones.size();
+	fwrite(&size, sizeof(int), 1, fp);
+
+	for (auto itr = spones.begin(); itr != spones.end(); itr++) {
+		fwrite(&(itr->s), sizeof(Spone), 1, fp);
+	}
 
 	return true;
 }
 
 
 bool FlyingObjectSponerImport(FILE* fp) {
-	if (spones != NULL) {
-		delete[] spones;
-		spones = NULL;
+	spones.clear();
+
+	//	ファイルからの読み込み処理
+	int size;
+	fread(&size, sizeof(int), 1, fp);
+
+	for (int i = 0; i < size; i++) {
+		Spone s;
+		fread(&s, sizeof(Spone), 1, fp);
+		spones.push_back({ s,currentSponeId });
+		currentSponeId++;
 	}
 
-	//	ファイルへの読み込み処理
-	fread(&sponeMax, sizeof(int), 1, fp);
-	spones = new Spone[sponeMax];
-	fread(spones, sizeof(Spone), sponeMax, fp);
 
 	return true;
+}
+
+
+
+
+
+int GetFlyingObjectSponeFrame() {
+	return frame;
+}
+void SetFlyingObjectSponeFrame(int f) {
+	BackFlyingObject(frame - f);
+
+	if (frame < f) {
+		frame = f;
+		CheckSpone();
+		if (isLoop && sponeIndex == spones.size()) {
+			frame = 0;
+			sponeIndex = 0;
+		}
+	}
+	else {
+	if (f < 0) {
+		f = spones.back().s.frame;
+		sponeIndex = spones.size();
+	}
+
+		frame = f;
+
+		while (sponeIndex > 0) {
+			if (spones[sponeIndex-1].s.frame > frame) {
+				sponeIndex--;
+				auto itr = find_if(GetFlyingObjects()->begin(), GetFlyingObjects()->end(), [](FlyingObject f) {return sponeIndex == f.id; });
+				if (itr != GetFlyingObjects()->end()) {
+					if (itr->type == FLYING_OBJECT_UFO) {
+						DestroyUFO();
+					}
+					GetFlyingObjects()->erase(itr);
+				}
+			}
+			else {
+				break;
+			}
+		}
+		DebugPrintf("%d,\n", sponeIndex);
+	}
 }

@@ -113,6 +113,19 @@ void UpdateFlyingObject() {
 		}
 	}
 }
+void BackFlyingObject(int frame) {
+	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
+		if (UpdateFlyingObject(&*itr, -frame)) {
+			if (itr->type == FLYING_OBJECT_UFO) {
+				DestroyUFO();
+			}
+			itr = flyingObjects.erase(itr);
+		}
+		else {
+			itr++;
+		}
+	}
+}
 bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 	if (flyingObject->type == FLYING_OBJECT_UFO) {
 		flyingObject->dir = (GetNpc()->trans.pos + ADD_UFO_POS) - flyingObject->trans.pos;

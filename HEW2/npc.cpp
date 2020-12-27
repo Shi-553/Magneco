@@ -390,6 +390,7 @@ bool NPCImport(FILE* fp) {
 	//	ファイルへの読み込み処理
 	fread(&pos, sizeof(INTVECTOR2), 1, fp);
 	npc.trans.Init(pos);
+	nextPos = npc.trans.GetIntPos();
 
 	return true;
 }
