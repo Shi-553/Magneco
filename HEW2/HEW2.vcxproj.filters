@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="grid.cpp">
-      <Filter>cpp\scenes\game</Filter>
-    </ClCompile>
     <ClCompile Include="game.cpp">
       <Filter>cpp\scenes\game</Filter>
     </ClCompile>
@@ -127,9 +124,6 @@
       <Filter>ヘッダー\scenes\game</Filter>
     </ClInclude>
     <ClInclude Include="gameSrite.h">
-      <Filter>ヘッダー\scenes\game</Filter>
-    </ClInclude>
-    <ClInclude Include="grid.h">
       <Filter>ヘッダー\scenes\game</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">

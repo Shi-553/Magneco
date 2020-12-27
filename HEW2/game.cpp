@@ -12,7 +12,6 @@
 
 #include "map.h"
 #include "flyingObjectSponer.h"
-#include "grid.h"
 #include "debugPrintf.h"
 #include "importExport.h"
 
@@ -26,7 +25,7 @@ void InitGame()
 	InitJudge();
 	InitFlyingObject();
 	InitFlyingSponer();
-	Grid_Initialize(GAME_SPRITE_WHIDTH, GetMapWidth(), D3DCOLOR_RGBA(0, 197, 0, 255));
+	//Grid_Initialize(GAME_SPRITE_WHIDTH, GetMapWidth(), D3DCOLOR_RGBA(0, 197, 0, 255));
 
 	LoadTexture();
 
@@ -53,7 +52,6 @@ void UpdateGame()
 void DrawGame() 
 {
 	DrawMap();
-	Grid_Draw();
 	DrawNPC();
 	
 
@@ -73,7 +71,6 @@ void UninitGame()
 	UninitPlayer();
 	UninitNPC();
 	UninitJudge();
-	Grid_Finalize();
 	UninitMap();
 
 	UninitFlyingObject();
