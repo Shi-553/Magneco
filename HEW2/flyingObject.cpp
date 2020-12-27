@@ -81,7 +81,7 @@ void DrawFlyingObject(FlyingObject flyingObject) {
 		DrawGameSprite(anotherBlockObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 	}
 	if (flyingObject.type == FLYING_OBJECT_PLAYER_BLOCK) {
-		DrawGameSprite(blockAnimationTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50, {(float)player->putFrame / (float)DEFAULT_PUT_REQUIRED_FRAME , 0 }, {GAME_SPRITE_WHIDTH, GAME_SPRITE_HEIGHT});
+		DrawGameSprite(blockAnimationTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50, {(float)(4 * player->putFrame / DEFAULT_PUT_REQUIRED_FRAME) * 32, 0 }, {32, 32});
 	}
 
 	if (flyingObject.type == FLYING_OBJECT_ITEM_ADD_SPEED) {
