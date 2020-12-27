@@ -73,6 +73,11 @@ void JudgePlayerandFlyingObjectHit() {
 				itr++;
 				continue;
 			}
+			 
+			if (player->flyingObjectList.size() > 0 && itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
+				itr++;
+				continue;
+			}
 
 			auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
 
@@ -119,6 +124,7 @@ void JudgePlayerandFlyingObjectHit() {
 			{
 				itr->type = FLYING_OBJECT_PLAYER_BLOCK;
 			}
+			
 
 			player->flyingObjectList.push_back(*itr);
 			itr = flyingObjectList->erase(itr);
@@ -154,6 +160,9 @@ void JudgePlayerandFlyingObjectHit() {
 		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
 			if (itr->type == FLYING_OBJECT_BLOCK) {
 				if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint) {
+					break;
+				}
+				if (player->flyingObjectList.size() > 0 && itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
 					break;
 				}
 				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos) ) {
@@ -256,7 +265,6 @@ void JudgePlayerandFlyingObjectHit() {
 	}
 
 
-
 	//NPCとの当たり判定
 
 	if (GetMapType(npc->trans.GetIntPos()) == MAP_GOAL) {
@@ -266,7 +274,12 @@ void JudgePlayerandFlyingObjectHit() {
 	if (GetMapType(npc->trans.GetIntPos()) == MAP_CHEST_CLOSED) {
 		OpenChest(npc->trans.GetIntPos());
 	}
+	
+	auto checkPointOffMap = GetMap(npc->trans.GetIntPos());
 
+	if (checkPointOffMap != NULL && checkPointOffMap->type == MAP_CHAECKPOINT_OFF) {
+		checkPointOffMap->type = MAP_CHAECKPOINT_ON;
+	}
 
 	// npcとufo
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {

@@ -188,6 +188,8 @@ void BlockDecision() {
 	}
 	player.flyingObjectList.clear();
 
+	player.checkCheckpoint = false;
+
 	UpdateNPCShortestPath();
 }
 
