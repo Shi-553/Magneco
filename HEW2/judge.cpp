@@ -14,7 +14,6 @@
 bool CheckCollision(std::list<FlyingObject>* flyingObjectList, INTVECTOR2* pos);
 bool CheckBlockBlock(D3DXVECTOR2& pos1, D3DXVECTOR2& pos2);
 
-bool CheckCheckpoint = false;
 
 void InitJudge() {
 
@@ -69,7 +68,7 @@ void JudgePlayerandFlyingObjectHit() {
 			itr++;
 			continue;
 		}
-		if (itr->type == FLYING_OBJECT_BLOCK && CheckCheckpoint == false) {
+		if (itr->type == FLYING_OBJECT_BLOCK || itr->type == FLYING_OBJECT_CHECKPOINT_OFF && player->checkCheckpoint == false) {
 			if (player->flyingObjectList.size() >= player->blockMax) {
 				itr++;
 				continue;
@@ -110,59 +109,30 @@ void JudgePlayerandFlyingObjectHit() {
 
 			itr->trans.Init(itr->trans.pos);
 
-			itr->type = FLYING_OBJECT_PLAYER_BLOCK;
-			player->flyingObjectList.push_back(*itr);
-			itr = flyingObjectList->erase(itr);
+				
+			
+			if (itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
+
+				player->checkCheckpoint = true;
+
+				if (player->checkCheckpoint == true) {
+					player->blockMax = 1;
+				}
+				if (player->checkCheckpoint == false) {
+					player->blockMax = 4;
+				}
 
 
-		}
-		if (itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
-			/*if (player->flyingObjectList.size() >= player->blockMax) {
-				itr++;
-				continue;
-			}*/
-			if (CheckCheckpoint == true) {
-				player->blockMax = 4;
+				itr->type = FLYING_OBJECT_CHECKPOINT_OFF;
+				player->flyingObjectList.push_back(*itr);
+				itr = flyingObjectList->erase(itr);
 			}
-
-			auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
-
-			itr->trans.pos = player->trans.pos;
-			itr->trans.UpdatePos();
-
-
-			bool isMovePlayer = player->dir != D3DXVECTOR2(0, 0);
-			D3DXVECTOR2 movePlayer = D3DXVECTOR2(0, 0);
-			if (isMovePlayer) {
-				if (fabsf(player->dir.x) > fabsf(player->dir.y)) {
-					movePlayer.x = player->dir.x > 0 ? 1 : -1;
-				}
-				else {
-					movePlayer.y = player->dir.y > 0 ? 1 : -1;
-				}
+			else
+			{
+				itr->type = FLYING_OBJECT_PLAYER_BLOCK;
+				player->flyingObjectList.push_back(*itr);
+				itr = flyingObjectList->erase(itr);
 			}
-
-			while (true) {
-				auto intPos = itr->trans.GetIntPos();
-				if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, &intPos)) {
-					break;
-				}
-
-				if (isMovePlayer) {
-					itr->trans.pos += movePlayer;
-				}
-				else {
-					itr->trans.pos += move;
-				}
-				itr->trans.UpdatePos();
-				intPos = itr->trans.GetIntPos();
-			}
-
-			itr->trans.Init(itr->trans.pos);
-
-			itr->type = FLYING_OBJECT_CHECKPOINT_OFF;
-			player->flyingObjectList.push_back(*itr);
-			itr = flyingObjectList->erase(itr);
 
 
 		}
@@ -181,10 +151,6 @@ void JudgePlayerandFlyingObjectHit() {
 			else if (itr->type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
 				player->blockMax++;
 			}
-			else if (itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
-				CheckCheckpoint = true;
-			}
-
 			itr = flyingObjectList->erase(itr);
 			continue;
 		}
@@ -202,7 +168,7 @@ void JudgePlayerandFlyingObjectHit() {
 				if (player->flyingObjectList.size() >= player->blockMax) {
 					break;
 				}
-				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos) && CheckCheckpoint == false) {
+				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
 					auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
 
 					//itr->trans.pos = player->trans.pos;

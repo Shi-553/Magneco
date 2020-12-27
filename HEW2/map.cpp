@@ -327,6 +327,7 @@ bool CanGoNPCMapType(MapType type) {
 	case MAP_CHEST_CLOSED:
 	case MAP_CHEST_OPENED:
 	case MAP_CHAECKPOINT_ON:
+	case MAP_CHAECKPOINT_OFF:
 		return true;
 		break;
 	default:

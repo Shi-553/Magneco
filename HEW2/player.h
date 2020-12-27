@@ -13,6 +13,7 @@ struct Player {
 	float speed;
 	int frame;
 	int blockMax;
+	int checkCheckpoint;
 };
 
 void InitPlayer();

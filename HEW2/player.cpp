@@ -34,6 +34,7 @@ void InitPlayer() {
 	player.frame = 0;
 	playerTextureVertical = 0;
 	player.blockMax = 4;
+	player.checkCheckpoint = false;
 }
 
 void UninitPlayer() {
