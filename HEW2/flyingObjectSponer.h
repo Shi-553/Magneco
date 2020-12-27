@@ -8,6 +8,10 @@ struct Spone {
 	FlyingObjectType type;
 	D3DXVECTOR2 dir;
 };
+struct SponeId {
+	Spone s;
+	int id;
+};
 
 void InitFlyingSponer();
 void UninitFlyingSponer();
@@ -17,6 +21,7 @@ void SetFlyingObjectSponerLoop(bool f);
 bool GetFlyingObjectSponerLoop();
 
 void AddFlyingObjectSponer(Spone s);
+void RemoveFlyingObjectSponer(int id);
 
 bool FlyingObjectSponerExport(FILE* fp);
 bool FlyingObjectSponerImport(FILE* fp);

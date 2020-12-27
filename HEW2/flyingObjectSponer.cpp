@@ -8,11 +8,13 @@ using namespace std;
 
 void CheckSpone();
 
-static vector<Spone> spones;
+static vector<SponeId> spones;
 static int frame = 0;
 static int sponeIndex = 0;
 
 static bool isLoop = true;
+
+static int currentSponeId = 1;
 
 static Spone initSpone[24]{
 	{100,{5.5,-3.5},FLYING_OBJECT_UFO,{0,1}},
@@ -51,7 +53,8 @@ void InitFlyingSponer() {
 
 	for (int i = 0; i < 24; i++)
 	{
-		spones.push_back(initSpone[i]);
+		spones.push_back({ initSpone[i],currentSponeId });
+		currentSponeId++;
 	}
 }
 
@@ -72,8 +75,8 @@ void UpdateFlyingSponer() {
 }
 void CheckSpone() {
 	while (sponeIndex < spones.size()) {
-		if (spones[sponeIndex].frame <= frame) {
-			FlyingObject f = { TRANS(spones[sponeIndex].initPos),spones[sponeIndex].type, spones[sponeIndex].dir,sponeIndex };
+		if (spones[sponeIndex].s.frame <= frame) {
+			FlyingObject f = { TRANS(spones[sponeIndex].s.initPos),spones[sponeIndex].s.type, spones[sponeIndex].s.dir, spones[sponeIndex].id };
 			AddFlyingObjects(&f);
 			sponeIndex++;
 		}
@@ -84,20 +87,37 @@ void CheckSpone() {
 }
 
 void AddFlyingObjectSponer(Spone s) {
+	if (spones.size() == 0) {
+		spones.push_back({ s,currentSponeId });
+		CheckSpone();
+		currentSponeId++;
+		return;
+	}
 	for (auto itr = spones.begin(); itr != spones.end(); itr++) {
-		if (itr->frame > s.frame) {
-			spones.insert(itr, s);
+		if (itr->s.frame > s.frame) {
+			spones.insert(itr, { s,currentSponeId });
 			CheckSpone();
-			break;
+			currentSponeId++;
+			return;
 		}
 	}
+	spones.push_back({ s,currentSponeId });
+	CheckSpone();
+	currentSponeId++;
 }
 
-Spone* GetFlyingObjectSponer(int index) {
-	if (index < 0 || spones.size() <= index) {
-		return NULL;
+void RemoveFlyingObjectSponer(int id) {
+	int index = 0;
+	for (auto itr = spones.begin(); itr != spones.end(); itr++) {
+		if (itr->id==id) {
+			spones.erase(itr);
+			if (index < sponeIndex) {
+				sponeIndex--;
+			}
+			break;
+		}
+		index++;
 	}
-	return &spones[index];
 }
 
 void SetFlyingObjectSponerLoop(bool f) {
@@ -115,7 +135,7 @@ bool FlyingObjectSponerExport(FILE* fp) {
 	fwrite(&size, sizeof(int), 1, fp);
 
 	for (auto itr = spones.begin(); itr != spones.end(); itr++) {
-		fwrite(&*itr, sizeof(Spone), 1, fp);
+		fwrite(&(itr->s), sizeof(Spone), 1, fp);
 	}
 
 	return true;
@@ -132,7 +152,8 @@ bool FlyingObjectSponerImport(FILE* fp) {
 	for (int i = 0; i < size; i++) {
 		Spone s;
 		fread(&s, sizeof(Spone), 1, fp);
-		spones.push_back(s);
+		spones.push_back({ s,currentSponeId });
+		currentSponeId++;
 	}
 
 
@@ -159,16 +180,16 @@ void SetFlyingObjectSponeFrame(int f) {
 	}
 	else {
 	if (f < 0) {
-		f = spones.back().frame;
+		f = spones.back().s.frame;
 		sponeIndex = spones.size();
 	}
 
 		frame = f;
 
 		while (sponeIndex > 0) {
-			if (spones[sponeIndex-1].frame > frame) {
+			if (spones[sponeIndex-1].s.frame > frame) {
 				sponeIndex--;
-				auto itr=find_if(GetFlyingObjects()->begin(), GetFlyingObjects()->end(), [](FlyingObject f) {return sponeIndex == f.id; });
+				auto itr = find_if(GetFlyingObjects()->begin(), GetFlyingObjects()->end(), [](FlyingObject f) {return sponeIndex == f.id; });
 				if (itr != GetFlyingObjects()->end()) {
 					if (itr->type == FLYING_OBJECT_UFO) {
 						DestroyUFO();
