@@ -68,8 +68,8 @@ void JudgePlayerandFlyingObjectHit() {
 			itr++;
 			continue;
 		}
-		if (itr->type == FLYING_OBJECT_BLOCK || itr->type == FLYING_OBJECT_CHECKPOINT_OFF && player->checkCheckpoint == false) {
-			if (player->flyingObjectList.size() >= player->blockMax) {
+		if (itr->type == FLYING_OBJECT_BLOCK || itr->type == FLYING_OBJECT_CHECKPOINT_OFF ) {
+			if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint) {
 				itr++;
 				continue;
 			}
@@ -109,31 +109,19 @@ void JudgePlayerandFlyingObjectHit() {
 
 			itr->trans.Init(itr->trans.pos);
 
-				
-			
+
+
 			if (itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
 
 				player->checkCheckpoint = true;
-
-				if (player->checkCheckpoint == true) {
-					player->blockMax = 1;
-				}
-				if (player->checkCheckpoint == false) {
-					player->blockMax = 4;
-				}
-
-
-				itr->type = FLYING_OBJECT_CHECKPOINT_OFF;
-				player->flyingObjectList.push_back(*itr);
-				itr = flyingObjectList->erase(itr);
 			}
 			else
 			{
 				itr->type = FLYING_OBJECT_PLAYER_BLOCK;
-				player->flyingObjectList.push_back(*itr);
-				itr = flyingObjectList->erase(itr);
 			}
 
+			player->flyingObjectList.push_back(*itr);
+			itr = flyingObjectList->erase(itr);
 
 		}
 		// 敵(ufo&enemy)とプレイヤー
@@ -165,10 +153,10 @@ void JudgePlayerandFlyingObjectHit() {
 		bool isMatched = false;
 		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
 			if (itr->type == FLYING_OBJECT_BLOCK) {
-				if (player->flyingObjectList.size() >= player->blockMax) {
+				if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint) {
 					break;
 				}
-				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
+				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos) ) {
 					auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
 
 					//itr->trans.pos = player->trans.pos;
