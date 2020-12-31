@@ -7,6 +7,7 @@
 #include "map.h"
 #include "time.h"
 #include "npc.h"
+#include "player.h"
 
 // flyingObject描画範囲の加算分
 #define FLYINGOBJECT_ADD_RANGE (5)
@@ -22,7 +23,7 @@ static int addSpeedItemTextureId = TEXTURE_INVALID_ID;
 static int addMaguneticForceItemTextureId = TEXTURE_INVALID_ID;
 static int changeBlockUnbreakableItemTextureId = TEXTURE_INVALID_ID;
 static int enemyBreakBlockObjectTextureId = TEXTURE_INVALID_ID;
-
+static int blockAnimationTextureId = TEXTURE_INVALID_ID;
 
 std::list<FlyingObject>* GetFlyingObjects() {
 	return &flyingObjects;
@@ -51,6 +52,7 @@ void InitFlyingObject() {
 	addMaguneticForceItemTextureId = ReserveTextureLoadFile("texture/maguneticPower.png");
 	changeBlockUnbreakableItemTextureId = ReserveTextureLoadFile("texture/changeUnbreakable.png");
 	enemyBreakBlockObjectTextureId = ReserveTextureLoadFile("texture/meteorite_1.png");
+	blockAnimationTextureId = ReserveTextureLoadFile("texture/block_anime.png");
 }
 void UninitFlyingObject() {
 	ReleaseTexture(blockObjectTextureId);
@@ -61,8 +63,11 @@ void UninitFlyingObject() {
 	ReleaseTexture(changeBlockUnbreakableItemTextureId);
 	ReleaseTexture(enemyBreakBlockObjectTextureId);
 	ReleaseTexture(ufoObjectTextureId);
+	ReleaseTexture(blockAnimationTextureId);
 }
 void DrawFlyingObject(FlyingObject flyingObject) {
+	Player* player = GetPlayer();
+
 	if (flyingObject.type == FLYING_OBJECT_BLOCK) {
 		DrawGameSprite(blockObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 	}
@@ -72,8 +77,11 @@ void DrawFlyingObject(FlyingObject flyingObject) {
 	if (flyingObject.type == FLYING_OBJECT_UFO) {
 		DrawGameSprite(ufoObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 	}
-	if (flyingObject.type == FLYING_OBJECT_PLAYER_BLOCK || flyingObject.type == FLYING_OBJECT_PURGE_BLOCK) {
+	if ( flyingObject.type == FLYING_OBJECT_PURGE_BLOCK) {
 		DrawGameSprite(anotherBlockObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
+	}
+	if (flyingObject.type == FLYING_OBJECT_PLAYER_BLOCK) {
+		DrawGameSprite(blockAnimationTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50, {(float)(4 * player->putFrame / DEFAULT_PUT_REQUIRED_FRAME) * 32, 0 }, {32, 32});
 	}
 
 	if (flyingObject.type == FLYING_OBJECT_ITEM_ADD_SPEED) {

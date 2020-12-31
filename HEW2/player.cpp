@@ -21,6 +21,7 @@ static Player player;
 
 static int  playerTextureVertical = 0;
 
+void BlockDecision();
 
 
 void InitPlayer() {
@@ -34,6 +35,8 @@ void InitPlayer() {
 	player.frame = 0;
 	playerTextureVertical = 0;
 	player.blockMax = 4;
+	player.isPut = false;
+	player.putFrame = 0;
 }
 
 void UninitPlayer() {
@@ -95,6 +98,13 @@ void UpdatePlayer() {
 		itr->trans.UpdatePos();
 	}
 
+	// ブロックを置く処理
+	if (player.isPut) {
+		player.putFrame++;
+	}
+	if (player.putFrame >= DEFAULT_PUT_REQUIRED_FRAME) {
+		BlockDecision();
+	}
 	player.dir = { 0,0 };
 
 	player.frame++;
@@ -154,6 +164,7 @@ void MovePlayer(D3DXVECTOR2 dir) {
 
 void BlockDecision() {
 	bool canBlockPut = true;
+	player.putFrame = 0;
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
@@ -188,6 +199,8 @@ void BlockDecision() {
 	player.flyingObjectList.clear();
 
 	UpdateNPCShortestPath();
+	player.putFrame = 0;
+	player.isPut = false;
 }
 
 Player* GetPlayer() {
@@ -227,4 +240,13 @@ bool PlayerImport(FILE* fp) {
 	player.trans.Init(pos);
 
 	return true;
+}
+
+void MakePut() {
+	player.isPut = true;
+}
+
+void PutCansel() {
+	player.isPut = false;
+	player.putFrame = 0;
 }
