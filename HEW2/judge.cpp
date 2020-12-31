@@ -69,7 +69,7 @@ void JudgePlayerandFlyingObjectHit() {
 			continue;
 		}
 		if (itr->type == FLYING_OBJECT_BLOCK || itr->type == FLYING_OBJECT_CHECKPOINT_OFF ) {
-			if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint) {
+			if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint || player->isPut) {
 				itr++;
 				continue;
 			}
@@ -160,7 +160,7 @@ void JudgePlayerandFlyingObjectHit() {
 		bool isMatched = false;
 		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
 			if (itr->type == FLYING_OBJECT_BLOCK) {
-				if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint) {
+				if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint|| player->isPut) {
 					break;
 				}
 				if (player->flyingObjectList.size() > 0 && itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {

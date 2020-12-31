@@ -17,15 +17,19 @@ void UpdateInput() {
 	// プレイヤーの移動
 	if (PressInputLogger(MYVK_UP)) {
 		MoveUpPlayer();
+		PutCansel();
 	}
 	if (PressInputLogger(MYVK_DOWN)) {
 		MoveDownPlayer();
+		PutCansel();
 	}
 	if (PressInputLogger(MYVK_LEFT)) {
 		MoveLeftPlayer();
+		PutCansel();
 	}
 	if (PressInputLogger(MYVK_RIGHT)) {
 		MoveRightPlayer();
+		PutCansel();
 	}
 
 	//if (GetInputLoggerAxis(MYVA_GLY)<0) {
@@ -46,11 +50,15 @@ void UpdateInput() {
 
 	if (gamepadAxis.x != 0 || gamepadAxis.y != 0) {
 		MovePlayer(gamepadAxis);
+		PutCansel();
 	}
 
-	// ブロックの決定（現時点ではpressにしてます）
+	// ブロックの決定
 	if (TriggerInputLogger(MYVK_ENTER)) {
-		BlockDecision();
+		MakePut();
+	}
+	if (ReleaseInputLogger(MYVK_ENTER)) {
+		PutCansel();
 	}
 	if (TriggerInputLogger(MYVK_BEACON)) {
 		PutBeacon();

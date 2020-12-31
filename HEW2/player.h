@@ -5,6 +5,8 @@
 #include "trans.h"
 #pragma once
 
+#define DEFAULT_PUT_REQUIRED_FRAME (3 * 60)
+
 struct Player {
 	TRANS trans;
 	std::list <FlyingObject> flyingObjectList;
@@ -14,6 +16,9 @@ struct Player {
 	int frame;
 	int blockMax;
 	int checkCheckpoint;
+	bool isPut;
+	int putFrame;
+	int putRequiredFrame;
 };
 
 void InitPlayer();
@@ -30,8 +35,6 @@ void MoveLeftPlayer();
 void MoveRightPlayer();
 void MovePlayer(D3DXVECTOR2 dir);
 
-void BlockDecision();
-
 Player* GetPlayer();
 
 void PutBeacon();
@@ -39,5 +42,8 @@ void PurgePlayerFlyingObject();
 
 bool PlayerExport(FILE* fp);
 bool PlayerImport(FILE* fp);
+
+void MakePut();
+void PutCansel();
 
 #endif // !_PLAYER_H
