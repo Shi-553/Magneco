@@ -214,7 +214,7 @@ void PutBeacon() {
 	NPC* npc = GetNpc();
 
 	auto mapType = GetMapType(player.trans.GetIntPos());
-	if (CanGoNPCMapType(mapType) && !npc->isMove) {
+	if (CanGoNPCMapType(mapType)) {
 		UpdateNPCShortestPath(player.trans.GetIntPos());
 	}
 }
