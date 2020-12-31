@@ -134,6 +134,7 @@ void JudgePlayerandFlyingObjectHit() {
 		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 			itr = flyingObjectList->erase(itr);
 			player->flyingObjectList.clear();
+			player->checkCheckpoint = false;
 
 			//GoNextScene(GameOverScene, FADE_IN);
 			//return;
@@ -208,6 +209,7 @@ void JudgePlayerandFlyingObjectHit() {
 				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
 					player->flyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
+					player->checkCheckpoint = false;
 					isMatched = true;
 					break;
 				}
@@ -217,6 +219,7 @@ void JudgePlayerandFlyingObjectHit() {
 					player->flyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
 					npc->takeOutFrame = 0;
+					player->checkCheckpoint = false;
 					isMatched = true;
 					DestroyUFO();
 					break;
