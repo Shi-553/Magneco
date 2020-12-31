@@ -219,6 +219,10 @@ void PutBeacon() {
 
 void PurgePlayerFlyingObject() {
 	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();) {
+		if (itr->type == FLYING_OBJECT_CHECKPOINT_OFF)
+		{
+			return;
+		}
 		itr->dir = itr->trans.pos - player.trans.pos;
 		itr->type = FLYING_OBJECT_PURGE_BLOCK;
 
