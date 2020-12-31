@@ -220,6 +220,10 @@ void PutBeacon() {
 }
 
 void PurgePlayerFlyingObject() {
+	if (player.checkCheckpoint)
+	{
+		return;
+	}
 	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();) {
 		itr->dir = itr->trans.pos - player.trans.pos;
 		itr->type = FLYING_OBJECT_PURGE_BLOCK;
