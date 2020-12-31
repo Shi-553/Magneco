@@ -68,11 +68,17 @@ void JudgePlayerandFlyingObjectHit() {
 			itr++;
 			continue;
 		}
-		if (itr->type == FLYING_OBJECT_BLOCK) {
-			if (player->flyingObjectList.size() >= player->blockMax || player->isPut) {
+		if (itr->type == FLYING_OBJECT_BLOCK || itr->type == FLYING_OBJECT_CHECKPOINT_OFF ) {
+			if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint || player->isPut) {
 				itr++;
 				continue;
 			}
+			 
+			if (player->flyingObjectList.size() > 0 && itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
+				itr++;
+				continue;
+			}
+
 			auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
 
 			itr->trans.pos = player->trans.pos;
@@ -108,16 +114,27 @@ void JudgePlayerandFlyingObjectHit() {
 
 			itr->trans.Init(itr->trans.pos);
 
-			itr->type = FLYING_OBJECT_PLAYER_BLOCK;
+
+
+			if (itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
+
+				player->checkCheckpoint = true;
+			}
+			else
+			{
+				itr->type = FLYING_OBJECT_PLAYER_BLOCK;
+			}
+			
+
 			player->flyingObjectList.push_back(*itr);
 			itr = flyingObjectList->erase(itr);
-
 
 		}
 		// 敵(ufo&enemy)とプレイヤー
 		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 			itr = flyingObjectList->erase(itr);
 			player->flyingObjectList.clear();
+			player->checkCheckpoint = false;
 
 			//GoNextScene(GameOverScene, FADE_IN);
 			//return;
@@ -129,10 +146,6 @@ void JudgePlayerandFlyingObjectHit() {
 			else if (itr->type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
 				player->blockMax++;
 			}
-			else if (itr->type == FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE) {
-
-			}
-
 			itr = flyingObjectList->erase(itr);
 			continue;
 		}
@@ -147,10 +160,13 @@ void JudgePlayerandFlyingObjectHit() {
 		bool isMatched = false;
 		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
 			if (itr->type == FLYING_OBJECT_BLOCK) {
-				if (player->flyingObjectList.size() >= player->blockMax || player->isPut) {
+				if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint|| player->isPut) {
 					break;
 				}
-				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
+				if (player->flyingObjectList.size() > 0 && itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
+					break;
+				}
+				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos) ) {
 					auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
 
 					//itr->trans.pos = player->trans.pos;
@@ -193,6 +209,7 @@ void JudgePlayerandFlyingObjectHit() {
 				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
 					player->flyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
+					player->checkCheckpoint = false;
 					isMatched = true;
 					break;
 				}
@@ -202,6 +219,7 @@ void JudgePlayerandFlyingObjectHit() {
 					player->flyingObjectList.erase(itr2);
 					itr = flyingObjectList->erase(itr);
 					npc->takeOutFrame = 0;
+					player->checkCheckpoint = false;
 					isMatched = true;
 					DestroyUFO();
 					break;
@@ -250,7 +268,6 @@ void JudgePlayerandFlyingObjectHit() {
 	}
 
 
-
 	//NPCとの当たり判定
 
 	if (GetMapType(npc->trans.GetIntPos()) == MAP_GOAL) {
@@ -260,7 +277,12 @@ void JudgePlayerandFlyingObjectHit() {
 	if (GetMapType(npc->trans.GetIntPos()) == MAP_CHEST_CLOSED) {
 		OpenChest(npc->trans.GetIntPos());
 	}
+	
+	auto checkPointOffMap = GetMap(npc->trans.GetIntPos());
 
+	if (checkPointOffMap != NULL && checkPointOffMap->type == MAP_CHAECKPOINT_OFF) {
+		checkPointOffMap->type = MAP_CHAECKPOINT_ON;
+	}
 
 	// npcとufo
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {

@@ -35,6 +35,7 @@ void InitPlayer() {
 	player.frame = 0;
 	playerTextureVertical = 0;
 	player.blockMax = 4;
+	player.checkCheckpoint = false;
 	player.isPut = false;
 	player.putFrame = 0;
 }
@@ -197,6 +198,8 @@ void BlockDecision() {
 		MapChange(*itr);
 	}
 	player.flyingObjectList.clear();
+
+	player.checkCheckpoint = false;
 
 	UpdateNPCShortestPath();
 	player.putFrame = 0;

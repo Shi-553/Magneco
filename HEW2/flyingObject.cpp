@@ -21,7 +21,7 @@ static int ufoObjectTextureId = TEXTURE_INVALID_ID;
 static bool existsUFO = false;
 static int addSpeedItemTextureId = TEXTURE_INVALID_ID;
 static int addMaguneticForceItemTextureId = TEXTURE_INVALID_ID;
-static int changeBlockUnbreakableItemTextureId = TEXTURE_INVALID_ID;
+static int checkPointOffTextureId = TEXTURE_INVALID_ID;
 static int enemyBreakBlockObjectTextureId = TEXTURE_INVALID_ID;
 static int blockAnimationTextureId = TEXTURE_INVALID_ID;
 
@@ -50,7 +50,7 @@ void InitFlyingObject() {
 
 	addSpeedItemTextureId = ReserveTextureLoadFile("texture/hane.png");
 	addMaguneticForceItemTextureId = ReserveTextureLoadFile("texture/maguneticPower.png");
-	changeBlockUnbreakableItemTextureId = ReserveTextureLoadFile("texture/changeUnbreakable.png");
+	checkPointOffTextureId = ReserveTextureLoadFile("texture/checkpoint_off.png");
 	enemyBreakBlockObjectTextureId = ReserveTextureLoadFile("texture/meteorite_1.png");
 	blockAnimationTextureId = ReserveTextureLoadFile("texture/block_anime.png");
 }
@@ -60,7 +60,7 @@ void UninitFlyingObject() {
 	ReleaseTexture(anotherBlockObjectTextureId);
 	ReleaseTexture(addSpeedItemTextureId);
 	ReleaseTexture(addMaguneticForceItemTextureId);
-	ReleaseTexture(changeBlockUnbreakableItemTextureId);
+	ReleaseTexture(checkPointOffTextureId);
 	ReleaseTexture(enemyBreakBlockObjectTextureId);
 	ReleaseTexture(ufoObjectTextureId);
 	ReleaseTexture(blockAnimationTextureId);
@@ -90,8 +90,8 @@ void DrawFlyingObject(FlyingObject flyingObject) {
 	if (flyingObject.type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
 		DrawGameSprite(addMaguneticForceItemTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 	}
-	if (flyingObject.type == FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE) {
-		DrawGameSprite(changeBlockUnbreakableItemTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
+	if (flyingObject.type == FLYING_OBJECT_CHECKPOINT_OFF) {
+		DrawGameSprite(checkPointOffTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 	}
 	if (flyingObject.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 		DrawGameSprite(enemyBreakBlockObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
@@ -160,7 +160,7 @@ bool IsFlyingObjectItem(FlyingObjectType type) {
 	{
 	case FLYING_OBJECT_ITEM_ADD_SPEED:
 	case FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE:
-	case FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE:
+	//case FLYING_OBJECT_CHECKPOINT_OFF:
 		return true;
 	default:
 		return false;

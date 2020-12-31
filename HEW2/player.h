@@ -15,6 +15,7 @@ struct Player {
 	float speed;
 	int frame;
 	int blockMax;
+	int checkCheckpoint;
 	bool isPut;
 	int putFrame;
 	int putRequiredFrame;
