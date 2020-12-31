@@ -219,7 +219,7 @@ void PutBeacon() {
 
 void PurgePlayerFlyingObject() {
 	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();) {
-		if (itr->type == FLYING_OBJECT_CHECKPOINT_OFF)
+		if (player.checkCheckpoint)
 		{
 			return;
 		}
