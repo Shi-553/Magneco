@@ -15,7 +15,7 @@ struct Player {
 	float speed;
 	int frame;
 	int blockMax;
-	int checkCheckpoint;
+	bool checkCheckpoint;
 	bool isPut;
 	int putFrame;
 	int putRequiredFrame;
@@ -45,5 +45,6 @@ bool PlayerImport(FILE* fp);
 
 void MakePut();
 void PutCansel();
+
 
 #endif // !_PLAYER_H
