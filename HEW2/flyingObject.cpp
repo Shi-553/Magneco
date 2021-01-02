@@ -16,6 +16,7 @@
 static std::list<FlyingObject> flyingObjects;
 static bool existsUFO = false;
 static int flyingObjectTextureIds[FLYING_OBJECT_MAX];
+static int blockAnimationTextureId;
 
 
 std::list<FlyingObject>* GetFlyingObjects() {
@@ -39,18 +40,21 @@ void InitFlyingObject() {
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY] = ReserveTextureLoadFile("texture/jellyalien01.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_BREAK_BLOCK] = ReserveTextureLoadFile("texture/meteorite_1.png");
 	flyingObjectTextureIds[FLYING_OBJECT_UFO] = ReserveTextureLoadFile("texture/ufo.png");
-	flyingObjectTextureIds[FLYING_OBJECT_PLAYER_BLOCK] = ReserveTextureLoadFile("texture/block_anime.png");
+	flyingObjectTextureIds[FLYING_OBJECT_PLAYER_BLOCK] = ReserveTextureLoadFile("texture/block03.png");
 	flyingObjectTextureIds[FLYING_OBJECT_PURGE_BLOCK] = ReserveTextureLoadFile("texture/block03.png");
 	existsUFO = false;
 
 	flyingObjectTextureIds[FLYING_OBJECT_ITEM_ADD_SPEED] = ReserveTextureLoadFile("texture/hane.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE] = ReserveTextureLoadFile("texture/maguneticPower.png");
 	flyingObjectTextureIds[FLYING_OBJECT_CHECKPOINT_OFF] = ReserveTextureLoadFile("texture/checkpoint_off.png");
+	blockAnimationTextureId = ReserveTextureLoadFile("texture/block_anime.png");
+
 }
 void UninitFlyingObject() {
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
 		ReleaseTexture(flyingObjectTextureIds[i]);
 	}
+	ReleaseTexture(blockAnimationTextureId);
 }
 void DrawFlyingObject(FlyingObject flyingObject) {
 	Player* player = GetPlayer();
@@ -60,37 +64,9 @@ void DrawFlyingObject(FlyingObject flyingObject) {
 		DrawGameSprite(blockAnimationTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50, { (float)(4 * player->putFrame / DEFAULT_PUT_REQUIRED_FRAME) * 32, 0 }, { 32, 32 });
 		return;
 	}
-
-	if (flyingObject.type == FLYING_OBJECT_BLOCK) {
-		DrawGameSprite(textureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
-	}
-	if (flyingObject.type == FLYING_OBJECT_ENEMY) {
-		DrawGameSprite(textureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
-	}
-	if (flyingObject.type == FLYING_OBJECT_UFO) {
-		DrawGameSprite(textureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
-	}
-	if ( flyingObject.type == FLYING_OBJECT_PURGE_BLOCK) {
-		DrawGameSprite(textureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
-	}
-	if (flyingObject.type == FLYING_OBJECT_PLAYER_BLOCK) {
-		DrawGameSprite(textureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50, {(float)(4 * player->putFrame / DEFAULT_PUT_REQUIRED_FRAME) * 32, 0 }, {32, 32});
-	}
-
-
-	if (flyingObject.type == FLYING_OBJECT_ITEM_ADD_SPEED) {
-		DrawGameSprite(textureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
-	}
-	if (flyingObject.type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
-		DrawGameSprite(textureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
-	}
-	if (flyingObject.type == FLYING_OBJECT_CHECKPOINT_OFF) {
-		DrawGameSprite(textureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
-	}
-	if (flyingObject.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
-		DrawGameSprite(textureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
-	}
+	DrawGameSprite(textureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 }
+
 void DrawFlyingObject() {
 
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end(); itr++) {
@@ -154,7 +130,7 @@ bool IsFlyingObjectItem(FlyingObjectType type) {
 	{
 	case FLYING_OBJECT_ITEM_ADD_SPEED:
 	case FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE:
-	//case FLYING_OBJECT_CHECKPOINT_OFF:
+		//case FLYING_OBJECT_CHECKPOINT_OFF:
 		return true;
 	default:
 		return false;
