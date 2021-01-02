@@ -68,6 +68,11 @@ void UninitFlyingObject() {
 void DrawFlyingObject(FlyingObject flyingObject) {
 	Player* player = GetPlayer();
 
+	if (flyingObject.isAnime) {
+		DrawGameSprite(blockAnimationTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50, { (float)(4 * player->putFrame / DEFAULT_PUT_REQUIRED_FRAME) * 32, 0 }, { 32, 32 });
+		return;
+	}
+
 	if (flyingObject.type == FLYING_OBJECT_BLOCK) {
 		DrawGameSprite(blockObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 	}
@@ -77,12 +82,10 @@ void DrawFlyingObject(FlyingObject flyingObject) {
 	if (flyingObject.type == FLYING_OBJECT_UFO) {
 		DrawGameSprite(ufoObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 	}
-	if ( flyingObject.type == FLYING_OBJECT_PURGE_BLOCK) {
+	if ( flyingObject.type == FLYING_OBJECT_PURGE_BLOCK|| flyingObject.type == FLYING_OBJECT_PLAYER_BLOCK) {
 		DrawGameSprite(anotherBlockObjectTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
 	}
-	if (flyingObject.type == FLYING_OBJECT_PLAYER_BLOCK) {
-		DrawGameSprite(blockAnimationTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50, {(float)(4 * player->putFrame / DEFAULT_PUT_REQUIRED_FRAME) * 32, 0 }, {32, 32});
-	}
+
 
 	if (flyingObject.type == FLYING_OBJECT_ITEM_ADD_SPEED) {
 		DrawGameSprite(addSpeedItemTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);

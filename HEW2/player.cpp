@@ -23,7 +23,6 @@ static int  playerTextureVertical = 0;
 
 void BlockDecision();
 
-
 void InitPlayer() {
 	textureId = ReserveTextureLoadFile("texture/player_32×32.png");
 
@@ -64,7 +63,7 @@ void UpdatePlayer() {
 		}
 	}
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
-		if (UpdateFlyingObject(&*itr, player.speed  / 2)) {
+		if (UpdateFlyingObject(&*itr, player.speed / 2)) {
 			itr = player.purgeFlyingObjectList.erase(itr);
 		}
 		else {
@@ -72,12 +71,12 @@ void UpdatePlayer() {
 		}
 	}
 
-	auto length=D3DXVec2Length(&player.dir);
+	auto length = D3DXVec2Length(&player.dir);
 	if (length > 1.0f) {
 		player.dir /= length;
 	}
 	auto last = player.trans.pos;
-	auto move = player.dir * player.speed  * GetDeltaTime();
+	auto move = player.dir * player.speed * GetDeltaTime();
 
 	player.trans.pos.x += move.x;
 	auto mapType = GetMapType(INTVECTOR2(player.trans.pos));
@@ -164,7 +163,10 @@ void MovePlayer(D3DXVECTOR2 dir) {
 }
 
 void BlockDecision() {
-	bool canBlockPut = true;
+	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); itr++) {
+		itr->isAnime = false;
+	}
+
 	player.putFrame = 0;
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
@@ -172,32 +174,40 @@ void BlockDecision() {
 		MapType type;
 		type = GetMapType(itr->trans.GetIntPos());
 		if (type != MAP_BLOCK_NONE) {
-			canBlockPut = false;
+			return;
+		}
+	}
+
+	bool isAdd = false;
+
+	while (true) {
+		isAdd = false;
+
+		std::list<FlyingObject> modosu;
+
+		while (!player.flyingObjectList.empty()) {
+			auto& current = player.flyingObjectList.front();
+
+			if (MapFourDirectionsJudgment(current.trans.GetIntPos())) {
+				MapChange(current);
+				isAdd = true;
+				player.flyingObjectList.pop_front();
+				break;
+			}
+			else {
+				modosu.push_back(current);
+				player.flyingObjectList.pop_front();
+			}
+		}
+
+		for (auto itrM = modosu.begin(); itrM != modosu.end(); itrM++) {
+			player.flyingObjectList.push_back(*itrM);
+		}
+
+		if (!isAdd || player.flyingObjectList.empty()) {
 			break;
 		}
 	}
-	if (canBlockPut == false) {
-		return;
-	}
-
-	bool isFourDirections = false;
-
-	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
-		itr != player.flyingObjectList.end(); itr++) {
-		if (MapFourDirectionsJudgment(itr->trans.GetIntPos())) {
-			isFourDirections = true;
-			break;
-		}
-	}
-	if (isFourDirections == false) {
-		return;
-	}
-
-	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
-		itr != player.flyingObjectList.end(); itr++) {
-		MapChange(*itr);
-	}
-	player.flyingObjectList.clear();
 
 	player.checkCheckpoint = false;
 
@@ -250,10 +260,66 @@ bool PlayerImport(FILE* fp) {
 }
 
 void MakePut() {
+
+	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+		itr != player.flyingObjectList.end(); itr++) {
+		MapType type;
+		type = GetMapType(itr->trans.GetIntPos());
+		if (type != MAP_BLOCK_NONE) {
+			return;
+		}
+	}
+
+	bool isAdd = false;
+
+	while (true) {
+		isAdd = false;
+
+	std::list<FlyingObject> modosu;
+
+		while (!player.flyingObjectList.empty()) {
+			auto& current = player.flyingObjectList.front();
+
+			if (!current.isAnime&&MapFourDirectionsJudgment(current.trans.GetIntPos())) {
+				MapChange(current);
+				current.isAnime = true;
+				isAdd = true;
+				modosu.push_back(current);
+				player.flyingObjectList.pop_front();
+				break;
+			}
+			else {
+				modosu.push_back(current);
+				player.flyingObjectList.pop_front();
+			}
+		}
+
+	for (auto itrM = modosu.begin(); itrM != modosu.end(); itrM++) {
+		player.flyingObjectList.push_back(*itrM);
+	}
+
+		if (!isAdd) {
+			break;
+		}
+	}
+
+	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();itr++) {
+		if (itr->isAnime) {
+			auto m = GetMap(itr->trans.GetIntPos());
+			if (m != NULL) {
+				m->type = MAP_BLOCK_NONE;
+			}
+		}
+	}
+
 	player.isPut = true;
 }
 
 void PutCansel() {
 	player.isPut = false;
 	player.putFrame = 0;
+
+	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); itr++) {
+		itr->isAnime = false;
+	}
 }

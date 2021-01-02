@@ -25,6 +25,7 @@ typedef struct FlyingObject
 	FlyingObjectType type;
 	D3DXVECTOR2 dir;
 	int id;
+	bool isAnime;
 
 };
 
