@@ -46,4 +46,5 @@ bool PlayerImport(FILE* fp);
 void MakePut();
 void PutCansel();
 
+
 #endif // !_PLAYER_H

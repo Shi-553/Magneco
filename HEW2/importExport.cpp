@@ -19,10 +19,10 @@ bool StageExport() {
 		return false;
 	}
 
-	PlayerExport(fp);
-	NPCExport(fp);
 	MapExport(fp);
 	FlyingObjectSponerExport(fp);
+	PlayerExport(fp);
+	NPCExport(fp);
 
 	fclose(fp);
 
@@ -38,11 +38,12 @@ bool StageImport() {
 		return false;
 	}
 
+	MapImport(fp);
+	FlyingObjectSponerImport(fp);
 	PlayerImport(fp);
 	NPCImport(fp);
-	MapImport(fp);
+
 	SecureMapLabelList();
-	FlyingObjectSponerImport(fp);
 
 	fclose(fp);
 	return true;
