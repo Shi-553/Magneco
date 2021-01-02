@@ -147,6 +147,18 @@ void DrawMapEditor() {
 	else {
 		DrawNPC();
 	}
+
+	for (int i = 0; i < GetMapHeight(); i++) {
+		for (int j = 0; j < GetMapWidth(); j++) {
+			auto map = GetMap(INTVECTOR2(j, i));
+			if (map!=NULL&&map->type == MAP_CHEST_CLOSED && map->param != 0) {
+				FlyingObject item = {};
+				item.type = (FlyingObjectType)map->param;
+				item.trans.Init(j+0.5, i);
+				DrawFlyingObject(item);
+			}
+		}
+	}
 }
 void UpdateMapEditor() {
 	if (TriggerInputLogger(MYVK_ARROW_UP)) {
@@ -417,4 +429,5 @@ void DrawMapScreen(const ScreenMap& map) {
 	}
 
 	DrawSprite(textureIds[map.map->type], map.pos, 10, size, tPos, tSize);
+
 }
