@@ -21,6 +21,7 @@ void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, Ma
 bool FindShortestPath();
 void FourDir(std::queue<MapLabel>* mapQueue, MapLabel* label);
 int& GetMapLabel(int y, int x);
+void NPCRespone();
 
 
 #define NPC_TEXTURE_WIDTH 64
@@ -57,6 +58,7 @@ void InitNPC() {
 	npc.aniFrame = 0;
 	npc.isMove = false;
 	npc.takeOutFrame = 0;
+	npc.responePos = npc.trans.pos;
 	npcTextureVertical = 0;
 	nextPos = npc.trans.GetIntPos();
 	dir = INTVECTOR2(0, 0);
@@ -121,6 +123,8 @@ void UpdateNPC() {
 
 
 	npc.frame++;
+
+	NPCRespone();
 }
 
 void DrawNPC() {
@@ -393,4 +397,12 @@ bool NPCImport(FILE* fp) {
 	nextPos = npc.trans.GetIntPos();
 
 	return true;
+}
+
+void NPCRespone() {
+	auto mapType = GetMapType(INTVECTOR2(npc.trans.pos));
+	if (mapType == !MAP_BLOCK || mapType == !MAP_UNBREAKABLE_BLOCK) {
+		npc.trans.pos = npc.responePos;
+	}
+
 }

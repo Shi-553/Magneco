@@ -9,6 +9,7 @@ typedef struct NPC_tag {
 	int aniFrame;
 	bool isMove;
 	int takeOutFrame;
+	D3DXVECTOR2 responePos;
 }NPC;
 
 #define TAKE_OUT_FRAME_LIMIT (10 * 60)
