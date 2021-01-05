@@ -8,8 +8,9 @@
 #include "map.h"
 #include "npc.h"
 #include "debugPrintf.h"
+#include <vector>
 
-
+using namespace std;
 
 bool CheckCollision(std::list<FlyingObject>* flyingObjectList, INTVECTOR2* pos);
 bool CheckBlockBlock(D3DXVECTOR2& pos1, D3DXVECTOR2& pos2);
@@ -308,11 +309,51 @@ void JudgePlayerandFlyingObjectHit() {
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end();) {
 		bool isMatched = false;
 		if (itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
-			Map* map = GetMap(itr->trans.GetIntPos());
+			INTVECTOR2 pos = itr->trans.GetIntPos();
+			Map* map = GetMap(pos);
 			if (map != NULL && map->type == MAP_BLOCK) {
 				itr = flyingObjectList->erase(itr);
 				map->type = MAP_BLOCK_NONE;
 				isMatched = true;
+
+				//チェックポイントとつながってないブロックを消す
+				vector<INTVECTOR2> v;
+				if (!IsBreakBlock(pos + INTVECTOR2(0, 1), v)) {
+					for (auto itrV = v.begin(); itrV != v.end();itrV++) {
+						Map* map = GetMap(*itrV);
+						if (map != NULL && map->type == MAP_BLOCK) {
+							map->type = MAP_BLOCK_NONE;
+						}
+					}
+				}
+				v.clear();
+				if (!IsBreakBlock(pos + INTVECTOR2(0, -1), v)) {
+					for (auto itrV = v.begin(); itrV != v.end();itrV++) {
+						Map* map = GetMap(*itrV);
+						if (map != NULL && map->type == MAP_BLOCK) {
+							map->type = MAP_BLOCK_NONE;
+						}
+					}
+				}
+				v.clear();
+				if (!IsBreakBlock(itr->trans.GetIntPos() + INTVECTOR2(1,0), v)) {
+					for (auto itrV = v.begin(); itrV != v.end();itrV++) {
+						Map* map = GetMap(*itrV);
+						if (map != NULL && map->type == MAP_BLOCK) {
+							map->type = MAP_BLOCK_NONE;
+						}
+					}
+				}
+				v.clear();
+				if (!IsBreakBlock(pos + INTVECTOR2(-1,0), v)) {
+					for (auto itrV = v.begin(); itrV != v.end();itrV++) {
+						Map* map = GetMap(*itrV);
+						if (map != NULL && map->type == MAP_BLOCK) {
+							map->type = MAP_BLOCK_NONE;
+						}
+					}
+				}
+				v.clear();
 				continue;
 			}
 		}

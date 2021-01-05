@@ -5,6 +5,8 @@
 #include "flyingObject.h"
 #include "trans.h"
 
+#include <vector>
+using namespace std;
 
 
 enum MapType
@@ -58,4 +60,6 @@ void SetMapWidth(int w);
 bool CanGoNPCMapType(MapType type);
 void OpenChest(INTVECTOR2 pos);
 int GetMapTextureId(MapType type);
+
+bool IsBreakBlock(INTVECTOR2 pos, vector<INTVECTOR2>& v);
 #endif // !MAP_H
