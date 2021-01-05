@@ -62,8 +62,10 @@ void UpdatePlayer() {
 			}
 		}
 	}
+	auto speed = player.speed -( player.speed /2 * player.flyingObjectList.size() / player.blockMax);
+
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
-		if (UpdateFlyingObject(&*itr, player.speed / 2)) {
+		if (UpdateFlyingObject(&*itr, speed / 2)) {
 			itr = player.purgeFlyingObjectList.erase(itr);
 		}
 		else {
@@ -76,7 +78,7 @@ void UpdatePlayer() {
 		player.dir /= length;
 	}
 	auto last = player.trans.pos;
-	auto move = player.dir * player.speed * GetDeltaTime();
+	auto move = player.dir * speed * GetDeltaTime();
 
 	player.trans.pos.x += move.x;
 	auto mapType = GetMapType(INTVECTOR2(player.trans.pos));
