@@ -29,4 +29,6 @@ NPC* GetNpc();
 bool NPCExport(FILE* fp);
 bool NPCImport(FILE* fp);
 
+void SetNPCResponePos(INTVECTOR2 pos);
+
 #endif // !_NPC_H

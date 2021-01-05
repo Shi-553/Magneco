@@ -408,6 +408,10 @@ bool NPCImport(FILE* fp) {
 	return true;
 }
 
+void SetNPCResponePos(INTVECTOR2 pos) {
+	npc.responePos = pos;
+}
+
 bool NPCRespone() {
 	auto mapType = GetMapType(npc.trans.GetIntPos());
 	if (!CanGoNPCMapType(mapType)) {
