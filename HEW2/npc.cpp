@@ -410,7 +410,7 @@ bool NPCImport(FILE* fp) {
 
 bool NPCRespone() {
 	auto mapType = GetMapType(npc.trans.GetIntPos());
-	if (mapType ==MAP_BLOCK_NONE) {
+	if (!CanGoNPCMapType(mapType)) {
 		npc.trans.Init(npc.responePos);
 		return true;
 	}
