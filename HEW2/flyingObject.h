@@ -16,7 +16,7 @@ enum FlyingObjectType
 	FLYING_OBJECT_PURGE_BLOCK,
 	FLYING_OBJECT_ITEM_ADD_SPEED,
 	FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE,
-	FLYING_OBJECT_ITEM_CHAGE_BLOCK_UNBREAKABLE,
+	FLYING_OBJECT_CHECKPOINT_OFF,
 	FLYING_OBJECT_MAX	
 };
 typedef struct FlyingObject
@@ -25,6 +25,7 @@ typedef struct FlyingObject
 	FlyingObjectType type;
 	D3DXVECTOR2 dir;
 	int id;
+	bool isAnime;
 
 };
 
@@ -48,3 +49,5 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
 void BackFlyingObject(int frame);
 
 void DestroyUFO();
+
+int GetFlyingObjectTextureId(FlyingObjectType type);

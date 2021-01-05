@@ -9,13 +9,14 @@
 
 enum MapType
 {
-	MAP_NONE,    // 無効な値
-	MAP_BLOCK_NONE,  // ブロックなし
-	MAP_BLOCK,      // 壊れるブロック
-	MAP_UNBREAKABLE_BLOCK,       // 壊れないブロック
-	MAP_WALL,     // 壁
-	MAP_ROCK,        // 岩
-	MAP_GOAL,        // ゴール
+	MAP_NONE,             // 無効な値
+	MAP_BLOCK_NONE,       // ブロックなし
+	MAP_BLOCK,            // 壊れるブロック
+	MAP_CHAECKPOINT_ON,   // チェックポイントON
+	MAP_CHAECKPOINT_OFF,  // チェックポイントOFF
+	MAP_WALL,             // 壁
+	MAP_ROCK,             // 岩
+	MAP_GOAL,             // ゴール
 	MAP_CHEST_CLOSED,        // 宝箱閉じてる
 	MAP_CHEST_OPENED,        // 宝箱開いてる
 	MAP_MAX
