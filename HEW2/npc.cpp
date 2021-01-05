@@ -21,7 +21,7 @@ void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, Ma
 bool FindShortestPath();
 void FourDir(std::queue<MapLabel>* mapQueue, MapLabel* label);
 int& GetMapLabel(int y, int x);
-void NPCRespone();
+bool NPCRespone();
 
 
 #define NPC_TEXTURE_WIDTH 64
@@ -82,6 +82,16 @@ void UpdateNPC() {
 
 	npc.aniFrame++;
 
+	if (NPCRespone()) {
+		npc.frame = 0;
+		dir = INTVECTOR2(0, 0);
+		npc.isMove = false;
+		nextPos = npc.trans.GetIntPos();
+		gBeaconPos = npc.trans.GetIntPos();
+		while (!nextPosQueue.empty()) {
+			nextPosQueue.pop();
+		}
+	}
 	if (npc.frame >= 30) {
 
 		npc.trans.pos = nextPos.ToD3DXVECTOR2();
@@ -124,7 +134,6 @@ void UpdateNPC() {
 
 	npc.frame++;
 
-	NPCRespone();
 }
 
 void DrawNPC() {
@@ -399,10 +408,12 @@ bool NPCImport(FILE* fp) {
 	return true;
 }
 
-void NPCRespone() {
-	auto mapType = GetMapType(INTVECTOR2(npc.trans.pos));
-	if (mapType == !MAP_BLOCK || mapType == !MAP_UNBREAKABLE_BLOCK) {
-		npc.trans.pos = npc.responePos;
+bool NPCRespone() {
+	auto mapType = GetMapType(npc.trans.GetIntPos());
+	if (mapType ==MAP_BLOCK_NONE) {
+		npc.trans.Init(npc.responePos);
+		return true;
 	}
+	return false;
 
 }
