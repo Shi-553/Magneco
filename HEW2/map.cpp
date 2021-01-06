@@ -206,7 +206,7 @@ void DrawMap(void)
 					0
 				);
 
-				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j,i-1), 100, D3DXVECTOR2(MAP_GOAL_DRAW_SIZE_WIDTH, MAP_GOAL_DRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_TEXTURE_HEIGHT));
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j, i - 1), 100, D3DXVECTOR2(MAP_GOAL_DRAW_SIZE_WIDTH, MAP_GOAL_DRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_TEXTURE_HEIGHT));
 			}
 			else
 			{
@@ -434,4 +434,35 @@ int GetMapTextureId(MapType type) {
 		return TEXTURE_INVALID_ID;
 	}
 	return textureIds[(int)type];
+}
+
+
+bool IsBreakBlock(INTVECTOR2 pos, vector<INTVECTOR2>& v) {
+	//既にみてたらスルー
+	if (std::find(v.begin(), v.end(), pos) != v.end()) {
+		return false;
+	}
+	Map* m = GetMap(pos);
+	//範囲外
+	if (m == NULL) {
+		return false;
+	}
+	//チェックポイント
+	if (m->type == MAP_CHAECKPOINT_ON) {
+		return true;
+	}
+	//くっつけられない
+	if (!CanAttachedMapType(m->type)) {
+		return false;
+	}
+	v.push_back(pos);
+
+	//そこからみて4方向チェック
+	if (IsBreakBlock(pos + INTVECTOR2(0, 1), v) ||
+		IsBreakBlock(pos + INTVECTOR2(0, -1), v) ||
+		IsBreakBlock(pos + INTVECTOR2(1, 0), v) ||
+		IsBreakBlock(pos + INTVECTOR2(-1, 0), v)) {
+		return true;
+	}
+
 }

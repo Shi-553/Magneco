@@ -25,6 +25,7 @@ typedef struct FlyingObject
 	FlyingObjectType type;
 	D3DXVECTOR2 dir;
 	int id;
+	bool isAnime;
 
 };
 
@@ -48,3 +49,5 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
 void BackFlyingObject(int frame);
 
 void DestroyUFO();
+
+int GetFlyingObjectTextureId(FlyingObjectType type);

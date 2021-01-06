@@ -31,24 +31,19 @@ static bool isDrag = false;
 static Spone creates[FLYING_OBJECT_MAX];
 static int textureIds[FLYING_OBJECT_MAX];
 
-static int eraseTextureId=TEXTURE_INVALID_ID;
+static int eraseTextureId = TEXTURE_INVALID_ID;
 static bool isErase = false;
 
 static Spone current;
 static D3DXVECTOR2 startDrag;
 
 
-void InitFlyingObjectEditor(){
-	textureIds[FLYING_OBJECT_BLOCK ] = ReserveTextureLoadFile("texture/block01.png");
-	textureIds[FLYING_OBJECT_ENEMY ] = ReserveTextureLoadFile("texture/jellyalien01.png");
-	textureIds[FLYING_OBJECT_ENEMY_BREAK_BLOCK] = ReserveTextureLoadFile("texture/meteorite_1.png");
-	textureIds[FLYING_OBJECT_UFO] = ReserveTextureLoadFile("texture/ufo.png");
+void InitFlyingObjectEditor() {
+	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++)
+	{
+		textureIds[i] = GetFlyingObjectTextureId((FlyingObjectType)i);
+	}
 
-	textureIds[FLYING_OBJECT_PLAYER_BLOCK] = ReserveTextureLoadFile("texture/block03.png");
-	textureIds[FLYING_OBJECT_PURGE_BLOCK] = ReserveTextureLoadFile("texture/block03.png");
-	textureIds[FLYING_OBJECT_ITEM_ADD_SPEED] = ReserveTextureLoadFile("texture/hane.png");
-	textureIds[FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE] = ReserveTextureLoadFile("texture/maguneticPower.png");
-	textureIds[FLYING_OBJECT_CHECKPOINT_OFF] = ReserveTextureLoadFile("texture/checkpoint_off.png");
 
 	eraseTextureId = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE_ERASE.png");
 
@@ -58,18 +53,15 @@ void InitFlyingObjectEditor(){
 		creates[i].initPos = GetCreateFlyingObjectPos(i);
 	}
 }
-void UninitFlyingObjectEditor(){
-	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
-		ReleaseTexture(textureIds[i]);
-	}
-		ReleaseTexture(eraseTextureId);
+void UninitFlyingObjectEditor() {
+	ReleaseTexture(eraseTextureId);
 }
 
-void DrawFlyingObjectEditor(){
+void DrawFlyingObjectEditor() {
 	DrawFlyingObject();
 
 	DEBUG_FONT_STATE s = {};
-	s.pos = {500,0};
+	s.pos = { 500,0 };
 	DrawDebugFont(&s, "%d", GetFlyingObjectSponeFrame());
 
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
@@ -87,14 +79,15 @@ void DrawFlyingObjectEditor(){
 
 	if (isErase) {
 		DrawSprite(eraseTextureId, mousePos - D3DXVECTOR2(CREATE_FLYING_OBJECT_WIDTH, CREATE_FLYING_OBJECT_HEIGHT) / 2, 10, size, tPos, tSize);
-	}else
-	if (current.type != FLYING_OBJECT_NONE) {
-		Spone s = current;
-		s.initPos = GameToScreenPos(s.initPos)- D3DXVECTOR2(CREATE_FLYING_OBJECT_WIDTH, CREATE_FLYING_OBJECT_HEIGHT)/2;
-		DrawFlyingObjectScreen(s);
 	}
+	else
+		if (current.type != FLYING_OBJECT_NONE) {
+			Spone s = current;
+			s.initPos = GameToScreenPos(s.initPos) - D3DXVECTOR2(CREATE_FLYING_OBJECT_WIDTH, CREATE_FLYING_OBJECT_HEIGHT) / 2;
+			DrawFlyingObjectScreen(s);
+		}
 }
-void UpdateFlyingObjectEditor(){
+void UpdateFlyingObjectEditor() {
 	DestroyUFO();
 
 	if (TriggerInputLogger(MYVK_L)) {
@@ -108,7 +101,7 @@ void UpdateFlyingObjectEditor(){
 
 	if (wheel != 0) {
 		isPlay = false;
-		SetFlyingObjectSponeFrame(GetFlyingObjectSponeFrame()+wheel/10);
+		SetFlyingObjectSponeFrame(GetFlyingObjectSponeFrame() + wheel / 10);
 	}
 
 	if (TriggerInputLogger(MYVK_START_STOP)) {
@@ -127,9 +120,9 @@ void UpdateFlyingObjectEditor(){
 	}
 
 }
-bool CheckMouseFlyingObjectEditor(){
+bool CheckMouseFlyingObjectEditor() {
 	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));
-	bool ret=false;
+	bool ret = false;
 	if (isErase) {
 		ret = true;
 	}
@@ -148,12 +141,12 @@ bool CheckMouseFlyingObjectEditor(){
 				isDrag = true;
 			}
 		}
-		if (isErase&& isDrag) {
+		if (isErase && isDrag) {
 			auto flyingObjectList = GetFlyingObjects();
 			for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
-				if (CheckSquare(mousePos, GameToScreenPos(itr->trans.pos)-D3DXVECTOR2(25,25), {50,50})) {
+				if (CheckSquare(mousePos, GameToScreenPos(itr->trans.pos) - D3DXVECTOR2(25, 25), { 50,50 })) {
 					RemoveFlyingObjectSponer(itr->id);
-					itr=flyingObjectList->erase(itr);
+					itr = flyingObjectList->erase(itr);
 				}
 				else {
 					itr++;
@@ -164,7 +157,6 @@ bool CheckMouseFlyingObjectEditor(){
 	if (ReleaseInputLogger(MYVK_LEFT_CLICK)) {
 		if (!isDrag) {
 			isErase = false;
-			ret = true;
 
 		}
 		isDrag = false;
@@ -173,27 +165,36 @@ bool CheckMouseFlyingObjectEditor(){
 		}
 		else {
 			ret = true;
-			auto diff = startDrag - mousePos;
-			if (diff.x < -25) {
-				current.dir.x = 1;
-			}
-			else if (diff.x > 25) {
-				current.dir.x = -1;
+			auto map = GetMap(ScreenToGamePos(startDrag));
+			if (map != NULL && map->type == MAP_CHEST_CLOSED) {
+				map->param = current.type;
 			}
 			else {
-				current.dir.x = 0;
+				auto diff = startDrag - mousePos;
+				if (diff.x < -25) {
+					current.dir.x = 1;
+				}
+				else if (diff.x > 25) {
+					current.dir.x = -1;
+				}
+				else {
+					current.dir.x = 0;
+				}
+				if (diff.y < -25) {
+					current.dir.y = 1;
+				}
+				else if (diff.y > 25) {
+					current.dir.y = -1;
+				}
+				else {
+					current.dir.y = 0;
+				}
+
+				if (current.dir.x != 0 || current.dir.y != 0) {
+					current.frame = GetFlyingObjectSponeFrame();
+					AddFlyingObjectSponer(current);
+				}
 			}
-			if (diff.y < -25) {
-				current.dir.y = 1;
-			}
-			else if (diff.y > 25) {
-				current.dir.y = -1;
-			}
-			else {
-				current.dir.y = 0;
-			}
-			current.frame = GetFlyingObjectSponeFrame();
-			AddFlyingObjectSponer(current);
 			current.type = FLYING_OBJECT_NONE;
 		}
 
@@ -207,12 +208,12 @@ bool CheckMouseFlyingObjectEditor(){
 
 
 Spone CheckCreateFlyingObject(D3DXVECTOR2 pos) {
-		if (CheckSquare(pos,GetCreateFlyingObjectPos(-2), { CREATE_FLYING_OBJECT_WIDTH ,CREATE_FLYING_OBJECT_HEIGHT})) {
-			isErase=true;
-			return {};
-		}
+	if (CheckSquare(pos, GetCreateFlyingObjectPos(-2), { CREATE_FLYING_OBJECT_WIDTH ,CREATE_FLYING_OBJECT_HEIGHT })) {
+		isErase = true;
+		return {};
+	}
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
-		if (CheckSquare(pos,creates[i].initPos, { CREATE_FLYING_OBJECT_WIDTH ,CREATE_FLYING_OBJECT_HEIGHT})) {
+		if (CheckSquare(pos, creates[i].initPos, { CREATE_FLYING_OBJECT_WIDTH ,CREATE_FLYING_OBJECT_HEIGHT })) {
 			return creates[i];
 		}
 	}
@@ -235,7 +236,7 @@ D3DXVECTOR2 GetCreateFlyingObjectPos(int type) {
 
 void DrawFlyingObjectScreen(const Spone& map) {
 
-	D3DXVECTOR2 size = D3DXVECTOR2( CREATE_FLYING_OBJECT_WIDTH,CREATE_FLYING_OBJECT_HEIGHT );
+	D3DXVECTOR2 size = D3DXVECTOR2(CREATE_FLYING_OBJECT_WIDTH, CREATE_FLYING_OBJECT_HEIGHT);
 
 	D3DXVECTOR2 tPos = { 0,0 };
 	D3DXVECTOR2 tSize = { CREATE_FLYING_OBJECT_TEXTURE_WIDTH,CREATE_FLYING_OBJECT_TEXTURE_HEIGHT };
