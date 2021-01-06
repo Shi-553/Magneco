@@ -9,6 +9,7 @@
 #include <queue>
 #include <stack>
 #include "sceneManager.h"
+#include "InputLogger.h"
 
 typedef struct MapLabel {
 	INTVECTOR2 pos;
