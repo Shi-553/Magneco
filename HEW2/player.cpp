@@ -204,7 +204,6 @@ void BlockDecision() {
 
 	player.checkCheckpoint = false;
 
-	UpdateNPCShortestPath();
 	player.putFrame = 0;
 	player.isPut = false;
 }
@@ -214,6 +213,7 @@ Player* GetPlayer() {
 }
 
 void PutBeacon() {
+
 	auto mapType = GetMapType(player.trans.GetIntPos());
 	if (CanGoNPCMapType(mapType)) {
 		UpdateNPCShortestPath(player.trans.GetIntPos());

@@ -9,6 +9,7 @@
 #include <queue>
 #include <stack>
 #include "sceneManager.h"
+#include "InputLogger.h"
 
 typedef struct MapLabel {
 	INTVECTOR2 pos;
@@ -105,8 +106,8 @@ void UpdateNPC() {
 
 		npc.isMove = true;
 
-		 dir = nextPosQueue.top() - npc.trans.GetIntPos();
-	    
+		dir = nextPosQueue.top() - npc.trans.GetIntPos();
+
 		if (dir.y == 1) {
 			npcTextureVertical = 0;
 		}
@@ -121,7 +122,7 @@ void UpdateNPC() {
 		if (dir.x == 1) {
 			npcTextureVertical = NPC_TEXTURE_HEIGHT * 3;
 		}
-		
+
 		nextPos = nextPosQueue.top();
 
 		nextPosQueue.pop();
@@ -163,12 +164,14 @@ void DrawNPC() {
 		DrawGameSprite(npcTextureIdMove, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
 		DrawGameSprite(npcTextureIdShadow, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT));
 	}
-	
+
 }
 
 void UpdateNPCShortestPath(INTVECTOR2 beaconPos) {
-	gBeaconPos = beaconPos;
-	UpdateNPCShortestPath();
+	if (!npc.isMove) {
+		gBeaconPos = beaconPos;
+		UpdateNPCShortestPath();
+	}
 }
 
 void UpdateNPCShortestPath() {
@@ -179,7 +182,7 @@ void UpdateNPCShortestPath() {
 	{
 		for (int j = 0; j < GetMapWidth(); j++)
 		{
-			GetMapLabel(i,j) = 0;
+			GetMapLabel(i, j) = 0;
 		}
 	}
 	while (!nextPosQueue.empty()) {
@@ -200,33 +203,33 @@ void UpdateNPCShortestPath() {
 		}
 		nextPosQueue.push(current);
 
-		int label = GetMapLabel(current.y,current.x);
+		int label = GetMapLabel(current.y, current.x);
 
 		auto right = current;
-		right.x ++;
+		right.x++;
 		auto mapType = GetMapType(right);
-		if (GetMapLabel(right.y,right.x) == label - 1 && CanGoNPCMapType(mapType)) {
+		if (GetMapLabel(right.y, right.x) == label - 1 && CanGoNPCMapType(mapType)) {
 			current = right;
 			continue;
 		}
 		auto bottom = current;
 		bottom.y++;
 		mapType = GetMapType(bottom);
-		if (GetMapLabel(bottom.y ,bottom.x) == label - 1 && CanGoNPCMapType(mapType)) {
+		if (GetMapLabel(bottom.y, bottom.x) == label - 1 && CanGoNPCMapType(mapType)) {
 			current = bottom;
 			continue;
 		}
 		auto left = current;
 		left.x--;
 		mapType = GetMapType(left);
-		if (GetMapLabel(left.y,left.x) == label - 1 && CanGoNPCMapType(mapType)) {
+		if (GetMapLabel(left.y, left.x) == label - 1 && CanGoNPCMapType(mapType)) {
 			current = left;
 			continue;
 		}
 		auto top = current;
 		top.y--;
 		mapType = GetMapType(top);
-		if (GetMapLabel(top.y,top.x) == label - 1 && CanGoNPCMapType(mapType)) {
+		if (GetMapLabel(top.y, top.x) == label - 1 && CanGoNPCMapType(mapType)) {
 			current = top;
 			continue;
 		}
@@ -237,7 +240,7 @@ INTVECTOR2 FindNearestBlock() {
 	std::deque<MapLabel> mapQueue;
 	mapQueue.push_back({ gBeaconPos,-1,0 });
 
-	GetMapLabel(gBeaconPos.y,gBeaconPos.x) = -1;
+	GetMapLabel(gBeaconPos.y, gBeaconPos.x) = -1;
 
 	MapLabel nearest = {
 		npc.trans.GetIntPos(),
@@ -277,7 +280,7 @@ INTVECTOR2 FindNearestBlock() {
 void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, MapLabel* nearest) {
 	auto mapType = GetMapType(label->pos);
 	//そこが到達可能なとき
-	if (GetMapLabel(label->pos.y,label->pos.x) > 0) {
+	if (GetMapLabel(label->pos.y, label->pos.x) > 0) {
 		//置かないといけないブロックが今より少ないかどうかと、同じならビーコンからの距離が短いかどうか
 		if (label->notBlockCount < nearest->notBlockCount || (label->notBlockCount == nearest->notBlockCount && label->label > nearest->label)) {
 			*nearest = *label;
@@ -289,10 +292,10 @@ void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, Ma
 	}
 	if (CanGoNPCMapType(mapType) || mapType == MAP_BLOCK_NONE) {
 
-		if (GetMapLabel(label->pos.y,label->pos.x) == 0) {
+		if (GetMapLabel(label->pos.y, label->pos.x) == 0) {
 			mapQueue->push_back(*label);
 
-			GetMapLabel(label->pos.y,label->pos.x) = label->label;
+			GetMapLabel(label->pos.y, label->pos.x) = label->label;
 		}
 		else {
 			for (auto itr = mapQueue->begin(); itr != mapQueue->end(); itr++) {
@@ -300,14 +303,14 @@ void FourDirFindNearestBlock(std::deque<MapLabel>* mapQueue, MapLabel* label, Ma
 					(itr->notBlockCount > label->notBlockCount || (itr->notBlockCount == label->notBlockCount && itr->label < label->label))) {
 					itr->notBlockCount = label->notBlockCount;
 					itr->label = label->label;
-					GetMapLabel(label->pos.y,label->pos.x) = label->label;
+					GetMapLabel(label->pos.y, label->pos.x) = label->label;
 				}
 			}
 			if (nearest->pos == label->pos &&
 				(nearest->notBlockCount > label->notBlockCount || (nearest->notBlockCount == label->notBlockCount && nearest->label < label->label))) {
 				nearest->notBlockCount = label->notBlockCount;
 				nearest->label = label->label;
-				GetMapLabel(label->pos.y,label->pos.x) = label->label;
+				GetMapLabel(label->pos.y, label->pos.x) = label->label;
 			}
 
 		}
@@ -320,7 +323,7 @@ bool FindShortestPath() {
 	std::queue<MapLabel> mapQueue;
 	mapQueue.push({ intPos,1 });
 
-	GetMapLabel(intPos.y,intPos.x) = 1;
+	GetMapLabel(intPos.y, intPos.x) = 1;
 
 	while (!mapQueue.empty()) {
 		auto mapLabel = mapQueue.front();
@@ -362,10 +365,10 @@ bool FindShortestPath() {
 }
 void FourDir(std::queue<MapLabel>* mapQueue, MapLabel* label) {
 	auto mapType = GetMapType(label->pos);
-	if (CanGoNPCMapType(mapType) && GetMapLabel(label->pos.y,label->pos.x) == 0) {
+	if (CanGoNPCMapType(mapType) && GetMapLabel(label->pos.y, label->pos.x) == 0) {
 		mapQueue->push(*label);
 
-		GetMapLabel(label->pos.y,label->pos.x) = label->label;
+		GetMapLabel(label->pos.y, label->pos.x) = label->label;
 	}
 
 }
