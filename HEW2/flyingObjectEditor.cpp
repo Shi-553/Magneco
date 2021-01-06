@@ -14,7 +14,7 @@
 
 
 #define CREATE_FLYING_OBJECT_ZERO_X 1050
-#define CREATE_FLYING_OBJECT_ZERO_Y 150
+#define CREATE_FLYING_OBJECT_ZERO_Y 250
 
 #define CREATE_FLYING_OBJECT_WIDTH 50
 #define CREATE_FLYING_OBJECT_HEIGHT 50
@@ -22,9 +22,13 @@
 #define CREATE_FLYING_OBJECT_MARGIN 20
 
 
+bool CheckWheelHP(D3DXVECTOR2 pos);
+bool CheckChangeHPUp(D3DXVECTOR2 pos);
+bool CheckChangeHPDown(D3DXVECTOR2 pos);
 D3DXVECTOR2 GetCreateFlyingObjectPos(int type);
 void DrawFlyingObjectScreen(const Spone& map);
 Spone CheckCreateFlyingObject(D3DXVECTOR2 pos);
+
 static bool isPlay = false;
 static bool isDrag = false;
 
@@ -37,6 +41,7 @@ static bool isErase = false;
 static Spone current;
 static D3DXVECTOR2 startDrag;
 
+static int createHP = 1;
 
 void InitFlyingObjectEditor() {
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++)
@@ -64,6 +69,14 @@ void DrawFlyingObjectEditor() {
 	s.pos = { 500,0 };
 	DrawDebugFont(&s, "%d", GetFlyingObjectSponeFrame());
 
+	s.scale = 0.5;
+	s.pos = { 1000,0 };
+	DrawDebugFont(&s, "CREATE");
+	s.pos = { 1000,40 };
+	DrawDebugFont(&s, "HP  <   >");
+	s.pos = { 1000 + DEBUG_FONT_WIDTH * 6 / 2,40 };
+	DrawDebugFont(&s, "%d", createHP);
+
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
 		DrawFlyingObjectScreen(creates[i]);
 	}
@@ -88,6 +101,8 @@ void DrawFlyingObjectEditor() {
 		}
 }
 void UpdateFlyingObjectEditor() {
+	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));
+
 	DestroyUFO();
 
 	if (TriggerInputLogger(MYVK_L)) {
@@ -100,8 +115,13 @@ void UpdateFlyingObjectEditor() {
 	//DebugPrintf("%d,\n", wheel);
 
 	if (wheel != 0) {
-		isPlay = false;
-		SetFlyingObjectSponeFrame(GetFlyingObjectSponeFrame() + wheel / 10);
+		if (CheckWheelHP(mousePos)) {
+			createHP += wheel/120;
+		}
+		else {
+			isPlay = false;
+			SetFlyingObjectSponeFrame(GetFlyingObjectSponeFrame() + wheel / 10);
+		}
 	}
 
 	if (TriggerInputLogger(MYVK_START_STOP)) {
@@ -155,6 +175,17 @@ bool CheckMouseFlyingObjectEditor() {
 		}
 	}
 	if (ReleaseInputLogger(MYVK_LEFT_CLICK)) {
+		if (CheckChangeHPUp(mousePos)) {
+			createHP++;
+			return true;
+		}
+		if (CheckChangeHPDown(mousePos)) {
+			if (createHP > 1) {
+				createHP--;
+			}
+			return true;
+		}
+
 		if (!isDrag) {
 			isErase = false;
 
@@ -192,6 +223,7 @@ bool CheckMouseFlyingObjectEditor() {
 
 				if (current.dir.x != 0 || current.dir.y != 0) {
 					current.frame = GetFlyingObjectSponeFrame();
+					current.hp = createHP;
 					AddFlyingObjectSponer(current);
 				}
 			}
@@ -206,6 +238,42 @@ bool CheckMouseFlyingObjectEditor() {
 	return ret;
 }
 
+bool CheckChangeHPUp(D3DXVECTOR2 pos) {
+	D3DXVECTOR2 downPos = { 1000 + DEBUG_FONT_WIDTH * 4 / 2,40 };
+	D3DXVECTOR2 upPos = { 1000 + DEBUG_FONT_WIDTH * 8 / 2,40 };
+	D3DXVECTOR2 size = { DEBUG_FONT_WIDTH / 2,DEBUG_FONT_HEIGHT / 2 };
+
+	D3DXVECTOR2 margin = { 20,5 };
+
+
+	return CheckSquare(pos, upPos - margin / 2, size + margin);
+}
+bool CheckChangeHPDown(D3DXVECTOR2 pos) {
+	D3DXVECTOR2 downPos = { 1000 + DEBUG_FONT_WIDTH * 4 / 2,40 };
+	D3DXVECTOR2 upPos = { 1000 + DEBUG_FONT_WIDTH * 8 / 2,40 };
+	D3DXVECTOR2 size = { DEBUG_FONT_WIDTH / 2,DEBUG_FONT_HEIGHT / 2 };
+
+	D3DXVECTOR2 margin = { 20,5 };
+
+
+	return CheckSquare(pos, downPos- margin/2, size+ margin);
+}
+
+bool CheckWheelHP(D3DXVECTOR2 pos) {
+	D3DXVECTOR2 hpPos = { 1000 ,40 };
+	D3DXVECTOR2 size = { DEBUG_FONT_WIDTH*9 / 2,DEBUG_FONT_HEIGHT / 2 };
+
+	D3DXVECTOR2 margin = { 20,5 };
+
+	bool ret = false;
+
+
+	if (CheckSquare(pos, hpPos - margin/2, size+ margin)) {
+		ret = true;
+	}
+
+	return ret;
+}
 
 Spone CheckCreateFlyingObject(D3DXVECTOR2 pos) {
 	if (CheckSquare(pos, GetCreateFlyingObjectPos(-2), { CREATE_FLYING_OBJECT_WIDTH ,CREATE_FLYING_OBJECT_HEIGHT })) {

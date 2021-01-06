@@ -41,16 +41,16 @@ DEBUG_FONT_STATE DrawDebugFont(DEBUG_FONT_STATE* state, const char* str, va_list
 	}
 
 	if (s.size.x == 0 && s.size.y == 0) {
-		s.size.x = FONT_WIDTH;
-		s.size.y = FONT_HEIGHT;
+		s.size.x = DEBUG_FONT_WIDTH;
+		s.size.y = DEBUG_FONT_HEIGHT;
 	}
 
 	if (s.size.x == 0) {
-		s.size.x = s.size.y * (float)FONT_WIDTH / FONT_HEIGHT;
+		s.size.x = s.size.y * (float)DEBUG_FONT_WIDTH / DEBUG_FONT_HEIGHT;
 	}
 
 	if (s.size.y == 0) {
-		s.size.y = s.size.x * (float)FONT_HEIGHT / FONT_WIDTH;
+		s.size.y = s.size.x * (float)DEBUG_FONT_HEIGHT / DEBUG_FONT_WIDTH;
 	}
 
 	float w = s.size.x * s.scale;
@@ -79,10 +79,10 @@ DEBUG_FONT_STATE DrawDebugFont(DEBUG_FONT_STATE* state, const char* str, va_list
 		float x = s.pos.x + w * s.charOffsetX;
 		float y = s.pos.y + h * s.charOffsetY;
 
-		float tx = (code - MIN_CHAR_CODE) % ONE_LINE_COUNT * FONT_WIDTH;
-		float ty = (code - MIN_CHAR_CODE) / ONE_LINE_COUNT * FONT_HEIGHT;
+		float tx = (code - MIN_CHAR_CODE) % ONE_LINE_COUNT * DEBUG_FONT_WIDTH;
+		float ty = (code - MIN_CHAR_CODE) / ONE_LINE_COUNT * DEBUG_FONT_HEIGHT;
 
-		DrawSprite(textureId, { x,y }, s.z, { w,h }, { tx,ty }, { FONT_WIDTH,FONT_HEIGHT });
+		DrawSprite(textureId, { x,y }, s.z, { w,h }, { tx,ty }, { DEBUG_FONT_WIDTH,DEBUG_FONT_HEIGHT });
 
 
 		s.charOffsetX++;

@@ -7,6 +7,7 @@ struct Spone {
 	D3DXVECTOR2 initPos;
 	FlyingObjectType type;
 	D3DXVECTOR2 dir;
+	int hp;
 };
 struct SponeId {
 	Spone s;

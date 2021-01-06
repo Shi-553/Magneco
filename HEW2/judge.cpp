@@ -69,12 +69,12 @@ void JudgePlayerandFlyingObjectHit() {
 			itr++;
 			continue;
 		}
-		if (itr->type == FLYING_OBJECT_BLOCK || itr->type == FLYING_OBJECT_CHECKPOINT_OFF ) {
+		if (itr->type == FLYING_OBJECT_BLOCK || itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
 			if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint || player->isPut) {
 				itr++;
 				continue;
 			}
-			 
+
 			if (player->flyingObjectList.size() > 0 && itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
 				itr++;
 				continue;
@@ -125,7 +125,7 @@ void JudgePlayerandFlyingObjectHit() {
 			{
 				itr->type = FLYING_OBJECT_PLAYER_BLOCK;
 			}
-			
+
 
 			player->flyingObjectList.push_back(*itr);
 			itr = flyingObjectList->erase(itr);
@@ -160,71 +160,71 @@ void JudgePlayerandFlyingObjectHit() {
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
 		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
+			if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
+				continue;
+			}
+
 			if (itr->type == FLYING_OBJECT_BLOCK) {
-				if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint|| player->isPut) {
+				if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint || player->isPut) {
 					break;
 				}
 				if (player->flyingObjectList.size() > 0 && itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
 					break;
 				}
-				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos) ) {
-					auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
+				auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
 
-					//itr->trans.pos = player->trans.pos;
-					itr->trans.pos = itr2->trans.pos;
+				//itr->trans.pos = player->trans.pos;
+				itr->trans.pos = itr2->trans.pos;
 
-					itr->trans.UpdatePos();
+				itr->trans.UpdatePos();
 
-					bool isMovePlayer = player->dir != D3DXVECTOR2(0, 0);
-					D3DXVECTOR2 movePlayer = D3DXVECTOR2(0, 0);
+				bool isMovePlayer = player->dir != D3DXVECTOR2(0, 0);
+				D3DXVECTOR2 movePlayer = D3DXVECTOR2(0, 0);
+				if (isMovePlayer) {
+					if (fabsf(player->dir.x) > fabsf(player->dir.y)) {
+						movePlayer.x = player->dir.x > 0 ? 1 : -1;
+					}
+					else {
+						movePlayer.y = player->dir.y > 0 ? 1 : -1;
+					}
+				}
+				while (true) {
+					auto intPos = itr->trans.GetIntPos();
+					if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, &intPos)) {
+						break;
+					}
 					if (isMovePlayer) {
-						if (fabsf(player->dir.x) > fabsf(player->dir.y)) {
-							movePlayer.x = player->dir.x > 0 ? 1 : -1;
-						}
-						else {
-							movePlayer.y = player->dir.y > 0 ? 1 : -1;
-						}
+						itr->trans.pos += movePlayer;
 					}
-					while (true) {
-						auto intPos = itr->trans.GetIntPos();
-						if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, &intPos)) {
-							break;
-						}
-						if (isMovePlayer) {
-							itr->trans.pos += movePlayer;
-						}
-						else {
-							itr->trans.pos += move;
-						}
-						itr->trans.UpdatePos();
+					else {
+						itr->trans.pos += move;
 					}
-					itr->type = FLYING_OBJECT_PLAYER_BLOCK;
+					itr->trans.UpdatePos();
+				}
+				itr->type = FLYING_OBJECT_PLAYER_BLOCK;
 
-					player->flyingObjectList.push_back(*itr);
-					itr = flyingObjectList->erase(itr);
-					isMatched = true;
-					break;
-				}
+				player->flyingObjectList.push_back(*itr);
+				itr = flyingObjectList->erase(itr);
+				isMatched = true;
+				break;
+
 			}
-			else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
-				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
-					player->flyingObjectList.erase(itr2);
+			else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO) {
+
+				player->flyingObjectList.erase(itr2);
+				player->checkCheckpoint = false;
+				itr->hp--;
+				if (itr->hp <= 0) {
 					itr = flyingObjectList->erase(itr);
-					player->checkCheckpoint = false;
 					isMatched = true;
-					break;
+
+					if (itr->type == FLYING_OBJECT_UFO) {
+						npc->takeOutFrame = 0;
+						DestroyUFO();
+					}
 				}
-			}
-			else if (itr->type == FLYING_OBJECT_UFO) {
-				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
-					player->flyingObjectList.erase(itr2);
-					itr = flyingObjectList->erase(itr);
-					npc->takeOutFrame = 0;
-					player->checkCheckpoint = false;
-					isMatched = true;
-					DestroyUFO();
-					break;
-				}
+				break;
+
 			}
 
 		}
@@ -240,23 +240,25 @@ void JudgePlayerandFlyingObjectHit() {
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
 		for (auto itr2 = player->purgeFlyingObjectList.begin(); itr2 != player->purgeFlyingObjectList.end(); itr2++) {
-			if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
-				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
-					player->purgeFlyingObjectList.erase(itr2);
-					itr = flyingObjectList->erase(itr);
-					isMatched = true;
-					break;
-				}
+			if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
+				continue;
 			}
-			else if (itr->type == FLYING_OBJECT_UFO) {
-				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
-					player->purgeFlyingObjectList.erase(itr2);
+			if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO) {
+				player->purgeFlyingObjectList.erase(itr2);
+
+				itr->hp--;
+				if (itr->hp <= 0) {
 					itr = flyingObjectList->erase(itr);
-					npc->takeOutFrame = 0;
 					isMatched = true;
-					DestroyUFO();
-					break;
+
+					if (itr->type == FLYING_OBJECT_UFO) {
+						npc->takeOutFrame = 0;
+						DestroyUFO();
+
+					}
 				}
+				break;
+
 			}
 
 		}
@@ -278,7 +280,7 @@ void JudgePlayerandFlyingObjectHit() {
 	if (GetMapType(npc->trans.GetIntPos()) == MAP_CHEST_CLOSED) {
 		OpenChest(npc->trans.GetIntPos());
 	}
-	
+
 	auto checkPointOffMap = GetMap(npc->trans.GetIntPos());
 
 	if (checkPointOffMap != NULL && checkPointOffMap->type == MAP_CHAECKPOINT_OFF) {
@@ -323,7 +325,7 @@ void JudgePlayerandFlyingObjectHit() {
 				//チェックポイントとつながってないブロックを消す
 				vector<INTVECTOR2> v;
 				if (!IsBreakBlock(pos + INTVECTOR2(0, 1), v)) {
-					for (auto itrV = v.begin(); itrV != v.end();itrV++) {
+					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
 						Map* map = GetMap(*itrV);
 						if (map != NULL && map->type == MAP_BLOCK) {
 							map->type = MAP_BLOCK_NONE;
@@ -332,7 +334,7 @@ void JudgePlayerandFlyingObjectHit() {
 				}
 				v.clear();
 				if (!IsBreakBlock(pos + INTVECTOR2(0, -1), v)) {
-					for (auto itrV = v.begin(); itrV != v.end();itrV++) {
+					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
 						Map* map = GetMap(*itrV);
 						if (map != NULL && map->type == MAP_BLOCK) {
 							map->type = MAP_BLOCK_NONE;
@@ -340,8 +342,8 @@ void JudgePlayerandFlyingObjectHit() {
 					}
 				}
 				v.clear();
-				if (!IsBreakBlock(itr->trans.GetIntPos() + INTVECTOR2(1,0), v)) {
-					for (auto itrV = v.begin(); itrV != v.end();itrV++) {
+				if (!IsBreakBlock(itr->trans.GetIntPos() + INTVECTOR2(1, 0), v)) {
+					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
 						Map* map = GetMap(*itrV);
 						if (map != NULL && map->type == MAP_BLOCK) {
 							map->type = MAP_BLOCK_NONE;
@@ -349,8 +351,8 @@ void JudgePlayerandFlyingObjectHit() {
 					}
 				}
 				v.clear();
-				if (!IsBreakBlock(pos + INTVECTOR2(-1,0), v)) {
-					for (auto itrV = v.begin(); itrV != v.end();itrV++) {
+				if (!IsBreakBlock(pos + INTVECTOR2(-1, 0), v)) {
+					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
 						Map* map = GetMap(*itrV);
 						if (map != NULL && map->type == MAP_BLOCK) {
 							map->type = MAP_BLOCK_NONE;
