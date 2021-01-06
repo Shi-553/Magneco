@@ -80,17 +80,8 @@ void UpdatePlayer() {
 	auto last = player.trans.pos;
 	auto move = player.dir * speed * GetDeltaTime();
 
-	player.trans.pos.x += move.x;
-	auto mapType = GetMapType(INTVECTOR2(player.trans.pos));
-	if (mapType == MAP_NONE || mapType == MAP_WALL) {
-		player.trans.pos.x = last.x;
-	}
+	player.trans.pos+= move;
 
-	player.trans.pos.y += move.y;
-	mapType = GetMapType(INTVECTOR2(player.trans.pos));
-	if (mapType == MAP_NONE || mapType == MAP_WALL) {
-		player.trans.pos.y = last.y;
-	}
 
 	player.trans.UpdatePos();
 
