@@ -9,6 +9,7 @@ typedef struct NPC_tag {
 	int aniFrame;
 	bool isMove;
 	int takeOutFrame;
+	INTVECTOR2 responePos;
 }NPC;
 
 #define TAKE_OUT_FRAME_LIMIT (10 * 60)
@@ -27,5 +28,7 @@ NPC* GetNpc();
 
 bool NPCExport(FILE* fp);
 bool NPCImport(FILE* fp);
+
+void SetNPCResponePos(INTVECTOR2 pos);
 
 #endif // !_NPC_H

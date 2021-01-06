@@ -284,6 +284,10 @@ void JudgePlayerandFlyingObjectHit() {
 		checkPointOffMap->type = MAP_CHAECKPOINT_ON;
 	}
 
+	if (GetMapType(npc->trans.GetIntPos()) == MAP_CHAECKPOINT_ON) {
+		SetNPCResponePos(npc->trans.GetIntPos());
+	}
+
 	// npcとufo
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		if (itr->type == FLYING_OBJECT_UFO) {
