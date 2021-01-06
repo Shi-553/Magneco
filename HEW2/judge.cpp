@@ -69,32 +69,34 @@ void JudgePlayerandFlyingObjectHit() {
 			itr++;
 			continue;
 		}
-		if (itr->type == FLYING_OBJECT_BLOCK || itr->type == FLYING_OBJECT_CHECKPOINT_OFF ) {
+		if (itr->type == FLYING_OBJECT_BLOCK || itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
 			if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint || player->isPut) {
 				itr++;
 				continue;
 			}
-			 
+
 			if (player->flyingObjectList.size() > 0 && itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
 				itr++;
 				continue;
 			}
 
-			auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
-
 			itr->trans.pos = player->trans.pos;
 			itr->trans.UpdatePos();
 
 
-			bool isMovePlayer = player->dir != D3DXVECTOR2(0, 0);
-			D3DXVECTOR2 movePlayer = D3DXVECTOR2(0, 0);
-			if (isMovePlayer) {
+			auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
+			if (player->dir != D3DXVECTOR2(0, 0)) {
+				move = D3DXVECTOR2(0, 0);
 				if (fabsf(player->dir.x) > fabsf(player->dir.y)) {
-					movePlayer.x = player->dir.x > 0 ? 1 : -1;
+					move.x = player->dir.x > 0 ? 1 : -1;
 				}
 				else {
-					movePlayer.y = player->dir.y > 0 ? 1 : -1;
+					move.y = player->dir.y > 0 ? 1 : -1;
 				}
+			}
+
+			if (move.x == 0 && move.y == 0) {
+				move = itr->dir;
 			}
 
 			while (true) {
@@ -103,12 +105,7 @@ void JudgePlayerandFlyingObjectHit() {
 					break;
 				}
 
-				if (isMovePlayer) {
-					itr->trans.pos += movePlayer;
-				}
-				else {
-					itr->trans.pos += move;
-				}
+				itr->trans.pos += move;
 				itr->trans.UpdatePos();
 				intPos = itr->trans.GetIntPos();
 			}
@@ -125,7 +122,7 @@ void JudgePlayerandFlyingObjectHit() {
 			{
 				itr->type = FLYING_OBJECT_PLAYER_BLOCK;
 			}
-			
+
 
 			player->flyingObjectList.push_back(*itr);
 			itr = flyingObjectList->erase(itr);
@@ -161,41 +158,40 @@ void JudgePlayerandFlyingObjectHit() {
 		bool isMatched = false;
 		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
 			if (itr->type == FLYING_OBJECT_BLOCK) {
-				if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint|| player->isPut) {
+				if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint || player->isPut) {
 					break;
 				}
 				if (player->flyingObjectList.size() > 0 && itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
 					break;
 				}
-				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos) ) {
-					auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
-
+				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
 					//itr->trans.pos = player->trans.pos;
 					itr->trans.pos = itr2->trans.pos;
 
 					itr->trans.UpdatePos();
 
-					bool isMovePlayer = player->dir != D3DXVECTOR2(0, 0);
-					D3DXVECTOR2 movePlayer = D3DXVECTOR2(0, 0);
-					if (isMovePlayer) {
+					auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
+					if (player->dir != D3DXVECTOR2(0, 0)) {
+						move = D3DXVECTOR2(0, 0);
 						if (fabsf(player->dir.x) > fabsf(player->dir.y)) {
-							movePlayer.x = player->dir.x > 0 ? 1 : -1;
+							move.x = player->dir.x > 0 ? 1 : -1;
 						}
 						else {
-							movePlayer.y = player->dir.y > 0 ? 1 : -1;
+							move.y = player->dir.y > 0 ? 1 : -1;
 						}
+					}
+
+					if (move.x == 0 && move.y == 0) {
+						move = itr->dir;
 					}
 					while (true) {
 						auto intPos = itr->trans.GetIntPos();
 						if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, &intPos)) {
 							break;
 						}
-						if (isMovePlayer) {
-							itr->trans.pos += movePlayer;
-						}
-						else {
-							itr->trans.pos += move;
-						}
+
+						itr->trans.pos += move;
+
 						itr->trans.UpdatePos();
 					}
 					itr->type = FLYING_OBJECT_PLAYER_BLOCK;
@@ -278,7 +274,7 @@ void JudgePlayerandFlyingObjectHit() {
 	if (GetMapType(npc->trans.GetIntPos()) == MAP_CHEST_CLOSED) {
 		OpenChest(npc->trans.GetIntPos());
 	}
-	
+
 	auto checkPointOffMap = GetMap(npc->trans.GetIntPos());
 
 	if (checkPointOffMap != NULL && checkPointOffMap->type == MAP_CHAECKPOINT_OFF) {
@@ -323,7 +319,7 @@ void JudgePlayerandFlyingObjectHit() {
 				//チェックポイントとつながってないブロックを消す
 				vector<INTVECTOR2> v;
 				if (!IsBreakBlock(pos + INTVECTOR2(0, 1), v)) {
-					for (auto itrV = v.begin(); itrV != v.end();itrV++) {
+					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
 						Map* map = GetMap(*itrV);
 						if (map != NULL && map->type == MAP_BLOCK) {
 							map->type = MAP_BLOCK_NONE;
@@ -332,7 +328,7 @@ void JudgePlayerandFlyingObjectHit() {
 				}
 				v.clear();
 				if (!IsBreakBlock(pos + INTVECTOR2(0, -1), v)) {
-					for (auto itrV = v.begin(); itrV != v.end();itrV++) {
+					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
 						Map* map = GetMap(*itrV);
 						if (map != NULL && map->type == MAP_BLOCK) {
 							map->type = MAP_BLOCK_NONE;
@@ -340,8 +336,8 @@ void JudgePlayerandFlyingObjectHit() {
 					}
 				}
 				v.clear();
-				if (!IsBreakBlock(itr->trans.GetIntPos() + INTVECTOR2(1,0), v)) {
-					for (auto itrV = v.begin(); itrV != v.end();itrV++) {
+				if (!IsBreakBlock(itr->trans.GetIntPos() + INTVECTOR2(1, 0), v)) {
+					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
 						Map* map = GetMap(*itrV);
 						if (map != NULL && map->type == MAP_BLOCK) {
 							map->type = MAP_BLOCK_NONE;
@@ -349,8 +345,8 @@ void JudgePlayerandFlyingObjectHit() {
 					}
 				}
 				v.clear();
-				if (!IsBreakBlock(pos + INTVECTOR2(-1,0), v)) {
-					for (auto itrV = v.begin(); itrV != v.end();itrV++) {
+				if (!IsBreakBlock(pos + INTVECTOR2(-1, 0), v)) {
+					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
 						Map* map = GetMap(*itrV);
 						if (map != NULL && map->type == MAP_BLOCK) {
 							map->type = MAP_BLOCK_NONE;
