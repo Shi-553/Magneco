@@ -99,6 +99,10 @@ void JudgePlayerandFlyingObjectHit() {
 				move = itr->dir;
 			}
 
+			if (move.x == 0 && move.y == 0) {
+				move = (player->trans.GetIntLastPos() - player->trans.GetIntPos()).ToD3DXVECTOR2();
+			}
+
 			while (true) {
 				auto intPos = itr->trans.GetIntPos();
 				if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, &intPos)) {
@@ -183,6 +187,9 @@ void JudgePlayerandFlyingObjectHit() {
 
 					if (move.x == 0 && move.y == 0) {
 						move = itr->dir;
+					}
+					if (move.x == 0 && move.y == 0) {
+						move = (player->trans.GetIntLastPos() - player->trans.GetIntPos()).ToD3DXVECTOR2();
 					}
 					while (true) {
 						auto intPos = itr->trans.GetIntPos();

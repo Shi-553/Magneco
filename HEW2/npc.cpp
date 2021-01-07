@@ -10,6 +10,8 @@
 #include <stack>
 #include "sceneManager.h"
 #include "InputLogger.h"
+#include "font.h"
+#include <string>
 
 typedef struct MapLabel {
 	INTVECTOR2 pos;
@@ -24,6 +26,8 @@ void FourDir(std::queue<MapLabel>* mapQueue, MapLabel* label);
 int& GetMapLabel(int y, int x);
 bool NPCRespone();
 
+#define NPC_FONT_WIDTH 30
+#define NPC_FONT_HIGHT 64
 
 #define NPC_TEXTURE_WIDTH 64
 #define NPC_TEXTURE_HEIGHT 64
@@ -47,6 +51,7 @@ static INTVECTOR2 gBeaconPos;
 
 static int  npcTextureVertical = 0;
 
+static LPD3DXFONT font = NULL;
 void InitNPC() {
 	beaconTextureId = ReserveTextureLoadFile("texture/beacon01.png");
 
@@ -67,6 +72,7 @@ void InitNPC() {
 	while (!nextPosQueue.empty()) {
 		nextPosQueue.pop();
 	}
+	MyCreateFont(NPC_FONT_HIGHT, NPC_FONT_WIDTH, &font);
 }
 
 void UninitNPC() {
@@ -165,6 +171,17 @@ void DrawNPC() {
 		DrawGameSprite(npcTextureIdShadow, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT));
 	}
 
+	if (npc.takeOutFrame > 0) {
+		auto string=std::to_string((TAKE_OUT_FRAME_LIMIT -npc.takeOutFrame+1)/100);
+		RECT r;
+		auto g = npc.trans.pos + D3DXVECTOR2(0.5, 0.5);
+		auto screenPos = GameToScreenPos(g);
+		r.left = screenPos.x;
+		r.right = screenPos.x;
+		r.top = screenPos.y-150;
+		
+		font->DrawTextA(NULL, string.c_str(), string.size(), &r, DT_CENTER | DT_NOCLIP, D3DCOLOR_RGBA(255,255,255,255));
+	}
 }
 
 void UpdateNPCShortestPath(INTVECTOR2 beaconPos) {
