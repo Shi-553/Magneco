@@ -161,6 +161,10 @@ void JudgePlayerandFlyingObjectHit() {
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
 		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
+			if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
+				continue;
+			}
+
 			if (itr->type == FLYING_OBJECT_BLOCK) {
 				if (player->flyingObjectList.size() >= player->blockMax || player->checkCheckpoint || player->isPut) {
 					break;
@@ -168,22 +172,21 @@ void JudgePlayerandFlyingObjectHit() {
 				if (player->flyingObjectList.size() > 0 && itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
 					break;
 				}
-				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
-					//itr->trans.pos = player->trans.pos;
-					itr->trans.pos = itr2->trans.pos;
 
-					itr->trans.UpdatePos();
+				itr->trans.pos = itr2->trans.pos;
+				itr->trans.UpdatePos();
 
-					auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
-					if (player->dir != D3DXVECTOR2(0, 0)) {
-						move = D3DXVECTOR2(0, 0);
-						if (fabsf(player->dir.x) > fabsf(player->dir.y)) {
-							move.x = player->dir.x > 0 ? 1 : -1;
-						}
-						else {
-							move.y = player->dir.y > 0 ? 1 : -1;
-						}
+
+				auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
+				if (player->dir != D3DXVECTOR2(0, 0)) {
+					move = D3DXVECTOR2(0, 0);
+					if (fabsf(player->dir.x) > fabsf(player->dir.y)) {
+						move.x = player->dir.x > 0 ? 1 : -1;
 					}
+					else {
+						move.y = player->dir.y > 0 ? 1 : -1;
+					}
+				}
 
 					if (move.x == 0 && move.y == 0) {
 						move = itr->dir;
@@ -197,37 +200,36 @@ void JudgePlayerandFlyingObjectHit() {
 							break;
 						}
 
-						itr->trans.pos += move;
+					itr->trans.pos += move;
+					itr->trans.UpdatePos();
 
-						itr->trans.UpdatePos();
+				}
+
+
+				itr->type = FLYING_OBJECT_PLAYER_BLOCK;
+
+				player->flyingObjectList.push_back(*itr);
+				itr = flyingObjectList->erase(itr);
+				isMatched = true;
+				break;
+
+			}
+			else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO) {
+
+				player->flyingObjectList.erase(itr2);
+				player->checkCheckpoint = false;
+				itr->hp--;
+				if (itr->hp <= 0) {
+					itr = flyingObjectList->erase(itr);
+					isMatched = true;
+
+					if (itr->type == FLYING_OBJECT_UFO) {
+						npc->takeOutFrame = 0;
+						DestroyUFO();
 					}
-					itr->type = FLYING_OBJECT_PLAYER_BLOCK;
+				}
+				break;
 
-					player->flyingObjectList.push_back(*itr);
-					itr = flyingObjectList->erase(itr);
-					isMatched = true;
-					break;
-				}
-			}
-			else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
-				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
-					player->flyingObjectList.erase(itr2);
-					itr = flyingObjectList->erase(itr);
-					player->checkCheckpoint = false;
-					isMatched = true;
-					break;
-				}
-			}
-			else if (itr->type == FLYING_OBJECT_UFO) {
-				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
-					player->flyingObjectList.erase(itr2);
-					itr = flyingObjectList->erase(itr);
-					npc->takeOutFrame = 0;
-					player->checkCheckpoint = false;
-					isMatched = true;
-					DestroyUFO();
-					break;
-				}
 			}
 
 		}
@@ -243,23 +245,25 @@ void JudgePlayerandFlyingObjectHit() {
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
 		for (auto itr2 = player->purgeFlyingObjectList.begin(); itr2 != player->purgeFlyingObjectList.end(); itr2++) {
-			if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
-				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
-					player->purgeFlyingObjectList.erase(itr2);
-					itr = flyingObjectList->erase(itr);
-					isMatched = true;
-					break;
-				}
+			if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
+				continue;
 			}
-			else if (itr->type == FLYING_OBJECT_UFO) {
-				if (CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
-					player->purgeFlyingObjectList.erase(itr2);
+			if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO) {
+				player->purgeFlyingObjectList.erase(itr2);
+
+				itr->hp--;
+				if (itr->hp <= 0) {
 					itr = flyingObjectList->erase(itr);
-					npc->takeOutFrame = 0;
 					isMatched = true;
-					DestroyUFO();
-					break;
+
+					if (itr->type == FLYING_OBJECT_UFO) {
+						npc->takeOutFrame = 0;
+						DestroyUFO();
+
+					}
 				}
+				break;
+
 			}
 
 		}
@@ -343,7 +347,7 @@ void JudgePlayerandFlyingObjectHit() {
 					}
 				}
 				v.clear();
-				if (!IsBreakBlock(itr->trans.GetIntPos() + INTVECTOR2(1, 0), v)) {
+				if (!IsBreakBlock(pos + INTVECTOR2(1, 0), v)) {
 					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
 						Map* map = GetMap(*itrV);
 						if (map != NULL && map->type == MAP_BLOCK) {
