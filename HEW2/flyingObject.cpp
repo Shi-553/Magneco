@@ -8,6 +8,7 @@
 #include "time.h"
 #include "npc.h"
 #include "player.h"
+#include "flyingObjectSponer.h"
 
 // flyingObject描画範囲の加算分
 #define FLYINGOBJECT_ADD_RANGE (5)
@@ -17,6 +18,8 @@ static std::list<FlyingObject> flyingObjects;
 static bool existsUFO = false;
 static int flyingObjectTextureIds[FLYING_OBJECT_MAX];
 static int blockAnimationTextureId;
+
+static SponeId spone;
 
 
 std::list<FlyingObject>* GetFlyingObjects() {
@@ -40,6 +43,7 @@ void InitFlyingObject() {
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY] = ReserveTextureLoadFile("texture/jellyalien01.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_BREAK_BLOCK] = ReserveTextureLoadFile("texture/meteorite_1.png");
 	flyingObjectTextureIds[FLYING_OBJECT_UFO] = ReserveTextureLoadFile("texture/ufo.png");
+	flyingObjectTextureIds[FLYING_OBJECT_BIG_ENEMY] = ReserveTextureLoadFile("texture/jellyaliengirl01.png");
 	flyingObjectTextureIds[FLYING_OBJECT_PLAYER_BLOCK] = ReserveTextureLoadFile("texture/block03.png");
 	flyingObjectTextureIds[FLYING_OBJECT_PURGE_BLOCK] = ReserveTextureLoadFile("texture/block03.png");
 	existsUFO = false;
@@ -60,11 +64,12 @@ void DrawFlyingObject(FlyingObject flyingObject) {
 	Player* player = GetPlayer();
 	auto textureId = flyingObjectTextureIds[flyingObject.type];
 
+
 	if (flyingObject.isAnime) {
 		DrawGameSprite(blockAnimationTextureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50, { (float)(4 * player->putFrame / DEFAULT_PUT_REQUIRED_FRAME) * 32, 0 }, { 32, 32 });
 		return;
 	}
-	DrawGameSprite(textureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50);
+	DrawGameSprite(textureId, flyingObject.trans.pos - D3DXVECTOR2(0.5, 0.5), 50, flyingObject.size.ToD3DXVECTOR2());
 }
 
 void DrawFlyingObject() {

@@ -19,6 +19,7 @@ struct Player {
 	bool isPut;
 	int putFrame;
 	int putRequiredFrame;
+	D3DXVECTOR2 size;
 };
 
 void InitPlayer();

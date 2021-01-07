@@ -65,6 +65,7 @@ void InitNPC() {
 	npc.isMove = false;
 	npc.takeOutFrame = 0;
 	npc.responePos = npc.trans.pos;
+	npc.size = { 0.5,0.5 };
 	npcTextureVertical = 0;
 	nextPos = npc.trans.GetIntPos();
 	dir = INTVECTOR2(0, 0);

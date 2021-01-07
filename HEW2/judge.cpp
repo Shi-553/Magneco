@@ -12,8 +12,7 @@
 
 using namespace std;
 
-bool CheckCollision(std::list<FlyingObject>* flyingObjectList, INTVECTOR2* pos);
-bool CheckBlockBlock(D3DXVECTOR2& pos1, D3DXVECTOR2& pos2);
+bool CheckCollision(std::list<FlyingObject>* flyingObjectList, FlyingObject &flyingObject);
 
 
 void InitJudge() {
@@ -34,21 +33,30 @@ void DrawJudge() {
 }
 static float colllisionSize = 0.3;
 
-bool CheckBlockBlock(D3DXVECTOR2& pos1, D3DXVECTOR2& pos2) {
-	return (
-		(
-			(pos1.x - colllisionSize <= pos2.x - colllisionSize && pos2.x - colllisionSize <= pos1.x + colllisionSize) ||
-			(pos1.x - colllisionSize <= pos2.x + colllisionSize && pos2.x + colllisionSize <= pos1.x + colllisionSize)
-			) &&
-		(
-			(pos1.y - colllisionSize <= pos2.y - colllisionSize && pos2.y - colllisionSize <= pos1.y + colllisionSize) ||
-			(pos1.y - colllisionSize <= pos2.y + colllisionSize && pos2.y + colllisionSize <= pos1.y + colllisionSize)
-			)
-		);
+template <typename P1, typename P2, typename S1, typename S2>
+bool CheckBlockBlock(P1& pos1, P2& pos2, S1& size1, S2& size2) {
+
+	auto left1   = pos1.x - size1.x / 2;
+    auto top1    = pos1.y - size1.y / 2; // 1.5, 1.5 
+	auto right1  = pos1.x + size1.x / 2;
+	auto bottom1 = pos1.y + size1.y / 2; // 2.5, 2.5
+
+	auto left2   = pos2.x - size2.x / 2;
+	auto top2    = pos2.y - size2.y / 2; // 1.5, 1.5 
+	auto right2  = pos2.x + size2.x / 2;
+	auto bottom2 = pos2.y + size2.y / 2; // 2.5, 2.5
+
+	if (right1 >= left2 && left1 <= right2) {
+		if (bottom1 >= top2 && top1 <= bottom2) {
+			return true;
+		}
+	}
 }
-bool CheckCollision(std::list<FlyingObject>* flyingObjectList, INTVECTOR2* pos) {
+bool CheckCollision(std::list<FlyingObject>* flyingObjectList, FlyingObject &flyingObject) {
+
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); itr++) {
-		if (itr->trans.GetIntPos() == *pos) {
+
+		if (CheckBlockBlock(itr->trans.GetIntPos(), flyingObject.trans.GetIntPos(), itr->size, flyingObject.size)) {
 			return true;
 		}
 	}
@@ -65,7 +73,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 	// プレイヤーとflyingObjectの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
-		if (!CheckBlockBlock(player->trans.pos, itr->trans.pos)) {
+		if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, player->size, itr->size)) {
 			itr++;
 			continue;
 		}
@@ -105,7 +113,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 			while (true) {
 				auto intPos = itr->trans.GetIntPos();
-				if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, &intPos)) {
+				if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, *itr)) {
 					break;
 				}
 
@@ -133,7 +141,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 		}
 		// 敵(ufo&enemy)とプレイヤー
-		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
+		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_BIG_ENEMY) {
 			itr = flyingObjectList->erase(itr);
 			player->flyingObjectList.clear();
 			player->checkCheckpoint = false;
@@ -161,7 +169,7 @@ void JudgePlayerandFlyingObjectHit() {
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
 		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); itr2++) {
-			if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
+			if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos, itr->size, itr2->size)) {
 				continue;
 			}
 
@@ -196,7 +204,7 @@ void JudgePlayerandFlyingObjectHit() {
 					}
 					while (true) {
 						auto intPos = itr->trans.GetIntPos();
-						if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, &intPos)) {
+						if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList,*itr)) {
 							break;
 						}
 
@@ -214,7 +222,7 @@ void JudgePlayerandFlyingObjectHit() {
 				break;
 
 			}
-			else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO) {
+			else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_BIG_ENEMY) {
 
 				player->flyingObjectList.erase(itr2);
 				player->checkCheckpoint = false;
@@ -245,7 +253,7 @@ void JudgePlayerandFlyingObjectHit() {
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
 		for (auto itr2 = player->purgeFlyingObjectList.begin(); itr2 != player->purgeFlyingObjectList.end(); itr2++) {
-			if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos)) {
+			if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos, itr->size, itr2->size)) {
 				continue;
 			}
 			if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO) {
@@ -300,7 +308,7 @@ void JudgePlayerandFlyingObjectHit() {
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		if (itr->type == FLYING_OBJECT_UFO) {
 			D3DXVECTOR2 shiftPos = itr->trans.pos - ADD_UFO_POS;
-			if (CheckBlockBlock(npc->trans.pos, shiftPos)) {
+			if (CheckBlockBlock(npc->trans.pos, shiftPos, npc->size, itr->size)) {
 				npc->takeOutFrame++;
 				if (npc->takeOutFrame >= TAKE_OUT_FRAME_LIMIT) {
 					itr = flyingObjectList->erase(itr);
