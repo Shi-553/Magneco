@@ -145,6 +145,11 @@ void JudgePlayerandFlyingObjectHit() {
 			player->stanTime = DEFAULT_PLAYER_STAN_FRAME;
 			player->invicibleTime = DEFAULT_PLAYER_INVICIBLE_FRAME;
 
+			if (itr->type == FLYING_OBJECT_UFO) {
+				npc->takeOutFrame = 0;
+				DestroyUFO();
+
+			}
 			itr = flyingObjectList->erase(itr);
 			//GoNextScene(GameOverScene, FADE_IN);
 			//return;
