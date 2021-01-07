@@ -169,36 +169,36 @@ void JudgePlayerandFlyingObjectHit() {
 					break;
 				}
 
-					itr->trans.pos = itr2->trans.pos;
+				itr->trans.pos = itr2->trans.pos;
 				itr->trans.UpdatePos();
 
 
-					auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
-					if (player->dir != D3DXVECTOR2(0, 0)) {
-						move = D3DXVECTOR2(0, 0);
-						if (fabsf(player->dir.x) > fabsf(player->dir.y)) {
-							move.x = player->dir.x > 0 ? 1 : -1;
-						}
-						else {
-							move.y = player->dir.y > 0 ? 1 : -1;
-						}
+				auto move = (itr->trans.GetIntLastPos() - itr->trans.GetIntPos()).ToD3DXVECTOR2();
+				if (player->dir != D3DXVECTOR2(0, 0)) {
+					move = D3DXVECTOR2(0, 0);
+					if (fabsf(player->dir.x) > fabsf(player->dir.y)) {
+						move.x = player->dir.x > 0 ? 1 : -1;
 					}
-
-					if (move.x == 0 && move.y == 0) {
-						move = itr->dir;
-					}
-					while (true) {
-						auto intPos = itr->trans.GetIntPos();
-						if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, &intPos)) {
-							break;
-						}
-
-						itr->trans.pos += move;
-						itr->trans.UpdatePos();
-
+					else {
+						move.y = player->dir.y > 0 ? 1 : -1;
 					}
 				}
-				
+
+				if (move.x == 0 && move.y == 0) {
+					move = itr->dir;
+				}
+				while (true) {
+					auto intPos = itr->trans.GetIntPos();
+					if (player->trans.GetIntPos() != itr->trans.GetIntPos() && !CheckCollision(&player->flyingObjectList, &intPos)) {
+						break;
+					}
+
+					itr->trans.pos += move;
+					itr->trans.UpdatePos();
+
+				}
+
+
 				itr->type = FLYING_OBJECT_PLAYER_BLOCK;
 
 				player->flyingObjectList.push_back(*itr);
