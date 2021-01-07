@@ -340,7 +340,7 @@ void JudgePlayerandFlyingObjectHit() {
 					}
 				}
 				v.clear();
-				if (!IsBreakBlock(itr->trans.GetIntPos() + INTVECTOR2(1, 0), v)) {
+				if (!IsBreakBlock(pos + INTVECTOR2(1, 0), v)) {
 					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
 						Map* map = GetMap(*itrV);
 						if (map != NULL && map->type == MAP_BLOCK) {
