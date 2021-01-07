@@ -134,10 +134,18 @@ void JudgePlayerandFlyingObjectHit() {
 		}
 		// 敵(ufo&enemy)とプレイヤー
 		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
-			itr = flyingObjectList->erase(itr);
+			if (player->invicibleTime > 0) {
+				itr++;
+				continue;
+			}
+
 			player->flyingObjectList.clear();
 			player->checkCheckpoint = false;
 
+			player->stanTime = DEFAULT_PLAYER_STAN_FRAME;
+			player->invicibleTime = DEFAULT_PLAYER_INVICIBLE_FRAME;
+
+			itr = flyingObjectList->erase(itr);
 			//GoNextScene(GameOverScene, FADE_IN);
 			//return;
 		}
@@ -149,7 +157,6 @@ void JudgePlayerandFlyingObjectHit() {
 				player->blockMax++;
 			}
 			itr = flyingObjectList->erase(itr);
-			continue;
 		}
 		else {
 			itr++;
@@ -220,13 +227,13 @@ void JudgePlayerandFlyingObjectHit() {
 				player->checkCheckpoint = false;
 				itr->hp--;
 				if (itr->hp <= 0) {
-					itr = flyingObjectList->erase(itr);
-					isMatched = true;
 
 					if (itr->type == FLYING_OBJECT_UFO) {
 						npc->takeOutFrame = 0;
 						DestroyUFO();
 					}
+					itr = flyingObjectList->erase(itr);
+					isMatched = true;
 				}
 				break;
 
