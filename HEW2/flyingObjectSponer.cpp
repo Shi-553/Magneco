@@ -17,33 +17,33 @@ static bool isLoop = true;
 static int currentSponeId = 1;
 
 static Spone initSpone[24]{
-	{100,{5.5,-3.5},FLYING_OBJECT_UFO,{0,1}},
-	{150,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0}},
-	{200,{13.5,7.5},FLYING_OBJECT_ENEMY_BREAK_BLOCK,{-1,0}},
-	{250,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0}},
-	{300,{8.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
-	{350,{3.5,-3.5},FLYING_OBJECT_ENEMY,{0,1}},
-	{450,{13.5,3.5},FLYING_OBJECT_BLOCK,{-1,0}},
-	{500,{5.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
-	{550,{2.5,13.5},FLYING_OBJECT_ENEMY_BREAK_BLOCK,{0,-1}},
-	{600,{3.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
-	{650,{13.5,7.5},FLYING_OBJECT_BLOCK,{-1,0}},
-	{700,{-3.5,5.5},FLYING_OBJECT_BLOCK,{1,0}},
-	{750,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0}},
-	{400,{2.5,13.5},FLYING_OBJECT_UFO,{0,-1}},
-	{800,{3.5,13.5},FLYING_OBJECT_ENEMY,{0,-1}},
-	{850,{13.5,5.5},FLYING_OBJECT_BLOCK,{-1,0}},
-	{900,{2.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
-	{950,{8.5,-3.5},FLYING_OBJECT_ENEMY_BREAK_BLOCK,{0,1}},
-	{1000,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0}},
-	{1050,{13.5,3.5},FLYING_OBJECT_BLOCK,{-1,0}},
-	{1100,{6.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}},
-	{1150,{4.5,-3.5},FLYING_OBJECT_ENEMY,{0,1}},
-	{1200,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0}},
-	{1250,{7.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}}
+	{100,{5.5,-3.5},FLYING_OBJECT_UFO,{0,1},1},
+	{150,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0},1},
+	{200,{13.5,7.5},FLYING_OBJECT_ENEMY_BREAK_BLOCK,{-1,0},1},
+	{250,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0},1},
+	{300,{8.5,13.5},FLYING_OBJECT_BLOCK,{0,-1},1},
+	{350,{3.5,-3.5},FLYING_OBJECT_ENEMY,{0,1},1},
+	{450,{13.5,3.5},FLYING_OBJECT_BLOCK,{-1,0},1},
+	{500,{5.5,13.5},FLYING_OBJECT_BLOCK,{0,-1},1},
+	{550,{2.5,13.5},FLYING_OBJECT_ENEMY_BREAK_BLOCK,{0,-1},1},
+	{600,{3.5,13.5},FLYING_OBJECT_BLOCK,{0,-1},1},
+	{650,{13.5,7.5},FLYING_OBJECT_BLOCK,{-1,0},1},
+	{700,{-3.5,5.5},FLYING_OBJECT_BLOCK,{1,0},1},
+	{750,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0},1},
+	{400,{2.5,13.5},FLYING_OBJECT_UFO,{0,-1},1},
+	{800,{3.5,13.5},FLYING_OBJECT_ENEMY,{0,-1},1},
+	{850,{13.5,5.5},FLYING_OBJECT_BLOCK,{-1,0},1},
+	{900,{2.5,13.5},FLYING_OBJECT_BLOCK,{0,-1},1},
+	{950,{8.5,-3.5},FLYING_OBJECT_ENEMY_BREAK_BLOCK,{0,1},1},
+	{1000,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0},1},
+	{1050,{13.5,3.5},FLYING_OBJECT_BLOCK,{-1,0},1},
+	{1100,{6.5,13.5},FLYING_OBJECT_BLOCK,{0,-1},1},
+	{1150,{4.5,-3.5},FLYING_OBJECT_ENEMY,{0,1},1},
+	{1200,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0},1},
+	{1250,{7.5,13.5},FLYING_OBJECT_BLOCK,{0,-1},1}
 };
-//	{1200,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0}},
-//	{1250,{7.5,13.5},FLYING_OBJECT_BLOCK,{0,-1}}
+//	{1200,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0},1},
+//	{1250,{7.5,13.5},FLYING_OBJECT_BLOCK,{0,-1},1}
 //};
 
 void InitFlyingSponer() {
@@ -77,6 +77,7 @@ void CheckSpone() {
 	while (sponeIndex < spones.size()) {
 		if (spones[sponeIndex].s.frame <= frame) {
 			FlyingObject f = { TRANS(spones[sponeIndex].s.initPos),spones[sponeIndex].s.type, spones[sponeIndex].s.dir, spones[sponeIndex].id };
+			f.hp = spones[sponeIndex].s.hp;
 			AddFlyingObjects(&f);
 			sponeIndex++;
 		}

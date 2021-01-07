@@ -2,8 +2,8 @@
 #define _DEBUG_FONT_H
 #include "myd3d.h"
 
-#define FONT_WIDTH 32
-#define FONT_HEIGHT 64
+#define DEBUG_FONT_WIDTH 32
+#define DEBUG_FONT_HEIGHT 64
 
 typedef struct DEBUG_FONT_STATE {
 	D3DXVECTOR2 pos = {0,0};
