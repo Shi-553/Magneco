@@ -83,7 +83,7 @@ void UninitNPC() {
 		delete[] mapLabelList;
 		mapLabelList = NULL;
 	}
-
+	font->Release();
 }
 
 void UpdateNPC() {

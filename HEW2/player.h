@@ -7,6 +7,9 @@
 
 #define DEFAULT_PUT_REQUIRED_FRAME (3 * 60)
 
+#define DEFAULT_PLAYER_STAN_FRAME (1 * 60)
+#define DEFAULT_PLAYER_INVICIBLE_FRAME (2 * 60)
+
 struct Player {
 	TRANS trans;
 	std::list <FlyingObject> flyingObjectList;
@@ -19,6 +22,9 @@ struct Player {
 	bool isPut;
 	int putFrame;
 	int putRequiredFrame;
+
+	int stanTime;
+	int invicibleTime;
 	D3DXVECTOR2 size;
 };
 

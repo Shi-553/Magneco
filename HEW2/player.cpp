@@ -37,6 +37,8 @@ void InitPlayer() {
 	player.checkCheckpoint = false;
 	player.isPut = false;
 	player.putFrame = 0;
+	player.stanTime = 0;
+	player.invicibleTime = 0;
 	player.size = { 0.9,0.9 };
 }
 
@@ -45,6 +47,10 @@ void UninitPlayer() {
 }
 
 void UpdatePlayer() {
+	if (player.invicibleTime > 0) {
+		player.invicibleTime--;
+	}
+
 	if (player.dir.x != 0 || player.dir.y != 0) {
 		if (fabsf(player.dir.y) > fabsf(player.dir.x)) {
 			if (0 < player.dir.y) {
@@ -63,7 +69,7 @@ void UpdatePlayer() {
 			}
 		}
 	}
-	auto speed = player.speed -( player.speed /2 * player.flyingObjectList.size() / player.blockMax);
+	auto speed = player.speed - (player.speed / 2 * player.flyingObjectList.size() / player.blockMax);
 
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
 		if (UpdateFlyingObject(&*itr, speed / 2)) {
@@ -74,35 +80,46 @@ void UpdatePlayer() {
 		}
 	}
 
-	auto length = D3DXVec2Length(&player.dir);
-	if (length > 1.0f) {
-		player.dir /= length;
+
+
+	if (player.stanTime == 0) {
+		auto length = D3DXVec2Length(&player.dir);
+		if (length > 1.0f) {
+			player.dir /= length;
+		}
+		auto last = player.trans.pos;
+		auto move = player.dir * speed * GetDeltaTime();
+
+
+		player.trans.pos += move;
+
+
+		player.trans.UpdatePos();
+
+		for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+			itr != player.flyingObjectList.end(); itr++) {
+			itr->trans.pos += player.trans.pos - last;
+			itr->trans.UpdatePos();
+		}
+
+		// ブロックを置く処理
+		if (player.isPut) {
+			player.putFrame++;
+		}
+		if (player.putFrame >= DEFAULT_PUT_REQUIRED_FRAME) {
+			BlockDecision();
+		}
+
+
+		player.frame++;
+
 	}
-	auto last = player.trans.pos;
-	auto move = player.dir * speed * GetDeltaTime();
+	else {
 
-	player.trans.pos+= move;
-
-
-	player.trans.UpdatePos();
-
-	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
-		itr != player.flyingObjectList.end(); itr++) {
-		itr->trans.pos += player.trans.pos - last;
-		itr->trans.UpdatePos();
+		player.stanTime--;
 	}
 
-	// ブロックを置く処理
-	if (player.isPut) {
-		player.putFrame++;
-	}
-	if (player.putFrame >= DEFAULT_PUT_REQUIRED_FRAME) {
-		BlockDecision();
-	}
 	player.dir = { 0,0 };
-
-	player.frame++;
-
 
 }
 
@@ -269,12 +286,12 @@ void MakePut() {
 	while (true) {
 		isAdd = false;
 
-	std::list<FlyingObject> modosu;
+		std::list<FlyingObject> modosu;
 
 		while (!player.flyingObjectList.empty()) {
 			auto& current = player.flyingObjectList.front();
 
-			if (!current.isAnime&&MapFourDirectionsJudgment(current.trans.GetIntPos())) {
+			if (!current.isAnime && MapFourDirectionsJudgment(current.trans.GetIntPos())) {
 				MapChange(current);
 				current.isAnime = true;
 				isAdd = true;
@@ -288,16 +305,16 @@ void MakePut() {
 			}
 		}
 
-	for (auto itrM = modosu.begin(); itrM != modosu.end(); itrM++) {
-		player.flyingObjectList.push_back(*itrM);
-	}
+		for (auto itrM = modosu.begin(); itrM != modosu.end(); itrM++) {
+			player.flyingObjectList.push_back(*itrM);
+		}
 
 		if (!isAdd) {
 			break;
 		}
 	}
 
-	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();itr++) {
+	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); itr++) {
 		if (itr->isAnime) {
 			auto m = GetMap(itr->trans.GetIntPos());
 			if (m != NULL) {
@@ -317,3 +334,4 @@ void PutCansel() {
 		itr->isAnime = false;
 	}
 }
+
