@@ -142,7 +142,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 		}
 		// 敵(ufo&enemy)とプレイヤー
-		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_BIG_ENEMY) {
+		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_ENEMY_SECOND) {
 			itr = flyingObjectList->erase(itr);
 			player->flyingObjectList.clear();
 			player->checkCheckpoint = false;
@@ -223,7 +223,7 @@ void JudgePlayerandFlyingObjectHit() {
 				break;
 
 			}
-			else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_BIG_ENEMY) {
+			else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_SECOND) {
 
 				player->flyingObjectList.erase(itr2);
 				player->checkCheckpoint = false;

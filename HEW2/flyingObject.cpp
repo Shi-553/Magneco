@@ -43,7 +43,7 @@ void InitFlyingObject() {
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY] = ReserveTextureLoadFile("texture/jellyalien01.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_BREAK_BLOCK] = ReserveTextureLoadFile("texture/meteorite_1.png");
 	flyingObjectTextureIds[FLYING_OBJECT_UFO] = ReserveTextureLoadFile("texture/ufo.png");
-	flyingObjectTextureIds[FLYING_OBJECT_BIG_ENEMY] = ReserveTextureLoadFile("texture/jellyaliengirl01.png");
+	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_SECOND] = ReserveTextureLoadFile("texture/jellyaliengirl01.png");
 	flyingObjectTextureIds[FLYING_OBJECT_PLAYER_BLOCK] = ReserveTextureLoadFile("texture/block03.png");
 	flyingObjectTextureIds[FLYING_OBJECT_PURGE_BLOCK] = ReserveTextureLoadFile("texture/block03.png");
 	existsUFO = false;
