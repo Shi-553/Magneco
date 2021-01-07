@@ -37,7 +37,7 @@ void InitPlayer() {
 	player.checkCheckpoint = false;
 	player.isPut = false;
 	player.putFrame = 0;
-	player.size = { 1,1 };
+	player.size = { 0.9,0.9 };
 }
 
 void UninitPlayer() {
