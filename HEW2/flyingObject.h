@@ -12,6 +12,7 @@ enum FlyingObjectType
 	FLYING_OBJECT_ENEMY,
 	FLYING_OBJECT_ENEMY_BREAK_BLOCK,
 	FLYING_OBJECT_UFO,
+	FLYING_OBJECT_ENEMY_SECOND,
 	FLYING_OBJECT_PLAYER_BLOCK,
 	FLYING_OBJECT_PURGE_BLOCK,
 	FLYING_OBJECT_ITEM_ADD_SPEED,
@@ -27,7 +28,7 @@ typedef struct FlyingObject
 	int id;
 	bool isAnime;
 	int hp;
-
+	INTVECTOR2 size;
 };
 
 std::list<FlyingObject>* GetFlyingObjects();

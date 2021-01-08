@@ -25,6 +25,7 @@ struct Player {
 
 	int stanTime;
 	int invicibleTime;
+	D3DXVECTOR2 size;
 };
 
 void InitPlayer();
