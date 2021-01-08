@@ -17,7 +17,8 @@ enum VirtualKey {
 	MYVK_LEFT_CLICK,
 	MYVK_RIGHT_CLICK,
 
-#if _DEBUG
+
+
 	MYVK_START,
 	MYVK_GAME_CLEAR,
 	MYVK_GAME_OVER,
@@ -36,6 +37,7 @@ enum VirtualKey {
 
 	MYVK_ARROW_LEFT,
 	MYVK_ARROW_RIGHT,
+#if _DEBUG
 #endif // _DEBUG
 
 	MYVK_MAX
