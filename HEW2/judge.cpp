@@ -259,6 +259,9 @@ void JudgePlayerandFlyingObjectHit() {
 				continue;
 
 			}
+			else {
+				itr2++;
+			}
 		}
 
 
