@@ -181,7 +181,6 @@ void JudgePlayerandFlyingObjectHit() {
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
 		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); ) {
-			bool isItr2Add = true;
 
 			if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos, itr->size, itr2->size)) {
 				itr2++;
@@ -237,13 +236,13 @@ void JudgePlayerandFlyingObjectHit() {
 				itr = flyingObjectList->erase(itr);
 				isMatched = true;
 
-				continue;
+				itr2++;
+				break;
 
 			}
 			else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_SECOND) {
 
-				itr2=player->flyingObjectList.erase(itr2);
-				isItr2Add = false;
+				itr2 = player->flyingObjectList.erase(itr2);
 
 				player->checkCheckpoint = false;
 				itr->hp--;
@@ -255,12 +254,10 @@ void JudgePlayerandFlyingObjectHit() {
 					}
 					itr = flyingObjectList->erase(itr);
 					isMatched = true;
+					break;
 				}
-					continue;
+				continue;
 
-			}
-			if (isItr2Add) {
-				itr2++;
 			}
 		}
 
