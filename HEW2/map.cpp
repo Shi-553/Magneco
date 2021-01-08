@@ -425,6 +425,8 @@ void OpenChest(INTVECTOR2 pos) {
 	p.x += 0.5;
 	p.y -= 0.5;
 	FlyingObject f = { TRANS(p),(FlyingObjectType)map->param,{0,0} };
+	f.hp = 1;
+	f.size = {1,1};
 	AddFlyingObjects(&f);
 }
 

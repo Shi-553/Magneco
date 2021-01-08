@@ -155,6 +155,7 @@ void DrawMapEditor() {
 				FlyingObject item = {};
 				item.type = (FlyingObjectType)map->param;
 				item.trans.Init(j+0.5, i);
+				item.size = {1,1};
 				DrawFlyingObject(item);
 			}
 		}
