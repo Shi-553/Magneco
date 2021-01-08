@@ -5,7 +5,7 @@
 #include "trans.h"
 #pragma once
 
-#define DEFAULT_PUT_REQUIRED_FRAME (3 * 60)
+#define DEFAULT_PUT_REQUIRED_FRAME (int)(1.5 * 60)
 
 #define DEFAULT_PLAYER_STAN_FRAME (1 * 60)
 #define DEFAULT_PLAYER_INVICIBLE_FRAME (2 * 60)
