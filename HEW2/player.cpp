@@ -39,7 +39,7 @@ void InitPlayer() {
 	player.putFrame = 0;
 	player.stanTime = 0;
 	player.invicibleTime = 0;
-	player.size = { 0.9,0.9 };
+	player.size = { 1,1 };
 }
 
 void UninitPlayer() {
