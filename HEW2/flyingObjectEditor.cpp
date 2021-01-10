@@ -111,7 +111,7 @@ void DrawFlyingObjectEditor() {
 
 	s.pos = { CREATE_PROPERTY_X,CREATE_SPPED_Y };
 	DrawDebugFont(&s, "SPD <   >");
-	s.pos = { CREATE_PROPERTY_X + DEBUG_FONT_WIDTH * 6 / 2,CREATE_SPPED_Y };
+	s.pos = { CREATE_PROPERTY_X + DEBUG_FONT_WIDTH * 5 / 2,CREATE_SPPED_Y };
 	DrawDebugFont(&s, "%.1f", createSpeed);
 
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
