@@ -56,9 +56,9 @@ static float createSpeed = 1.0f;
 
 void SetSpeed(float speed) {
 	createSpeed = speed;
-	createSpeed *= 10;
-	createSpeed = roundf(createSpeed);
-	createSpeed /= 10;
+	createSpeed *= 10.0;
+	createSpeed = round(createSpeed);
+	createSpeed /= 10.0;
 
 	if (createSpeed < 0) {
 		createSpeed = 0;
@@ -112,7 +112,7 @@ void DrawFlyingObjectEditor() {
 	s.pos = { CREATE_PROPERTY_X,CREATE_SPPED_Y };
 	DrawDebugFont(&s, "SPD <   >");
 	s.pos = { CREATE_PROPERTY_X + DEBUG_FONT_WIDTH * 6 / 2,CREATE_SPPED_Y };
-	DrawDebugFont(&s, "%f", createSpeed);
+	DrawDebugFont(&s, "%.1f", createSpeed);
 
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
 		DrawFlyingObjectScreen(creates[i]);
