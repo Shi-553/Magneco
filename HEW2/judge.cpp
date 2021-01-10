@@ -128,7 +128,10 @@ void JudgePlayerandFlyingObjectHit() {
 
 			}
 			else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_SECOND) {
-
+				if (IsPlayerInvicible()) {
+					itr2++;
+					continue;
+				}
 
 				itr2 = player->flyingObjectList.erase(itr2);
 

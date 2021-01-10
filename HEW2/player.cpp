@@ -190,6 +190,7 @@ void BlockDecision() {
 		MapChange(front);
 		player.flyingObjectList.clear();
 		player.invicibleTime = 0;
+		player.checkCheckpoint = false;
 		return;
 	}
 
