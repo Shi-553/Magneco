@@ -14,6 +14,7 @@ using namespace std;
 
 bool CheckCollision(std::list<FlyingObject>* flyingObjectList, FlyingObject& flyingObject);
 
+bool CheckShortest(Player& p, FlyingObject& obj, D3DXVECTOR2& pos);
 
 void InitJudge() {
 
@@ -85,6 +86,10 @@ void JudgePlayerandFlyingObjectHit() {
 				continue;
 			}
 			if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, player->size, itr->size)) {
+				itr++;
+				continue;
+			}
+			if (!CheckShortest(*player, *itr, player->trans.pos)) {
 				itr++;
 				continue;
 			}
@@ -202,6 +207,10 @@ void JudgePlayerandFlyingObjectHit() {
 					continue;
 				}
 				if (player->flyingObjectList.size() > 0 && itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
+					itr2++;
+					continue;
+				}
+				if (!CheckShortest(*player, *itr, itr2->trans.pos)) {
 					itr2++;
 					continue;
 				}
@@ -420,3 +429,21 @@ void JudgePlayerandFlyingObjectHit() {
 	}
 }
 
+bool CheckShortest(Player& p, FlyingObject& obj, D3DXVECTOR2& pos) {
+	auto posToObj = pos - obj.trans.pos;
+	float len = D3DXVec2LengthSq(&posToObj);
+
+	auto playerToObj = p.trans.pos - obj.trans.pos;
+	if (len > D3DXVec2LengthSq(&playerToObj)) {
+		return false;
+	}
+
+	for (auto itr = p.flyingObjectList.begin(); itr != p.flyingObjectList.end(); itr++) {
+		auto posToFlyingObject = itr->trans.pos - obj.trans.pos;
+
+		if (len > D3DXVec2LengthSq(&posToFlyingObject)) {
+			return false;
+		}
+	}
+	return true;
+}
