@@ -180,14 +180,6 @@ void BlockDecision() {
 
 	player.putFrame = 0;
 
-	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
-		itr != player.flyingObjectList.end(); itr++) {
-		MapType type;
-		type = GetMapType(itr->trans.GetIntPos());
-		if (type != MAP_BLOCK_NONE) {
-			return;
-		}
-	}
 
 	bool isAdd = false;
 
@@ -199,7 +191,7 @@ void BlockDecision() {
 		while (!player.flyingObjectList.empty()) {
 			auto& current = player.flyingObjectList.front();
 
-			if (MapFourDirectionsJudgment(current.trans.GetIntPos())) {
+			if (GetMapType(current.trans.GetIntPos()) == MAP_BLOCK_NONE &&MapFourDirectionsJudgment(current.trans.GetIntPos())) {
 				MapChange(current);
 				isAdd = true;
 				player.flyingObjectList.pop_front();
@@ -272,14 +264,7 @@ bool PlayerImport(FILE* fp) {
 
 void MakePut() {
 
-	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
-		itr != player.flyingObjectList.end(); itr++) {
-		MapType type;
-		type = GetMapType(itr->trans.GetIntPos());
-		if (type != MAP_BLOCK_NONE) {
-			return;
-		}
-	}
+
 
 	bool isAdd = false;
 
@@ -291,7 +276,7 @@ void MakePut() {
 		while (!player.flyingObjectList.empty()) {
 			auto& current = player.flyingObjectList.front();
 
-			if (!current.isAnime && MapFourDirectionsJudgment(current.trans.GetIntPos())) {
+			if (GetMapType(current.trans.GetIntPos()) == MAP_BLOCK_NONE && !current.isAnime && MapFourDirectionsJudgment(current.trans.GetIntPos())) {
 				MapChange(current);
 				current.isAnime = true;
 				isAdd = true;
