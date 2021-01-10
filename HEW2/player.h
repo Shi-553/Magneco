@@ -52,6 +52,10 @@ bool PlayerImport(FILE* fp);
 
 void MakePut();
 void PutCansel();
+bool GetBlock(FlyingObject& itr, D3DXVECTOR2& attachPos);
 
+bool IsPlayerInvicible();
+
+bool DamagePlayer();
 
 #endif // !_PLAYER_H

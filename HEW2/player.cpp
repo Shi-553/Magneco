@@ -12,6 +12,7 @@
 #include "debugPrintf.h"
 #include "time.h"
 #include <math.h>
+#include "judge.h"
 
 #define PLAYER_TEXTURE_WIDTH 32
 #define PLAYER_TEXTURE_HEIGHT 32
@@ -24,6 +25,7 @@ static Player player;
 static int  playerTextureVertical = 0;
 
 void BlockDecision();
+bool CheckShortest(FlyingObject& obj, D3DXVECTOR2& pos);
 
 void InitPlayer() {
 	textureId = ReserveTextureLoadFile("texture/player_32×32.png");
@@ -182,6 +184,18 @@ void BlockDecision() {
 
 	player.putFrame = 0;
 
+	auto& front = player.flyingObjectList.front();
+	if (front.type == FLYING_OBJECT_CHECKPOINT_OFF) {
+		if (GetMapType(front.trans.GetIntPos()) != MAP_BLOCK_NONE) {
+			return;
+		}
+		MapChange(front);
+		player.flyingObjectList.clear();
+		player.invicibleTime = 0;
+		player.checkCheckpoint = false;
+		return;
+	}
+
 
 	bool isAdd = false;
 
@@ -265,6 +279,15 @@ bool PlayerImport(FILE* fp) {
 }
 
 void MakePut() {
+	auto& front = player.flyingObjectList.front();
+	if (front.type == FLYING_OBJECT_CHECKPOINT_OFF) {
+		if (GetMapType(front.trans.GetIntPos()) != MAP_BLOCK_NONE) {
+			return;
+		}
+		front.isAnime = true;
+		player.isPut = true;
+		return;
+	}
 
 
 
@@ -322,3 +345,109 @@ void PutCansel() {
 	}
 }
 
+
+bool GetBlock(FlyingObject& itr,D3DXVECTOR2& attachPos) {
+	if (player.flyingObjectList.size() >= player.blockMax || player.checkCheckpoint || player.isPut) {
+		return false;
+	}
+
+	if (player.flyingObjectList.size() > 0 && itr.type == FLYING_OBJECT_CHECKPOINT_OFF) {
+		return false;
+	}
+	if (!CheckShortest( itr, attachPos)) {
+		return false;
+	}
+	auto move = -itr.dir;
+
+	itr.trans.pos = attachPos;
+	itr.trans.UpdatePos();
+
+
+	if (player.dir != D3DXVECTOR2(0, 0)) {
+		move = D3DXVECTOR2(0, 0);
+		if (fabsf(player.dir.x) > fabsf(player.dir.y)) {
+			move.x = player.dir.x > 0 ? 1 : -1;
+		}
+		else {
+			move.y = player.dir.y > 0 ? 1 : -1;
+		}
+	}
+
+	if (move.x == 0 && move.y == 0) {
+		move = (player.trans.GetIntLastPos() - player.trans.GetIntPos()).ToD3DXVECTOR2();
+	}
+
+	if (move.x != 0 && move.y != 0) {
+		if (fabsf(player.dir.x) > fabsf(player.dir.y)) {
+			move.y = 0;
+		}
+		else {
+			move.x = 0;
+		}
+	}
+	while (true) {
+		if (!CheckBlockBlock(player.trans.GetIntPos(), itr.trans.GetIntPos(), player.size, itr.size) && !CheckCollision(&player.flyingObjectList, itr)) {
+			break;
+		}
+
+		itr.trans.pos += move;
+		itr.trans.UpdatePos();
+	}
+
+	itr.trans.Init(itr.trans.pos);
+
+
+
+	if (itr.type == FLYING_OBJECT_CHECKPOINT_OFF) {
+
+		player.checkCheckpoint = true;
+		player.invicibleTime = -1;
+	}
+	else
+	{
+		itr.type = FLYING_OBJECT_PLAYER_BLOCK;
+	}
+
+
+	player.flyingObjectList.push_back(itr);
+	return true;
+}
+
+
+bool IsPlayerInvicible() {
+	return player.invicibleTime > 0 || player.invicibleTime == -1;
+}
+
+
+
+bool DamagePlayer() {
+	if (IsPlayerInvicible()) {
+		return false;
+	}
+	player.flyingObjectList.clear();
+	player.checkCheckpoint = false;
+
+	player.stanTime = DEFAULT_PLAYER_STAN_FRAME;
+	player.invicibleTime = DEFAULT_PLAYER_INVICIBLE_FRAME;
+	return true;
+}
+
+
+bool CheckShortest(FlyingObject& obj, D3DXVECTOR2& pos) {
+	auto posToObj = pos - obj.trans.pos;
+	float len = D3DXVec2LengthSq(&posToObj);
+
+	auto playerToObj = player.trans.pos - obj.trans.pos;
+	if (len > D3DXVec2LengthSq(&playerToObj)) {
+		return false;
+	}
+
+	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); itr++) {
+		auto posToFlyingObject = itr->trans.pos - obj.trans.pos;
+
+		if (len > D3DXVec2LengthSq(&posToFlyingObject)) {
+			return false;
+		}
+	}
+	return true;
+}
