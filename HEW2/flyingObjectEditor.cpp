@@ -25,6 +25,7 @@
 #define CREATE_HP_Y 40
 #define CREATE_SIZEX_Y 70
 #define CREATE_SIZEY_Y 100
+#define CREATE_SPPED_Y 130
 #define CREATE_PROPERTY_MARGIN D3DXVECTOR2(20,5)
 
 
@@ -35,6 +36,7 @@ bool CheckChangeProperty(D3DXVECTOR2 pos, D3DXVECTOR2 addPos);
 D3DXVECTOR2 GetCreateFlyingObjectPos(int type);
 void DrawFlyingObjectScreen(const Spone& map);
 Spone CheckCreateFlyingObject(D3DXVECTOR2 pos);
+void SetSpeed(float speed);
 
 static bool isPlay = false;
 static bool isDrag = false;
@@ -50,6 +52,18 @@ static D3DXVECTOR2 startDrag;
 
 static int createHP = 1;
 static INTVECTOR2 createSize = { 1,1 };
+static float createSpeed = 1.0f;
+
+void SetSpeed(float speed) {
+	createSpeed = speed;
+	createSpeed *= 10;
+	createSpeed = roundf(createSpeed);
+	createSpeed /= 10;
+
+	if (createSpeed < 0) {
+		createSpeed = 0;
+	}
+}
 
 void InitFlyingObjectEditor() {
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++)
@@ -64,7 +78,7 @@ void InitFlyingObjectEditor() {
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
 		creates[i].type = (FlyingObjectType)i;
 		creates[i].initPos = GetCreateFlyingObjectPos(i);
-		creates[i].size = {1,1};
+		creates[i].size = { 1,1 };
 	}
 }
 void UninitFlyingObjectEditor() {
@@ -94,6 +108,11 @@ void DrawFlyingObjectEditor() {
 	DrawDebugFont(&s, "SY  <   >");
 	s.pos = { CREATE_PROPERTY_X + DEBUG_FONT_WIDTH * 6 / 2,CREATE_SIZEY_Y };
 	DrawDebugFont(&s, "%d", createSize.y);
+
+	s.pos = { CREATE_PROPERTY_X,CREATE_SPPED_Y };
+	DrawDebugFont(&s, "SPD <   >");
+	s.pos = { CREATE_PROPERTY_X + DEBUG_FONT_WIDTH * 6 / 2,CREATE_SPPED_Y };
+	DrawDebugFont(&s, "%f", createSpeed);
 
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
 		DrawFlyingObjectScreen(creates[i]);
@@ -133,25 +152,33 @@ void UpdateFlyingObjectEditor() {
 	//DebugPrintf("%d,\n", wheel);
 
 	if (wheel != 0) {
-		if (CheckWheelProperty(mousePos,D3DXVECTOR2(0,CREATE_HP_Y))) {
-			createHP += wheel / 120;
+		auto base = PressInputLogger(MYVK_SHIFT) ? 5 : 1;
+
+		if (CheckWheelProperty(mousePos, D3DXVECTOR2(0, CREATE_HP_Y))) {
+			createHP += (wheel / 120) * base;
 			if (createHP < 1) {
 				createHP = 1;
 			}
-		}else if (CheckWheelProperty(mousePos, D3DXVECTOR2(0, CREATE_SIZEX_Y))) {
-			createSize.x += wheel / 120;
+		}
+		else if (CheckWheelProperty(mousePos, D3DXVECTOR2(0, CREATE_SIZEX_Y))) {
+			createSize.x += (wheel / 120) * base;
 			if (createSize.x < 1) {
 				createSize.x = 1;
 			}
-		}else if (CheckWheelProperty(mousePos, D3DXVECTOR2(0, CREATE_SIZEY_Y))) {
-			createSize.y += wheel / 120;
+		}
+		else if (CheckWheelProperty(mousePos, D3DXVECTOR2(0, CREATE_SIZEY_Y))) {
+			createSize.y += (wheel / 120)* base;
 			if (createSize.y < 1) {
 				createSize.y = 1;
 			}
 		}
+		else if (CheckWheelProperty(mousePos, D3DXVECTOR2(0, CREATE_SPPED_Y))) {
+			SetSpeed(createSpeed + (wheel / 120) / 10.0f * base);
+			
+		}
 		else {
 			isPlay = false;
-			SetFlyingObjectSponeFrame(GetFlyingObjectSponeFrame() + wheel / 10);
+			SetFlyingObjectSponeFrame(GetFlyingObjectSponeFrame() + (wheel / 10) * base);
 		}
 	}
 
@@ -206,34 +233,43 @@ bool CheckMouseFlyingObjectEditor() {
 		}
 	}
 	if (ReleaseInputLogger(MYVK_LEFT_CLICK)) {
-		if (CheckChangeProperty(mousePos,D3DXVECTOR2(DEBUG_FONT_WIDTH*8/2, CREATE_HP_Y))) {
-			createHP++;
+		auto base = PressInputLogger(MYVK_SHIFT) ? 5 : 1;
+		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 8 / 2, CREATE_HP_Y))) {
+			createHP+= base;
 			return true;
 		}
 		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 4 / 2, CREATE_HP_Y))) {
 			if (createHP > 1) {
-				createHP--;
+				createHP-= base;
 			}
 			return true;
 		}
-		if (CheckChangeProperty(mousePos,D3DXVECTOR2(DEBUG_FONT_WIDTH*8/2, CREATE_SIZEX_Y))) {
-			createSize.x++;
+		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 8 / 2, CREATE_SIZEX_Y))) {
+			createSize.x+= base;
 			return true;
 		}
 		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 4 / 2, CREATE_SIZEX_Y))) {
 			if (createSize.x > 1) {
-				createSize.x--;
+				createSize.x-= base;
 			}
 			return true;
 		}
-		if (CheckChangeProperty(mousePos,D3DXVECTOR2(DEBUG_FONT_WIDTH*8/2, CREATE_SIZEY_Y))) {
-			createSize.y++;
+		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 8 / 2, CREATE_SIZEY_Y))) {
+			createSize.y+= base;
 			return true;
 		}
 		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 4 / 2, CREATE_SIZEY_Y))) {
 			if (createSize.y > 1) {
-				createSize.y--;
+				createSize.y-= base;
 			}
+			return true;
+		}
+		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 8 / 2, CREATE_SPPED_Y))) {
+			SetSpeed(createSpeed+ 0.1f * base);
+			return true;
+		}
+		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 4 / 2, CREATE_SPPED_Y))) {
+			SetSpeed(createSpeed - 0.1f * base);
 			return true;
 		}
 
@@ -276,6 +312,7 @@ bool CheckMouseFlyingObjectEditor() {
 					current.frame = GetFlyingObjectSponeFrame();
 					current.hp = createHP;
 					current.size = createSize;
+					current.speed = createSpeed;
 					AddFlyingObjectSponer(current);
 				}
 			}
