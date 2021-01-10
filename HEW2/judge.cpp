@@ -211,7 +211,7 @@ void JudgePlayerandFlyingObjectHit() {
 					continue;
 				}
 				if (!CheckShortest(*player, *itr, itr2->trans.pos)) {
-					itr++;
+					itr2++;
 					continue;
 				}
 				auto move = -itr->dir;
