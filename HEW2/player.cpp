@@ -180,6 +180,16 @@ void BlockDecision() {
 
 	player.putFrame = 0;
 
+	auto& front = player.flyingObjectList.front();
+	if (front.type == FLYING_OBJECT_CHECKPOINT_OFF) {
+		if (GetMapType(front.trans.GetIntPos()) != MAP_BLOCK_NONE) {
+			return;
+		}
+		MapChange(front);
+		player.flyingObjectList.clear();
+		return;
+	}
+
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
 		MapType type;
@@ -271,6 +281,15 @@ bool PlayerImport(FILE* fp) {
 }
 
 void MakePut() {
+	auto& front = player.flyingObjectList.front();
+	if (front.type == FLYING_OBJECT_CHECKPOINT_OFF) {
+		if (GetMapType(front.trans.GetIntPos()) != MAP_BLOCK_NONE) {
+			return;
+		}
+		front.isAnime = true;
+		player.isPut = true;
+		return;
+	}
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
