@@ -16,6 +16,8 @@
 #define PLAYER_TEXTURE_WIDTH 32
 #define PLAYER_TEXTURE_HEIGHT 32
 
+#define PLAYER_PURGE_SPEED 6
+
 static int textureId = TEXTURE_INVALID_ID;
 static Player player;
 
@@ -72,7 +74,7 @@ void UpdatePlayer() {
 	auto speed = player.speed - (player.speed / 2 * player.flyingObjectList.size() / player.blockMax);
 
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
-		if (UpdateFlyingObject(&*itr, speed / 2)) {
+		if (UpdateFlyingObject(&*itr, PLAYER_PURGE_SPEED)) {
 			itr = player.purgeFlyingObjectList.erase(itr);
 		}
 		else {
