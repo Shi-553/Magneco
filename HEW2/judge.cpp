@@ -52,74 +52,19 @@ void JudgePlayerandFlyingObjectHit() {
 	NPC* npc = GetNpc();
 
 
-	// プレイヤーとflyingObjectの当たり判定
-	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
-
-		if (itr->type == FLYING_OBJECT_BLOCK || itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
-			if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, player->size, itr->size)) {
-				itr++;
-				continue;
-			}
-
-			if (GetBlock(*itr,player->trans.pos)) {
-				itr = flyingObjectList->erase(itr);
-			}
-			else {
-				itr++;
-			}
-
-		}
-		// 敵(ufo&enemy)とプレイヤー
-		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_ENEMY_SECOND) {
-
-			auto playerSize = player->size - D3DXVECTOR2(0.2, 0.2);
-			if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, playerSize, itr->size)) {
-				itr++;
-				continue;
-			}
-			if (DamagePlayer()) {
-				if (itr->type == FLYING_OBJECT_UFO) {
-					npc->takeOutFrame = 0;
-					DestroyUFO();
-
-				}
-
-				itr = flyingObjectList->erase(itr);
-			}
-			else {
-				itr++;
-			}
-
-			//GoNextScene(GameOverScene, FADE_IN);
-			//return;
-		}
-		else if (IsFlyingObjectItem(itr->type)) {
-			if (itr->type == FLYING_OBJECT_ITEM_ADD_SPEED) {
-				player->speed++;
-			}
-			else if (itr->type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
-				player->blockMax++;
-			}
-			itr = flyingObjectList->erase(itr);
-		}
-		else {
-			itr++;
-		}
-
-	}
 
 	// 引っ付いてるFlyingObjectとenemyの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
 		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); ) {
 
-				if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos, itr->size, itr2->size)) {
-					itr2++;
-					continue;
-				}
+			if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos, itr->size, itr2->size)) {
+				itr2++;
+				continue;
+			}
 
 			if (itr->type == FLYING_OBJECT_BLOCK) {
-				if (GetBlock(*itr,itr2->trans.pos)) {
+				if (GetBlock(*itr, itr2->trans.pos)) {
 					itr = flyingObjectList->erase(itr);
 					break;
 				}
@@ -162,6 +107,63 @@ void JudgePlayerandFlyingObjectHit() {
 
 	}
 
+	// プレイヤーとflyingObjectの当たり判定
+	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
+
+		if (itr->type == FLYING_OBJECT_BLOCK || itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
+			if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, player->size, itr->size)) {
+				itr++;
+				continue;
+			}
+
+			if (GetBlock(*itr, player->trans.pos)) {
+				itr = flyingObjectList->erase(itr);
+			}
+			else {
+				itr++;
+			}
+
+		}
+		// 敵(ufo&enemy)とプレイヤー
+		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_ENEMY_SECOND) {
+
+			auto playerSize = player->size - D3DXVECTOR2(0.2, 0.2);
+			if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, playerSize, itr->size)) {
+				itr++;
+				continue;
+			}
+			if (DamagePlayer()) {
+				itr->hp--;
+				if (itr->hp <= 0) {
+
+					if (itr->type == FLYING_OBJECT_UFO) {
+						npc->takeOutFrame = 0;
+						DestroyUFO();
+					}
+					itr = flyingObjectList->erase(itr);
+					continue;
+				}
+			}
+
+			itr++;
+
+			//GoNextScene(GameOverScene, FADE_IN);
+			//return;
+		}
+		else if (IsFlyingObjectItem(itr->type)) {
+			if (itr->type == FLYING_OBJECT_ITEM_ADD_SPEED) {
+				player->speed++;
+			}
+			else if (itr->type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
+				player->blockMax++;
+			}
+			itr = flyingObjectList->erase(itr);
+		}
+		else {
+			itr++;
+		}
+
+	}
 	// パージされたFlyingObjectとenemyの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
