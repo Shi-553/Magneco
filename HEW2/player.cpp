@@ -17,6 +17,8 @@
 #define PLAYER_TEXTURE_WIDTH 32
 #define PLAYER_TEXTURE_HEIGHT 32
 
+#define PLAYER_PURGE_SPEED 6
+
 static int textureId = TEXTURE_INVALID_ID;
 static Player player;
 
@@ -74,7 +76,7 @@ void UpdatePlayer() {
 	auto speed = player.speed - (player.speed / 2 * player.flyingObjectList.size() / player.blockMax);
 
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
-		if (UpdateFlyingObject(&*itr, speed / 2)) {
+		if (UpdateFlyingObject(&*itr, PLAYER_PURGE_SPEED)) {
 			itr = player.purgeFlyingObjectList.erase(itr);
 		}
 		else {
@@ -213,7 +215,7 @@ void BlockDecision() {
 		while (!player.flyingObjectList.empty()) {
 			auto& current = player.flyingObjectList.front();
 
-			if (MapFourDirectionsJudgment(current.trans.GetIntPos())) {
+			if (GetMapType(current.trans.GetIntPos()) == MAP_BLOCK_NONE &&MapFourDirectionsJudgment(current.trans.GetIntPos())) {
 				MapChange(current);
 				isAdd = true;
 				player.flyingObjectList.pop_front();
@@ -295,14 +297,7 @@ void MakePut() {
 		return;
 	}
 
-	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
-		itr != player.flyingObjectList.end(); itr++) {
-		MapType type;
-		type = GetMapType(itr->trans.GetIntPos());
-		if (type != MAP_BLOCK_NONE) {
-			return;
-		}
-	}
+
 
 	bool isAdd = false;
 
@@ -314,7 +309,7 @@ void MakePut() {
 		while (!player.flyingObjectList.empty()) {
 			auto& current = player.flyingObjectList.front();
 
-			if (!current.isAnime && MapFourDirectionsJudgment(current.trans.GetIntPos())) {
+			if (GetMapType(current.trans.GetIntPos()) == MAP_BLOCK_NONE && !current.isAnime && MapFourDirectionsJudgment(current.trans.GetIntPos())) {
 				MapChange(current);
 				current.isAnime = true;
 				isAdd = true;
