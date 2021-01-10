@@ -66,6 +66,7 @@ void JudgePlayerandFlyingObjectHit() {
 			if (itr->type == FLYING_OBJECT_BLOCK) {
 				if (GetBlock(*itr, itr2->trans.pos)) {
 					itr = flyingObjectList->erase(itr);
+					isMatched = true;
 					break;
 				}
 				itr2++;
