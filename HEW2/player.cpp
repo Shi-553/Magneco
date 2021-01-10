@@ -279,6 +279,10 @@ bool PlayerImport(FILE* fp) {
 }
 
 void MakePut() {
+	if (player.flyingObjectList.empty()) {
+		return;
+	}
+
 	auto& front = player.flyingObjectList.front();
 	if (front.type == FLYING_OBJECT_CHECKPOINT_OFF) {
 		if (GetMapType(front.trans.GetIntPos()) != MAP_BLOCK_NONE) {
