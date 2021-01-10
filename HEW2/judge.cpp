@@ -152,6 +152,10 @@ void JudgePlayerandFlyingObjectHit() {
 			//return;
 		}
 		else if (IsFlyingObjectItem(itr->type)) {
+			if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, player->size, itr->size)) {
+				itr++;
+				continue;
+			}
 			if (itr->type == FLYING_OBJECT_ITEM_ADD_SPEED) {
 				player->speed++;
 			}
