@@ -29,6 +29,7 @@ typedef struct FlyingObject
 	bool isAnime;
 	int hp;
 	INTVECTOR2 size;
+	float speed;
 };
 
 std::list<FlyingObject>* GetFlyingObjects();

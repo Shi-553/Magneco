@@ -9,6 +9,7 @@ struct Spone {
 	D3DXVECTOR2 dir;
 	int hp;
 	INTVECTOR2 size;
+	float speed;
 };
 struct SponeId {
 	Spone s;

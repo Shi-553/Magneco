@@ -80,7 +80,7 @@ void DrawFlyingObject() {
 }
 void UpdateFlyingObject() {
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
-		if (UpdateFlyingObject(&*itr, 1)) {
+		if (UpdateFlyingObject(&*itr, itr->speed)) {
 			itr = flyingObjects.erase(itr);
 		}
 		else {
@@ -90,7 +90,7 @@ void UpdateFlyingObject() {
 }
 void BackFlyingObject(int frame) {
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
-		if (UpdateFlyingObject(&*itr, -frame)) {
+		if (UpdateFlyingObject(&*itr, -frame* itr->speed)) {
 			if (itr->type == FLYING_OBJECT_UFO) {
 				DestroyUFO();
 			}
