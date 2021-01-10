@@ -196,14 +196,6 @@ void BlockDecision() {
 		return;
 	}
 
-	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
-		itr != player.flyingObjectList.end(); itr++) {
-		MapType type;
-		type = GetMapType(itr->trans.GetIntPos());
-		if (type != MAP_BLOCK_NONE) {
-			return;
-		}
-	}
 
 	bool isAdd = false;
 
