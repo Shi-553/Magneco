@@ -51,63 +51,73 @@ void JudgePlayerandFlyingObjectHit() {
 
 	NPC* npc = GetNpc();
 
+	while (true) {
+		bool resetFlyingObjectList = false;
+		// 引っ付いてるFlyingObjectとenemyの当たり判定
+		for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
+			bool isMatched = false;
+			for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); ) {
 
-
-	// 引っ付いてるFlyingObjectとenemyの当たり判定
-	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
-		bool isMatched = false;
-		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); ) {
-
-			if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos, itr->size, itr2->size)) {
-				itr2++;
-				continue;
-			}
-
-			if (itr->type == FLYING_OBJECT_BLOCK) {
-				if (GetBlock(*itr, itr2->trans.pos)) {
-					itr = flyingObjectList->erase(itr);
-					isMatched = true;
-					break;
-				}
-				itr2++;
-				continue;
-
-			}
-			else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_SECOND) {
-				if (IsPlayerInvicible()) {
+				if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos, itr->size, itr2->size)) {
 					itr2++;
 					continue;
 				}
 
-				itr2 = player->flyingObjectList.erase(itr2);
-
-				player->checkCheckpoint = false;
-				itr->hp--;
-				if (itr->hp <= 0) {
-
-					if (itr->type == FLYING_OBJECT_UFO) {
-						npc->takeOutFrame = 0;
-						DestroyUFO();
+				if (itr->type == FLYING_OBJECT_BLOCK) {
+					if (GetBlock(*itr, itr2->trans.pos)) {
+						itr = flyingObjectList->erase(itr);
+						isMatched = true;
+						break;
 					}
-					itr = flyingObjectList->erase(itr);
-					isMatched = true;
-					break;
+					itr2++;
+					continue;
+
 				}
-				continue;
+				else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_SECOND) {
+					if (IsPlayerInvicible()) {
+						itr2++;
+						continue;
+					}
 
+					itr2 = player->flyingObjectList.erase(itr2);
+					resetFlyingObjectList = RemoteBlockToFreeFlyingObject();
+
+					player->checkCheckpoint = false;
+					itr->hp--;
+					if (itr->hp <= 0) {
+
+						if (itr->type == FLYING_OBJECT_UFO) {
+							npc->takeOutFrame = 0;
+							DestroyUFO();
+						}
+						itr = flyingObjectList->erase(itr);
+						isMatched = true;
+						break;
+					}
+					if (resetFlyingObjectList) {
+						break;
+					}
+					continue;
+
+				}
+				else {
+					itr2++;
+				}
 			}
-			else {
-				itr2++;
+
+			if (resetFlyingObjectList) {
+				break;
 			}
+
+			if (!isMatched) {
+				itr++;
+			}
+
 		}
-
-
-		if (!isMatched) {
-			itr++;
+		if (!resetFlyingObjectList) {
+			break;
 		}
-
 	}
-
 	// プレイヤーとflyingObjectの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 
@@ -179,7 +189,7 @@ void JudgePlayerandFlyingObjectHit() {
 			}
 			if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_SECOND) {
 				itr2 = player->purgeFlyingObjectList.erase(itr2);
-
+				
 				itr->hp--;
 				if (itr->hp <= 0) {
 

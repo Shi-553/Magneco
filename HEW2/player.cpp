@@ -26,6 +26,7 @@ static int  playerTextureVertical = 0;
 
 void BlockDecision();
 bool CheckShortest(FlyingObject& obj, D3DXVECTOR2& pos);
+void ToFreeFlyingObject(FlyingObject& flyingObject);
 
 void InitPlayer() {
 	textureId = ReserveTextureLoadFile("texture/player_32×32.png");
@@ -207,7 +208,7 @@ void BlockDecision() {
 		while (!player.flyingObjectList.empty()) {
 			auto& current = player.flyingObjectList.front();
 
-			if (GetMapType(current.trans.GetIntPos()) == MAP_BLOCK_NONE &&MapFourDirectionsJudgment(current.trans.GetIntPos())) {
+			if (GetMapType(current.trans.GetIntPos()) == MAP_BLOCK_NONE && MapFourDirectionsJudgment(current.trans.GetIntPos())) {
 				MapChange(current);
 				isAdd = true;
 				player.flyingObjectList.pop_front();
@@ -232,6 +233,7 @@ void BlockDecision() {
 
 	player.putFrame = 0;
 	player.isPut = false;
+	RemoteBlockToFreeFlyingObject();
 }
 
 Player* GetPlayer() {
@@ -350,7 +352,7 @@ void PutCansel() {
 }
 
 
-bool GetBlock(FlyingObject& itr,D3DXVECTOR2& attachPos) {
+bool GetBlock(FlyingObject& itr, D3DXVECTOR2& attachPos) {
 	if (player.flyingObjectList.size() >= player.blockMax || player.checkCheckpoint || player.isPut) {
 		return false;
 	}
@@ -358,7 +360,7 @@ bool GetBlock(FlyingObject& itr,D3DXVECTOR2& attachPos) {
 	if (player.flyingObjectList.size() > 0 && itr.type == FLYING_OBJECT_CHECKPOINT_OFF) {
 		return false;
 	}
-	if (!CheckShortest( itr, attachPos)) {
+	if (!CheckShortest(itr, attachPos)) {
 		return false;
 	}
 	auto move = -itr.dir;
@@ -428,7 +430,10 @@ bool DamagePlayer() {
 	if (IsPlayerInvicible()) {
 		return false;
 	}
-	player.flyingObjectList.clear();
+	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();) {
+		ToFreeFlyingObject(*itr);
+		itr=player.flyingObjectList.erase(itr);
+	}
 	player.checkCheckpoint = false;
 
 	player.stanTime = DEFAULT_PLAYER_STAN_FRAME;
@@ -454,4 +459,61 @@ bool CheckShortest(FlyingObject& obj, D3DXVECTOR2& pos) {
 		}
 	}
 	return true;
+}
+
+bool RemoteBlockToFreeFlyingObject() {
+	list<INTVECTOR2> okPoss;
+	okPoss.push_back(player.trans.GetIntPos());
+
+	list<int> toFreeFlyingObjectIds;
+	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); itr++) {
+		toFreeFlyingObjectIds.push_back(itr->id);
+	}
+
+	while (true) {
+		bool isModosita = false;
+
+		for (auto idItr = toFreeFlyingObjectIds.begin(); idItr != toFreeFlyingObjectIds.end(); idItr++) {
+			auto itr = find_if(player.flyingObjectList.begin(), player.flyingObjectList.end(), [idItr](FlyingObject f) {return f.id == *idItr; });
+			if (itr == player.flyingObjectList.end()) {
+				continue;
+			}
+			auto& pos = itr->trans.GetIntPos();
+			auto& left = pos + INTVECTOR2(-1, 0);
+			auto& right = pos + INTVECTOR2(1, 0);
+			auto& top = pos + INTVECTOR2(0, -1);
+			auto& bottom = pos + INTVECTOR2(0, 1);
+			if (find(okPoss.begin(), okPoss.end(), left) != okPoss.end() ||
+				find(okPoss.begin(), okPoss.end(), right) != okPoss.end() ||
+				find(okPoss.begin(), okPoss.end(), top) != okPoss.end() ||
+				find(okPoss.begin(), okPoss.end(), bottom) != okPoss.end()) {
+
+				okPoss.push_back(pos);
+				toFreeFlyingObjectIds.erase(idItr);
+				isModosita = true;
+				break;
+			}
+
+		}
+		if (!isModosita) {
+			break;
+		}
+	}
+
+	for (auto idItr = toFreeFlyingObjectIds.begin(); idItr != toFreeFlyingObjectIds.end(); idItr++) {
+		auto itr = find_if(player.flyingObjectList.begin(), player.flyingObjectList.end(), [idItr](FlyingObject f) {return f.id == *idItr; });
+		if (itr == player.flyingObjectList.end()) {
+			continue;
+		}
+
+		ToFreeFlyingObject(*itr);
+		player.flyingObjectList.erase(itr);
+	}
+	return !toFreeFlyingObjectIds.empty();
+}
+void ToFreeFlyingObject(FlyingObject& flyingObject) {
+	flyingObject.dir = (flyingObject.trans.GetIntPos() - player.trans.GetIntPos()).ToD3DXVECTOR2();
+	flyingObject.type = FLYING_OBJECT_BLOCK;
+	flyingObject.speed = 3;
+	AddFlyingObjects(&flyingObject);
 }
