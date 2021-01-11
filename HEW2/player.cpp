@@ -179,6 +179,9 @@ void MovePlayer(D3DXVECTOR2 dir) {
 }
 
 void BlockDecision() {
+	if (player.flyingObjectList.empty()) {
+		return;
+	}
 	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); itr++) {
 		itr->isAnime = false;
 	}
