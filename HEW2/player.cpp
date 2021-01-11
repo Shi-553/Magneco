@@ -514,6 +514,6 @@ bool RemoteBlockToFreeFlyingObject() {
 void ToFreeFlyingObject(FlyingObject& flyingObject) {
 	flyingObject.dir = (flyingObject.trans.GetIntPos() - player.trans.GetIntPos()).ToD3DXVECTOR2();
 	flyingObject.type = FLYING_OBJECT_BLOCK;
-	flyingObject.speed = 1;
+	flyingObject.speed = 3;
 	AddFlyingObjects(&flyingObject);
 }
