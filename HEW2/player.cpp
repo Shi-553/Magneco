@@ -179,6 +179,9 @@ void MovePlayer(D3DXVECTOR2 dir) {
 }
 
 void BlockDecision() {
+	if (player.flyingObjectList.empty()) {
+		return;
+	}
 	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); itr++) {
 		itr->isAnime = false;
 	}
@@ -515,5 +518,6 @@ void ToFreeFlyingObject(FlyingObject& flyingObject) {
 	flyingObject.dir = (flyingObject.trans.GetIntPos() - player.trans.GetIntPos()).ToD3DXVECTOR2();
 	flyingObject.type = FLYING_OBJECT_BLOCK;
 	flyingObject.speed = 3;
+	flyingObject.isAnime = false;
 	AddFlyingObjects(&flyingObject);
 }
