@@ -35,7 +35,8 @@ void InitPlayer() {
 	player.flyingObjectList.clear();
 	player.purgeFlyingObjectList.clear();
 	player.dir = { 0,0 };
-	player.speed = 6;
+	player.baseSpeed = 6;
+	player.addSpeed = 0;
 	player.frame = 0;
 	playerTextureVertical = 0;
 	player.blockMax = 4;
@@ -74,7 +75,7 @@ void UpdatePlayer() {
 			}
 		}
 	}
-	auto speed = player.speed - (player.speed / 2 * player.flyingObjectList.size() / player.blockMax);
+	auto speed = player.baseSpeed - (player.baseSpeed / 2 * player.flyingObjectList.size() / player.blockMax)+player.addSpeed;
 
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
 		if (UpdateFlyingObject(&*itr, PLAYER_PURGE_SPEED)) {

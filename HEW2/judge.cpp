@@ -167,7 +167,7 @@ void JudgePlayerandFlyingObjectHit() {
 				continue;
 			}
 			if (itr->type == FLYING_OBJECT_ITEM_ADD_SPEED) {
-				player->speed++;
+				player->addSpeed++;
 			}
 			else if (itr->type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
 				player->blockMax++;
