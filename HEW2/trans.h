@@ -54,7 +54,7 @@ struct INTVECTOR2 {
 	}
 
 	const D3DXVECTOR2 ToD3DXVECTOR2()const {
-		return D3DXVECTOR2(x, y);
+		return D3DXVECTOR2((float)x, (float)y);
 	}
 
 	bool operator==(const INTVECTOR2& b)const {
@@ -126,21 +126,18 @@ public:
 
 	TRANS() {
 	}
-	TRANS(D3DXVECTOR2 initPos) {
-		pos = initPos;
-		Init();
+	TRANS(D3DXVECTOR2& initPos) {
+		Init(initPos);
 	}
 	TRANS(float initX,float initY) {
 		pos.x = initX;
 		pos.y = initY;
 		Init();
 	}
-	TRANS(INTVECTOR2 initPos) {
-		pos.x = initPos.x;
-		pos.y = initPos.y;
-		Init();
+	TRANS(INTVECTOR2& initPos) {
+		Init(initPos);
 	}
-	void Init(D3DXVECTOR2 initPos) {
+	void Init(D3DXVECTOR2& initPos) {
 		pos = initPos;
 		Init();
 	}
@@ -149,9 +146,8 @@ public:
 		pos.y = initY;
 		Init();
 	}
-	void Init(INTVECTOR2 initPos) {
-		pos.x = initPos.x;
-		pos.y = initPos.y;
+	void Init(INTVECTOR2& initPos) {
+		pos = initPos.ToD3DXVECTOR2();
 		Init();
 	}
 
