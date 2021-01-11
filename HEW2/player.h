@@ -58,4 +58,5 @@ bool IsPlayerInvicible();
 
 bool DamagePlayer();
 
+bool RemoteBlockToFreeFlyingObject();
 #endif // !_PLAYER_H

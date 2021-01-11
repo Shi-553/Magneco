@@ -51,8 +51,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 	NPC* npc = GetNpc();
 
-
-
+	bool isDaletePlayerFlyingObject = false;
 	// 引っ付いてるFlyingObjectとenemyの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 		bool isMatched = false;
@@ -80,6 +79,7 @@ void JudgePlayerandFlyingObjectHit() {
 				}
 
 				itr2 = player->flyingObjectList.erase(itr2);
+				isDaletePlayerFlyingObject = true;
 
 				player->checkCheckpoint = false;
 				itr->hp--;
@@ -106,6 +106,9 @@ void JudgePlayerandFlyingObjectHit() {
 			itr++;
 		}
 
+	}
+	if (isDaletePlayerFlyingObject) {
+		RemoteBlockToFreeFlyingObject();
 	}
 
 	// プレイヤーとflyingObjectの当たり判定
