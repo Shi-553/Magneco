@@ -146,10 +146,6 @@ void JudgePlayerandFlyingObjectHit() {
 		}
 
 		if (IsFlyingObjectBlock(itr->type)) {
-			if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, player->size, itr->size)) {
-				itr++;
-				continue;
-			}
 
 			if (GetBlock(*itr, player->trans.pos)) {
 				itr = flyingObjectList->erase(itr);
