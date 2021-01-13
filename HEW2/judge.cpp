@@ -63,7 +63,7 @@ void JudgePlayerandFlyingObjectHit() {
 					continue;
 				}
 
-				if (itr->type == FLYING_OBJECT_BLOCK) {
+				if (IsFlyingObjectBlock(itr->type)) {
 					if (GetBlock(*itr, itr2->trans.pos)) {
 						itr = flyingObjectList->erase(itr);
 						isMatched = true;
@@ -73,7 +73,7 @@ void JudgePlayerandFlyingObjectHit() {
 					continue;
 
 				}
-				else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_SECOND) {
+				else if (IsFlyingObjectEnemy(itr->type)) {
 					if (IsPlayerInvicible()) {
 						itr2++;
 						continue;
@@ -121,7 +121,7 @@ void JudgePlayerandFlyingObjectHit() {
 	// プレイヤーとflyingObjectの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
 
-		if (itr->type == FLYING_OBJECT_BLOCK || itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
+		if (IsFlyingObjectBlock(itr->type)) {
 			if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, player->size, itr->size)) {
 				itr++;
 				continue;
@@ -136,7 +136,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 		}
 		// 敵(ufo&enemy)とプレイヤー
-		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_ENEMY_SECOND) {
+		else if (IsFlyingObjectEnemy(itr->type)) {
 
 			auto playerSize = player->size - D3DXVECTOR2(0.2, 0.2);
 			if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, playerSize, itr->size)) {
@@ -187,7 +187,7 @@ void JudgePlayerandFlyingObjectHit() {
 				itr2++;
 				continue;
 			}
-			if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_SECOND) {
+			if (IsFlyingObjectEnemy(itr->type)) {
 				itr2 = player->purgeFlyingObjectList.erase(itr2);
 				
 				itr->hp--;
@@ -262,7 +262,7 @@ void JudgePlayerandFlyingObjectHit() {
 	// enemyFlyingObjectと設置ブロックの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end();) {
 		bool isMatched = false;
-		if (itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
+		if (IsFlyingObjectBreakBlockEnemy(itr->type )) {
 			INTVECTOR2 pos = itr->trans.GetIntPos();
 			Map* map = GetMap(pos);
 			if (map != NULL && map->type == MAP_BLOCK) {
