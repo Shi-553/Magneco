@@ -61,5 +61,5 @@ bool CanGoNPCMapType(MapType type);
 void OpenChest(INTVECTOR2 pos);
 int GetMapTextureId(MapType type);
 
-bool IsBreakBlock(INTVECTOR2 pos, vector<INTVECTOR2>& v);
+bool BreakNotConnectBlock(INTVECTOR2 pos);
 #endif // !MAP_H

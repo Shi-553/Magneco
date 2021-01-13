@@ -14,6 +14,7 @@
 #define MAP_GOAL_DRAW_SIZE_HEIGHT 2
 
 bool CanAttachedMapType(MapType type);
+bool IsBreakBlock(INTVECTOR2 pos, vector<INTVECTOR2>& v);
 
 static Map* MapChipList = NULL;
 static int textureIds[MAP_MAX];
@@ -426,7 +427,7 @@ void OpenChest(INTVECTOR2 pos) {
 	p.y -= 0.5;
 	FlyingObject f = { TRANS(p),(FlyingObjectType)map->param,{0,0} };
 	f.hp = 1;
-	f.size = {1,1};
+	f.size = { 1,1 };
 	AddFlyingObjects(&f);
 }
 
@@ -438,6 +439,20 @@ int GetMapTextureId(MapType type) {
 	return textureIds[(int)type];
 }
 
+bool BreakNotConnectBlock(INTVECTOR2 pos) {
+	vector<INTVECTOR2> v;
+
+	if (IsBreakBlock(pos, v)) {
+		return false;
+	}
+	for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
+		Map* map = GetMap(*itrV);
+		if (map != NULL && map->type == MAP_BLOCK) {
+			map->type = MAP_BLOCK_NONE;
+		}
+	}
+	return true;
+}
 
 bool IsBreakBlock(INTVECTOR2 pos, vector<INTVECTOR2>& v) {
 	//既にみてたらスルー
