@@ -58,7 +58,7 @@ void InitGameClear()
 	AddButton(&returnTitleButton);
 	AddButton(&retryButton);
 
-	backgroundTexture = ReserveTextureLoadFile("texture/背景１.png");
+	backgroundTexture = ReserveTextureLoadFile("texture/background/背景１.png");
 	gameClearTexture = ReserveTextureLoadFile("texture/stageclear.png");
 
 	LoadTexture();

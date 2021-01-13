@@ -32,6 +32,9 @@ bool NPCRespone();
 #define NPC_TEXTURE_WIDTH 64
 #define NPC_TEXTURE_HEIGHT 64
 
+#define BEACON_TEXTURE_WIDTH 32
+#define BEACON_TEXTURE_HEIGHT 64
+
 #define NPC_SIZE_WIDTH 1.76
 #define NPC_SIZE_HEIGHT 1.76
 
@@ -53,11 +56,11 @@ static int  npcTextureVertical = 0;
 
 static LPD3DXFONT font = NULL;
 void InitNPC() {
-	beaconTextureId = ReserveTextureLoadFile("texture/beacon01.png");
+	beaconTextureId = ReserveTextureLoadFile("texture/npc/beacon_anime.png");
 
-	npcTextureIdWait = ReserveTextureLoadFile("texture/spr_rose_idle.png");
-	npcTextureIdMove = ReserveTextureLoadFile("texture/spr_rose_walk.png");
-	npcTextureIdShadow = ReserveTextureLoadFile("texture/spr_shadow.png");
+	npcTextureIdWait = ReserveTextureLoadFile("texture/npc/spr_rose_idle.png");
+	npcTextureIdMove = ReserveTextureLoadFile("texture/npc/spr_rose_walk.png");
+	npcTextureIdShadow = ReserveTextureLoadFile("texture/npc/spr_shadow.png");
 	npc.speed = 1;
 	npc.trans.Init(2, 7);
 	npc.frame = 30;
@@ -161,7 +164,12 @@ void DrawNPC() {
 	}
 	else
 	{
-		DrawGameSprite(beaconTextureId, gBeaconPos.ToD3DXVECTOR2() + D3DXVECTOR2(0.0f, -0.4f), 30);
+		auto tBeaconPos = D3DXVECTOR2(
+			BEACON_TEXTURE_WIDTH * (npc.aniFrame / 12 % 8),
+			0
+		);
+		
+		DrawGameSprite(beaconTextureId, gBeaconPos.ToD3DXVECTOR2() + D3DXVECTOR2(0.0f, -0.3f), 30, tBeaconPos, D3DXVECTOR2(BEACON_TEXTURE_WIDTH, BEACON_TEXTURE_HEIGHT));
 
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 6 % 6),

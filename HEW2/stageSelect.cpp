@@ -52,7 +52,7 @@ void InitStageSelect() {
 	InitMesseage();
 
 	InitSelectButton();
-	selectStageTextureIds[STAGE_SELECT_BACK_GROUND] = ReserveTextureLoadFile("texture/背景4.jpg");
+	selectStageTextureIds[STAGE_SELECT_BACK_GROUND] = ReserveTextureLoadFile("texture/background/背景4.jpg");
 	selectStageTextureIds[STAGE_SELECT_BU_L ] =            ReserveTextureLoadFile("texture/stageSelect/button_left.png");
 	selectStageTextureIds[STAGE_SELECT_BU_L_CANT_SELECT] =  ReserveTextureLoadFile("texture/stageSelect/button_left_cantselect.png");
 	selectStageTextureIds[STAGE_SELECT_BU_L_PUDHED] =      ReserveTextureLoadFile("texture/stageSelect/button_left_pushed.png");

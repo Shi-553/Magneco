@@ -28,7 +28,7 @@ void BlockDecision();
 void ToFreeFlyingObject(FlyingObject& flyingObject);
 
 void InitPlayer() {
-	textureId = ReserveTextureLoadFile("texture/player_32×32.png");
+	textureId = ReserveTextureLoadFile("texture/player/player_32×32.png");
 
 	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();

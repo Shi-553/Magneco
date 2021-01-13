@@ -58,7 +58,7 @@ void InitGameOver() {
 	AddButton(&retryButton);
 	AddButton(&returnTitleButton);
 
-	backgroundTexture = ReserveTextureLoadFile("texture/背景2.jpg");
+	backgroundTexture = ReserveTextureLoadFile("texture/background/背景2.jpg");
 
 	gameOverTextTexture = ReserveTextureLoadFile("texture/gameover.png");
 

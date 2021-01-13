@@ -81,7 +81,7 @@ void InitGameStart() {
 	AddButton(&tutorialButton);
 	AddButton(&endButton);
 
-	backGroundTexture = ReserveTextureLoadFile("texture/背景１.png");
+	backGroundTexture = ReserveTextureLoadFile("texture/background/背景１.png");
 
 	titleTextTexture = ReserveTextureLoadFile("texture/title_640×240.png");
 
