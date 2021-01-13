@@ -13,6 +13,7 @@
 using namespace std;
 
 
+bool CheckShortest(Player& player, FlyingObject& obj, D3DXVECTOR2& pos);
 
 void InitJudge() {
 
@@ -59,6 +60,10 @@ void JudgePlayerandFlyingObjectHit() {
 			for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); ) {
 
 				if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos, itr->size, itr2->size)) {
+					itr2++;
+					continue;
+				}
+				if (!CheckShortest(*player,*itr, itr2->trans.pos)) {
 					itr2++;
 					continue;
 				}
@@ -120,12 +125,27 @@ void JudgePlayerandFlyingObjectHit() {
 	}
 	// プレイヤーとflyingObjectの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
+		if (IsFlyingObjectItem(itr->type)) {
+			if (itr->type == FLYING_OBJECT_ITEM_ADD_SPEED) {
+				player->addSpeed++;
+			}
+			else if (itr->type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
+				player->blockMax++;
+			}
+			itr = flyingObjectList->erase(itr);
+			continue;
+		}
+
+		if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, player->size, itr->size)) {
+			itr++;
+			continue;
+		}
+		if (!CheckShortest(*player, *itr, player->trans.pos)) {
+			itr++;
+			continue;
+		}
 
 		if (itr->type == FLYING_OBJECT_BLOCK || itr->type == FLYING_OBJECT_CHECKPOINT_OFF) {
-			if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, player->size, itr->size)) {
-				itr++;
-				continue;
-			}
 
 			if (GetBlock(*itr, player->trans.pos)) {
 				itr = flyingObjectList->erase(itr);
@@ -138,11 +158,6 @@ void JudgePlayerandFlyingObjectHit() {
 		// 敵(ufo&enemy)とプレイヤー
 		else if (itr->type == FLYING_OBJECT_ENEMY || itr->type == FLYING_OBJECT_UFO || itr->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK || itr->type == FLYING_OBJECT_ENEMY_SECOND) {
 
-			auto playerSize = player->size - D3DXVECTOR2(0.2, 0.2);
-			if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, playerSize, itr->size)) {
-				itr++;
-				continue;
-			}
 			if (DamagePlayer()) {
 				itr->hp--;
 				if (itr->hp <= 0) {
@@ -160,19 +175,6 @@ void JudgePlayerandFlyingObjectHit() {
 
 			//GoNextScene(GameOverScene, FADE_IN);
 			//return;
-		}
-		else if (IsFlyingObjectItem(itr->type)) {
-			if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, player->size, itr->size)) {
-				itr++;
-				continue;
-			}
-			if (itr->type == FLYING_OBJECT_ITEM_ADD_SPEED) {
-				player->addSpeed++;
-			}
-			else if (itr->type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
-				player->blockMax++;
-			}
-			itr = flyingObjectList->erase(itr);
 		}
 		else {
 			itr++;
@@ -313,4 +315,24 @@ void JudgePlayerandFlyingObjectHit() {
 		}
 		itr++;
 	}
+}
+
+
+bool CheckShortest(Player& player,FlyingObject& obj, D3DXVECTOR2& pos) {
+	auto posToObj = pos - obj.trans.pos;
+	float len = D3DXVec2LengthSq(&posToObj);
+
+	auto playerToObj = player.trans.pos - obj.trans.pos;
+	if (len > D3DXVec2LengthSq(&playerToObj)) {
+		return false;
+	}
+
+	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); itr++) {
+		auto posToFlyingObject = itr->trans.pos - obj.trans.pos;
+
+		if (len > D3DXVec2LengthSq(&posToFlyingObject)) {
+			return false;
+		}
+	}
+	return true;
 }
