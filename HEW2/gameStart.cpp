@@ -50,7 +50,7 @@ void InitGameStart() {
 	};
 
 	startButton.releasedCallback = []() {
-		GoNextScene(GameScene);
+		GoNextScene(StageSelect);
 	};
 
 
