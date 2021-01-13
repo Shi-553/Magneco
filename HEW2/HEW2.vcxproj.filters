@@ -109,6 +109,9 @@
     <ClCompile Include="flyingObjectEditor.cpp">
       <Filter>cpp\scenes\stageEditor</Filter>
     </ClCompile>
+    <ClCompile Include="stageSelect.cpp">
+      <Filter>cpp\scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -224,6 +227,9 @@
     </ClInclude>
     <ClInclude Include="flyingObjectEditor.h">
       <Filter>ヘッダー\scenes\stageEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="stageSelect.h">
+      <Filter>ヘッダー\scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
