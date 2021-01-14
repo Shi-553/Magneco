@@ -50,10 +50,11 @@ jobs:
         
     - name: FileMove
       run: |
-           pwsh -command "Move-Item ./HEW2/font ./x64/Release"
-           pwsh -command "Move-Item ./HEW2/stage ./x64/Release"
-           pwsh -command "Move-Item ./HEW2/texture ./x64/Release"
-           pwsh -command "Rename-Item ./x64/Release Magneco"
+           pwsh -command "New-Item ./Magneco -itemType Directory"
+           pwsh -command "Move-Item ./HEW2/font ./Magneco"
+           pwsh -command "Move-Item ./HEW2/stage ./Magneco"
+           pwsh -command "Move-Item ./HEW2/texture ./Magneco"
+           pwsh -command "Move-Item ./x64/Release/*.exe ./Magneco"
       
     - name: Zip
       run: 7z a "Magneco-x64.zip" "./x64/Magneco" -tzip
