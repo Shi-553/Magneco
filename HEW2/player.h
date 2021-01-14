@@ -15,7 +15,8 @@ struct Player {
 	std::list <FlyingObject> flyingObjectList;
 	std::list <FlyingObject> purgeFlyingObjectList;
 	D3DXVECTOR2 dir;
-	float speed;
+	float baseSpeed;
+	float addSpeed;
 	int frame;
 	int blockMax;
 	bool checkCheckpoint;

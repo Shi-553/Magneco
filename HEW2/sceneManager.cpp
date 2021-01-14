@@ -12,6 +12,7 @@
 #include "stageEditor.h"
 #include "InputLogger.h"
 #include "importExport.h"
+#include "stageSelect.h"
 
 
 typedef void (*SceneFunc)(void);
@@ -23,7 +24,8 @@ static const SceneFunc Inits[]{
 		InitGameClear,
 		InitGameOver,
 		InitTutorial,
-		InitStageEditor
+		InitStageEditor,
+		InitStageSelect
 };
 
 static const SceneFunc Uninits[]{
@@ -32,7 +34,8 @@ static const SceneFunc Uninits[]{
 		UninitGameClear,
 		UninitGameOver,
 		UninitTutorial,
-		UninitStageEditor
+		UninitStageEditor,
+		UninitStageSelect
 };
 
 static const SceneFunc Updates[]{
@@ -41,7 +44,8 @@ static const SceneFunc Updates[]{
 		UpdateGameClear,
 		UpdateGameOver,
 		UpdateTutorial,
-		UpdateStageEditor
+		UpdateStageEditor,
+		UpdateStageSelect
 };
 
 static const SceneFunc Draws[]{
@@ -50,7 +54,8 @@ static const SceneFunc Draws[]{
 		DrawGameClear,
 		DrawGameOver,
 		DrawTutorial,
-		DrawStageEditor
+		DrawStageEditor,
+		DrawStageSelect
 };
 
 Scene currentScene;

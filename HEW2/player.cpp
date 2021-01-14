@@ -25,7 +25,6 @@ static Player player;
 static int  playerTextureVertical = 0;
 
 void BlockDecision();
-bool CheckShortest(FlyingObject& obj, D3DXVECTOR2& pos);
 void ToFreeFlyingObject(FlyingObject& flyingObject);
 
 void InitPlayer() {
@@ -35,7 +34,8 @@ void InitPlayer() {
 	player.flyingObjectList.clear();
 	player.purgeFlyingObjectList.clear();
 	player.dir = { 0,0 };
-	player.speed = 6;
+	player.baseSpeed = 6;
+	player.addSpeed = 0;
 	player.frame = 0;
 	playerTextureVertical = 0;
 	player.blockMax = 4;
@@ -74,7 +74,7 @@ void UpdatePlayer() {
 			}
 		}
 	}
-	auto speed = player.speed - (player.speed / 2 * player.flyingObjectList.size() / player.blockMax);
+	auto speed = player.baseSpeed - (player.baseSpeed / 2 * player.flyingObjectList.size() / player.blockMax) + player.addSpeed;
 
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
 		if (UpdateFlyingObject(&*itr, PLAYER_PURGE_SPEED)) {
@@ -363,9 +363,6 @@ bool GetBlock(FlyingObject& itr, D3DXVECTOR2& attachPos) {
 	if (player.flyingObjectList.size() > 0 && itr.type == FLYING_OBJECT_CHECKPOINT_OFF) {
 		return false;
 	}
-	if (!CheckShortest(itr, attachPos)) {
-		return false;
-	}
 	auto move = -itr.dir;
 
 	itr.trans.pos = attachPos;
@@ -435,7 +432,7 @@ bool DamagePlayer() {
 	}
 	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();) {
 		ToFreeFlyingObject(*itr);
-		itr=player.flyingObjectList.erase(itr);
+		itr = player.flyingObjectList.erase(itr);
 	}
 	player.checkCheckpoint = false;
 
@@ -445,24 +442,6 @@ bool DamagePlayer() {
 }
 
 
-bool CheckShortest(FlyingObject& obj, D3DXVECTOR2& pos) {
-	auto posToObj = pos - obj.trans.pos;
-	float len = D3DXVec2LengthSq(&posToObj);
-
-	auto playerToObj = player.trans.pos - obj.trans.pos;
-	if (len > D3DXVec2LengthSq(&playerToObj)) {
-		return false;
-	}
-
-	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); itr++) {
-		auto posToFlyingObject = itr->trans.pos - obj.trans.pos;
-
-		if (len > D3DXVec2LengthSq(&posToFlyingObject)) {
-			return false;
-		}
-	}
-	return true;
-}
 
 bool RemoteBlockToFreeFlyingObject() {
 	list<INTVECTOR2> okPoss;
@@ -503,12 +482,13 @@ bool RemoteBlockToFreeFlyingObject() {
 		}
 	}
 
-	for (auto idItr = toFreeFlyingObjectIds.begin(); idItr != toFreeFlyingObjectIds.end(); idItr++) {
+	for (auto idItr = toFreeFlyingObjectIds.begin(); idItr != toFreeFlyingObjectIds.end(); ) {
 		auto itr = find_if(player.flyingObjectList.begin(), player.flyingObjectList.end(), [idItr](FlyingObject f) {return f.id == *idItr; });
 		if (itr == player.flyingObjectList.end()) {
+			idItr = toFreeFlyingObjectIds.erase(idItr);
 			continue;
 		}
-
+		idItr++;
 		ToFreeFlyingObject(*itr);
 		player.flyingObjectList.erase(itr);
 	}

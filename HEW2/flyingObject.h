@@ -47,6 +47,9 @@ void DrawFlyingObject(FlyingObject flyingObject);
 bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
 
 bool IsFlyingObjectItem(FlyingObjectType type);
+bool IsFlyingObjectEnemy(FlyingObjectType type);
+bool IsFlyingObjectBlock(FlyingObjectType type);
+bool IsFlyingObjectBreakBlockEnemy(FlyingObjectType type);
 bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
 
 void BackFlyingObject(int frame);
