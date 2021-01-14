@@ -57,7 +57,7 @@ jobs:
            pwsh -command "Move-Item ./x64/Release/*.exe ./Magneco"
       
     - name: Zip
-      run: 7z a "Magneco-x64.zip" "./x64/Magneco" -tzip
+      run: 7z a "Magneco-x64.zip" "./Magneco" -tzip
       
       
     - name: Set releaser settings
