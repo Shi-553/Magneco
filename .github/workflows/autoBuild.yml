@@ -53,7 +53,7 @@ jobs:
     
     # Run the pcsx2 msbuild command
     - name: Build
-      run: msbuild HEW2.sln /m /p:Configuration=Release;Platform='x64'
+      run: msbuild HEW2.sln /m /p:Configuration=Release /p:Platform=x64
       env:
         DXSDK_DIR: ${{ github.workspace  }}\DXSDK\
         
