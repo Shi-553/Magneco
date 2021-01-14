@@ -1,19 +1,9 @@
-name: auto build
+name: auto build and release
 
 on:
   push:
     branches:
       - master
-  workflow_dispatch:
-    # Inputs the workflow accepts.
-    inputs:
-      name:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'autobuild'
-        # Default value if no value is explicitly provided
-        default: 'World'
-        # Input has to be provided for the workflow to run
-        required: true
 
 jobs:
   build:
@@ -63,9 +53,10 @@ jobs:
            pwsh -command "Move-Item ./HEW2/font ./x64/Release"
            pwsh -command "Move-Item ./HEW2/stage ./x64/Release"
            pwsh -command "Move-Item ./HEW2/texture ./x64/Release"
+           pwsh -command "Rename-Item ./x64/Release Magneco"
       
     - name: Zip
-      run: 7z a "マグネッコ-x64.zip" "./x64/Release/*" -tzip
+      run: 7z a "Magneco-x64.zip" "./x64/Magneco" -tzip
       
       
     - name: Set releaser settings
