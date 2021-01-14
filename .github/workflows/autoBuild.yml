@@ -25,6 +25,8 @@ jobs:
     steps: 
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        submodules: true
       #with:
       #  fetch-depth: 0
       
@@ -53,7 +55,7 @@ jobs:
     
     # Run the pcsx2 msbuild command
     - name: Build
-      run: msbuild HEW2.sln /p:Configuration=Release
+      run: msbuild HEW2.sln /m /p:Configuration=Release
       env:
         DXSDK_DIR: ${{ github.workspace }}\DXSDK\
         
