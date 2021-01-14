@@ -19,14 +19,15 @@ jobs:
   build:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RELEASE_IT_VERSION: 14
         
     runs-on: windows-latest
     
     steps: 
     - name: Checkout code
       uses: actions/checkout@v2
-      #with:
-      #  fetch-depth: 0
+      with:
+        fetch-depth: 0
       
     # Install MSBuild
     - name: Setup msbuild
@@ -51,10 +52,39 @@ jobs:
              rm -fR _DX*_ _DX*_.exe
       shell: bash
     
-    # Run the pcsx2 msbuild command
+    # Run the msbuild command
     - name: Build
       run: msbuild HEW2.sln /m /p:Configuration=Release /p:Platform=x64
       env:
         DXSDK_DIR: ${{ github.workspace  }}\DXSDK\
         
+    - name: FileMove
+      run: |
+           pwsh -command "Move-Item ./HEW2/font ./x64/Release"
+           pwsh -command "Move-Item ./HEW2/stage ./x64/Release"
+           pwsh -command "Move-Item ./HEW2/texture ./x64/Release"
+      
+    - name: Zip
+      run: 7z a "マグネッコ-x64.zip" "./x64/Release/*" -tzip
+      
+      
+    - name: Set releaser settings
+      run: |
+        git config --global user.name release-machine
+        git config --global user.email email@example.com
         
+    - name: Major release
+      id: major
+      if: contains(toJSON(github.event.commits.*.message), 'major update')
+      run:  npx release-it@${RELEASE_IT_VERSION} -- major --ci
+      
+    - name: Minor release
+      id: minor
+      # メジャーバージョンアップをしていないときマイナーバージョンアップを行なうか
+      if: steps.major.conclusion == 'skipped'  && contains(toJSON(github.event.commits.*.message), 'minor update')
+      run:  npx release-it@${RELEASE_IT_VERSION} -- minor --ci
+      
+    - name: Patch release
+      # コミットメッセージに特に指定がない場合はパッチバージョンを更新する
+      if: "!(steps.major.conclusion == 'success' || steps.minor.conclusion == 'success')"
+      run:  npx release-it@${RELEASE_IT_VERSION} -- patch --ci
