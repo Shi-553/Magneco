@@ -25,15 +25,12 @@ jobs:
     steps: 
     - name: Checkout code
       uses: actions/checkout@v2
-      with:
-        submodules: true
       #with:
       #  fetch-depth: 0
       
     # Install MSBuild
     - name: Setup msbuild
       uses: microsoft/setup-msbuild@v1
-        
     
     # Activate cache
     - name: Start DXSDK Cache
@@ -55,8 +52,8 @@ jobs:
     
     # Run the pcsx2 msbuild command
     - name: Build
-      run: msbuild HEW2.sln /m /p:Configuration=Release
+      run: msbuild HEW2.sln /m /p:Configuration=Release;Platform='x64'
       env:
-        DXSDK_DIR: ${{ github.workspace }}\DXSDK\
+        DXSDK_DIR: ${{ github.GITHUB_WORKSPACE }}\DXSDK\
         
         
