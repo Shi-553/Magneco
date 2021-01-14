@@ -54,6 +54,6 @@ jobs:
     - name: Build
       run: msbuild HEW2.sln /m /p:Configuration=Release;Platform='x64'
       env:
-        DXSDK_DIR: ${{ github.GITHUB_WORKSPACE }}\DXSDK\
+        DXSDK_DIR: ${{ github.workspace  }}\DXSDK\
         
         
