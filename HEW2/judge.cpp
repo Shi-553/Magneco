@@ -273,43 +273,10 @@ void JudgePlayerandFlyingObjectHit() {
 				isMatched = true;
 
 				//チェックポイントとつながってないブロックを消す
-				vector<INTVECTOR2> v;
-				if (!IsBreakBlock(pos + INTVECTOR2(0, 1), v)) {
-					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
-						Map* map = GetMap(*itrV);
-						if (map != NULL && map->type == MAP_BLOCK) {
-							map->type = MAP_BLOCK_NONE;
-						}
-					}
-				}
-				v.clear();
-				if (!IsBreakBlock(pos + INTVECTOR2(0, -1), v)) {
-					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
-						Map* map = GetMap(*itrV);
-						if (map != NULL && map->type == MAP_BLOCK) {
-							map->type = MAP_BLOCK_NONE;
-						}
-					}
-				}
-				v.clear();
-				if (!IsBreakBlock(pos + INTVECTOR2(1, 0), v)) {
-					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
-						Map* map = GetMap(*itrV);
-						if (map != NULL && map->type == MAP_BLOCK) {
-							map->type = MAP_BLOCK_NONE;
-						}
-					}
-				}
-				v.clear();
-				if (!IsBreakBlock(pos + INTVECTOR2(-1, 0), v)) {
-					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
-						Map* map = GetMap(*itrV);
-						if (map != NULL && map->type == MAP_BLOCK) {
-							map->type = MAP_BLOCK_NONE;
-						}
-					}
-				}
-				v.clear();
+				BreakNotConnectBlock(pos + INTVECTOR2(0, 1));
+				BreakNotConnectBlock(pos + INTVECTOR2(0, -1));
+				BreakNotConnectBlock(pos + INTVECTOR2(1,0));
+				BreakNotConnectBlock(pos + INTVECTOR2(-1,0));
 				continue;
 			}
 		}
