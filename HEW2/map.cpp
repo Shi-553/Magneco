@@ -15,7 +15,7 @@
 
 
 bool CanAttachedMapType(INTVECTOR2& pos, MapType type);
-
+bool IsBreakBlock(INTVECTOR2 pos, vector<INTVECTOR2>& v);
 
 static Map* MapChipList = NULL;
 static int textureIds[MAP_MAX];
