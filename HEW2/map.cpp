@@ -486,4 +486,5 @@ bool IsBreakBlock(INTVECTOR2 pos, vector<INTVECTOR2>& v) {
 		return true;
 	}
 
+	return false;
 }
