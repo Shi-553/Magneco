@@ -20,7 +20,7 @@ enum FlyingObjectType
 	FLYING_OBJECT_CHECKPOINT_OFF,
 	FLYING_OBJECT_MAX	
 };
-typedef struct FlyingObject
+struct FlyingObject
 {
 	TRANS trans;
 	FlyingObjectType type;
@@ -47,6 +47,9 @@ void DrawFlyingObject(FlyingObject flyingObject);
 bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
 
 bool IsFlyingObjectItem(FlyingObjectType type);
+bool IsFlyingObjectEnemy(FlyingObjectType type);
+bool IsFlyingObjectBlock(FlyingObjectType type);
+bool IsFlyingObjectBreakBlockEnemy(FlyingObjectType type);
 bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
 
 void BackFlyingObject(int frame);

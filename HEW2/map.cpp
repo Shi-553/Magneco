@@ -13,8 +13,9 @@
 #define MAP_GOAL_DRAW_SIZE_WIDTH 1
 #define MAP_GOAL_DRAW_SIZE_HEIGHT 2
 
-bool CanAttachedMapType(MapType type);
-bool IsBreakBlock(INTVECTOR2 pos, vector<INTVECTOR2>& v);
+
+bool CanAttachedMapType(INTVECTOR2& pos, MapType type);
+
 
 static Map* MapChipList = NULL;
 static int textureIds[MAP_MAX];
@@ -233,32 +234,49 @@ void MapChange(FlyingObject flyingobject)
 
 }
 
-bool MapFourDirectionsJudgment(INTVECTOR2 pos)
+//無限ループしないように
+vector<INTVECTOR2> v;
+bool MapFourDirectionsJudgment(INTVECTOR2& pos)
 {
+	if (std::find(v.begin(), v.end(), pos) != v.end()) {
+		v.clear();
+		return false;
+	}
+	v.push_back(pos);
+
 	int x = pos.x;
 	int y = pos.y;
 
-	Map* map = GetMap(INTVECTOR2(x, y + 1));
+	auto to = INTVECTOR2(x, y + 1);
 
-	if (map != NULL && CanAttachedMapType(map->type)) {
+	Map* map = GetMap(to);
+
+	if (map != NULL && CanAttachedMapType(to,map->type)) {
+		v.clear();
+		return true;
+	}
+	to = INTVECTOR2(x, y - 1);
+	map = GetMap(to);
+	if (map != NULL && CanAttachedMapType(to,map->type)) {
+		v.clear();
 		return true;
 	}
 
-	map = GetMap(INTVECTOR2(x, y - 1));
-	if (map != NULL && CanAttachedMapType(map->type)) {
+	to = INTVECTOR2(x+1, y );
+	map = GetMap(to);
+	if (map != NULL && CanAttachedMapType(to, map->type)) {
+		v.clear();
 		return true;
 	}
 
-	map = GetMap(INTVECTOR2(x + 1, y));
-	if (map != NULL && CanAttachedMapType(map->type)) {
+	to = INTVECTOR2(x-1, y );
+	map = GetMap(to);
+	if (map != NULL && CanAttachedMapType(to, map->type)) {
+		v.clear();
 		return true;
 	}
 
-	map = GetMap(INTVECTOR2(x - 1, y));
-	if (map != NULL && CanAttachedMapType(map->type)) {
-		return true;
-	}
-
+	v.clear();
 	return false;
 }
 
@@ -402,11 +420,13 @@ bool CanGoNPCMapType(MapType type) {
 	}
 }
 
-bool CanAttachedMapType(MapType type) {
+bool CanAttachedMapType(INTVECTOR2& pos,MapType type) {
 	switch (type)
 	{
-	case MAP_BLOCK:
 	case MAP_CHEST_OPENED:
+		return MapFourDirectionsJudgment(pos);
+
+	case MAP_BLOCK:
 	case MAP_CHAECKPOINT_ON:
 		return true;
 		break;
@@ -469,7 +489,7 @@ bool IsBreakBlock(INTVECTOR2 pos, vector<INTVECTOR2>& v) {
 		return true;
 	}
 	//くっつけられない
-	if (!CanAttachedMapType(m->type)) {
+	if (!CanAttachedMapType(pos,m->type)) {
 		return false;
 	}
 	v.push_back(pos);
@@ -482,4 +502,5 @@ bool IsBreakBlock(INTVECTOR2 pos, vector<INTVECTOR2>& v) {
 		return true;
 	}
 
+	return false;
 }

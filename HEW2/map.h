@@ -41,7 +41,7 @@ void DrawMap(void);
 void MapChange(FlyingObject flyingobject);
 
 // 4方向にブロックがあるかの判定
-bool MapFourDirectionsJudgment(INTVECTOR2 pos);
+bool MapFourDirectionsJudgment(INTVECTOR2& pos);
 
 // 位置を指定してマップタイプを返す
 MapType GetMapType(INTVECTOR2 pos);

@@ -90,7 +90,7 @@ void UpdateFlyingObject() {
 }
 void BackFlyingObject(int frame) {
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
-		if (UpdateFlyingObject(&*itr, -frame* itr->speed)) {
+		if (UpdateFlyingObject(&*itr, -frame * itr->speed)) {
 			if (itr->type == FLYING_OBJECT_UFO) {
 				DestroyUFO();
 			}
@@ -136,6 +136,37 @@ bool IsFlyingObjectItem(FlyingObjectType type) {
 	case FLYING_OBJECT_ITEM_ADD_SPEED:
 	case FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE:
 		//case FLYING_OBJECT_CHECKPOINT_OFF:
+		return true;
+	default:
+		return false;
+	}
+}
+bool IsFlyingObjectEnemy(FlyingObjectType type) {
+	switch (type)
+	{
+	case FLYING_OBJECT_ENEMY:
+	case FLYING_OBJECT_ENEMY_BREAK_BLOCK:
+	case FLYING_OBJECT_UFO:
+	case FLYING_OBJECT_ENEMY_SECOND:
+		return true;
+	default:
+		return false;
+	}
+}
+bool IsFlyingObjectBlock(FlyingObjectType type) {
+	switch (type)
+	{
+	case FLYING_OBJECT_BLOCK:
+	case FLYING_OBJECT_CHECKPOINT_OFF:
+		return true;
+	default:
+		return false;
+	}
+}
+bool IsFlyingObjectBreakBlockEnemy(FlyingObjectType type) {
+	switch (type)
+	{
+	case FLYING_OBJECT_ENEMY_BREAK_BLOCK:
 		return true;
 	default:
 		return false;
