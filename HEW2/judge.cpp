@@ -125,6 +125,11 @@ void JudgePlayerandFlyingObjectHit() {
 	}
 	// プレイヤーとflyingObjectの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
+		if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, player->size, itr->size)) {
+			itr++;
+			continue;
+		}
+
 		if (IsFlyingObjectItem(itr->type)) {
 			if (itr->type == FLYING_OBJECT_ITEM_ADD_SPEED) {
 				player->addSpeed++;
@@ -136,10 +141,6 @@ void JudgePlayerandFlyingObjectHit() {
 			continue;
 		}
 
-		if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, player->size, itr->size)) {
-			itr++;
-			continue;
-		}
 		if (!CheckShortest(*player, *itr, player->trans.pos)) {
 			itr++;
 			continue;
