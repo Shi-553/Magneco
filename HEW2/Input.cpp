@@ -71,7 +71,7 @@ void UpdateInput() {
 	}
 
 #ifdef _DEBUG
-	DebugPrintInputLogger(OutputLogType::MOUSE_AXIS);
+	//DebugPrintInputLogger(OutputLogType::MOUSE_AXIS);
 #endif // _DEBUG
 }
 
