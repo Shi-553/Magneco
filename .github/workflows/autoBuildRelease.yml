@@ -1,0 +1,82 @@
+name: auto build and release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RELEASE_IT_VERSION: 14
+        
+    runs-on: windows-latest
+    
+    steps: 
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+      
+    # Install MSBuild
+    - name: Setup msbuild
+      uses: microsoft/setup-msbuild@v1
+    
+    # Activate cache
+    - name: Start DXSDK Cache
+      id:   dxcache
+      uses: actions/cache@v1
+      with:
+       path: DXSDK
+       key:  dxsdk-includes
+     
+    # Download DXSDK if needed, otherwise use cache
+    # Only extract files that are required
+    - name:  Download DXSDK if needed
+      if:    steps.dxcache.outputs.cache-hit != 'true'
+      run:   |
+             curl -L https://download.microsoft.com/download/a/e/7/ae743f1f-632b-4809-87a9-aa1bb3458e31/DXSDK_Jun10.exe -o _DX2010_.exe
+             7z x _DX2010_.exe DXSDK/Include
+             7z x _DX2010_.exe DXSDK/Lib/x64
+             rm -fR _DX*_ _DX*_.exe
+      shell: bash
+    
+    # Run the msbuild command
+    - name: Build
+      run: msbuild HEW2.sln /m /p:Configuration=Release /p:Platform=x64
+      env:
+        DXSDK_DIR: ${{ github.workspace  }}\DXSDK\
+        
+    - name: FileMove
+      run: |
+           pwsh -command "New-Item ./Magneco -itemType Directory"
+           pwsh -command "Move-Item ./HEW2/font ./Magneco"
+           pwsh -command "Move-Item ./HEW2/stage ./Magneco"
+           pwsh -command "Move-Item ./HEW2/texture ./Magneco"
+           pwsh -command "Move-Item ./x64/Release/*.exe ./Magneco"
+      
+    - name: Zip
+      run: 7z a "Magneco-x64.zip" "./Magneco" -tzip
+      
+      
+    - name: Set releaser settings
+      run: |
+        git config --global user.name release-machine
+        git config --global user.email email@example.com
+        
+    - name: Major release
+      id: major
+      if: contains(toJSON(github.event.commits.*.message), 'major update')
+      run:  npx release-it@${RELEASE_IT_VERSION} -- major --ci
+      
+    - name: Minor release
+      id: minor
+      # メジャーバージョンアップをしていないときマイナーバージョンアップを行なうか
+      if: steps.major.conclusion == 'skipped'  && contains(toJSON(github.event.commits.*.message), 'minor update')
+      run:  npx release-it@${RELEASE_IT_VERSION} -- minor --ci
+      
+    - name: Patch release
+      # コミットメッセージに特に指定がない場合はパッチバージョンを更新する
+      if: "!(steps.major.conclusion == 'success' || steps.minor.conclusion == 'success')"
+      run:  npx release-it@${RELEASE_IT_VERSION} -- patch --ci

@@ -41,7 +41,7 @@ void DrawMap(void);
 void MapChange(FlyingObject flyingobject);
 
 // 4方向にブロックがあるかの判定
-bool MapFourDirectionsJudgment(INTVECTOR2 pos);
+bool MapFourDirectionsJudgment(INTVECTOR2& pos);
 
 // 位置を指定してマップタイプを返す
 MapType GetMapType(INTVECTOR2 pos);
@@ -61,5 +61,5 @@ bool CanGoNPCMapType(MapType type);
 void OpenChest(INTVECTOR2 pos);
 int GetMapTextureId(MapType type);
 
-bool IsBreakBlock(INTVECTOR2 pos, vector<INTVECTOR2>& v);
+bool BreakNotConnectBlock(INTVECTOR2 pos);
 #endif // !MAP_H
