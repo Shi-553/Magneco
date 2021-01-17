@@ -183,6 +183,15 @@ void ReleaseAllTexture() {
 
 }
 
+bool AddTextureReferenceCount(int textureId) {
+	if (textureId < 0 || TEXTURE_MAX < textureId) {
+		return false;
+	}
+	textures[textureId].referenceCount++;
+	return true;
+}
+
+
 
 //テクスチャのサイズを取得
 //引数：テクスチャID

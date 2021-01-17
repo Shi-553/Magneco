@@ -22,9 +22,11 @@ static D3DXVECTOR2 forwardSize, backSize;
 
 static int forwardTextureId = TEXTURE_INVALID_ID;
 static int forwardPressedTextureId = TEXTURE_INVALID_ID;
-	   
+static int forwardCantSelectTextureId = TEXTURE_INVALID_ID;
+
 static int backTextureId = TEXTURE_INVALID_ID;
 static int backPressedTextureId = TEXTURE_INVALID_ID;
+static int backCantSelectTextureId = TEXTURE_INVALID_ID;
 
 
 void AllReleasePressedFlag();
@@ -35,7 +37,7 @@ void InitSelectButton() {
 
 	selectedIndex = 0;
 
-	SetSelectButtonKey(MYVK_ENTER,MYVK_DOWN, MYVK_UP);
+	SetSelectButtonKey(MYVK_ENTER, MYVK_DOWN, MYVK_UP);
 	AllReleasePressedFlag();
 }
 
@@ -47,6 +49,12 @@ void DrawSelectButton() {
 	//ボタンの描画
 	for (auto itr = buttons.begin(); itr != buttons.end(); itr++) {
 		bool isSelected = std::distance(buttons.begin(), itr) == selectedIndex;
+
+		if (itr->size == D3DXVECTOR2(0, 0)) {
+			if (auto s = GetTextureSize(itr->textureId)) {
+				itr->size = *s;
+			}
+		}
 
 		if (isSelected && isPressedEnter) {
 			DrawSprite(itr->pressedTextureId, itr->pos, 100, itr->size);
@@ -60,17 +68,45 @@ void DrawSelectButton() {
 		}
 	}
 
-	if (isPressedForward) {
-		DrawSprite(forwardPressedTextureId, forwardPos, 100, forwardSize);
+	if (forwardPressedTextureId != TEXTURE_INVALID_ID) {
+		if (forwardSize == D3DXVECTOR2(0, 0)) {
+			if (auto s = GetTextureSize(forwardTextureId)) {
+				forwardSize = *s;
+			}
+		}
+		if (buttons.size() - 1 > selectedIndex) {
+
+			if (isPressedForward) {
+				DrawSprite(forwardPressedTextureId, forwardPos, 100, forwardSize);
+			}
+			else {
+				DrawSprite(forwardTextureId, forwardPos, 100, forwardSize);
+			}
+		}
+		else {
+			DrawSprite(forwardCantSelectTextureId, forwardPos, 100, forwardSize);
+		}
 	}
-	else {
-		DrawSprite(forwardTextureId, forwardPos, 100, forwardSize);
-	}
-	if (isPressedBack) {
-		DrawSprite(backPressedTextureId, backPos, 100, backSize);
-	}
-	else {
-		DrawSprite(backTextureId, backPos, 100, backSize);
+
+	if (backTextureId != TEXTURE_INVALID_ID) {
+		if (backSize == D3DXVECTOR2(0, 0)) {
+			if (auto s = GetTextureSize(backTextureId)) {
+				backSize = *s;
+			}
+		}
+		if (selectedIndex > 0) {
+
+			if (isPressedBack) {
+				DrawSprite(backPressedTextureId, backPos, 100, backSize);
+			}
+			else {
+				DrawSprite(backTextureId, backPos, 100, backSize);
+			}
+		}
+		else {
+
+			DrawSprite(backCantSelectTextureId, backPos, 100, backSize);
+		}
 	}
 
 
@@ -140,6 +176,7 @@ void AllReleasePressedFlag() {
 }
 
 void AddSelectButton(Button& button) {
+
 	buttons.push_back(button);
 }
 void SetSelectButtonKey(VirtualKey enterKey, VirtualKey forwardKey, VirtualKey backKey) {
@@ -151,15 +188,21 @@ void SetSelectButtonKey(VirtualKey enterKey, VirtualKey forwardKey, VirtualKey b
 void SetSelectButtonFrame(int frame) {
 	selectFrameTextureId = frame;
 }
-void SetSelectButtonForward(int forward, int forwardPressed, D3DXVECTOR2 pos, D3DXVECTOR2 size) {
+void SetSelectButtonForward(int forward, int forwardPressed, int forwardCantSelect, D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 	forwardTextureId = forward;
 	forwardPressedTextureId = forwardPressed;
+	forwardCantSelectTextureId = forwardCantSelect;
 	forwardPos = pos;
 	forwardSize = size;
 }
-void SetSelectButtonBack(int back, int backPressed, D3DXVECTOR2 pos, D3DXVECTOR2 size) {
+void SetSelectButtonBack(int back, int backPressed, int backCantSelect, D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 	backTextureId = back;
 	backPressedTextureId = backPressed;
+	backCantSelectTextureId = backCantSelect;
 	backPos = pos;
 	backSize = size;
+}
+
+int GetSelectButtonIndex() {
+	return selectedIndex;
 }

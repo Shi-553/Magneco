@@ -5,10 +5,9 @@
 #include "player.h"
 #include "importExport.h"
 
-void StageToSamune(std::string& stagename);
-
 
 std::string gFilename;
+
 void SetStagePath(std::string filename) {
 	gFilename = filename;
 }
@@ -42,10 +41,8 @@ bool StageImport() {
 	if (fp == NULL) {
 		return false;
 	}
-	std::string samunename = gFilename;
-	StageToSamune(samunename);
 
-	ImportStageInfo(fp, samunename);
+	ImportStageInfo(fp, gFilename);
 
 	MapImport(fp);
 	FlyingObjectSponerImport(fp);
@@ -58,9 +55,6 @@ bool StageImport() {
 	return true;
 }
 
-void StageToSamune(std::string& stagename) {
-	stagename.replace(stagename.size() - 6, 6, ".png");
-}
 
 bool GetStageInfos(std::string foldername, std::vector<StageInfo>& infos) {
 	HANDLE hFind;
@@ -92,7 +86,6 @@ bool GetStageInfos(std::string foldername, std::vector<StageInfo>& infos) {
 
 			if (fp != NULL) {
 
-				StageToSamune(filePath);
 				infos.push_back(ImportStageInfo(fp, filePath));
 
 				fclose(fp);

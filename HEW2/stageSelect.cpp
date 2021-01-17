@@ -11,6 +11,7 @@
 #include "stageInfo.h"
 #include "importExport.h"
 using namespace std;
+
 #define POS_Y (-20)
 
 #define SAMUNE_X (320)
@@ -30,21 +31,13 @@ using namespace std;
 #define MESSAGEBOX_WIDTH (700)
 #define MESSAGEBOX_HEIGHT (135)
 
-LPD3DXFONT font;
+static LPD3DXFONT font;
 
-vector<StageInfo> infos;
+static vector<StageInfo> infos;
+static vector<int> smunes;
 
 enum StageSelectTexture {
 	STAGE_SELECT_BACK_GROUND,
-	STAGE_SELECT_BU_L,
-	STAGE_SELECT_BU_L_CANT_SELECT,
-	STAGE_SELECT_BU_L_PUDHED,
-	STAGE_SELECT_BU_R,
-	STAGE_SELECT_BU_R_CANT_SELECT,
-	STAGE_SELECT_BU_R_PUDHED,
-	STAGE_SELECT_ICON,
-	STAGE_SELECT_ICON_SELECT,
-	STAGE_SELECT_ICON_NOT_OPEN,
 	STAGE_SELECT_SAMUNE,
 	STAGE_SELECT_SAMUNE_PRE,
 	STAGE_SELECT_MESSAGE_BOX,
@@ -58,28 +51,60 @@ void InitStageSelect() {
 
 	InitSelectButton();
 	selectStageTextureIds[STAGE_SELECT_BACK_GROUND] = ReserveTextureLoadFile("texture/背景4.jpg");
-	selectStageTextureIds[STAGE_SELECT_BU_L ] =            ReserveTextureLoadFile("texture/stageSelect/button_left.png");
-	selectStageTextureIds[STAGE_SELECT_BU_L_CANT_SELECT] =  ReserveTextureLoadFile("texture/stageSelect/button_left_cantselect.png");
-	selectStageTextureIds[STAGE_SELECT_BU_L_PUDHED] =      ReserveTextureLoadFile("texture/stageSelect/button_left_pushed.png");
-	selectStageTextureIds[STAGE_SELECT_BU_R] =             ReserveTextureLoadFile("texture/stageSelect/button_right.png");
-	selectStageTextureIds[STAGE_SELECT_BU_R_CANT_SELECT ] =ReserveTextureLoadFile("texture/stageSelect/button_right_cantselect.png");
-	selectStageTextureIds[STAGE_SELECT_BU_R_PUDHED] =      ReserveTextureLoadFile("texture/stageSelect/button_right_pushed.png");
-	selectStageTextureIds[STAGE_SELECT_ICON] =             ReserveTextureLoadFile("texture/stageSelect/icon_noselect.png");
-	selectStageTextureIds[STAGE_SELECT_ICON_SELECT ] =     ReserveTextureLoadFile("texture/stageSelect/icon_select.png");
-	selectStageTextureIds[STAGE_SELECT_ICON_NOT_OPEN ] =   ReserveTextureLoadFile("texture/stageSelect/icon_notopen.png");
-	selectStageTextureIds[STAGE_SELECT_SAMUNE ] =          ReserveTextureLoadFile("texture/stageSelect/samune.png");
-	selectStageTextureIds[STAGE_SELECT_SAMUNE_PRE ] =      ReserveTextureLoadFile("texture/stageSelect/samune_pre.png");
-	selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX] =      ReserveTextureLoadFile("texture/Textbox_Test.png");
-	LoadTexture();
 
-	SetFontCountMax(52,6);
-	SetFontRectAddY(140+ POS_Y);
+	SetSelectButtonBack(ReserveTextureLoadFile("texture/stageSelect/button_left.png"),
+	 ReserveTextureLoadFile("texture/stageSelect/button_left_pushed.png"),
+	 ReserveTextureLoadFile("texture/stageSelect/button_left_cantselect.png"),
+		D3DXVECTOR2(BU_LEFT_X, BU_LEFT_Y));
+
+	SetSelectButtonForward(ReserveTextureLoadFile("texture/stageSelect/button_right.png"),
+	ReserveTextureLoadFile("texture/stageSelect/button_right_pushed.png"),
+	ReserveTextureLoadFile("texture/stageSelect/button_right_cantselect.png"),
+		D3DXVECTOR2(BU_RIGHT_X, BU_RIGHT_Y));
+
+	//selectStageTextureIds[STAGE_SELECT_ICON_NOT_OPEN ] =   ReserveTextureLoadFile("texture/stageSelect/icon_notopen.png");
+
+	selectStageTextureIds[STAGE_SELECT_SAMUNE] = ReserveTextureLoadFile("texture/stageSelect/samune.png");
+	selectStageTextureIds[STAGE_SELECT_SAMUNE_PRE] = ReserveTextureLoadFile("texture/stageSelect/samune_pre.png");
+	selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX] = ReserveTextureLoadFile("texture/Textbox_Test.png");
+
+	SetFontCountMax(52, 6);
+	SetFontRectAddY(140 + POS_Y);
 	SetFontScale(D3DXVECTOR2(0.7, 0.7));
 	SetFontMargin(7);
 
-	MyCreateFont(32*1.2, 15 * 1.2, &font);
+	MyCreateFont(32 * 1.2, 15 * 1.2, &font);
 
 	GetStageInfos("stage", infos);
+
+	Button b;
+	b.releasedCallback = []() {
+		SetStagePath(infos[GetSelectButtonIndex()].filename);
+		GoNextScene(GameScene);
+	};
+	b.textureId = ReserveTextureLoadFile("texture/stageSelect/icon_noselect.png");
+	b.pressedTextureId = b.textureId;
+	AddTextureReferenceCount(b.textureId);
+
+	for (auto itr = infos.begin(); itr != infos.end(); itr++) {
+		auto index = std::distance(infos.begin(), itr);
+
+		b.pos = D3DXVECTOR2(SCREEN_WIDTH / 2 + (index - infos.size()/2)* ICON_TO_ICON_WIDTH, ICON_Y);
+
+		AddTextureReferenceCount(b.textureId);
+		AddTextureReferenceCount(b.textureId);
+		AddSelectButton(b);
+
+		smunes.push_back(ReserveTextureLoadFile(itr->samunename.c_str()));
+	}
+
+
+	SetSelectButtonFrame(ReserveTextureLoadFile("texture/stageSelect/icon_select.png"));
+
+
+	SetSelectButtonKey(MYVK_ENTER, MYVK_RIGHT, MYVK_LEFT);
+
+	LoadTexture();
 }
 void UninitStageSelect() {
 	font->Release();
@@ -87,52 +112,43 @@ void UninitStageSelect() {
 	ReleaseTexture(selectStageTextureIds, STAGE_SELECT_MAX);
 
 	UninitMesseage();
+
+	for (auto itr = smunes.begin(); itr != smunes.end(); itr++) {
+		ReleaseTexture(*itr);
+	}
+	smunes.clear();
+	infos.clear();
 }
-static bool isChange = false;
+
 void UpdateStageSelect() {
-
-	/*if (TriggerInputLogger(MYVK_ENTER)) {
-		TriggerSelectButton();
-		isChange = false;
-	}
-	if (!isChange && ReleaseInputLogger(MYVK_ENTER)) {
-		ReleaseSelectButton();
-	}
-	if (TriggerInputLogger(MYVK_LEFT)) {
-		ForwardSelectButton();
-		startButton.textureId = backGround;
-		endButton.textureId = endTexture;
-		isChange = true;
-
-	}*/
-	if (TriggerInputLogger(MYVK_ENTER)) {
-		GoNextScene(GameScene);
-	}
-
+	UpdateSelectButton();
 }
 void DrawStageSelect() {
-	DrawSelectButton();
 	DrawSprite(selectStageTextureIds[STAGE_SELECT_BACK_GROUND], D3DXVECTOR2(0, 0), 1);
 
-	DrawSprite(selectStageTextureIds[STAGE_SELECT_BU_L_CANT_SELECT], D3DXVECTOR2(BU_LEFT_X, BU_LEFT_Y), 1);
-	DrawSprite(selectStageTextureIds[STAGE_SELECT_BU_R_CANT_SELECT], D3DXVECTOR2(BU_RIGHT_X, BU_RIGHT_Y), 1);
+	auto& info = infos[GetSelectButtonIndex()];
+	auto& samune = smunes[GetSelectButtonIndex()];
 
-	DrawSprite(selectStageTextureIds[STAGE_SELECT_SAMUNE_PRE], D3DXVECTOR2(SAMUNE_X, SAMUNE_Y), 1);
+	DrawSprite(samune, D3DXVECTOR2(SAMUNE_X, SAMUNE_Y), 1);
 
 	DrawSprite(selectStageTextureIds[STAGE_SELECT_SAMUNE], D3DXVECTOR2(SAMUNE_X, SAMUNE_Y), 1);
 	RECT r;
-	r.top = SAMUNE_Y+40;
-	r.left = SAMUNE_X+20;
-	r.right =0;
+	r.top = SAMUNE_Y + 40;
+	r.left = SAMUNE_X + 20;
+	r.right = 0;
 	r.bottom = 0;
-	font->DrawTextA(NULL, "ステージ１", -1, &r, DT_NOCLIP, D3DCOLOR_RGBA(255, 255, 255, 255));
 
+	if (!info.name.empty()) {
+		font->DrawTextA(NULL, info.name.c_str(), -1, &r, DT_NOCLIP, D3DCOLOR_RGBA(255, 255, 255, 255));
+	}
 	DrawSprite(selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 
 	ClearMesseageOffset();
-	DrawMesseage("はりぼて");
+	if (!info.overview.empty()) {
+		DrawMesseage(info.overview.c_str());
+	}
 
-	DrawSprite(selectStageTextureIds[STAGE_SELECT_ICON_SELECT], D3DXVECTOR2(SCREEN_WIDTH / 2, ICON_Y), 1);
 
+	DrawSelectButton();
 }

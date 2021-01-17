@@ -1,31 +1,21 @@
 ﻿#include "stageInfo.h"
 #include <vector>
-#include <string>
-#include "texture.h"
 
 using namespace std;
 
 static StageInfo info;
 
-static int samuneTextureId = TEXTURE_INVALID_ID;
+
+void StageToSamune(std::string& stagename);
 
 void InitStageInfo() {
 	UninitStageInfo();
-	info.index = 0;
-	info.level = 0;
-	info.name = new char[] {""};
-	info.overview = new char[] {""};
+	info.index = 2;
+	info.level = 5;
+	info.name = "ステージ３";
+	info.overview = "３";
 }
 void UninitStageInfo() {
-	if (info.name != NULL) {
-		delete[] info.name;
-		info.name = NULL;
-	}
-	if (info.overview != NULL) {
-		delete[] info.overview;
-		info.overview = NULL;
-	}
-	ReleaseTexture(samuneTextureId);
 }
 
 
@@ -38,14 +28,23 @@ StageInfo& ImportStageInfo(FILE* fp,string& filename) {
 	int nameLen,overviewLen;
 	fread(&nameLen, sizeof(int), 1, fp);
 
-	info.name = new char[nameLen];
-	fread(info.name, sizeof(char), nameLen, fp);
+	auto name = new char[nameLen];
+	fread(name, sizeof(char), nameLen, fp);
+	info.name = name;
+	delete[] name;
 
 	fread(&overviewLen, sizeof(int), 1, fp);
-	info.overview = new char[overviewLen];
-	fread(info.overview, sizeof(char), overviewLen, fp);
+	auto overview = new char[overviewLen];
+	fread(overview, sizeof(char), overviewLen, fp);
+	//fread(&info.overview, sizeof(char), overviewLen, fp);
+	info.overview = overview;
+	delete[] overview;
 
-	samuneTextureId = ReserveTextureLoadFile(filename.c_str());
+	info.filename = filename;
+
+	info.samunename = filename;
+	StageToSamune(info.samunename);
+
 	return info;
 }
 
@@ -55,14 +54,14 @@ bool ExportStageInfo(FILE* fp) {
 	fwrite(&info.index, sizeof(int), 1, fp);
 	fwrite(&info.level, sizeof(int), 1, fp);
 
-	int nameLen=strlen(info.name)+1, overviewLen= strlen(info.overview) + 1;
+	int nameLen=info.name.size()+1, overviewLen= info.overview.size() + 1;
 
 	fwrite(&nameLen, sizeof(int), 1, fp);
 
-	fwrite(info.name, sizeof(char), nameLen, fp);
+	fwrite(info.name.c_str(), sizeof(char), nameLen, fp);
 	fwrite(&overviewLen, sizeof(int), 1, fp);
 
-	fwrite(info.overview, sizeof(char), overviewLen, fp);
+	fwrite(info.overview.c_str(), sizeof(char), overviewLen, fp);
 
 
 	return true;
@@ -71,4 +70,8 @@ bool ExportStageInfo(FILE* fp) {
 
 StageInfo& GetStageInfo() {
 	return info;
+}
+
+void StageToSamune(std::string& stagename) {
+	stagename.replace(stagename.size() - 6, 6, ".png");
 }

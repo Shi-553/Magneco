@@ -1,13 +1,17 @@
 ﻿#pragma once
 #include <stdio.h>
 #include <string>
+#include "texture.h"
+
 
 struct StageInfo
 {
 	int index;
 	int level;
-	char* name;
-	char* overview;
+	std::string name;
+	std::string overview;
+	std::string filename;
+	std::string samunename;
 };
 
 void InitStageInfo();
