@@ -7,7 +7,10 @@
 #include "messeage.h"
 #include "font.h"
 #include "sceneManager.h"
-
+#include <vector>
+#include "stageInfo.h"
+#include "importExport.h"
+using namespace std;
 #define POS_Y (-20)
 
 #define SAMUNE_X (320)
@@ -28,6 +31,8 @@
 #define MESSAGEBOX_HEIGHT (135)
 
 LPD3DXFONT font;
+
+vector<StageInfo> infos;
 
 enum StageSelectTexture {
 	STAGE_SELECT_BACK_GROUND,
@@ -73,6 +78,8 @@ void InitStageSelect() {
 	SetFontMargin(7);
 
 	MyCreateFont(32*1.2, 15 * 1.2, &font);
+
+	GetStageInfos("stage", infos);
 }
 void UninitStageSelect() {
 	font->Release();

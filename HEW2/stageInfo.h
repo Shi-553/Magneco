@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <stdio.h>
+#include <string>
 
 struct StageInfo
 {
@@ -11,6 +12,6 @@ struct StageInfo
 
 void InitStageInfo();
 void UninitStageInfo();
-bool ImportStageInfo(FILE* fp);
-StageInfo& ExportStageInfo(FILE* fp);
+StageInfo& ImportStageInfo(FILE* fp, std::string& filename);
+ bool ExportStageInfo(FILE* fp);
 StageInfo& GetStageInfo();

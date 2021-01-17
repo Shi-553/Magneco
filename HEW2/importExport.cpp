@@ -4,18 +4,16 @@
 #include "npc.h"
 #include "player.h"
 #include "importExport.h"
-#include "stageInfo.h"
-#include <string>
 
-static const char* gFilename;
-void SetStagePath(const char* filename) {
+std::string gFilename;
+void SetStagePath(std::string filename) {
 	gFilename = filename;
 }
 bool StageExport() {
 	FILE* fp = NULL;
 
 	//	バイナリ書き込みモードでファイルを開く
-	fopen_s(&fp, gFilename, "wb");
+	fopen_s(&fp, gFilename.c_str(), "wb");
 
 	if (fp == NULL) {
 		return false;
@@ -36,12 +34,12 @@ bool StageImport() {
 	FILE* fp = NULL;
 
 	//	バイナリ読み込みモードでファイルを開く
-	fopen_s(&fp, gFilename, "rb");
+	fopen_s(&fp, gFilename.c_str(), "rb");
 
 	if (fp == NULL) {
 		return false;
 	}
-	ImportStageInfo(fp);
+	ImportStageInfo(fp, gFilename);
 
 	MapImport(fp);
 	FlyingObjectSponerImport(fp);
@@ -54,7 +52,7 @@ bool StageImport() {
 	return true;
 }
 
-bool GetStageInfos(std::string foldername,vector<StageInfo>& infos) {
+bool GetStageInfos(std::string foldername, std::vector<StageInfo>& infos) {
 	HANDLE hFind;
 	WIN32_FIND_DATA win32fd;
 	auto search_name = foldername + "\\*";
@@ -72,11 +70,19 @@ bool GetStageInfos(std::string foldername,vector<StageInfo>& infos) {
 			printf("directory\n");
 		}
 		else {
-			FILE* fp = NULL;
+			std::string filename = std::string(win32fd.cFileName);
+			if (filename.rfind(".stage") != filename.size() - 6) {
+				continue;
+			}
 
-			fopen_s(&fp, win32fd.cFileName, "rb");
+			FILE* fp = NULL;
+			std::string filePath=foldername +"\\" + filename;
+			std::string samunePath=foldername +"\\" + filename.replace(filename.size() - 6,6,".png");
+
+			fopen_s(&fp, filePath.c_str(), "rb");
+
 			if (fp != NULL) {
-				infos.push_back(ExportStageInfo(fp));
+				infos.push_back(ImportStageInfo(fp, samunePath));
 
 				fclose(fp);
 			}

@@ -1,8 +1,13 @@
 ﻿#include "stageInfo.h"
 #include <vector>
+#include <string>
+#include "texture.h"
+
 using namespace std;
 
-StageInfo info;
+static StageInfo info;
+
+static int samuneTextureId = TEXTURE_INVALID_ID;
 
 void InitStageInfo() {
 	UninitStageInfo();
@@ -20,10 +25,11 @@ void UninitStageInfo() {
 		delete[] info.overview;
 		info.overview = NULL;
 	}
+	ReleaseTexture(samuneTextureId);
 }
 
 
-bool ImportStageInfo(FILE* fp) {
+StageInfo& ImportStageInfo(FILE* fp,string& filename) {
 	UninitStageInfo();
 
 	fread(&info.index, sizeof(int), 1, fp);
@@ -39,10 +45,11 @@ bool ImportStageInfo(FILE* fp) {
 	info.overview = new char[overviewLen];
 	fread(info.overview, sizeof(char), overviewLen, fp);
 
-	return true;
+	samuneTextureId = ReserveTextureLoadFile(filename.c_str());
+	return info;
 }
 
-StageInfo& ExportStageInfo(FILE* fp) {
+bool ExportStageInfo(FILE* fp) {
 
 	//	ファイルへの書き込み処理
 	fwrite(&info.index, sizeof(int), 1, fp);
@@ -58,7 +65,7 @@ StageInfo& ExportStageInfo(FILE* fp) {
 	fwrite(info.overview, sizeof(char), overviewLen, fp);
 
 
-	return info;
+	return true;
 
 }
 
