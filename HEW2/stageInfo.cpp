@@ -33,11 +33,11 @@ bool ImportStageInfo(FILE* fp) {
 	fread(&nameLen, sizeof(int), 1, fp);
 
 	info.name = new char[nameLen];
-	fread(&info.name, sizeof(char), nameLen, fp);
+	fread(info.name, sizeof(char), nameLen, fp);
 
 	fread(&overviewLen, sizeof(int), 1, fp);
 	info.overview = new char[overviewLen];
-	fread(&info.overview, sizeof(char), overviewLen, fp);
+	fread(info.overview, sizeof(char), overviewLen, fp);
 
 	return true;
 }
@@ -48,14 +48,14 @@ StageInfo& ExportStageInfo(FILE* fp) {
 	fwrite(&info.index, sizeof(int), 1, fp);
 	fwrite(&info.level, sizeof(int), 1, fp);
 
-	int nameLen=sizeof(info.name)+1, overviewLen=sizeof(info.overview) + 1;
+	int nameLen=strlen(info.name)+1, overviewLen= strlen(info.overview) + 1;
 
 	fwrite(&nameLen, sizeof(int), 1, fp);
 
-	fwrite(&info.name, sizeof(char), nameLen, fp);
+	fwrite(info.name, sizeof(char), nameLen, fp);
 	fwrite(&overviewLen, sizeof(int), 1, fp);
 
-	fwrite(&info.overview, sizeof(char), overviewLen, fp);
+	fwrite(info.overview, sizeof(char), overviewLen, fp);
 
 
 	return info;
