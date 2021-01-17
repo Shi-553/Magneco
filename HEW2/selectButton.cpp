@@ -2,18 +2,19 @@
 #include "sprite.h"
 #include <vector>
 
-#define FRAME_WIDTH 0
-#define FRAME_HEIGHT 0
 
-static std::vector<Button*> buttons;
+static std::vector<Button> buttons;
 static int selectedIndex;
 
 static int selectFrameTextureId = TEXTURE_INVALID_ID;
 
+static bool isPressed = false;
+
 void InitSelectButton() {
+	UninitSelectButton();
+
 	selectedIndex = 0;
 	selectFrameTextureId = ReserveTextureLoadFile("texture/select.png");
-	buttons.clear();
 }
 
 
@@ -21,24 +22,37 @@ void DrawSelectButton() {
 	if (buttons.empty()) {
 		return;
 	}
-	//フレームの描画
-	auto selected = buttons[selectedIndex];
-	DrawSprite(selectFrameTextureId, selected->pos-D3DXVECTOR2(FRAME_WIDTH/2,FRAME_HEIGHT/2), selected->z, selected->size + D3DXVECTOR2(FRAME_WIDTH, FRAME_HEIGHT));
-
-
 	//ボタンの描画
 	for (auto itr = buttons.begin(); itr != buttons.end(); itr++) {
-		DrawSprite((*itr)->textureId, (*itr)->pos, (*itr)->z, (*itr)->size);
+		if (std::distance(buttons.begin(), itr)==selectedIndex) {
+			if (isPressed) {
+				DrawSprite(itr->pressedTextureId, itr->pos, 100, itr->size);
+			}
+			else {
+				DrawSprite(itr->textureId, itr->pos, 100, itr->size);
+			}
+
+			DrawSprite(selectFrameTextureId, itr->pos, 100, itr->size);
+		}
+		else {
+			DrawSprite(itr->textureId, itr->pos, 100, itr->size);
+		}
 	}
+
+
 
 }
 
 void UninitSelectButton() {
 	ReleaseTexture(selectFrameTextureId);
+	for (const auto& b : buttons) {
+		ReleaseTexture(b.textureId);
+		ReleaseTexture(b.pressedTextureId);
+	}
 	buttons.clear();
 }
 
-void AddButton(Button* button) {
+void AddButton(Button& button) {
 	buttons.push_back(button);
 }
 
@@ -47,6 +61,7 @@ void ForwardSelectButton() {
 		return;
 	}
 	selectedIndex++;
+	isPressed = false;
 }
 
 void BackSelectButton() {
@@ -54,16 +69,27 @@ void BackSelectButton() {
 		return;
 	}
 	selectedIndex--;
+	isPressed = false;
 }
 
 void TriggerSelectButton() {
-	buttons[selectedIndex]->triggeredCallback();
+	isPressed = true;
+	if (buttons[selectedIndex].triggeredCallback != NULL) {
+		buttons[selectedIndex].triggeredCallback();
+	}
 }
 
 void ReleaseSelectButton() {
-	buttons[selectedIndex]->releasedCallback();
+	if (isPressed) {
+		isPressed = false;
+		if (buttons[selectedIndex].releasedCallback != NULL) {
+			buttons[selectedIndex].releasedCallback();
+		}
+	}
 }
 
 void PressSelectButton() {
-	buttons[selectedIndex]->pressedCallback();
+	if (buttons[selectedIndex].pressedCallback != NULL) {
+		buttons[selectedIndex].pressedCallback();
+	}
 }

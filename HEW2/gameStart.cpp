@@ -20,34 +20,19 @@ static int backGroundTexture;
 static int titleTextTexture;
 static int buttonDescriptionTexture;
 
-static int startTexture;
-static int startPressedTexture;
-static int endTexture;
-static int endPressedTexture;
-static int tutorialTexture;
-static int tutorialPressTexture;
-
-static Button startButton, tutorialButton, endButton;
 
 void InitGameStart() {
 	InitSelectButton();
-	startTexture = ReserveTextureLoadFile("texture/start.png");
-	startPressedTexture = ReserveTextureLoadFile("texture/start_pressed.png");
-	endTexture = ReserveTextureLoadFile("texture/end.png");
-	endPressedTexture = ReserveTextureLoadFile("texture/end_pressed.png");
-	tutorialTexture = ReserveTextureLoadFile("texture/tutorial.png");
-	tutorialPressTexture = ReserveTextureLoadFile("texture/tutorial_pressed.png");
 
+
+	Button startButton, tutorialButton, endButton;
 
 	auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - GAME_START_BUTTON_WIDTH / 2, (SCREEN_HEIGHT / 2 - GAME_START_BUTTON_HEIGHT / 2) + 40);
 
 	startButton.pos = buttonCenter;
 	startButton.size = D3DXVECTOR2(GAME_START_BUTTON_WIDTH, GAME_START_BUTTON_HEIGHT);
-	startButton.textureId = startTexture;
-
-	startButton.triggeredCallback = []() {
-		startButton.textureId = startPressedTexture;
-	};
+	startButton.textureId = ReserveTextureLoadFile("texture/start.png");
+	startButton.pressedTextureId = ReserveTextureLoadFile("texture/start_pressed.png");
 
 	startButton.releasedCallback = []() {
 		GoNextScene(StageSelect);
@@ -56,11 +41,9 @@ void InitGameStart() {
 
 	tutorialButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_START_BUTTON_HEIGHT + 16);
 	tutorialButton.size = D3DXVECTOR2(GAME_START_BUTTON_WIDTH, GAME_START_BUTTON_HEIGHT);
-	tutorialButton.textureId = tutorialTexture;
+	tutorialButton.textureId = ReserveTextureLoadFile("texture/tutorial.png");
+	tutorialButton.pressedTextureId = ReserveTextureLoadFile("texture/tutorial_pressed.png");
 
-	tutorialButton.triggeredCallback = []() {
-		tutorialButton.textureId = tutorialPressTexture;
-	};
 
 	tutorialButton.releasedCallback = []() {
 		GoNextScene(TutorialScene);
@@ -68,18 +51,17 @@ void InitGameStart() {
 
 	endButton.pos = tutorialButton.pos + D3DXVECTOR2(0, GAME_START_BUTTON_HEIGHT + 16);
 	endButton.size = D3DXVECTOR2(GAME_START_BUTTON_WIDTH, GAME_START_BUTTON_HEIGHT);
-	endButton.textureId = endTexture;
+	endButton.textureId = ReserveTextureLoadFile("texture/end.png");
+	endButton.pressedTextureId = ReserveTextureLoadFile("texture/end_pressed.png");
 
-	endButton.triggeredCallback = []() {
-		endButton.textureId = endPressedTexture;
-	};
+
 	endButton.releasedCallback = []() {
 		PostQuitMessage(0);
 	};
 
-	AddButton(&startButton);
-	AddButton(&tutorialButton);
-	AddButton(&endButton);
+	AddButton(startButton);
+	AddButton(tutorialButton);
+	AddButton(endButton);
 
 	backGroundTexture = ReserveTextureLoadFile("texture/背景１.png");
 
@@ -96,10 +78,6 @@ void UninitGameStart() {
 	ReleaseTexture(backGroundTexture);
 	ReleaseTexture(titleTextTexture);
 	ReleaseTexture(buttonDescriptionTexture);
-	ReleaseTexture(startTexture);
-	ReleaseTexture(startPressedTexture);
-	ReleaseTexture(endTexture);
-	ReleaseTexture(endPressedTexture);
 
 }
 void DrawGameStart() {
@@ -109,26 +87,18 @@ void DrawGameStart() {
 	DrawSelectButton();
 }
 
-static bool isChange = false;
 void UpdateGameStart() {
 	if (TriggerInputLogger(MYVK_ENTER)) {
 		TriggerSelectButton();
-		isChange = false;
 	}
-	if (!isChange && ReleaseInputLogger(MYVK_ENTER)) {
+	if (ReleaseInputLogger(MYVK_ENTER)) {
 		ReleaseSelectButton();
 	}
 	if (TriggerInputLogger(MYVK_UP)) {
 		BackSelectButton();
-		startButton.textureId = startTexture;
-		endButton.textureId = endTexture;
-		isChange = true;
 	}
 	if (TriggerInputLogger(MYVK_DOWN)) {
 		ForwardSelectButton();
-		startButton.textureId = startTexture;
-		endButton.textureId = endTexture;
-		isChange = true;
 
 	}
 }
