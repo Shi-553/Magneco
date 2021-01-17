@@ -165,11 +165,11 @@ void DrawNPC() {
 	else
 	{
 		auto tBeaconPos = D3DXVECTOR2(
-			BEACON_TEXTURE_WIDTH * (npc.aniFrame / 12 % 8),
+			BEACON_TEXTURE_WIDTH * (npc.aniFrame / 8 % 12),
 			0
 		);
 		
-		DrawGameSprite(beaconTextureId, gBeaconPos.ToD3DXVECTOR2() + D3DXVECTOR2(0.0f, -0.3f), 30, tBeaconPos, D3DXVECTOR2(BEACON_TEXTURE_WIDTH, BEACON_TEXTURE_HEIGHT));
+		DrawGameSprite(beaconTextureId, gBeaconPos.ToD3DXVECTOR2() + D3DXVECTOR2(0.0f, -1.0f), 30, D3DXVECTOR2(1, 2), tBeaconPos, D3DXVECTOR2(BEACON_TEXTURE_WIDTH, BEACON_TEXTURE_HEIGHT));
 
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 6 % 6),

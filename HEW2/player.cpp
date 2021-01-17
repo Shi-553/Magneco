@@ -14,12 +14,14 @@
 #include <math.h>
 #include "judge.h"
 
-#define PLAYER_TEXTURE_WIDTH 32
-#define PLAYER_TEXTURE_HEIGHT 32
+#define PLAYER_TEXTURE_WIDTH 64
+#define PLAYER_TEXTURE_HEIGHT 64
 
 #define PLAYER_PURGE_SPEED 6
 
 static int textureId = TEXTURE_INVALID_ID;
+static int damageTextureId = TEXTURE_INVALID_ID;
+static int purgeTextureId = TEXTURE_INVALID_ID;
 static Player player;
 
 static int  playerTextureVertical = 0;
@@ -28,7 +30,10 @@ void BlockDecision();
 void ToFreeFlyingObject(FlyingObject& flyingObject);
 
 void InitPlayer() {
-	textureId = ReserveTextureLoadFile("texture/player/player_32×32.png");
+	textureId = ReserveTextureLoadFile("texture/player/player_64×64.png");
+	damageTextureId = ReserveTextureLoadFile("texture/player/player_naepoyo_64×64.png");
+	purgeTextureId = ReserveTextureLoadFile("texture/player/player_nekopunch_64×64.png");
+
 
 	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();
@@ -133,14 +138,22 @@ void DrawPlayer() {
 		DrawFlyingObject(*itr);
 	}
 
+	if (!DamagePlayer) {
+		auto tPos = D3DXVECTOR2(
+			PLAYER_TEXTURE_WIDTH * (player.frame / 16 % 4),
+			playerTextureVertical
+		);
 
-	auto tPos = D3DXVECTOR2(
-		PLAYER_TEXTURE_WIDTH * (player.frame / 16 % 4),
-		playerTextureVertical
-	);
+		DrawGameSprite(damageTextureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+	}
+	else {
+		auto tPos = D3DXVECTOR2(
+			PLAYER_TEXTURE_WIDTH * (player.frame / 16 % 4),
+			playerTextureVertical
+		);
 
-	DrawGameSprite(textureId, player.trans.pos - D3DXVECTOR2(0.5, 0.5), 30, tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
-
+		DrawGameSprite(textureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+	}
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {

@@ -80,19 +80,19 @@ void DrawFlyingObject(FlyingObject flyingObject) {
 	}
 	if (flyingObject.type == FLYING_OBJECT_ITEM_ADD_SPEED || flyingObject.type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE || flyingObject.type == FLYING_OBJECT_CHECKPOINT_OFF) {
 		auto tPos = D3DXVECTOR2(
-			FLYINGOBJECT_ITEM_TEXTURE_WIDTH * (frame / 8 % 8),
+			FLYINGOBJECT_ITEM_TEXTURE_WIDTH * (frame / 16 % 8),
 			0
 		);
 
-		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 100, flyingObject.size.ToD3DXVECTOR2(), tPos, D3DXVECTOR2(FLYINGOBJECT_ITEM_TEXTURE_WIDTH, FLYINGOBJECT_ITEM_TEXTURE_HEIGHT));
+		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2(), tPos, D3DXVECTOR2(FLYINGOBJECT_ITEM_TEXTURE_WIDTH, FLYINGOBJECT_ITEM_TEXTURE_HEIGHT));
 	}
 	else if (flyingObject.type == FLYING_OBJECT_UFO) {
 		auto tPos = D3DXVECTOR2(
-			FLYINGOBJECT_TEXTURE_WIDTH * (frame / 4 % 4),
+			FLYINGOBJECT_TEXTURE_WIDTH * (frame / 8 % 4),
 			0
 		);
 
-		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2(), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
+		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6, 50, D3DXVECTOR2(1.3, 1.3), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
 	}
 	else {
 		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2());

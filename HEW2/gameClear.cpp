@@ -84,7 +84,7 @@ void DrawGameClear()
 
 		auto tPos = D3DXVECTOR2(
 			0,
-			GAME_CLEAR_LOGO_HEIGHT * (frame / 4 % 4)
+			GAME_CLEAR_LOGO_HEIGHT * (frame / 16 % 4)
 		);
 
 	DrawSprite(gameClearTexture, { 200,64 }, 10, { GAME_CLEAR_LOGO_WIDTH,GAME_CLEAR_LOGO_HEIGHT }, tPos, { GAME_CLEAR_LOGO_WIDTH,GAME_CLEAR_LOGO_HEIGHT });
