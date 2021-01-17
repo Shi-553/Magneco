@@ -59,6 +59,7 @@ void SetFontScale(D3DXVECTOR2 scale) {
 	fontScale = scale;
 	if (font != NULL) {
 		font->Release();
+		font = NULL;
 	}
 	MyCreateFont(FONT_HEIGHT, FONT_WIDTH, &font);
 }
@@ -70,6 +71,7 @@ void UninitMesseage() {
 	sprite->Release();
 	if (font != NULL) {
 		font->Release();
+		font = NULL;
 	}
 }
 

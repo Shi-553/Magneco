@@ -425,6 +425,7 @@ bool CanAttachedMapType(INTVECTOR2& pos,MapType type) {
 	switch (type)
 	{
 	case MAP_CHEST_OPENED:
+	case MAP_CHEST_CLOSED:
 		return MapFourDirectionsJudgment(pos);
 
 	case MAP_BLOCK:
