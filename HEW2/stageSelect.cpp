@@ -29,6 +29,9 @@ using namespace std;
 #define MESSAGEBOX_X (SCREEN_WIDTH/2- MESSAGEBOX_WIDTH/2)
 #define MESSAGEBOX_Y (SCREEN_HEIGHT / 2 +120+POS_Y)
 
+#define MESSAGE_X (MESSAGEBOX_X+30)
+#define MESSAGE_Y (MESSAGEBOX_Y+20)
+
 #define MESSAGEBOX_WIDTH (700)
 #define MESSAGEBOX_HEIGHT (135)
 
@@ -69,8 +72,7 @@ void InitStageSelect() {
 	selectStageTextureIds[STAGE_SELECT_SAMUNE_PRE] = ReserveTextureLoadFile("texture/stageSelect/samune_pre.png");
 	selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX] = ReserveTextureLoadFile("texture/Textbox_Test.png");
 
-	SetFontCountMax(52, 6);
-	SetFontRectAddY(140 + POS_Y);
+
 	SetFontScale(D3DXVECTOR2(0.7, 0.7));
 	SetFontMargin(7);
 
@@ -151,6 +153,8 @@ void DrawStageSelect() {
 
 	ClearMesseageOffset();
 	if (!info.overview.empty()) {
+
+		SetFontPos(D3DXVECTOR2(MESSAGE_X, MESSAGE_Y));
 		DrawMesseage(info.overview.c_str());
 	}
 

@@ -14,9 +14,8 @@ void DrawMesseage(const char* str, va_list argp);
 void DrawMesseage(const char* str, ...);
 
 void SetFontMargin(long margin);
-void SetFontRectAddY(int addY);
 void SetFontScale(D3DXVECTOR2 scale);
-void SetFontCountMax(int x, int y);
+void SetFontPos(D3DXVECTOR2 pos);
 
 //デバッグ用
 void TestMessage();

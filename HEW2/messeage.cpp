@@ -11,18 +11,9 @@
 #define FONT_WIDTH	(long)(15 * 1.2*fontScale.x)
 #define FONT_HEIGHT	(long)(32 * 1.2*fontScale.y)
 
-D3DXVECTOR2 fontScale;
+static D3DXVECTOR2 fontScale;
+static D3DXVECTOR2 fontPos;
 
-static int fontCountMaxX ;//半角45文字まで
-static int fontCountMaxY ;//10行まで
-
-//横幅、大きくすると左右に伸びる
-#define RECT_WIDTH (FONT_WIDTH*fontCountMaxX)
-//高さ、大きくすると下に伸びる
-#define RECT_HEIGHT (FONT_HEIGHT*fontCountMaxY)
-
-//中心からどれだけ下にするか
-static int rectAddY;
 
 long fontMarginY;
 
@@ -35,10 +26,8 @@ static D3DCOLOR color;
 
 
 void InitMesseage() {
-	fontCountMaxX = 45;
-	fontCountMaxY = 6;
-	rectAddY = 75;
 	fontScale = { 0,0 };
+	fontPos = { 0,0 };
 	fontMarginY = 0;
 
 	SetFontScale(fontScale);
@@ -52,9 +41,6 @@ void InitMesseage() {
 void SetFontMargin(long margin) {
 	fontMarginY = margin;
 }
-void SetFontRectAddY(int addY) {
-	rectAddY=addY;
-}
 void SetFontScale(D3DXVECTOR2 scale) {
 	fontScale = scale;
 	if (font != NULL) {
@@ -63,10 +49,10 @@ void SetFontScale(D3DXVECTOR2 scale) {
 	}
 	MyCreateFont(FONT_HEIGHT, FONT_WIDTH, &font);
 }
-void SetFontCountMax(int x, int y) {
-	fontCountMaxX=x;
-	fontCountMaxY=y;
+void SetFontPos(D3DXVECTOR2 pos) {
+	fontPos = pos;
 }
+
 void UninitMesseage() {
 	sprite->Release();
 	if (font != NULL) {
@@ -81,10 +67,10 @@ void ClearMesseageOffset() {
 
 void UpdateRect(RECT& rect) {
 	rect = {
-		(SCREEN_WIDTH - RECT_WIDTH) / 2 + offset.x * FONT_WIDTH,	         	// 左上のx座標
-		SCREEN_HEIGHT / 2 + rectAddY + offset.y * (FONT_HEIGHT+ fontMarginY),				// 左上のy座標
-		(SCREEN_WIDTH + RECT_WIDTH) / 2 ,		                                    // 右下のx座標
-		SCREEN_HEIGHT / 2 + rectAddY + RECT_HEIGHT 		                        // 右下のy座標
+		(LONG)fontPos.x + offset.x * FONT_WIDTH,	         	// 左上のx座標
+		(LONG)fontPos.y + offset.y * (FONT_HEIGHT+ fontMarginY),				// 左上のy座標
+		0,                                 // 右下のx座標
+		0,		                        // 右下のy座標
 	};
 }
 
@@ -117,15 +103,8 @@ void DrawMesseage(const char* str, va_list argp) {
 		//最後か
 		bool isEnd = i == length - 1;
 
-        //最大文字数かどうか（最大か、最大から1つ前で2バイト文字）
-		bool isM = (offset.x == fontCountMaxX);
-		bool isMax = isM ||
-			(offset.x == fontCountMaxX - 1 && _mbclen((BYTE*)&(buf[i])) == 2);
 
-		if (isNewLine || isMax || isEnd) {
-			if (isMax && !isM) {
-				i++;
-			}
+		if (isNewLine || isEnd) {
 
 			font->DrawTextA(sprite,
 				&(buf[startIndex]),
@@ -134,7 +113,7 @@ void DrawMesseage(const char* str, va_list argp) {
 				DT_LEFT|DT_NOCLIP,//左寄せ
 				color);
 
-			if (isNewLine || isMax) {
+			if (isNewLine) {
 				offset.y++;
 				offset.x = 0;
 			}
@@ -148,9 +127,6 @@ void DrawMesseage(const char* str, va_list argp) {
 
 			UpdateRect(rc);
 
-			if (!isEnd &&!isNewLine &&isMax) {
-				offset.x++;//↑このときここで1個右へずらすとなぜかうまくいく・・・
-			}
 
 			continue;
 		}
