@@ -9,8 +9,8 @@
 #define GAME_CLEAR_BUTTON_WIDTH 330
 #define GAME_CLEAR_BUTTON_HEIGHT 90
 
-#define GAME_CLEAR_LOGO_WIDTH 896
-#define GAME_CLEAR_LOGO_HEIGHT 224
+#define GAME_CLEAR_LOGO_WIDTH 1024
+#define GAME_CLEAR_LOGO_HEIGHT 256
 
 static int backgroundTexture;
 static int gameClearTexture;
@@ -19,6 +19,8 @@ static int quitTexture;
 static int quitPressedTexture;
 static int retryTexture;
 static int retryPressedTexture;
+
+static int frame = 0;
 
 static Button returnTitleButton, retryButton;
 
@@ -59,7 +61,7 @@ void InitGameClear()
 	AddButton(&retryButton);
 
 	backgroundTexture = ReserveTextureLoadFile("texture/background/背景１.png");
-	gameClearTexture = ReserveTextureLoadFile("texture/stageclear.png");
+	gameClearTexture = ReserveTextureLoadFile("texture/stageclear_1024×256.png");
 
 	LoadTexture();
 }
@@ -79,11 +81,18 @@ void UninitGameClear()
 void DrawGameClear()
 {
 	DrawSprite(backgroundTexture, { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT }, { 0,0 }, { SCREEN_WIDTH,SCREEN_HEIGHT });
-	DrawSprite(gameClearTexture, { 200,64 }, 10, { GAME_CLEAR_LOGO_WIDTH,GAME_CLEAR_LOGO_HEIGHT }, { 0,0 }, { GAME_CLEAR_LOGO_WIDTH,GAME_CLEAR_LOGO_HEIGHT });
+
+		auto tPos = D3DXVECTOR2(
+			0,
+			GAME_CLEAR_LOGO_HEIGHT * (frame / 4 % 4)
+		);
+
+	DrawSprite(gameClearTexture, { 200,64 }, 10, { GAME_CLEAR_LOGO_WIDTH,GAME_CLEAR_LOGO_HEIGHT }, tPos, { GAME_CLEAR_LOGO_WIDTH,GAME_CLEAR_LOGO_HEIGHT });
 	DrawSelectButton();
 }
 
 static bool isChange = false;
+
 void UpdateGameClear()
 {
 	if (TriggerInputLogger(MYVK_ENTER)) {
@@ -105,6 +114,8 @@ void UpdateGameClear()
 		retryButton.textureId = retryTexture;
 		isChange = true;
 	}
+
+	frame++;
 }
 
 

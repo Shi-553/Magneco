@@ -47,19 +47,19 @@ void AddFlyingObjects(FlyingObject* flyingObject) {
 
 void InitFlyingObject() {
 	flyingObjects.clear();
-	flyingObjectTextureIds[FLYING_OBJECT_BLOCK] = ReserveTextureLoadFile("texture/block/block01.png");
+	flyingObjectTextureIds[FLYING_OBJECT_BLOCK] = ReserveTextureLoadFile("texture/block/block02.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY] = ReserveTextureLoadFile("texture/enemy/jellyalien01.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_BREAK_BLOCK] = ReserveTextureLoadFile("texture/enemy/meteorite_1.png");
 	flyingObjectTextureIds[FLYING_OBJECT_UFO] = ReserveTextureLoadFile("texture/enemy/ufo_spritesheet.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_SECOND] = ReserveTextureLoadFile("texture/enemy/jellyaliengirl01.png");
-	flyingObjectTextureIds[FLYING_OBJECT_PLAYER_BLOCK] = ReserveTextureLoadFile("texture/block/block02.png");
-	flyingObjectTextureIds[FLYING_OBJECT_PURGE_BLOCK] = ReserveTextureLoadFile("texture/block/block02.png");
+	flyingObjectTextureIds[FLYING_OBJECT_PLAYER_BLOCK] = ReserveTextureLoadFile("texture/block/block01.png");
+	flyingObjectTextureIds[FLYING_OBJECT_PURGE_BLOCK] = ReserveTextureLoadFile("texture/block/block01.png");
 	existsUFO = false;
 
 	flyingObjectTextureIds[FLYING_OBJECT_ITEM_ADD_SPEED] = ReserveTextureLoadFile("texture/item/item_hane_anime.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE] = ReserveTextureLoadFile("texture/item/item_block_anime.png");
 	flyingObjectTextureIds[FLYING_OBJECT_CHECKPOINT_OFF] = ReserveTextureLoadFile("texture/block/point_block.png");
-	blockAnimationTextureId = ReserveTextureLoadFile("texture/block_anime.png");
+	blockAnimationTextureId = ReserveTextureLoadFile("texture/block/put_anime.png");
 
 	frame = 0;
 }
