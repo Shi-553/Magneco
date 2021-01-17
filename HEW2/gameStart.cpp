@@ -59,15 +59,17 @@ void InitGameStart() {
 		PostQuitMessage(0);
 	};
 
-	AddButton(startButton);
-	AddButton(tutorialButton);
-	AddButton(endButton);
+	AddSelectButton(startButton);
+	AddSelectButton(tutorialButton);
+	AddSelectButton(endButton);
 
 	backGroundTexture = ReserveTextureLoadFile("texture/背景１.png");
 
 	titleTextTexture = ReserveTextureLoadFile("texture/title_640×240.png");
 
 	buttonDescriptionTexture = ReserveTextureLoadFile("texture/tips.png");
+
+	SetSelectButtonFrame(ReserveTextureLoadFile("texture/select.png"));
 
 	LoadTexture();
 }
@@ -88,17 +90,5 @@ void DrawGameStart() {
 }
 
 void UpdateGameStart() {
-	if (TriggerInputLogger(MYVK_ENTER)) {
-		TriggerSelectButton();
-	}
-	if (ReleaseInputLogger(MYVK_ENTER)) {
-		ReleaseSelectButton();
-	}
-	if (TriggerInputLogger(MYVK_UP)) {
-		BackSelectButton();
-	}
-	if (TriggerInputLogger(MYVK_DOWN)) {
-		ForwardSelectButton();
-
-	}
+	UpdateSelectButton();
 }

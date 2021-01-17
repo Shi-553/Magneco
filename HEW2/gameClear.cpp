@@ -43,11 +43,13 @@ void InitGameClear()
 		GoNextScene(GameScene);
 	};
 
-	AddButton(returnTitleButton);
-	AddButton(retryButton);
+	AddSelectButton(returnTitleButton);
+	AddSelectButton(retryButton);
 
 	backgroundTexture = ReserveTextureLoadFile("texture/背景１.png");
 	gameClearTexture = ReserveTextureLoadFile("texture/stageclear.png");
+
+	SetSelectButtonFrame(ReserveTextureLoadFile("texture/select.png"));
 
 	LoadTexture();
 }
@@ -69,18 +71,7 @@ void DrawGameClear()
 
 void UpdateGameClear()
 {
-	if (TriggerInputLogger(MYVK_ENTER)) {
-		TriggerSelectButton();
-	}
-	if (ReleaseInputLogger(MYVK_ENTER)) {
-		ReleaseSelectButton();
-	}
-	if (TriggerInputLogger(MYVK_UP)) {
-		BackSelectButton();
-	}
-	if (TriggerInputLogger(MYVK_DOWN)) {
-		ForwardSelectButton();
-	}
+	UpdateSelectButton();
 }
 
 

@@ -1,12 +1,15 @@
 ﻿#pragma once
 #include "myd3d.h"
 #include "texture.h"
+#include "InputLogger.h"
 
 typedef struct Button {
-	D3DXVECTOR2 pos;
+	D3DXVECTOR2 pos ;
 	D3DXVECTOR2 size;
+
 	int textureId=TEXTURE_INVALID_ID;
 	int pressedTextureId=TEXTURE_INVALID_ID;
+
 	void (*pressedCallback)()=NULL;
 	void (*triggeredCallback)()=NULL;
 	void (*releasedCallback)()=NULL;
@@ -15,14 +18,13 @@ typedef struct Button {
 
 void InitSelectButton();
 void DrawSelectButton();
+void UpdateSelectButton();
 void UninitSelectButton();
 
 
-void AddButton(Button& button);
+void AddSelectButton(Button& button);
+void SetSelectButtonKey(VirtualKey enterKey, VirtualKey forwardKey, VirtualKey backKey);
 
-void ForwardSelectButton();
-
-void BackSelectButton();
-void TriggerSelectButton();
-void PressSelectButton();
-void ReleaseSelectButton();
+void SetSelectButtonFrame(int frame);
+void SetSelectButtonForward(int forward, int forwardPressed, D3DXVECTOR2 pos, D3DXVECTOR2 size);
+void SetSelectButtonBack(int back, int backPressed, D3DXVECTOR2 pos, D3DXVECTOR2 size);

@@ -42,12 +42,14 @@ Button retryButton, returnTitleButton;
 		GoNextScene(GameStartScene);
 	};
 
-	AddButton(retryButton);
-	AddButton(returnTitleButton);
+	AddSelectButton(retryButton);
+	AddSelectButton(returnTitleButton);
 
 	backgroundTexture = ReserveTextureLoadFile("texture/背景2.jpg");
 
 	gameOverTextTexture = ReserveTextureLoadFile("texture/gameover.png");
+
+	SetSelectButtonFrame(ReserveTextureLoadFile("texture/select.png"));
 
 	LoadTexture();
 }
@@ -67,16 +69,5 @@ void DrawGameOver() {
 
 void UpdateGameOver()
 {
-	if (TriggerInputLogger(MYVK_ENTER)) {
-		TriggerSelectButton();
-	}
-	if ( ReleaseInputLogger(MYVK_ENTER)) {
-		ReleaseSelectButton();
-	}
-	if (TriggerInputLogger(MYVK_UP)) {
-		BackSelectButton();
-	}
-	if (TriggerInputLogger(MYVK_DOWN)) {
-		ForwardSelectButton();
-	}
+	UpdateSelectButton();
 }
