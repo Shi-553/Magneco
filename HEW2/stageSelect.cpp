@@ -10,6 +10,7 @@
 #include <vector>
 #include "stageInfo.h"
 #include "importExport.h"
+#include <algorithm>
 using namespace std;
 
 #define POS_Y (-20)
@@ -76,6 +77,10 @@ void InitStageSelect() {
 	MyCreateFont(32 * 1.2, 15 * 1.2, &font);
 
 	GetStageInfos("stage", infos);
+
+	std::sort(infos.begin(), infos.end(), [](StageInfo a, StageInfo b) {
+		return a.index < b.index;
+  });
 
 	Button b;
 	b.releasedCallback = []() {
