@@ -10,10 +10,10 @@ void StageToSamune(std::string& stagename);
 
 void InitStageInfo() {
 	UninitStageInfo();
-	info.index = 2;
-	info.level = 5;
-	info.name = "ステージ３";
-	info.overview = "３";
+	info.index = 0;
+	info.level = 1;
+	info.name = "asd";
+	info.overview = "ああああ\nああ\nあああああああああああああああ";
 }
 void UninitStageInfo() {
 }

@@ -7,8 +7,6 @@
 #include "messeage.h"
 #include "font.h"
 #include "sceneManager.h"
-#include <vector>
-#include "stageInfo.h"
 #include "importExport.h"
 #include <algorithm>
 using namespace std;
@@ -175,4 +173,12 @@ void DrawStageSelect() {
 
 
 	DrawSelectButton();
+}
+
+StageInfo* GetCurrentInfo() {
+	if (infos.empty()) {
+		return nullptr;
+	}
+
+	return &infos[GetSelectButtonIndex()];
 }

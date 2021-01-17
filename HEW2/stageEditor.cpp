@@ -37,7 +37,7 @@ void InitStageEditor() {
 
 	LoadTexture();
 
-	SetStagePath("stage/edit.stage");
+	//SetStagePath("stage/edit.stage");
 
 	StageImport();
 }
