@@ -202,6 +202,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="stageEditor.cpp" />
+    <ClCompile Include="stageInfo.cpp" />
     <ClCompile Include="stageSelect.cpp" />
     <ClCompile Include="system_timer.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -243,6 +244,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="stageEditor.h" />
+    <ClInclude Include="stageInfo.h" />
     <ClInclude Include="stageSelect.h" />
     <ClInclude Include="system_timer.h" />
     <ClInclude Include="texture.h" />

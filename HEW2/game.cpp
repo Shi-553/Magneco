@@ -14,10 +14,13 @@
 #include "flyingObjectSponer.h"
 #include "debugPrintf.h"
 #include "importExport.h"
+#include "stageInfo.cpp"
 
 
 void InitGame() 
 {
+	InitStageInfo();
+
 	InitPlayer();
 	InitInput();
 	InitNPC();
@@ -75,5 +78,7 @@ void UninitGame()
 
 	UninitFlyingObject();
 	UninitFlyingSponer();
+
+	UninitStageInfo();
 }
 
