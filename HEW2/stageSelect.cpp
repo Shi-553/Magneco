@@ -18,6 +18,12 @@ using namespace std;
 #define SAMUNE_X (320)
 #define SAMUNE_Y (94+POS_Y)
 
+#define NAME_X (SAMUNE_X + 20)
+#define NAME_Y (SAMUNE_Y + 30)
+
+#define LEVEL_RX (930)
+#define LEVEL_Y (SAMUNE_Y+30)
+
 #define BU_LEFT_X (152)
 #define BU_LEFT_Y (230+POS_Y)
 #define BU_RIGHT_X (1000)
@@ -35,7 +41,7 @@ using namespace std;
 #define MESSAGEBOX_WIDTH (700)
 #define MESSAGEBOX_HEIGHT (135)
 
-static LPD3DXFONT font;
+static Message* nameMessage, *overviewMessage, *lavelMessage;
 
 static vector<StageInfo> infos;
 static vector<int> smunes;
@@ -51,7 +57,6 @@ enum StageSelectTexture {
 static int selectStageTextureIds[STAGE_SELECT_MAX];
 
 void InitStageSelect() {
-	InitMesseage();
 
 	InitSelectButton();
 	selectStageTextureIds[STAGE_SELECT_BACK_GROUND] = ReserveTextureLoadFile("texture/背景4.jpg");
@@ -72,11 +77,22 @@ void InitStageSelect() {
 	selectStageTextureIds[STAGE_SELECT_SAMUNE_PRE] = ReserveTextureLoadFile("texture/stageSelect/samune_pre.png");
 	selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX] = ReserveTextureLoadFile("texture/Textbox_Test.png");
 
+	overviewMessage = new Message();
+	nameMessage = new Message();
+	lavelMessage = new Message();
 
-	SetFontScale(D3DXVECTOR2(0.7, 0.7));
-	SetFontMargin(7);
+	overviewMessage->SetScale(D3DXVECTOR2(0.7, 0.7));
+	overviewMessage->SetMargin(7);
+	overviewMessage->SetPos(D3DXVECTOR2(MESSAGE_X, MESSAGE_Y));
 
-	MyCreateFont(32 * 1.2, 15 * 1.2, &font);
+	nameMessage->SetPos(D3DXVECTOR2(NAME_X, NAME_Y));
+	nameMessage->SetScale({1.2, 1.2});
+
+	lavelMessage->SetEndPos(D3DXVECTOR2(LEVEL_RX, -1));
+
+	lavelMessage->SetPos(D3DXVECTOR2(-1, LEVEL_Y));
+	lavelMessage->SetScale({ 1.2, 1.2 });
+	lavelMessage->SetFormat(DT_RIGHT);
 
 	GetStageInfos("stage", infos);
 
@@ -96,7 +112,7 @@ void InitStageSelect() {
 	for (auto itr = infos.begin(); itr != infos.end(); itr++) {
 		auto index = std::distance(infos.begin(), itr);
 
-		b.pos = D3DXVECTOR2(SCREEN_WIDTH / 2 + (index - infos.size()/2)* ICON_TO_ICON_WIDTH, ICON_Y);
+		b.pos = D3DXVECTOR2(SCREEN_WIDTH / 2 + (index - infos.size() / 2) * ICON_TO_ICON_WIDTH, ICON_Y);
 
 		AddTextureReferenceCount(b.textureId);
 		AddTextureReferenceCount(b.textureId);
@@ -114,17 +130,18 @@ void InitStageSelect() {
 	LoadTexture();
 }
 void UninitStageSelect() {
-	font->Release();
 	UninitSelectButton();
 	ReleaseTexture(selectStageTextureIds, STAGE_SELECT_MAX);
 
-	UninitMesseage();
 
 	for (auto itr = smunes.begin(); itr != smunes.end(); itr++) {
 		ReleaseTexture(*itr);
 	}
 	smunes.clear();
 	infos.clear();
+	delete overviewMessage;
+	delete nameMessage    ;
+	delete lavelMessage   ;
 }
 
 void UpdateStageSelect() {
@@ -139,23 +156,21 @@ void DrawStageSelect() {
 	DrawSprite(samune, D3DXVECTOR2(SAMUNE_X, SAMUNE_Y), 1);
 
 	DrawSprite(selectStageTextureIds[STAGE_SELECT_SAMUNE], D3DXVECTOR2(SAMUNE_X, SAMUNE_Y), 1);
-	RECT r;
-	r.top = SAMUNE_Y + 40;
-	r.left = SAMUNE_X + 20;
-	r.right = 0;
-	r.bottom = 0;
 
-	if (!info.name.empty()) {
-		font->DrawTextA(NULL, info.name.c_str(), -1, &r, DT_NOCLIP, D3DCOLOR_RGBA(255, 255, 255, 255));
-	}
+	nameMessage->ClearOffset();
+	nameMessage->Draw(info.name.c_str());
+
 	DrawSprite(selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 
-	ClearMesseageOffset();
 	if (!info.overview.empty()) {
+		overviewMessage->ClearOffset();
+		overviewMessage->Draw(info.overview.c_str());
+	}
 
-		SetFontPos(D3DXVECTOR2(MESSAGE_X, MESSAGE_Y));
-		DrawMesseage(info.overview.c_str());
+	lavelMessage->ClearOffset();
+	for (int i = 0; i < info.level; i++) {
+		lavelMessage->Draw("☆");
 	}
 
 

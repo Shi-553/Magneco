@@ -11,37 +11,36 @@
 #define FONT_WIDTH	(long)(15 * 1.2*fontScale.x)
 #define FONT_HEIGHT	(long)(32 * 1.2*fontScale.y)
 
-static D3DXVECTOR2 fontScale;
-static D3DXVECTOR2 fontPos;
 
-
-long fontMarginY;
-
-void UpdateRect(RECT& rect);
-
-static LPD3DXFONT font;
-static INTVECTOR2 offset;
-static LPD3DXSPRITE sprite;
-static D3DCOLOR color;
-
-
-void InitMesseage() {
+Message::Message() {
 	fontScale = { 0,0 };
 	fontPos = { 0,0 };
+	endPos = { 0,0 };
 	fontMarginY = 0;
+	format = DT_NOCLIP;
 
-	SetFontScale(fontScale);
+	SetScale(fontScale);
 	LPDIRECT3DDEVICE9 device = GetD3DDevice();
 	D3DXCreateSprite(device, &sprite);
 
 	color = D3DCOLOR_RGBA(255, 255, 255, 255);
 
 }
+Message::~Message() {
+	if (sprite != NULL) {
+		sprite->Release();
+		sprite = NULL;
+	}
+	if (font != NULL) {
+		font->Release();
+		font = NULL;
+	}
+}
 
-void SetFontMargin(long margin) {
+void Message::SetMargin(long margin) {
 	fontMarginY = margin;
 }
-void SetFontScale(D3DXVECTOR2 scale) {
+void Message::SetScale(D3DXVECTOR2 scale) {
 	fontScale = scale;
 	if (font != NULL) {
 		font->Release();
@@ -49,36 +48,46 @@ void SetFontScale(D3DXVECTOR2 scale) {
 	}
 	MyCreateFont(FONT_HEIGHT, FONT_WIDTH, &font);
 }
-void SetFontPos(D3DXVECTOR2 pos) {
+void Message::SetPos(D3DXVECTOR2 pos) {
 	fontPos = pos;
-}
-
-void UninitMesseage() {
-	sprite->Release();
-	if (font != NULL) {
-		font->Release();
-		font = NULL;
+	if (fontPos.x == -1) {
+		fontPos.x = 0;
+	}
+	if (fontPos.y == -1) {
+		fontPos.y = 0;
 	}
 }
+void Message::SetEndPos(D3DXVECTOR2 pos) {
+	endPos = pos;
+	if (endPos.x == -1) {
+		endPos.x = SCREEN_WIDTH;
+	}
+	if (endPos.y == -1) {
+		endPos.y = SCREEN_HEIGHT;
+	}
+}
+void Message::SetFormat(int f) {
+	format = f ;
+}
 
-void ClearMesseageOffset() {
+
+void Message::ClearOffset() {
 	offset = INTVECTOR2(0, 0);
 }
 
-void UpdateRect(RECT& rect) {
-	rect = {
-		(LONG)fontPos.x + offset.x * FONT_WIDTH,	         	// 左上のx座標
-		(LONG)fontPos.y + offset.y * (FONT_HEIGHT+ fontMarginY),				// 左上のy座標
-		0,                                 // 右下のx座標
-		0,		                        // 右下のy座標
-	};
+void Message::UpdateRect(RECT& rect,const char* str) {
+	rect.left = fontPos.x + offset.x * FONT_WIDTH;// 左上のx座標
+	rect.top = fontPos.y + offset.y * (FONT_HEIGHT + fontMarginY);				// 左上のy座標
+	rect.right = endPos.x- offset.x * FONT_WIDTH;	         	                                 // 右下のx座標
+	rect.bottom = endPos.y- offset.y * (FONT_HEIGHT + fontMarginY);		                        // 右下のy座標
+
 }
 
-void SetMessageColor(D3DCOLOR c) {
+void Message::SetColor(D3DCOLOR c) {
 	color = c;
 }
 
-void DrawMesseage(const char* str, va_list argp) {
+void Message::Draw(const char* str, va_list argp) {
 	int length = _vscprintf(str, argp) + 1;// +1 '\0'
 	if (length <= 1) {
 		return;
@@ -93,7 +102,7 @@ void DrawMesseage(const char* str, va_list argp) {
 	sprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
 
 	RECT rc;
-	UpdateRect(rc);
+	UpdateRect(rc, str);
 
 	int startIndex = 0;
 
@@ -110,7 +119,7 @@ void DrawMesseage(const char* str, va_list argp) {
 				&(buf[startIndex]),
 				i - startIndex,
 				&rc,
-				DT_LEFT|DT_NOCLIP,//左寄せ
+				format,
 				color);
 
 			if (isNewLine) {
@@ -125,7 +134,7 @@ void DrawMesseage(const char* str, va_list argp) {
 				startIndex = i;
 			}
 
-			UpdateRect(rc);
+			UpdateRect(rc, str);
 
 
 			continue;
@@ -140,36 +149,11 @@ void DrawMesseage(const char* str, va_list argp) {
 
 }
 
-void DrawMesseage(const char* str, ...) {
+void Message::Draw(const char* str, ...) {
 	va_list argp;
 	va_start(argp, str);
 
-	DrawMesseage(str, argp);
+	Draw(str, argp);
 
 	va_end(argp);
-}
-
-
-void TestMessage() {
-#ifdef _DEBUG
-	InitMesseage();
-
-	ClearMesseageOffset();
-
-	SetMessageColor(D3DCOLOR_RGBA(0, 0, 0, 255));
-	DrawMesseage("1111111111\n11111111111%s11111111", "aあああ");
-	DrawMesseage("あいう%dえ6", 1515151);
-	DrawMesseage("あいうえ6");
-	DrawMesseage("あいうえ6");
-
-	SetMessageColor(D3DCOLOR_RGBA(0, 255, 255, 255));
-	DrawMesseage("あいうえ6");
-	DrawMesseage("あいう%.1fえ6", 1.54f);
-	DrawMesseage("あいうえ5\n\n");
-
-	SetMessageColor(D3DCOLOR_RGBA(255, 255, 255, 255));
-	DrawMesseage("あいうえ6あいうえ6あいうえ6あいうえ6あいうえ6あいうえ6あいうえ6あいうえ6あいうえ6あいうえ6あいうえ6あいうえ6あいうえ6あいうえ6あいうえ6あいうえ6あいうえ6");
-
-	UninitMesseage();
-#endif
 }

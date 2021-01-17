@@ -1,21 +1,48 @@
 ﻿#pragma once
 
 #include <d3dx9.h>
+#include "trans.h"
 
 
-void InitMesseage();
-void UninitMesseage();
+class Message {
 
-void ClearMesseageOffset();
+	D3DXVECTOR2 fontScale;
+	D3DXVECTOR2 fontPos;
+	D3DXVECTOR2 endPos;
 
-void SetMessageColor(D3DCOLOR c);
 
-void DrawMesseage(const char* str, va_list argp);
-void DrawMesseage(const char* str, ...);
+	long fontMarginY;
 
-void SetFontMargin(long margin);
-void SetFontScale(D3DXVECTOR2 scale);
-void SetFontPos(D3DXVECTOR2 pos);
+	LPD3DXFONT font;
+	INTVECTOR2 offset;
+	LPD3DXSPRITE sprite;
+	D3DCOLOR color;
+	int format;
 
-//デバッグ用
-void TestMessage();
+	void UpdateRect(RECT& rect,const char* str);
+
+public:
+	Message();
+	~Message();
+	//行ごとのマージン
+	void SetMargin(long margin);
+
+	void SetScale(D3DXVECTOR2 scale);
+
+	void SetPos(D3DXVECTOR2 pos);
+	void SetEndPos(D3DXVECTOR2 pos);
+
+	//DT_から始まるやつ
+	void SetFormat(int f);
+
+	void ClearOffset();
+
+
+	void SetColor(D3DCOLOR c);
+
+	void Draw(const char* str, va_list argp);
+
+	void Draw(const char* str, ...);
+
+
+};
