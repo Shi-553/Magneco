@@ -148,6 +148,9 @@ void UpdateStageSelect() {
 void DrawStageSelect() {
 	DrawSprite(selectStageTextureIds[STAGE_SELECT_BACK_GROUND], D3DXVECTOR2(0, 0), 1);
 
+	if (infos.empty()) {
+		return ;
+	}
 	auto& info = infos[GetSelectButtonIndex()];
 	auto& samune = smunes[GetSelectButtonIndex()];
 
