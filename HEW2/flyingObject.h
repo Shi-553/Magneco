@@ -20,7 +20,7 @@ enum FlyingObjectType
 	FLYING_OBJECT_CHECKPOINT_OFF,
 	FLYING_OBJECT_MAX	
 };
-typedef struct FlyingObject
+struct FlyingObject
 {
 	TRANS trans;
 	FlyingObjectType type;

@@ -5,7 +5,7 @@
 #define DEBUG_FONT_WIDTH 32
 #define DEBUG_FONT_HEIGHT 64
 
-typedef struct DEBUG_FONT_STATE {
+struct DEBUG_FONT_STATE {
 	D3DXVECTOR2 pos = {0,0};
 	float z = 0;
 	D3DXVECTOR2 size = {0,0};

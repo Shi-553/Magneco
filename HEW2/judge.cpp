@@ -125,6 +125,11 @@ void JudgePlayerandFlyingObjectHit() {
 	}
 	// プレイヤーとflyingObjectの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
+		if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, player->size, itr->size)) {
+			itr++;
+			continue;
+		}
+
 		if (IsFlyingObjectItem(itr->type)) {
 			if (itr->type == FLYING_OBJECT_ITEM_ADD_SPEED) {
 				player->addSpeed++;
@@ -136,10 +141,6 @@ void JudgePlayerandFlyingObjectHit() {
 			continue;
 		}
 
-		if (!CheckBlockBlock(player->trans.pos, itr->trans.pos, player->size, itr->size)) {
-			itr++;
-			continue;
-		}
 		if (!CheckShortest(*player, *itr, player->trans.pos)) {
 			itr++;
 			continue;
@@ -273,43 +274,10 @@ void JudgePlayerandFlyingObjectHit() {
 				isMatched = true;
 
 				//チェックポイントとつながってないブロックを消す
-				vector<INTVECTOR2> v;
-				if (!IsBreakBlock(pos + INTVECTOR2(0, 1), v)) {
-					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
-						Map* map = GetMap(*itrV);
-						if (map != NULL && map->type == MAP_BLOCK) {
-							map->type = MAP_BLOCK_NONE;
-						}
-					}
-				}
-				v.clear();
-				if (!IsBreakBlock(pos + INTVECTOR2(0, -1), v)) {
-					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
-						Map* map = GetMap(*itrV);
-						if (map != NULL && map->type == MAP_BLOCK) {
-							map->type = MAP_BLOCK_NONE;
-						}
-					}
-				}
-				v.clear();
-				if (!IsBreakBlock(pos + INTVECTOR2(1, 0), v)) {
-					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
-						Map* map = GetMap(*itrV);
-						if (map != NULL && map->type == MAP_BLOCK) {
-							map->type = MAP_BLOCK_NONE;
-						}
-					}
-				}
-				v.clear();
-				if (!IsBreakBlock(pos + INTVECTOR2(-1, 0), v)) {
-					for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
-						Map* map = GetMap(*itrV);
-						if (map != NULL && map->type == MAP_BLOCK) {
-							map->type = MAP_BLOCK_NONE;
-						}
-					}
-				}
-				v.clear();
+				BreakNotConnectBlock(pos + INTVECTOR2(0, 1));
+				BreakNotConnectBlock(pos + INTVECTOR2(0, -1));
+				BreakNotConnectBlock(pos + INTVECTOR2(1,0));
+				BreakNotConnectBlock(pos + INTVECTOR2(-1,0));
 				continue;
 			}
 		}
