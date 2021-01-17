@@ -8,6 +8,7 @@ struct StageInfo
 	char* name;
 	char* overview;
 };
+
 void InitStageInfo();
 void UninitStageInfo();
 bool ImportStageInfo(FILE* fp);

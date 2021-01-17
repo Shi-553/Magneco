@@ -14,7 +14,7 @@
 #include "flyingObjectSponer.h"
 #include "debugPrintf.h"
 #include "importExport.h"
-#include "stageInfo.cpp"
+#include "stageInfo.h"
 
 
 void InitGame() 
