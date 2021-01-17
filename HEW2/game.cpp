@@ -33,8 +33,8 @@ void InitGame()
 	LoadTexture();
 
 
-	StageImport();
-	//StageExport();
+	//StageImport();
+	StageExport();
 }
 
 void UpdateGame() 
