@@ -142,6 +142,9 @@ void DrawPlayer() {
 
 		}
 		else {
+			for (auto& f : player.flyingObjectList) {
+				f.isAnime = false;
+			}
 			bool isAdd = false;
 
 			vector<FlyingObject> putDraws;
@@ -159,7 +162,9 @@ void DrawPlayer() {
 						MapChange(current);
 
 						putDraws.push_back(current);
-
+						if (player.isPut) {
+							current.isAnime = true;
+						}
 						isAdd = true;
 						modosu.push_back(current);
 						player.flyingObjectList.pop_front();
@@ -262,6 +267,8 @@ void BlockDecision() {
 	}
 
 
+
+
 	bool isAdd = false;
 
 	while (true) {
@@ -357,50 +364,6 @@ void MakePut() {
 		front.isAnime = true;
 		player.isPut = true;
 		return;
-	}
-
-
-
-	bool isAdd = false;
-
-	while (true) {
-		isAdd = false;
-
-		std::list<FlyingObject> modosu;
-
-		while (!player.flyingObjectList.empty()) {
-			auto& current = player.flyingObjectList.front();
-
-			if (GetMapType(current.trans.GetIntPos()) == MAP_BLOCK_NONE && !current.isAnime && MapFourDirectionsJudgment(current.trans.GetIntPos())) {
-				MapChange(current);
-				current.isAnime = true;
-				isAdd = true;
-				modosu.push_back(current);
-				player.flyingObjectList.pop_front();
-				break;
-			}
-			else {
-				modosu.push_back(current);
-				player.flyingObjectList.pop_front();
-			}
-		}
-
-		for (auto itrM = modosu.begin(); itrM != modosu.end(); itrM++) {
-			player.flyingObjectList.push_back(*itrM);
-		}
-
-		if (!isAdd) {
-			break;
-		}
-	}
-
-	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); itr++) {
-		if (itr->isAnime) {
-			auto m = GetMap(itr->trans.GetIntPos());
-			if (m != NULL) {
-				m->type = MAP_BLOCK_NONE;
-			}
-		}
 	}
 
 	player.isPut = true;
