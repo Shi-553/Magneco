@@ -188,18 +188,6 @@ void BlockDecision() {
 
 	player.putFrame = 0;
 
-	auto& front = player.flyingObjectList.front();
-	if (front.type == FLYING_OBJECT_CHECKPOINT_OFF) {
-		if (GetMapType(front.trans.GetIntPos()) != MAP_BLOCK_NONE) {
-			return;
-		}
-		MapChange(front);
-		player.flyingObjectList.clear();
-		player.invicibleTime = 0;
-		player.checkCheckpoint = false;
-		return;
-	}
-
 
 	bool isAdd = false;
 
@@ -293,8 +281,10 @@ void MakePut() {
 		if (GetMapType(front.trans.GetIntPos()) != MAP_BLOCK_NONE) {
 			return;
 		}
-		front.isAnime = true;
-		player.isPut = true;
+		MapChange(front);
+		player.flyingObjectList.clear();
+		player.invicibleTime = 0;
+		player.checkCheckpoint = false;
 		return;
 	}
 
