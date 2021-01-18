@@ -1,6 +1,7 @@
 ﻿#ifndef _PLAYER_H
 #define _PLAYER_H
 #include <list>
+#include <vector>
 #include "flyingObject.h"
 #include "trans.h"
 #pragma once
@@ -27,6 +28,7 @@ struct Player {
 	int stanTime;
 	int invicibleTime;
 	D3DXVECTOR2 size;
+	std::vector<FlyingObject> putFlyingObjectList;
 };
 
 void InitPlayer();
