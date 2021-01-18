@@ -24,11 +24,14 @@ static Player player;
 
 static int  playerTextureVertical = 0;
 
+static int putPredictionTextureId = TEXTURE_INVALID_ID;
+
 void BlockDecision();
 void ToFreeFlyingObject(FlyingObject& flyingObject);
 
 void InitPlayer() {
 	textureId = ReserveTextureLoadFile("texture/player_32×32.png");
+	putPredictionTextureId = ReserveTextureLoadFile("texture/putPrediction.png");
 
 	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();
@@ -49,6 +52,7 @@ void InitPlayer() {
 
 void UninitPlayer() {
 	ReleaseTexture(textureId);
+	ReleaseTexture(putPredictionTextureId);
 }
 
 void UpdatePlayer() {
@@ -129,6 +133,63 @@ void UpdatePlayer() {
 }
 
 void DrawPlayer() {
+
+	if (!player.flyingObjectList.empty()) {
+
+		auto& front = player.flyingObjectList.front();
+		if (front.type == FLYING_OBJECT_CHECKPOINT_OFF && GetMapType(front.trans.GetIntPos()) == MAP_BLOCK_NONE) {
+			DrawGameSprite(putPredictionTextureId, front.trans.GetIntPos().ToD3DXVECTOR2(), 1);
+
+		}
+		else {
+			bool isAdd = false;
+
+			vector<FlyingObject> putDraws;
+			while (true) {
+				isAdd = false;
+
+				std::list<FlyingObject> modosu;
+
+				while (!player.flyingObjectList.empty()) {
+					auto& current = player.flyingObjectList.front();
+
+
+					if (GetMapType(current.trans.GetIntPos()) == MAP_BLOCK_NONE && MapFourDirectionsJudgment(current.trans.GetIntPos()) &&
+						std::find_if(putDraws.begin(), putDraws.end(), [&current](FlyingObject f) {return f.uid == current.uid; }) == putDraws.end()) {
+						MapChange(current);
+
+						putDraws.push_back(current);
+
+						isAdd = true;
+						modosu.push_back(current);
+						player.flyingObjectList.pop_front();
+						break;
+					}
+					else {
+						modosu.push_back(current);
+						player.flyingObjectList.pop_front();
+					}
+				}
+
+				for (auto itrM = modosu.begin(); itrM != modosu.end(); itrM++) {
+					player.flyingObjectList.push_back(*itrM);
+				}
+
+				if (!isAdd) {
+					break;
+				}
+			}
+			for (auto& v : putDraws) {
+				auto m = GetMap(v.trans.GetIntPos());
+				if (m != NULL) {
+					m->type = MAP_BLOCK_NONE;
+				}
+				DrawGameSprite(putPredictionTextureId, v.trans.GetIntPos().ToD3DXVECTOR2(), 1);
+			}
+		}
+
+	}
+
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); itr++) {
 		DrawFlyingObject(*itr);
 	}

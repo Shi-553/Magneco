@@ -21,6 +21,7 @@ static int blockAnimationTextureId;
 
 static SponeId spone;
 
+static int currentUID = 0;
 
 std::list<FlyingObject>* GetFlyingObjects() {
 	return &flyingObjects;
@@ -33,6 +34,9 @@ void AddFlyingObjects(FlyingObject* flyingObject) {
 		}
 		existsUFO = true;
 	}
+	flyingObject->uid = currentUID;
+	currentUID++;
+
 	flyingObjects.push_back(*flyingObject);
 
 }
@@ -53,6 +57,7 @@ void InitFlyingObject() {
 	flyingObjectTextureIds[FLYING_OBJECT_CHECKPOINT_OFF] = ReserveTextureLoadFile("texture/checkpoint_off.png");
 	blockAnimationTextureId = ReserveTextureLoadFile("texture/block_anime.png");
 
+	currentUID = 0;
 }
 void UninitFlyingObject() {
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
@@ -60,16 +65,16 @@ void UninitFlyingObject() {
 	}
 	ReleaseTexture(blockAnimationTextureId);
 }
-void DrawFlyingObject(FlyingObject flyingObject) {
+void DrawFlyingObject(FlyingObject& flyingObject) {
 	Player* player = GetPlayer();
 	auto textureId = flyingObjectTextureIds[flyingObject.type];
 
 
 	if (flyingObject.isAnime) {
-		DrawGameSprite(blockAnimationTextureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2(), { (float)(4 * player->putFrame / DEFAULT_PUT_REQUIRED_FRAME) * 32, 0 }, { 32, 32 });
+		DrawGameSprite(blockAnimationTextureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2()-D3DXVECTOR2(0.1,0.1), { (float)(4 * player->putFrame / DEFAULT_PUT_REQUIRED_FRAME) * 32, 0 }, { 32, 32 });
 		return;
 	}
-	DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2());
+	DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2() - D3DXVECTOR2(0.1, 0.1));
 }
 
 void DrawFlyingObject() {

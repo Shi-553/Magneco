@@ -26,6 +26,7 @@ struct FlyingObject
 	FlyingObjectType type;
 	D3DXVECTOR2 dir;
 	int id;
+	int uid;
 	bool isAnime;
 	int hp;
 	INTVECTOR2 size;
@@ -41,7 +42,7 @@ void DrawFlyingObject();
 void UpdateFlyingObject();
 
 
-void DrawFlyingObject(FlyingObject flyingObject);
+void DrawFlyingObject(FlyingObject& flyingObject);
 
 
 bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
