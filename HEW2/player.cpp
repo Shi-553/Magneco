@@ -121,8 +121,6 @@ void UpdatePlayer() {
 		}
 
 
-		player.frame++;
-
 	}
 	else {
 
@@ -130,6 +128,7 @@ void UpdatePlayer() {
 	}
 
 	player.dir = { 0,0 };
+	player.frame++;
 
 }
 
@@ -138,7 +137,8 @@ void DrawPlayer() {
 		DrawFlyingObject(*itr);
 	}
 
-	if (!DamagePlayer) {
+
+	if (player.stanTime > 0) {
 		auto tPos = D3DXVECTOR2(
 			PLAYER_TEXTURE_WIDTH * (player.frame / 16 % 4),
 			playerTextureVertical
@@ -146,7 +146,8 @@ void DrawPlayer() {
 
 		DrawGameSprite(damageTextureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
 	}
-	else {
+	else
+	{
 		auto tPos = D3DXVECTOR2(
 			PLAYER_TEXTURE_WIDTH * (player.frame / 16 % 4),
 			playerTextureVertical
