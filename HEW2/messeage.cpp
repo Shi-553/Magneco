@@ -8,12 +8,12 @@
 
 
 
-#define FONT_WIDTH	(long)(15 * 1.2*fontScale.x)
-#define FONT_HEIGHT	(long)(32 * 1.2*fontScale.y)
+#define FONT_WIDTH	(15 * 1.2*fontScale.x)
+#define FONT_HEIGHT	(32 * 1.2*fontScale.y)
 
 
-Message::Message() {
-	fontScale = { 0,0 };
+Message::Message(D3DXVECTOR2 scale) {
+	fontScale = scale;
 	fontPos = { 0,0 };
 	endPos = { 0,0 };
 	fontMarginY = 0;
@@ -68,6 +68,9 @@ void Message::SetEndPos(D3DXVECTOR2 pos) {
 }
 void Message::SetFormat(int f) {
 	format = f ;
+}
+D3DXVECTOR2 Message::GetOneSize() {
+	return D3DXVECTOR2(FONT_WIDTH,  FONT_HEIGHT);
 }
 
 

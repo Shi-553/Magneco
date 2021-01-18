@@ -162,6 +162,12 @@ void UninitSelectButton() {
 	ReleaseTexture(backTextureId);
 	ReleaseTexture(backPressedTextureId);
 
+	selectFrameTextureId = TEXTURE_INVALID_ID;
+	forwardTextureId = TEXTURE_INVALID_ID;
+	forwardPressedTextureId = TEXTURE_INVALID_ID;
+	backTextureId = TEXTURE_INVALID_ID;
+	backPressedTextureId = TEXTURE_INVALID_ID;
+
 	for (const auto& b : buttons) {
 		ReleaseTexture(b.textureId);
 		ReleaseTexture(b.pressedTextureId);

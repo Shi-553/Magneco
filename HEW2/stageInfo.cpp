@@ -19,7 +19,7 @@ void UninitStageInfo() {
 }
 
 
-StageInfo& ImportStageInfo(FILE* fp,string& filename) {
+StageInfo ImportStageInfo(FILE* fp,string& filename) {
 	UninitStageInfo();
 
 	fread(&info.index, sizeof(int), 1, fp);

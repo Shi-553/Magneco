@@ -20,6 +20,7 @@
 #include "InputLogger.h"
 #include "sceneManager.h"
 #include "flyingObjectEditor.h"
+#include "stageInfoEditor.h"
 
 void InitStageEditor() {
 	InitPlayer();
@@ -32,7 +33,7 @@ void InitStageEditor() {
 
 	InitMapEditor();
 	InitFlyingObjectEditor();
-
+	InitStageInfoEditor();
 	//Grid_Initialize(GAME_SPRITE_WHIDTH, GetMapWidth(), D3DCOLOR_RGBA(0, 197, 0, 255));
 
 	LoadTexture();
@@ -53,6 +54,7 @@ void UninitStageEditor() {
 	UninitMap();
 	UninitFlyingObject();
 	UninitFlyingSponer();
+	UninitStageInfoEditor();
 }
 
 void DrawStageEditor() {
@@ -61,6 +63,7 @@ void DrawStageEditor() {
 
 	DrawMapEditor();
 	DrawFlyingObjectEditor();
+	DrawStageInfoEditor();
 	//DrawInput();
 
 
@@ -79,12 +82,16 @@ void UpdateStageEditor() {
 	//UpdateNPC();
 	UpdateFlyingObjectEditor();
 	UpdateMapEditor();
+	UpdateStageInfoEditor();
 
 	if (CheckMouseFlyingObjectEditor()) {
 		return;
 	}
 
 	if (CheckMouseMapEditor()) {
+		return;
+	}
+	if (CheckMouseStageInfoEditor()) {
 		return;
 	}
 	//UpdateJudge();

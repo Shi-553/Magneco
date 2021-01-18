@@ -16,6 +16,6 @@ struct StageInfo
 
 void InitStageInfo();
 void UninitStageInfo();
-StageInfo& ImportStageInfo(FILE* fp, std::string& filename);
+StageInfo ImportStageInfo(FILE* fp, std::string& filename);
  bool ExportStageInfo(FILE* fp);
 StageInfo& GetStageInfo();

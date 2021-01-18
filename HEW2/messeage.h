@@ -22,7 +22,7 @@ class Message {
 	void UpdateRect(RECT& rect,const char* str);
 
 public:
-	Message();
+	Message(D3DXVECTOR2 scale = D3DXVECTOR2(1, 1));
 	~Message();
 	//行ごとのマージン
 	void SetMargin(long margin);
@@ -34,7 +34,7 @@ public:
 
 	//DT_から始まるやつ
 	void SetFormat(int f);
-
+	D3DXVECTOR2 GetOneSize();
 	void ClearOffset();
 
 
