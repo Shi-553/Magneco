@@ -41,6 +41,8 @@ void ReleaseTexture(int textureIds[], int count);
 //テクスチャを全解放
 void ReleaseAllTexture();
 
+//参照カウントを１増やす
+bool AddTextureReferenceCount(int textureId);
 
 //テクスチャの大きさを取得
 //引数：テクスチャID

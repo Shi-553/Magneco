@@ -26,6 +26,7 @@
 #include "sceneManager.h"
 #include "time.h"
 #include "font.h"
+#include <string>
 
 
 #define CLASS_NAME "GameWindow"
@@ -48,6 +49,7 @@ double baseTime = 0.0;
 double fps = 0.0;
 double reserveTime = 0.0;
 
+HINSTANCE ghInstance;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	UNREFERENCED_PARAMETER(hInstance);
@@ -55,6 +57,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	UNREFERENCED_PARAMETER(nCmdShow);
 
+	ghInstance = hInstance;
 	//オリジナルのウインドウクラスを作って登録
 	WNDCLASS wc = {};
 	wc.lpfnWndProc = WndProc;                          //ウインドウプロシージャ登録
@@ -198,7 +201,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 
 bool Init(HWND hWnd,HINSTANCE hIns) {
-
 	InitTime(SystemTimer_GetTime());
 
 	InitInputLogger(hWnd, hIns);

@@ -72,7 +72,7 @@ void InitSceneManager(Scene startScene) {
 	fadeMode = FADE_NONE;
 	GoNextScene(startScene, FADE_IN);
 
-	SetStagePath("stage/edit.stage");
+	//SetStagePath("stage/edit.stage");
 }
 
 void UninitSceneManager() {
@@ -145,10 +145,16 @@ void UpdateSceneManager() {
 		GoNextScene(GameStartScene);
 	}
 	if (PressInputLogger(MYVK_GAME)) {
+		if (auto info = GetCurrentInfo()) {
+			SetStagePath(info->filename);
+		}
 		GoNextScene(GameScene);
 	}
 
 	if (TriggerInputLogger(MYVK_STAGE_EDTIOR)) {
+		if (auto info = GetCurrentInfo()) {
+			SetStagePath(info->filename);
+		}
 		GoNextScene(StageEditorScene);
 	}
 

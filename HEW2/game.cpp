@@ -14,10 +14,13 @@
 #include "flyingObjectSponer.h"
 #include "debugPrintf.h"
 #include "importExport.h"
+#include "stageInfo.h"
 
 
 void InitGame() 
 {
+	InitStageInfo();
+
 	InitPlayer();
 	InitInput();
 	InitNPC();
@@ -27,11 +30,10 @@ void InitGame()
 	InitFlyingSponer();
 	//Grid_Initialize(GAME_SPRITE_WHIDTH, GetMapWidth(), D3DCOLOR_RGBA(0, 197, 0, 255));
 
-	LoadTexture();
-
-
-	StageImport();
 	//StageExport();
+	StageImport();
+
+	LoadTexture();
 }
 
 void UpdateGame() 
@@ -75,5 +77,7 @@ void UninitGame()
 
 	UninitFlyingObject();
 	UninitFlyingSponer();
+
+	UninitStageInfo();
 }
 
