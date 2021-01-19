@@ -19,11 +19,15 @@
 #define FLYINGOBJECT_ITEM_TEXTURE_WIDTH (32)
 #define FLYINGOBJECT_ITEM_TEXTURE_HEIGHT (32)
 
+#define UFO_LIGHT_ANIMETION_TEXTURE (96)
+
 
 static std::list<FlyingObject> flyingObjects;
 static bool existsUFO = false;
 static int flyingObjectTextureIds[FLYING_OBJECT_MAX];
 static int blockAnimationTextureId;
+static int ufoLightAnimationTextureId;
+static int ufoBottomLightAnimationTextureId;
 
 static int frame = 0;
 
@@ -60,6 +64,8 @@ void InitFlyingObject() {
 	flyingObjectTextureIds[FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE] = ReserveTextureLoadFile("texture/item/item_block_anime.png");
 	flyingObjectTextureIds[FLYING_OBJECT_CHECKPOINT_OFF] = ReserveTextureLoadFile("texture/block/point_block.png");
 	blockAnimationTextureId = ReserveTextureLoadFile("texture/block/put_anime.png");
+	ufoLightAnimationTextureId = ReserveTextureLoadFile("texture/enemy/beam_front.png");
+	ufoBottomLightAnimationTextureId = ReserveTextureLoadFile("texture/enemy/beam_behind.png");
 
 	frame = 0;
 }
@@ -71,6 +77,7 @@ void UninitFlyingObject() {
 }
 void DrawFlyingObject(FlyingObject flyingObject) {
 	Player* player = GetPlayer();
+	NPC* npc = GetNpc();
 	auto textureId = flyingObjectTextureIds[flyingObject.type];
 
 
@@ -93,7 +100,16 @@ void DrawFlyingObject(FlyingObject flyingObject) {
 		);
 
 		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6, 50, D3DXVECTOR2(1.3, 1.3), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
-	}
+		if (npc->contactUFO == true) {
+			auto tPos = D3DXVECTOR2(
+				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 8 % 4),
+				0
+			);
+
+			DrawGameSprite(ufoLightAnimationTextureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6 + D3DXVECTOR2(-0.25, 0.5), 50, D3DXVECTOR2(1.8, 1.7), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, UFO_LIGHT_ANIMETION_TEXTURE));
+			DrawGameSprite(ufoBottomLightAnimationTextureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6 + D3DXVECTOR2(-0.25, 0.5), 50, D3DXVECTOR2(1.8, 1.7), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, UFO_LIGHT_ANIMETION_TEXTURE));
+		}
+	}	
 	else {
 		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2());
 	}

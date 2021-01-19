@@ -42,6 +42,7 @@ static int beaconTextureId = TEXTURE_INVALID_ID;
 
 static int npcTextureIdWait = TEXTURE_INVALID_ID;
 static int npcTextureIdMove = TEXTURE_INVALID_ID;
+static int npcTextureUFO = TEXTURE_INVALID_ID;
 static int npcTextureIdShadow = TEXTURE_INVALID_ID;
 static NPC npc;
 
@@ -60,12 +61,14 @@ void InitNPC() {
 
 	npcTextureIdWait = ReserveTextureLoadFile("texture/npc/spr_rose_idle.png");
 	npcTextureIdMove = ReserveTextureLoadFile("texture/npc/spr_rose_walk.png");
+	npcTextureUFO = ReserveTextureLoadFile("texture/npc/Rose_UFO_64x64px.png");
 	npcTextureIdShadow = ReserveTextureLoadFile("texture/npc/spr_shadow.png");
 	npc.speed = 1;
 	npc.trans.Init(2, 7);
 	npc.frame = 30;
 	npc.aniFrame = 0;
 	npc.isMove = false;
+	npc.contactUFO = false;
 	npc.takeOutFrame = 0;
 	npc.responePos = npc.trans.pos;
 	npc.size = { 0.5,0.5 };
@@ -153,7 +156,7 @@ void DrawNPC() {
 	drawingPos.x -= 0.39f;
 	drawingPos.y -= 1.05f;
 
-	if (!npc.isMove) {
+	if (!npc.isMove && npc.contactUFO == false) {
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 7 % 15),
 			npcTextureVertical
@@ -162,13 +165,22 @@ void DrawNPC() {
 		DrawGameSprite(npcTextureIdWait, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
 		DrawGameSprite(npcTextureIdShadow, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT));
 	}
-	else
+	else if(!npc.isMove && npc.contactUFO == true){
+		auto tPos = D3DXVECTOR2(
+			NPC_TEXTURE_WIDTH * (npc.aniFrame / 6 % 6),
+			0
+		);
+
+		DrawGameSprite(npcTextureUFO, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
+		DrawGameSprite(npcTextureIdShadow, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT));
+	}
+	else 
 	{
 		auto tBeaconPos = D3DXVECTOR2(
 			BEACON_TEXTURE_WIDTH * (npc.aniFrame / 8 % 12),
 			0
 		);
-		
+
 		DrawGameSprite(beaconTextureId, gBeaconPos.ToD3DXVECTOR2() + D3DXVECTOR2(0.0f, -1.0f), 30, D3DXVECTOR2(1, 2), tBeaconPos, D3DXVECTOR2(BEACON_TEXTURE_WIDTH, BEACON_TEXTURE_HEIGHT));
 
 		auto tPos = D3DXVECTOR2(
