@@ -12,6 +12,8 @@
 #define GAME_CLEAR_LOGO_WIDTH 1024
 #define GAME_CLEAR_LOGO_HEIGHT 256
 
+static int frame = 0;
+
 static int backgroundTexture;
 static int gameClearTexture;
 
@@ -52,6 +54,8 @@ void InitGameClear()
 	SetSelectButtonFrame(ReserveTextureLoadFile("texture/select.png"));
 
 	LoadTexture();
+
+	frame = 0;
 }
 
 void UninitGameClear()
@@ -78,6 +82,8 @@ void DrawGameClear()
 void UpdateGameClear()
 {
 	UpdateSelectButton();
+
+	frame++;
 }
 
 
