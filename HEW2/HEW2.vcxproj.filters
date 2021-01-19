@@ -112,6 +112,12 @@
     <ClCompile Include="stageSelect.cpp">
       <Filter>cpp\scenes</Filter>
     </ClCompile>
+    <ClCompile Include="stageInfo.cpp">
+      <Filter>cpp\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="stageInfoEditor.cpp">
+      <Filter>cpp\scenes\stageEditor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -230,6 +236,12 @@
     </ClInclude>
     <ClInclude Include="stageSelect.h">
       <Filter>ヘッダー\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="stageInfo.h">
+      <Filter>ヘッダー\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="stageInfoEditor.h">
+      <Filter>ヘッダー\scenes\stageEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
