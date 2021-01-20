@@ -29,6 +29,4 @@ bool CheckBlockBlock(P1& pos1, P2& pos2, S1& size1, S2& size2) {
 	}
 	return false;
 }
-bool CheckCollision(std::list<FlyingObject>* flyingObjectList, FlyingObject& flyingObject);
-
 #endif // !_JUDGE_H
