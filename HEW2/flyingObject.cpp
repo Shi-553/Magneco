@@ -28,6 +28,7 @@ static int flyingObjectTextureIds[FLYING_OBJECT_MAX];
 static int blockAnimationTextureId;
 static int ufoLightAnimationTextureId;
 static int ufoBottomLightAnimationTextureId;
+static int roadSignTextureId;
 
 static int frame = 0;
 
@@ -70,6 +71,7 @@ void InitFlyingObject() {
 	blockAnimationTextureId = ReserveTextureLoadFile("texture/block/put_anime.png");
 	ufoLightAnimationTextureId = ReserveTextureLoadFile("texture/enemy/beam_front.png");
 	ufoBottomLightAnimationTextureId = ReserveTextureLoadFile("texture/enemy/beam_behind.png");
+	roadSignTextureId = ReserveTextureLoadFile("texture/enemy/insekikuruyo.png");
 
 	frame = 0;
 	currentUID = 0;
@@ -81,6 +83,7 @@ void UninitFlyingObject() {
 	ReleaseTexture(blockAnimationTextureId);
 	ReleaseTexture(ufoLightAnimationTextureId);
 	ReleaseTexture(ufoBottomLightAnimationTextureId);
+	ReleaseTexture(roadSignTextureId);
 }
 void DrawFlyingObject(FlyingObject& flyingObject) {
 	Player* player = GetPlayer();

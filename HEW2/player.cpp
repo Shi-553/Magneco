@@ -228,7 +228,7 @@ void DrawPlayer() {
 
 	if (npc->contactUFO) {
 		auto tPos = D3DXVECTOR2(
-				NOTIFY_UFO_TEXTURE_WIDTH * (player.frame / 16 % 4),
+				NOTIFY_UFO_TEXTURE_WIDTH * (player.frame / 8 % 4),
 				0
 		);
 
