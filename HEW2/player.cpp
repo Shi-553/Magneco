@@ -26,18 +26,25 @@ static Player player;
 
 static int  playerTextureVertical = 0;
 
+static int putPredictionTextureId = TEXTURE_INVALID_ID;
+
 void BlockDecision();
 void ToFreeFlyingObject(FlyingObject& flyingObject);
+void UpdatePutFlyingObject();
+bool IsOverlaped(FlyingObject& flyingObject);
 
 void InitPlayer() {
 	textureId = ReserveTextureLoadFile("texture/player/player_64×64.png");
 	damageTextureId = ReserveTextureLoadFile("texture/player/player_naepoyo_64×64.png");
 	purgeTextureId = ReserveTextureLoadFile("texture/player/player_nekopunch_64×64.png");
+	textureId = ReserveTextureLoadFile("texture/player_32×32.png");
+	putPredictionTextureId = ReserveTextureLoadFile("texture/putPrediction.png");
 
 
 	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();
 	player.purgeFlyingObjectList.clear();
+	player.putFlyingObjectList.clear();
 	player.dir = { 0,0 };
 	player.baseSpeed = 6;
 	player.addSpeed = 0;
@@ -54,6 +61,7 @@ void InitPlayer() {
 
 void UninitPlayer() {
 	ReleaseTexture(textureId);
+	ReleaseTexture(putPredictionTextureId);
 }
 
 void UpdatePlayer() {
@@ -130,9 +138,15 @@ void UpdatePlayer() {
 	player.dir = { 0,0 };
 	player.frame++;
 
+	UpdatePutFlyingObject();
 }
 
 void DrawPlayer() {
+
+	for (auto& v : player.putFlyingObjectList) {
+		DrawGameSprite(putPredictionTextureId, v.trans.GetIntPos().ToD3DXVECTOR2(), 1);
+	}
+
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); itr++) {
 		DrawFlyingObject(*itr);
 	}
@@ -162,6 +176,69 @@ void DrawPlayer() {
 	}
 }
 
+void UpdatePutFlyingObject() {
+	player.putFlyingObjectList.clear();
+
+	if (player.flyingObjectList.empty()) {
+		return;
+	}
+	auto& front = player.flyingObjectList.front();
+	if (front.type == FLYING_OBJECT_CHECKPOINT_OFF && GetMapType(front.trans.GetIntPos()) == MAP_BLOCK_NONE) {
+		player.putFlyingObjectList.push_back(front);
+		return;
+	}
+
+	for (auto& f : player.flyingObjectList) {
+		f.isAnime = false;
+	}
+
+	bool isAdd = false;
+
+	while (true) {
+		isAdd = false;
+
+		std::list<FlyingObject> modosu;
+
+		while (!player.flyingObjectList.empty()) {
+			auto& current = player.flyingObjectList.front();
+
+
+			if (GetMapType(current.trans.GetIntPos()) == MAP_BLOCK_NONE && MapFourDirectionsJudgment(current.trans.GetIntPos()) &&
+				std::find_if(player.putFlyingObjectList.begin(), player.putFlyingObjectList.end(), [&current](FlyingObject f) {return f.uid == current.uid; }) == player.putFlyingObjectList.end()) {
+				MapChange(current);
+
+				player.putFlyingObjectList.push_back(current);
+				if (player.isPut) {
+					current.isAnime = true;
+				}
+				isAdd = true;
+				modosu.push_back(current);
+				player.flyingObjectList.pop_front();
+				break;
+			}
+			else {
+				modosu.push_back(current);
+				player.flyingObjectList.pop_front();
+			}
+		}
+
+		for (auto itrM = modosu.begin(); itrM != modosu.end(); itrM++) {
+			player.flyingObjectList.push_back(*itrM);
+		}
+
+		if (!isAdd) {
+			break;
+		}
+	}
+
+	for (auto& v : player.putFlyingObjectList) {
+		auto m = GetMap(v.trans.GetIntPos());
+		if (m != NULL) {
+			m->type = MAP_BLOCK_NONE;
+		}
+
+	}
+}
 
 
 void RotateLeftPlayer() {
@@ -196,60 +273,20 @@ void BlockDecision() {
 	if (player.flyingObjectList.empty()) {
 		return;
 	}
-	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); itr++) {
-		itr->isAnime = false;
-	}
-
-	player.putFrame = 0;
-
-	auto& front = player.flyingObjectList.front();
-	if (front.type == FLYING_OBJECT_CHECKPOINT_OFF) {
-		if (GetMapType(front.trans.GetIntPos()) != MAP_BLOCK_NONE) {
-			return;
-		}
-		MapChange(front);
-		player.flyingObjectList.clear();
-		player.invicibleTime = 0;
-		player.checkCheckpoint = false;
-		return;
-	}
-
-
-	bool isAdd = false;
-
-	while (true) {
-		isAdd = false;
-
-		std::list<FlyingObject> modosu;
-
-		while (!player.flyingObjectList.empty()) {
-			auto& current = player.flyingObjectList.front();
-
-			if (GetMapType(current.trans.GetIntPos()) == MAP_BLOCK_NONE && MapFourDirectionsJudgment(current.trans.GetIntPos())) {
-				MapChange(current);
-				isAdd = true;
-				player.flyingObjectList.pop_front();
-				break;
-			}
-			else {
-				modosu.push_back(current);
-				player.flyingObjectList.pop_front();
-			}
-		}
-
-		for (auto itrM = modosu.begin(); itrM != modosu.end(); itrM++) {
-			player.flyingObjectList.push_back(*itrM);
-		}
-
-		if (!isAdd || player.flyingObjectList.empty()) {
-			break;
-		}
-	}
-
-	player.checkCheckpoint = false;
-
-	player.putFrame = 0;
 	player.isPut = false;
+	player.putFrame = 0;
+
+
+	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); ) {
+		if (itr->isAnime) {
+			itr->isAnime = false;
+			MapChange(*itr);
+			itr = player.flyingObjectList.erase(itr);
+			continue;
+		}
+		itr++;
+	}
+
 	RemoteBlockToFreeFlyingObject();
 }
 
@@ -307,53 +344,11 @@ void MakePut() {
 		if (GetMapType(front.trans.GetIntPos()) != MAP_BLOCK_NONE) {
 			return;
 		}
-		front.isAnime = true;
-		player.isPut = true;
+		MapChange(front);
+		player.flyingObjectList.clear();
+		player.invicibleTime = 0;
+		player.checkCheckpoint = false;
 		return;
-	}
-
-
-
-	bool isAdd = false;
-
-	while (true) {
-		isAdd = false;
-
-		std::list<FlyingObject> modosu;
-
-		while (!player.flyingObjectList.empty()) {
-			auto& current = player.flyingObjectList.front();
-
-			if (GetMapType(current.trans.GetIntPos()) == MAP_BLOCK_NONE && !current.isAnime && MapFourDirectionsJudgment(current.trans.GetIntPos())) {
-				MapChange(current);
-				current.isAnime = true;
-				isAdd = true;
-				modosu.push_back(current);
-				player.flyingObjectList.pop_front();
-				break;
-			}
-			else {
-				modosu.push_back(current);
-				player.flyingObjectList.pop_front();
-			}
-		}
-
-		for (auto itrM = modosu.begin(); itrM != modosu.end(); itrM++) {
-			player.flyingObjectList.push_back(*itrM);
-		}
-
-		if (!isAdd) {
-			break;
-		}
-	}
-
-	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); itr++) {
-		if (itr->isAnime) {
-			auto m = GetMap(itr->trans.GetIntPos());
-			if (m != NULL) {
-				m->type = MAP_BLOCK_NONE;
-			}
-		}
 	}
 
 	player.isPut = true;
@@ -389,9 +384,35 @@ bool GetBlock(FlyingObject& itr, D3DXVECTOR2& attachPos) {
 		dir.x = 0;
 	}
 
+	auto itrPos = itr.trans.pos;
+
 	auto pos = attachPos + dir;
 	itr.trans.Init(pos);
 
+	if (IsOverlaped(itr)) {
+		itr.trans.Init(itrPos);
+
+		auto pToF = itr.trans.pos - player.trans.pos;
+		bool isX = fabsf(pToF.x) > fabsf(pToF.y);
+
+		pToF.x = pToF.x > 0 ? 1 : -1;
+		pToF.y = pToF.y > 0 ? 1 : -1;
+
+		while (IsOverlaped(itr)) {
+			pos = itr.trans.pos;
+			if (isX) {
+				pos.x += pToF.x;
+			}
+			else {
+				pos.y += pToF.y;
+			}
+			isX = !isX;
+
+			itr.trans.Init(pos);
+
+		} 
+	}
+	itr.trans.pos = itr.trans.GetIntPos().ToD3DXVECTOR2() + player.trans.pos-player.trans.GetIntPos().ToD3DXVECTOR2();
 
 	if (itr.type == FLYING_OBJECT_CHECKPOINT_OFF) {
 
@@ -407,7 +428,12 @@ bool GetBlock(FlyingObject& itr, D3DXVECTOR2& attachPos) {
 	player.flyingObjectList.push_back(itr);
 	return true;
 }
-
+bool IsOverlaped(FlyingObject& flyingObject) {
+	return flyingObject.trans.GetIntPos() == player.trans.GetIntPos() ||
+		find_if(player.flyingObjectList.begin(), player.flyingObjectList.end(), [&flyingObject](FlyingObject f) {
+		return f.trans.GetIntPos() == flyingObject.trans.GetIntPos();
+			}) != player.flyingObjectList.end();
+}
 
 bool IsPlayerInvicible() {
 	return player.invicibleTime > 0 || player.invicibleTime == -1;

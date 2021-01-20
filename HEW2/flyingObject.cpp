@@ -33,6 +33,7 @@ static int frame = 0;
 
 static SponeId spone;
 
+static int currentUID = 0;
 
 std::list<FlyingObject>* GetFlyingObjects() {
 	return &flyingObjects;
@@ -45,6 +46,9 @@ void AddFlyingObjects(FlyingObject* flyingObject) {
 		}
 		existsUFO = true;
 	}
+	flyingObject->uid = currentUID;
+	currentUID++;
+
 	flyingObjects.push_back(*flyingObject);
 
 }
@@ -68,6 +72,7 @@ void InitFlyingObject() {
 	ufoBottomLightAnimationTextureId = ReserveTextureLoadFile("texture/enemy/beam_behind.png");
 
 	frame = 0;
+	currentUID = 0;
 }
 void UninitFlyingObject() {
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
@@ -75,7 +80,7 @@ void UninitFlyingObject() {
 	}
 	ReleaseTexture(blockAnimationTextureId);
 }
-void DrawFlyingObject(FlyingObject flyingObject) {
+void DrawFlyingObject(FlyingObject& flyingObject) {
 	Player* player = GetPlayer();
 	NPC* npc = GetNpc();
 	auto textureId = flyingObjectTextureIds[flyingObject.type];
