@@ -37,7 +37,7 @@ void InitPlayer() {
 	textureId = ReserveTextureLoadFile("texture/player/player_64×64.png");
 	damageTextureId = ReserveTextureLoadFile("texture/player/player_naepoyo_64×64.png");
 	purgeTextureId = ReserveTextureLoadFile("texture/player/player_nekopunch_64×64.png");
-	putPredictionTextureId = ReserveTextureLoadFile("texture/putPrediction.png");
+	putPredictionTextureId = ReserveTextureLoadFile("texture/player/putPrediction.png");
 
 
 	player.trans.Init(3.5, 3.5);

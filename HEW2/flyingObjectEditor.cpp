@@ -72,7 +72,7 @@ void InitFlyingObjectEditor() {
 	}
 
 
-	eraseTextureId = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE_ERASE.png");
+	eraseTextureId = ReserveTextureLoadFile("texture/block/MAP_BLOCK_NONE_ERASE.png");
 
 
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {

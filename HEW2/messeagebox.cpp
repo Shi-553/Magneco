@@ -12,7 +12,7 @@ static int backgroundTexture;
 
 void InitMesseageBox(){
 
-	backgroundTexture = ReserveTextureLoadFile("texture/Textbox_Test.png");
+	backgroundTexture = ReserveTextureLoadFile("texture/ui/Textbox_Test.png");
 
 	LoadTexture();
 }
