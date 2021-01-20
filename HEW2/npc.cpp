@@ -159,7 +159,7 @@ void DrawNPC() {
 	drawingPos.x -= 0.39f;
 	drawingPos.y -= 1.05f;
 
-	if (!npc.isMove && npc.contactUFO == false) {
+	if (!npc.isMove && !npc.contactUFO) {
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 7 % 15),
 			npcTextureVertical
@@ -168,7 +168,7 @@ void DrawNPC() {
 		DrawGameSprite(npcTextureIdWait, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
 		DrawGameSprite(npcTextureIdShadow, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT));
 	}
-	else if(!npc.isMove && npc.contactUFO == true){
+	else if(!npc.isMove && npc.contactUFO){
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 6 % 6),
 			0

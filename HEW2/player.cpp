@@ -17,6 +17,9 @@
 #define PLAYER_TEXTURE_WIDTH 64
 #define PLAYER_TEXTURE_HEIGHT 64
 
+#define NOTIFY_UFO_TEXTURE_WIDTH  32
+#define NOTIFY_UFO_TEXTURE_HEIGHT 32
+
 #define PLAYER_PURGE_SPEED 6
 
 static int textureId = TEXTURE_INVALID_ID;
@@ -24,6 +27,7 @@ static int idleTextureId = TEXTURE_INVALID_ID;
 static int invincibleTextureId = TEXTURE_INVALID_ID;
 static int damageTextureId = TEXTURE_INVALID_ID;
 static int purgeTextureId = TEXTURE_INVALID_ID;
+static int notifyUFOTextureId = TEXTURE_INVALID_ID;
 static Player player;
 
 static int  playerTextureVertical = 0;
@@ -42,6 +46,7 @@ void InitPlayer() {
 	damageTextureId = ReserveTextureLoadFile("texture/player/player_naepoyo_64×64.png");
 	purgeTextureId = ReserveTextureLoadFile("texture/player/player_nekopunch_64×64.png");
 	putPredictionTextureId = ReserveTextureLoadFile("texture/player/putPrediction.png");
+	notifyUFOTextureId = ReserveTextureLoadFile("texture/player/akan.png");
 
 
 	player.trans.Init(3.5, 3.5);
@@ -71,6 +76,7 @@ void UninitPlayer() {
 	ReleaseTexture(invincibleTextureId);
 	ReleaseTexture(damageTextureId);
 	ReleaseTexture(purgeTextureId);
+	ReleaseTexture(notifyUFOTextureId);
 }
 
 void UpdatePlayer() {
@@ -151,15 +157,16 @@ void UpdatePlayer() {
 
 	if (player.nekopunchTime > 0) {
 		player.nekopunchTime++;
-	if (player.nekopunchTime >= 33) {
-		player.nekopunchTime = 0;
-	}
+		if (player.nekopunchTime >= 33) {
+			player.nekopunchTime = 0;
+		}
 	}
 
 	UpdatePutFlyingObject();
 }
 
 void DrawPlayer() {
+	NPC* npc = GetNpc();
 
 	for (auto& v : player.putFlyingObjectList) {
 		DrawGameSprite(putPredictionTextureId, v.trans.GetIntPos().ToD3DXVECTOR2(), 1);
@@ -168,7 +175,8 @@ void DrawPlayer() {
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); itr++) {
 		DrawFlyingObject(*itr);
 	}
-	
+
+
 	if (player.stanTime > 0) {
 		auto tPos = D3DXVECTOR2(
 			PLAYER_TEXTURE_WIDTH * (player.frame / 16 % 4),
@@ -185,7 +193,7 @@ void DrawPlayer() {
 
 		DrawGameSprite(purgeTextureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
 	}
-	else if(IsPlayerInvicible())
+	else if (IsPlayerInvicible())
 	{
 		auto tPos = D3DXVECTOR2(
 			PLAYER_TEXTURE_WIDTH * (player.frame / 12 % 4),
@@ -202,7 +210,7 @@ void DrawPlayer() {
 
 		DrawGameSprite(idleTextureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
 	}
-    else if (player.isMove)
+	else if (player.isMove)
 	{
 		auto tPos = D3DXVECTOR2(
 			PLAYER_TEXTURE_WIDTH * (player.frame / 16 % 4),
@@ -211,11 +219,20 @@ void DrawPlayer() {
 
 		DrawGameSprite(textureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
 	}
-	
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
 		DrawFlyingObject(*itr);
+	}
+
+
+	if (npc->contactUFO) {
+		auto tPos = D3DXVECTOR2(
+				NOTIFY_UFO_TEXTURE_WIDTH * (player.frame / 16 % 4),
+				0
+		);
+
+		DrawGameSprite(notifyUFOTextureId, player.trans.pos - D3DXVECTOR2(0.5, 1.5), 30, tPos, D3DXVECTOR2(NOTIFY_UFO_TEXTURE_WIDTH, NOTIFY_UFO_TEXTURE_HEIGHT));
 	}
 }
 
@@ -310,7 +327,7 @@ void MoveRightPlayer() {
 
 void MovePlayer(D3DXVECTOR2 dir) {
 	player.dir = dir;
-	
+
 }
 
 void BlockDecision() {
@@ -455,9 +472,9 @@ bool GetBlock(FlyingObject& itr, D3DXVECTOR2& attachPos) {
 
 			itr.trans.Init(pos);
 
-		} 
+		}
 	}
-	itr.trans.pos = itr.trans.GetIntPos().ToD3DXVECTOR2() + player.trans.pos-player.trans.GetIntPos().ToD3DXVECTOR2();
+	itr.trans.pos = itr.trans.GetIntPos().ToD3DXVECTOR2() + player.trans.pos - player.trans.GetIntPos().ToD3DXVECTOR2();
 
 	if (itr.type == FLYING_OBJECT_CHECKPOINT_OFF) {
 
