@@ -22,11 +22,12 @@ struct Player {
 	int blockMax;
 	bool checkCheckpoint;
 	bool isPut;
+	bool isMove;
 	int putFrame;
 	int putRequiredFrame;
-
 	int stanTime;
 	int invicibleTime;
+	int nekopunchTime;
 	D3DXVECTOR2 size;
 	std::vector<FlyingObject> putFlyingObjectList;
 };

@@ -84,6 +84,9 @@ void InitNPC() {
 
 void UninitNPC() {
 	ReleaseTexture(npcTextureIdWait);
+	ReleaseTexture(npcTextureIdMove);
+	ReleaseTexture(npcTextureUFO);
+	ReleaseTexture(npcTextureIdShadow);
 
 	if (mapLabelList != NULL) {
 		delete[] mapLabelList;

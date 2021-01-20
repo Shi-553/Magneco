@@ -79,6 +79,8 @@ void UninitFlyingObject() {
 		ReleaseTexture(flyingObjectTextureIds[i]);
 	}
 	ReleaseTexture(blockAnimationTextureId);
+	ReleaseTexture(ufoLightAnimationTextureId);
+	ReleaseTexture(ufoBottomLightAnimationTextureId);
 }
 void DrawFlyingObject(FlyingObject& flyingObject) {
 	Player* player = GetPlayer();
