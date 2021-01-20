@@ -26,8 +26,8 @@ Button retryButton, returnTitleButton;
 
 	retryButton.pos = buttonCenter;
 	retryButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
-	retryButton.textureId = ReserveTextureLoadFile("texture/retry.png");
-	retryButton.pressedTextureId = ReserveTextureLoadFile("texture/retry_pressed.png");
+	retryButton.textureId = ReserveTextureLoadFile("texture/ui/retry.png");
+	retryButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/retry_pressed.png");
 
 	retryButton.releasedCallback = []() {
 		GoNextScene(GameScene);
@@ -35,8 +35,8 @@ Button retryButton, returnTitleButton;
 
 	returnTitleButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_OVER_BUTTON_HEIGHT + 32);
 	returnTitleButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
-	returnTitleButton.textureId = ReserveTextureLoadFile("texture/quit.png");
-	returnTitleButton.pressedTextureId = ReserveTextureLoadFile("texture/quit_pressed.png");
+	returnTitleButton.textureId = ReserveTextureLoadFile("texture/ui/quit.png");
+	returnTitleButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/quit_pressed.png");
 
 	returnTitleButton.releasedCallback = []() {
 		GoNextScene(GameStartScene);
@@ -45,11 +45,11 @@ Button retryButton, returnTitleButton;
 	AddSelectButton(retryButton);
 	AddSelectButton(returnTitleButton);
 
-	backgroundTexture = ReserveTextureLoadFile("texture/背景2.jpg");
+	backgroundTexture = ReserveTextureLoadFile("texture/background/背景2.jpg");
 
-	gameOverTextTexture = ReserveTextureLoadFile("texture/gameover.png");
+	gameOverTextTexture = ReserveTextureLoadFile("texture/ui/gameover.png");
 
-	SetSelectButtonFrame(ReserveTextureLoadFile("texture/select.png"));
+	SetSelectButtonFrame(ReserveTextureLoadFile("texture/ui/select.png"));
 
 	LoadTexture();
 }

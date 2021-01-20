@@ -8,6 +8,7 @@ typedef struct NPC_tag {
 	int frame;
 	int aniFrame;
 	bool isMove;
+	bool contactUFO;
 	int takeOutFrame;
 	INTVECTOR2 responePos;
 	D3DXVECTOR2 size;

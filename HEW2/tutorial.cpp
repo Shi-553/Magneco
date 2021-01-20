@@ -63,11 +63,11 @@ static Player player;
 static Message* message;
 void InitTutorial()
 {
-	WBottonTexture = ReserveTextureLoadFile("texture/move_W.png");
-	ABottonTexture = ReserveTextureLoadFile("texture/move_A.png");
-	SBottonTexture = ReserveTextureLoadFile("texture/move_S.png");
-	DBottonTexture = ReserveTextureLoadFile("texture/move_D.png");
-	GreatTexture = ReserveTextureLoadFile("texture/greattext384_128_01.png");
+	WBottonTexture = ReserveTextureLoadFile("texture/ui/move_W.png");
+	ABottonTexture = ReserveTextureLoadFile("texture/ui/move_A.png");
+	SBottonTexture = ReserveTextureLoadFile("texture/ui/move_S.png");
+	DBottonTexture = ReserveTextureLoadFile("texture/ui/move_D.png");
+	GreatTexture = ReserveTextureLoadFile("texture/ui/greattext384_128_01.png");
 
 	LPDIRECT3DDEVICE9 device = GetD3DDevice();
 	D3DXCreateSprite(device, &sprite);

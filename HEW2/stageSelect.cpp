@@ -57,7 +57,7 @@ static int selectStageTextureIds[STAGE_SELECT_MAX];
 void InitStageSelect() {
 
 	InitSelectButton();
-	selectStageTextureIds[STAGE_SELECT_BACK_GROUND] = ReserveTextureLoadFile("texture/背景4.jpg");
+	selectStageTextureIds[STAGE_SELECT_BACK_GROUND] = ReserveTextureLoadFile("texture/background/背景4.jpg");
 
 	SetSelectButtonBack(ReserveTextureLoadFile("texture/stageSelect/button_left.png"),
 	 ReserveTextureLoadFile("texture/stageSelect/button_left_pushed.png"),
@@ -73,7 +73,7 @@ void InitStageSelect() {
 
 	selectStageTextureIds[STAGE_SELECT_SAMUNE] = ReserveTextureLoadFile("texture/stageSelect/samune.png");
 	selectStageTextureIds[STAGE_SELECT_SAMUNE_PRE] = ReserveTextureLoadFile("texture/stageSelect/samune_pre.png");
-	selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX] = ReserveTextureLoadFile("texture/Textbox_Test.png");
+	selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX] = ReserveTextureLoadFile("texture/ui/Textbox_Test.png");
 
 	overviewMessage = new Message();
 	nameMessage = new Message();

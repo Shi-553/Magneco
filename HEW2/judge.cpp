@@ -83,6 +83,7 @@ void JudgePlayerandFlyingObjectHit() {
 						if (itr->type == FLYING_OBJECT_UFO) {
 							npc->takeOutFrame = 0;
 							DestroyUFO();
+							npc->contactUFO = false;
 						}
 						itr = flyingObjectList->erase(itr);
 						isMatched = true;
@@ -155,6 +156,7 @@ void JudgePlayerandFlyingObjectHit() {
 					if (itr->type == FLYING_OBJECT_UFO) {
 						npc->takeOutFrame = 0;
 						DestroyUFO();
+						npc->contactUFO = false;
 					}
 					itr = flyingObjectList->erase(itr);
 					continue;
@@ -188,6 +190,7 @@ void JudgePlayerandFlyingObjectHit() {
 					if (itr->type == FLYING_OBJECT_UFO) {
 						npc->takeOutFrame = 0;
 						DestroyUFO();
+						npc->contactUFO = false;
 
 					}
 					itr = flyingObjectList->erase(itr);
@@ -237,6 +240,7 @@ void JudgePlayerandFlyingObjectHit() {
 			D3DXVECTOR2 shiftPos = itr->trans.pos - ADD_UFO_POS;
 			if (CheckBlockBlock(npc->trans.pos, shiftPos, npc->size, itr->size)) {
 				npc->takeOutFrame++;
+				npc->contactUFO = true;
 				if (npc->takeOutFrame >= TAKE_OUT_FRAME_LIMIT) {
 					//itr = flyingObjectList->erase(itr);
 					GoNextScene(GameOverScene, FADE_IN);

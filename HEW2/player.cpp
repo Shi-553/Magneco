@@ -14,12 +14,16 @@
 #include <math.h>
 #include "judge.h"
 
-#define PLAYER_TEXTURE_WIDTH 32
-#define PLAYER_TEXTURE_HEIGHT 32
+#define PLAYER_TEXTURE_WIDTH 64
+#define PLAYER_TEXTURE_HEIGHT 64
 
 #define PLAYER_PURGE_SPEED 6
 
 static int textureId = TEXTURE_INVALID_ID;
+static int idleTextureId = TEXTURE_INVALID_ID;
+static int invincibleTextureId = TEXTURE_INVALID_ID;
+static int damageTextureId = TEXTURE_INVALID_ID;
+static int purgeTextureId = TEXTURE_INVALID_ID;
 static Player player;
 
 static int  playerTextureVertical = 0;
@@ -32,8 +36,13 @@ void UpdatePutFlyingObject();
 bool IsOverlaped(FlyingObject& flyingObject);
 
 void InitPlayer() {
-	textureId = ReserveTextureLoadFile("texture/player_32×32.png");
-	putPredictionTextureId = ReserveTextureLoadFile("texture/putPrediction.png");
+	textureId = ReserveTextureLoadFile("texture/player/player_64×64.png");
+	idleTextureId = ReserveTextureLoadFile("texture/player/player_idle_64x64.png");
+	invincibleTextureId = ReserveTextureLoadFile("texture/player/player_tikatika_64×64.png");
+	damageTextureId = ReserveTextureLoadFile("texture/player/player_naepoyo_64×64.png");
+	purgeTextureId = ReserveTextureLoadFile("texture/player/player_nekopunch_64×64.png");
+	putPredictionTextureId = ReserveTextureLoadFile("texture/player/putPrediction.png");
+
 
 	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();
@@ -47,15 +56,21 @@ void InitPlayer() {
 	player.blockMax = 4;
 	player.checkCheckpoint = false;
 	player.isPut = false;
+	player.isMove = false;
 	player.putFrame = 0;
 	player.stanTime = 0;
 	player.invicibleTime = 0;
+	player.nekopunchTime = 0;
 	player.size = { 1,1 };
 }
 
 void UninitPlayer() {
 	ReleaseTexture(textureId);
 	ReleaseTexture(putPredictionTextureId);
+	ReleaseTexture(idleTextureId);
+	ReleaseTexture(invincibleTextureId);
+	ReleaseTexture(damageTextureId);
+	ReleaseTexture(purgeTextureId);
 }
 
 void UpdatePlayer() {
@@ -123,15 +138,23 @@ void UpdatePlayer() {
 		}
 
 
-		player.frame++;
-
 	}
 	else {
 
 		player.stanTime--;
 	}
 
+	player.isMove = player.dir != D3DXVECTOR2(0, 0);
+
 	player.dir = { 0,0 };
+	player.frame++;
+
+	if (player.nekopunchTime > 0) {
+		player.nekopunchTime++;
+	if (player.nekopunchTime >= 33) {
+		player.nekopunchTime = 0;
+	}
+	}
 
 	UpdatePutFlyingObject();
 }
@@ -145,15 +168,50 @@ void DrawPlayer() {
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); itr++) {
 		DrawFlyingObject(*itr);
 	}
+	
+	if (player.stanTime > 0) {
+		auto tPos = D3DXVECTOR2(
+			PLAYER_TEXTURE_WIDTH * (player.frame / 16 % 4),
+			playerTextureVertical
+		);
 
+		DrawGameSprite(damageTextureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+	}
+	else if (player.nekopunchTime > 0) {
+		auto tPos = D3DXVECTOR2(
+			PLAYER_TEXTURE_WIDTH * (player.nekopunchTime / 8 % 4),
+			playerTextureVertical
+		);
 
-	auto tPos = D3DXVECTOR2(
-		PLAYER_TEXTURE_WIDTH * (player.frame / 16 % 4),
-		playerTextureVertical
-	);
+		DrawGameSprite(purgeTextureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+	}
+	else if(IsPlayerInvicible())
+	{
+		auto tPos = D3DXVECTOR2(
+			PLAYER_TEXTURE_WIDTH * (player.frame / 12 % 4),
+			playerTextureVertical
+		);
 
-	DrawGameSprite(textureId, player.trans.pos - D3DXVECTOR2(0.5, 0.5), 30, tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+		DrawGameSprite(invincibleTextureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+	}
+	else if (!player.isMove) {
+		auto tPos = D3DXVECTOR2(
+			PLAYER_TEXTURE_WIDTH * (player.frame / 10 % 6),
+			playerTextureVertical
+		);
 
+		DrawGameSprite(idleTextureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+	}
+    else if (player.isMove)
+	{
+		auto tPos = D3DXVECTOR2(
+			PLAYER_TEXTURE_WIDTH * (player.frame / 16 % 4),
+			playerTextureVertical
+		);
+
+		DrawGameSprite(textureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+	}
+	
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
@@ -252,6 +310,7 @@ void MoveRightPlayer() {
 
 void MovePlayer(D3DXVECTOR2 dir) {
 	player.dir = dir;
+	
 }
 
 void BlockDecision() {
@@ -298,6 +357,7 @@ void PurgePlayerFlyingObject() {
 
 		player.purgeFlyingObjectList.push_back(*itr);
 		itr = player.flyingObjectList.erase(itr);
+		player.nekopunchTime++;
 	}
 }
 bool PlayerExport(FILE* fp) {

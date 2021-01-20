@@ -31,8 +31,8 @@ void InitGameStart() {
 
 	startButton.pos = buttonCenter;
 	startButton.size = D3DXVECTOR2(GAME_START_BUTTON_WIDTH, GAME_START_BUTTON_HEIGHT);
-	startButton.textureId = ReserveTextureLoadFile("texture/start.png");
-	startButton.pressedTextureId = ReserveTextureLoadFile("texture/start_pressed.png");
+	startButton.textureId = ReserveTextureLoadFile("texture/ui/start.png");
+	startButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/start_pressed.png");
 
 	startButton.releasedCallback = []() {
 		GoNextScene(StageSelect);
@@ -41,8 +41,8 @@ void InitGameStart() {
 
 	tutorialButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_START_BUTTON_HEIGHT + 16);
 	tutorialButton.size = D3DXVECTOR2(GAME_START_BUTTON_WIDTH, GAME_START_BUTTON_HEIGHT);
-	tutorialButton.textureId = ReserveTextureLoadFile("texture/tutorial.png");
-	tutorialButton.pressedTextureId = ReserveTextureLoadFile("texture/tutorial_pressed.png");
+	tutorialButton.textureId = ReserveTextureLoadFile("texture/ui/tutorial.png");
+	tutorialButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/tutorial_pressed.png");
 
 
 	tutorialButton.releasedCallback = []() {
@@ -51,8 +51,8 @@ void InitGameStart() {
 
 	endButton.pos = tutorialButton.pos + D3DXVECTOR2(0, GAME_START_BUTTON_HEIGHT + 16);
 	endButton.size = D3DXVECTOR2(GAME_START_BUTTON_WIDTH, GAME_START_BUTTON_HEIGHT);
-	endButton.textureId = ReserveTextureLoadFile("texture/end.png");
-	endButton.pressedTextureId = ReserveTextureLoadFile("texture/end_pressed.png");
+	endButton.textureId = ReserveTextureLoadFile("texture/ui/end.png");
+	endButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/end_pressed.png");
 
 
 	endButton.releasedCallback = []() {
@@ -63,13 +63,13 @@ void InitGameStart() {
 	AddSelectButton(tutorialButton);
 	AddSelectButton(endButton);
 
-	backGroundTexture = ReserveTextureLoadFile("texture/背景１.png");
+	backGroundTexture = ReserveTextureLoadFile("texture/background/背景１.png");
 
-	titleTextTexture = ReserveTextureLoadFile("texture/title_640×240.png");
+	titleTextTexture = ReserveTextureLoadFile("texture/ui/title_640×240.png");
 
-	buttonDescriptionTexture = ReserveTextureLoadFile("texture/tips.png");
+	buttonDescriptionTexture = ReserveTextureLoadFile("texture/ui/tips.png");
 
-	SetSelectButtonFrame(ReserveTextureLoadFile("texture/select.png"));
+	SetSelectButtonFrame(ReserveTextureLoadFile("texture/ui/select.png"));
 
 	LoadTexture();
 }
