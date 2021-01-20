@@ -13,7 +13,6 @@ void UninitInput() {
 }
 
 void UpdateInput() {
-
 	// プレイヤーの移動
 	if (PressInputLogger(MYVK_UP)) {
 		MoveUpPlayer();

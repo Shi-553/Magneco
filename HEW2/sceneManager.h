@@ -23,6 +23,7 @@ void InitSceneManager(Scene startScene);
 void UpdateSceneManager();
 void DrawSceneManager();
 void UninitSceneManager();
-void GoNextScene(Scene scene,FadeMode mode=FADE_OUT);
+void GoNextScene(Scene scene,FadeMode mode=FADE_OUT, bool isForce = false);
 
+Scene GetCurrentScene();
 #endif // !_SCENE_MANAGER

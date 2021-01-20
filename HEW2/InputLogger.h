@@ -20,6 +20,8 @@ enum VirtualKey {
 
 
 
+	MYVK_ESC,
+
 	MYVK_START,
 	MYVK_GAME_CLEAR,
 	MYVK_GAME_OVER,
