@@ -57,7 +57,7 @@ static int selectStageTextureIds[STAGE_SELECT_MAX];
 void InitStageSelect() {
 
 	InitSelectButton();
-	selectStageTextureIds[STAGE_SELECT_BACK_GROUND] = ReserveTextureLoadFile("texture/背景4.jpg");
+	selectStageTextureIds[STAGE_SELECT_BACK_GROUND] = ReserveTextureLoadFile("texture/background/背景4.jpg");
 
 	SetSelectButtonBack(ReserveTextureLoadFile("texture/stageSelect/button_left.png"),
 	 ReserveTextureLoadFile("texture/stageSelect/button_left_pushed.png"),

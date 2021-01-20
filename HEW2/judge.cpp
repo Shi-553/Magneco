@@ -201,6 +201,7 @@ void JudgePlayerandFlyingObjectHit() {
 					if (itr->type == FLYING_OBJECT_UFO) {
 						npc->takeOutFrame = 0;
 						DestroyUFO();
+						npc->contactUFO = false;
 
 					}
 					itr = flyingObjectList->erase(itr);
