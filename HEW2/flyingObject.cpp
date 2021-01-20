@@ -61,7 +61,7 @@ void InitFlyingObject() {
 	existsUFO = false;
 
 	flyingObjectTextureIds[FLYING_OBJECT_ITEM_ADD_SPEED] = ReserveTextureLoadFile("texture/item/item_hane_anime.png");
-	flyingObjectTextureIds[FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE] = ReserveTextureLoadFile("texture/item/item_block_anime.png");
+	flyingObjectTextureIds[FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE] = ReserveTextureLoadFile("texture/item/item_hueru_anime.png");
 	flyingObjectTextureIds[FLYING_OBJECT_CHECKPOINT_OFF] = ReserveTextureLoadFile("texture/block/point_block.png");
 	blockAnimationTextureId = ReserveTextureLoadFile("texture/block/put_anime.png");
 	ufoLightAnimationTextureId = ReserveTextureLoadFile("texture/enemy/beam_front.png");
