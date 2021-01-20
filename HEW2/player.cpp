@@ -29,6 +29,7 @@ static int putPredictionTextureId = TEXTURE_INVALID_ID;
 void BlockDecision();
 void ToFreeFlyingObject(FlyingObject& flyingObject);
 void UpdatePutFlyingObject();
+bool IsOverlaped(FlyingObject& flyingObject);
 
 void InitPlayer() {
 	textureId = ReserveTextureLoadFile("texture/player_32×32.png");
@@ -260,17 +261,6 @@ void BlockDecision() {
 	player.isPut = false;
 	player.putFrame = 0;
 
-	auto& front = player.flyingObjectList.front();
-	if (front.type == FLYING_OBJECT_CHECKPOINT_OFF) {
-		if (GetMapType(front.trans.GetIntPos()) != MAP_BLOCK_NONE) {
-			return;
-		}
-		MapChange(front);
-		player.flyingObjectList.clear();
-		player.invicibleTime = 0;
-		player.checkCheckpoint = false;
-		return;
-	}
 
 	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); ) {
 		if (itr->isAnime) {
@@ -339,8 +329,10 @@ void MakePut() {
 		if (GetMapType(front.trans.GetIntPos()) != MAP_BLOCK_NONE) {
 			return;
 		}
-		front.isAnime = true;
-		player.isPut = true;
+		MapChange(front);
+		player.flyingObjectList.clear();
+		player.invicibleTime = 0;
+		player.checkCheckpoint = false;
 		return;
 	}
 
@@ -377,9 +369,35 @@ bool GetBlock(FlyingObject& itr, D3DXVECTOR2& attachPos) {
 		dir.x = 0;
 	}
 
+	auto itrPos = itr.trans.pos;
+
 	auto pos = attachPos + dir;
 	itr.trans.Init(pos);
 
+	if (IsOverlaped(itr)) {
+		itr.trans.Init(itrPos);
+
+		auto pToF = itr.trans.pos - player.trans.pos;
+		bool isX = fabsf(pToF.x) > fabsf(pToF.y);
+
+		pToF.x = pToF.x > 0 ? 1 : -1;
+		pToF.y = pToF.y > 0 ? 1 : -1;
+
+		while (IsOverlaped(itr)) {
+			pos = itr.trans.pos;
+			if (isX) {
+				pos.x += pToF.x;
+			}
+			else {
+				pos.y += pToF.y;
+			}
+			isX = !isX;
+
+			itr.trans.Init(pos);
+
+		} 
+	}
+	itr.trans.pos = itr.trans.GetIntPos().ToD3DXVECTOR2() + player.trans.pos-player.trans.GetIntPos().ToD3DXVECTOR2();
 
 	if (itr.type == FLYING_OBJECT_CHECKPOINT_OFF) {
 
@@ -395,7 +413,12 @@ bool GetBlock(FlyingObject& itr, D3DXVECTOR2& attachPos) {
 	player.flyingObjectList.push_back(itr);
 	return true;
 }
-
+bool IsOverlaped(FlyingObject& flyingObject) {
+	return flyingObject.trans.GetIntPos() == player.trans.GetIntPos() ||
+		find_if(player.flyingObjectList.begin(), player.flyingObjectList.end(), [&flyingObject](FlyingObject f) {
+		return f.trans.GetIntPos() == flyingObject.trans.GetIntPos();
+			}) != player.flyingObjectList.end();
+}
 
 bool IsPlayerInvicible() {
 	return player.invicibleTime > 0 || player.invicibleTime == -1;

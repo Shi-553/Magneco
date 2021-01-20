@@ -31,19 +31,8 @@ void UpdateJudge() {
 void DrawJudge() {
 
 }
-static float colllisionSize = 0.3;
 
 
-bool CheckCollision(std::list<FlyingObject>* flyingObjectList, FlyingObject& flyingObject) {
-
-	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); itr++) {
-
-		if (CheckBlockBlock(itr->trans.GetIntPos(), flyingObject.trans.GetIntPos(), itr->size, flyingObject.size)) {
-			return true;
-		}
-	}
-	return false;
-}
 
 void JudgePlayerandFlyingObjectHit() {
 
