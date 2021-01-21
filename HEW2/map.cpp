@@ -42,12 +42,15 @@ void InitMap(void)
 	textureIds[MAP_CHEST_OPENED] = ReserveTextureLoadFile("texture/block/itembox_block.png");
 
 	frame = 0;
-
+	mapHeight = 10;
+	mapWidth = 10;
 
 	if (MapChipList != NULL) {
 		delete[] MapChipList;
 		MapChipList = NULL;
 	}
+#ifdef _DEBUG
+
 	MapChipList = new Map[mapHeight * mapWidth]{
 		{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},
 		{MAP_WALL, INTVECTOR2::GetUp()},
@@ -162,6 +165,8 @@ void InitMap(void)
 	};
 
 	SecureMapLabelList();
+
+#endif // _DEBUG
 }
 
 void UninitMap(void)

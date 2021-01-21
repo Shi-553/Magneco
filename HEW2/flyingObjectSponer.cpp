@@ -51,11 +51,13 @@ void InitFlyingSponer() {
 	sponeIndex = 0;
 	spones.clear();
 
+#ifdef _DEBUG
 	for (int i = 0; i < 24; i++)
 	{
 		spones.push_back({ initSpone[i],currentSponeId });
 		currentSponeId++;
 	}
+#endif
 }
 
 
