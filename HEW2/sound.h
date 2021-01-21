@@ -30,6 +30,8 @@ typedef enum
 	SOUND_LABEL_SE_PURGE,		// マグネッコが所持ブロックをパージしたときのSE
 	SOUND_LEBEL_SE_STAN,		// マグネッコスタン時のSE
 	SOUND_LABEL_SE_STICK,		// マグネッコがブロックをくっつけた時のSE
+	SOUND_LABEL_SE_UFO,			// UFOが漂うSE
+	SOUND_LAGEL_SE_UFO_BEAM,	// UFOがローズをさらっているときのSE
 	SOUND_LABEL_MAX,
 } SOUND_LABEL;
 
