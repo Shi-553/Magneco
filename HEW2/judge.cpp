@@ -41,77 +41,63 @@ void JudgePlayerandFlyingObjectHit() {
 
 	NPC* npc = GetNpc();
 
-	while (true) {
-		bool resetFlyingObjectList = false;
-		// 引っ付いてるFlyingObjectとenemyの当たり判定
-		for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
-			bool isMatched = false;
-			for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); ) {
+	// 引っ付いてるFlyingObjectとenemyの当たり判定
+	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
+		bool isMatched = false, isEnd = false;
+		for (auto itr2 = player->flyingObjectList.begin(); itr2 != player->flyingObjectList.end(); ) {
 
-				if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos, itr->size, itr2->size)) {
-					itr2++;
-					continue;
+			if (!CheckBlockBlock(itr->trans.pos, itr2->trans.pos, itr->size, itr2->size)) {
+				itr2++;
+				continue;
+			}
+			if (!CheckShortest(*player, *itr, itr2->trans.pos)) {
+				itr2++;
+				continue;
+			}
+
+			if (IsFlyingObjectBlock(itr->type)) {
+				if (GetBlock(*itr, itr2->trans.pos)) {
+					itr = flyingObjectList->erase(itr);
+					isMatched = true;
+					break;
 				}
-				if (!CheckShortest(*player,*itr, itr2->trans.pos)) {
-					itr2++;
-					continue;
-				}
+				itr2++;
+				continue;
 
-				if (IsFlyingObjectBlock(itr->type)) {
-					if (GetBlock(*itr, itr2->trans.pos)) {
-						itr = flyingObjectList->erase(itr);
-						isMatched = true;
-						break;
-					}
-					itr2++;
-					continue;
+			}
+			else if (IsFlyingObjectEnemy(itr->type)) {
+				if (DamageFlyingObject(itr2->uid)) {
+					isEnd = true;
 
-				}
-				else if (IsFlyingObjectEnemy(itr->type)) {
-					if (IsPlayerInvicible()) {
-						itr2++;
-						continue;
-					}
-
-					itr2 = player->flyingObjectList.erase(itr2);
-					resetFlyingObjectList = RemoteBlockToFreeFlyingObject();
-
-					player->checkCheckpoint = false;
 					itr->hp--;
 					if (itr->hp <= 0) {
-
 						if (itr->type == FLYING_OBJECT_UFO) {
 							npc->takeOutFrame = 0;
 							DestroyUFO();
 							npc->contactUFO = false;
 						}
-						itr = flyingObjectList->erase(itr);
-						isMatched = true;
-						break;
-					}
-					if (resetFlyingObjectList) {
-						break;
-					}
-					continue;
+						flyingObjectList->erase(itr);
 
+					}
+					break;
 				}
 				else {
 					itr2++;
 				}
-			}
 
-			if (resetFlyingObjectList) {
-				break;
 			}
-
-			if (!isMatched) {
-				itr++;
+			else {
+				itr2++;
 			}
-
 		}
-		if (!resetFlyingObjectList) {
+		if (isEnd) {
 			break;
 		}
+
+		if (!isMatched) {
+			itr++;
+		}
+
 	}
 	// プレイヤーとflyingObjectの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end(); ) {
@@ -183,7 +169,7 @@ void JudgePlayerandFlyingObjectHit() {
 			}
 			if (IsFlyingObjectEnemy(itr->type)) {
 				itr2 = player->purgeFlyingObjectList.erase(itr2);
-				
+
 				itr->hp--;
 				if (itr->hp <= 0) {
 
@@ -258,7 +244,7 @@ void JudgePlayerandFlyingObjectHit() {
 	// enemyFlyingObjectと設置ブロックの当たり判定
 	for (auto itr = flyingObjectList->begin(); itr != flyingObjectList->end();) {
 		bool isMatched = false;
-		if (IsFlyingObjectBreakBlockEnemy(itr->type )) {
+		if (IsFlyingObjectBreakBlockEnemy(itr->type)) {
 			INTVECTOR2 pos = itr->trans.GetIntPos();
 			Map* map = GetMap(pos);
 			if (map != NULL && map->type == MAP_BLOCK) {
@@ -269,8 +255,8 @@ void JudgePlayerandFlyingObjectHit() {
 				//チェックポイントとつながってないブロックを消す
 				BreakNotConnectBlock(pos + INTVECTOR2(0, 1));
 				BreakNotConnectBlock(pos + INTVECTOR2(0, -1));
-				BreakNotConnectBlock(pos + INTVECTOR2(1,0));
-				BreakNotConnectBlock(pos + INTVECTOR2(-1,0));
+				BreakNotConnectBlock(pos + INTVECTOR2(1, 0));
+				BreakNotConnectBlock(pos + INTVECTOR2(-1, 0));
 				continue;
 			}
 		}
@@ -279,7 +265,7 @@ void JudgePlayerandFlyingObjectHit() {
 }
 
 
-bool CheckShortest(Player& player,FlyingObject& obj, D3DXVECTOR2& pos) {
+bool CheckShortest(Player& player, FlyingObject& obj, D3DXVECTOR2& pos) {
 	auto posToObj = pos - obj.trans.pos;
 	float len = D3DXVec2LengthSq(&posToObj);
 

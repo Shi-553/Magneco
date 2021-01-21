@@ -501,6 +501,24 @@ bool DamagePlayer() {
 	return true;
 }
 
+bool DamageFlyingObject(int uid) {
+	if (IsPlayerInvicible()) {
+		return false;
+	}
+	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();) {
+		if (itr->uid != uid) {
+			ToFreeFlyingObject(*itr);
+		}
+		itr = player.flyingObjectList.erase(itr);
+	}
+	player.checkCheckpoint = false;
+
+	player.stanTime = DEFAULT_PLAYER_STAN_FRAME;
+	player.invicibleTime = DEFAULT_PLAYER_INVICIBLE_FRAME;
+	return true;
+}
+
+
 
 
 bool RemoteBlockToFreeFlyingObject() {
