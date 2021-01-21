@@ -10,7 +10,6 @@ enum VirtualKey {
 	MYVK_BEACON,
 	MYVK_PURGE,
 
-	MYVK_PAUSE,
 
 	MYVK_CONTROL,
 	MYVK_PASTE,
