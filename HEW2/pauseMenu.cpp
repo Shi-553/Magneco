@@ -28,8 +28,8 @@ void InitPauseMenu() {
 
 	Button startButton;
 
-	startButton.textureId = ReserveTextureLoadFile("texture/ui/start.png");
-	startButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/start_pressed.png");
+	startButton.textureId = ReserveTextureLoadFile("texture/ui/tudukeru.png");
+	startButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/tudukeru_pressed.png");
 	startButton.releasedCallback = []() {
 		isPause = false;
 		SetTimeScale(1);
