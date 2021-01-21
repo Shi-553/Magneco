@@ -96,7 +96,6 @@ void UpdatePlayer() {
 
 
 	if (player.stanTime == 0) {
-		//PlaySound(SOUND_LEBEL_SE_STAN);
 		auto length = D3DXVec2Length(&player.dir);
 		if (length > 1.0f) {
 			player.dir /= length;
@@ -438,6 +437,7 @@ bool DamagePlayer() {
 	}
 	player.checkCheckpoint = false;
 
+	PlaySound(SOUND_LEBEL_SE_STAN);
 	player.stanTime = DEFAULT_PLAYER_STAN_FRAME;
 	player.invicibleTime = DEFAULT_PLAYER_INVICIBLE_FRAME;
 	return true;
