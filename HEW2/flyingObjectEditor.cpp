@@ -8,6 +8,7 @@
 #include "sprite.h"
 #include "stageEditor.h"
 #include "gameSrite.h"
+#include "npc.h"
 
 #define CREATE_FLYING_OBJECT_TEXTURE_WIDTH 32
 #define CREATE_FLYING_OBJECT_TEXTURE_HEIGHT 32
@@ -140,7 +141,7 @@ void DrawFlyingObjectEditor() {
 void UpdateFlyingObjectEditor() {
 	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));
 
-	DestroyUFO();
+	NPCDeleteUFO();
 
 	if (TriggerInputLogger(MYVK_L)) {
 		SetFlyingObjectSponerLoop(!GetFlyingObjectSponerLoop());

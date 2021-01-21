@@ -55,6 +55,6 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
 
 void BackFlyingObject(int frame);
 
-void DestroyUFO();
+bool DamageFlyingObject(FlyingObject& f);
 
 int GetFlyingObjectTextureId(FlyingObjectType type);

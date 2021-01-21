@@ -33,4 +33,6 @@ bool NPCImport(FILE* fp);
 
 void SetNPCResponePos(INTVECTOR2 pos);
 
+void NPCContactUFO();
+void NPCDeleteUFO();
 #endif // !_NPC_H

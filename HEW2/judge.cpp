@@ -66,18 +66,11 @@ void JudgePlayerandFlyingObjectHit() {
 
 			}
 			else if (IsFlyingObjectEnemy(itr->type)) {
-				if (DamageFlyingObject(itr2->uid)) {
+				if (DamagePlayerFlyingObject(itr2->uid)) {
 					isEnd = true;
 
-					itr->hp--;
-					if (itr->hp <= 0) {
-						if (itr->type == FLYING_OBJECT_UFO) {
-							npc->takeOutFrame = 0;
-							DestroyUFO();
-							npc->contactUFO = false;
-						}
+					if (DamageFlyingObject(*itr)) {
 						flyingObjectList->erase(itr);
-
 					}
 					break;
 				}
@@ -136,23 +129,15 @@ void JudgePlayerandFlyingObjectHit() {
 		else if (IsFlyingObjectEnemy(itr->type)) {
 
 			if (DamagePlayer()) {
-				itr->hp--;
-				if (itr->hp <= 0) {
-
-					if (itr->type == FLYING_OBJECT_UFO) {
-						npc->takeOutFrame = 0;
-						DestroyUFO();
-						npc->contactUFO = false;
-					}
+				if (DamageFlyingObject(*itr)) {
 					itr = flyingObjectList->erase(itr);
-					continue;
 				}
 			}
 
 			itr++;
 
-			//GoNextScene(GameOverScene, FADE_IN);
-			//return;
+				//GoNextScene(GameOverScene, FADE_IN);
+				//return;
 		}
 		else {
 			itr++;
@@ -168,17 +153,11 @@ void JudgePlayerandFlyingObjectHit() {
 				continue;
 			}
 			if (IsFlyingObjectEnemy(itr->type)) {
-				itr2 = player->purgeFlyingObjectList.erase(itr2);
+				if (DamageFlyingObject(*itr2)) {
+					itr2 = player->purgeFlyingObjectList.erase(itr2);
+				}
 
-				itr->hp--;
-				if (itr->hp <= 0) {
-
-					if (itr->type == FLYING_OBJECT_UFO) {
-						npc->takeOutFrame = 0;
-						DestroyUFO();
-						npc->contactUFO = false;
-
-					}
+				if (DamageFlyingObject(*itr)) {
 					itr = flyingObjectList->erase(itr);
 					isMatched = true;
 					break;
@@ -225,14 +204,8 @@ void JudgePlayerandFlyingObjectHit() {
 		if (itr->type == FLYING_OBJECT_UFO) {
 			D3DXVECTOR2 shiftPos = itr->trans.pos - ADD_UFO_POS;
 			if (CheckBlockBlock(npc->trans.pos, shiftPos, npc->size, itr->size)) {
-				npc->takeOutFrame++;
-				npc->contactUFO = true;
-				if (npc->takeOutFrame >= TAKE_OUT_FRAME_LIMIT) {
-					//itr = flyingObjectList->erase(itr);
-					GoNextScene(GameOverScene, FADE_IN);
-					return;
-				}
-
+				NPCContactUFO();
+				break;
 			}
 		}
 		itr++;

@@ -144,7 +144,7 @@ void BackFlyingObject(int frame) {
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
 		if (UpdateFlyingObject(&*itr, -frame * itr->speed)) {
 			if (itr->type == FLYING_OBJECT_UFO) {
-				DestroyUFO();
+				NPCDeleteUFO();
 			}
 			itr = flyingObjects.erase(itr);
 		}
@@ -175,8 +175,17 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 	}
 }
 
-void DestroyUFO() {
-	existsUFO = false;
+bool DamageFlyingObject(FlyingObject& f) {
+	f.hp--;
+	if (f.hp > 0) {
+		return false;
+	}
+	if (f.type == FLYING_OBJECT_UFO) {
+		existsUFO = false;
+		NPCDeleteUFO();
+	}
+
+	return true;
 }
 
 
