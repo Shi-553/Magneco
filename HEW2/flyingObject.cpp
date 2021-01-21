@@ -59,6 +59,7 @@ void InitFlyingObject() {
 	flyingObjectTextureIds[FLYING_OBJECT_BLOCK] = ReserveTextureLoadFile("texture/block/block02.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY] = ReserveTextureLoadFile("texture/enemy/jellyalienman_anime.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_BREAK_BLOCK] = ReserveTextureLoadFile("texture/enemy/meteorite_1.png");
+	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_BREAK_BLOCK_SECOND] = ReserveTextureLoadFile("texture/enemy/meteorite_2.png");
 	flyingObjectTextureIds[FLYING_OBJECT_UFO] = ReserveTextureLoadFile("texture/enemy/UFO.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_SECOND] = ReserveTextureLoadFile("texture/enemy/jellyaliengirl_anime.png");
 	flyingObjectTextureIds[FLYING_OBJECT_PLAYER_BLOCK] = ReserveTextureLoadFile("texture/block/block01.png");
@@ -218,6 +219,7 @@ bool IsFlyingObjectEnemy(FlyingObjectType type) {
 	{
 	case FLYING_OBJECT_ENEMY:
 	case FLYING_OBJECT_ENEMY_BREAK_BLOCK:
+	case FLYING_OBJECT_ENEMY_BREAK_BLOCK_SECOND:
 	case FLYING_OBJECT_UFO:
 	case FLYING_OBJECT_ENEMY_SECOND:
 		return true;
@@ -239,6 +241,7 @@ bool IsFlyingObjectBreakBlockEnemy(FlyingObjectType type) {
 	switch (type)
 	{
 	case FLYING_OBJECT_ENEMY_BREAK_BLOCK:
+	case FLYING_OBJECT_ENEMY_BREAK_BLOCK_SECOND:
 		return true;
 	default:
 		return false;
