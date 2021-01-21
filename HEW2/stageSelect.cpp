@@ -54,17 +54,19 @@ enum StageSelectTexture {
 
 static int selectStageTextureIds[STAGE_SELECT_MAX];
 
+static SelectButton stageSelect;
+
 void InitStageSelect() {
 
-	InitSelectButton();
+	stageSelect.Init();
 	selectStageTextureIds[STAGE_SELECT_BACK_GROUND] = ReserveTextureLoadFile("texture/background/背景4.jpg");
 
-	SetSelectButtonBack(ReserveTextureLoadFile("texture/stageSelect/button_left.png"),
+	stageSelect.SetBack(ReserveTextureLoadFile("texture/stageSelect/button_left.png"),
 	 ReserveTextureLoadFile("texture/stageSelect/button_left_pushed.png"),
 	 ReserveTextureLoadFile("texture/stageSelect/button_left_cantselect.png"),
 		D3DXVECTOR2(BU_LEFT_X, BU_LEFT_Y));
 
-	SetSelectButtonForward(ReserveTextureLoadFile("texture/stageSelect/button_right.png"),
+	stageSelect.SetForward(ReserveTextureLoadFile("texture/stageSelect/button_right.png"),
 	ReserveTextureLoadFile("texture/stageSelect/button_right_pushed.png"),
 	ReserveTextureLoadFile("texture/stageSelect/button_right_cantselect.png"),
 		D3DXVECTOR2(BU_RIGHT_X, BU_RIGHT_Y));
@@ -100,7 +102,7 @@ void InitStageSelect() {
 
 	Button b;
 	b.releasedCallback = []() {
-		SetStagePath(infos[GetSelectButtonIndex()].filename);
+		SetStagePath(infos[stageSelect.GetIndex()].filename);
 		GoNextScene(GameScene);
 	};
 	b.textureId = ReserveTextureLoadFile("texture/stageSelect/icon_noselect.png");
@@ -114,21 +116,21 @@ void InitStageSelect() {
 
 		AddTextureReferenceCount(b.textureId);
 		AddTextureReferenceCount(b.textureId);
-		AddSelectButton(b);
+		stageSelect.Add(b);
 
 		smunes.push_back(ReserveTextureLoadFile(itr->samunename.c_str()));
 	}
 
 
-	SetSelectButtonFrame(ReserveTextureLoadFile("texture/stageSelect/icon_select.png"));
+	stageSelect.SetFrame(ReserveTextureLoadFile("texture/stageSelect/icon_select.png"));
 
 
-	SetSelectButtonKey(MYVK_ENTER, MYVK_RIGHT, MYVK_LEFT);
+	stageSelect.SetKey(MYVK_ENTER, MYVK_RIGHT, MYVK_LEFT);
 
 	LoadTexture();
 }
 void UninitStageSelect() {
-	UninitSelectButton();
+	stageSelect.Uninit();
 	ReleaseTexture(selectStageTextureIds, STAGE_SELECT_MAX);
 
 
@@ -143,7 +145,7 @@ void UninitStageSelect() {
 }
 
 void UpdateStageSelect() {
-	UpdateSelectButton();
+	stageSelect.Update();
 }
 void DrawStageSelect() {
 	DrawSprite(selectStageTextureIds[STAGE_SELECT_BACK_GROUND], D3DXVECTOR2(0, 0), 1);
@@ -151,8 +153,8 @@ void DrawStageSelect() {
 	if (infos.empty()) {
 		return ;
 	}
-	auto& info = infos[GetSelectButtonIndex()];
-	auto& samune = smunes[GetSelectButtonIndex()];
+	auto& info = infos[stageSelect.GetIndex()];
+	auto& samune = smunes[stageSelect.GetIndex()];
 
 	DrawSprite(samune, D3DXVECTOR2(SAMUNE_X, SAMUNE_Y), 1);
 
@@ -175,7 +177,7 @@ void DrawStageSelect() {
 	}
 
 
-	DrawSelectButton();
+	stageSelect.Draw();
 }
 
 StageInfo* GetCurrentInfo() {
@@ -183,5 +185,5 @@ StageInfo* GetCurrentInfo() {
 		return nullptr;
 	}
 
-	return &infos[GetSelectButtonIndex()];
+	return &infos[stageSelect.GetIndex()];
 }

@@ -20,9 +20,9 @@ static int backGroundTexture;
 static int titleTextTexture;
 static int buttonDescriptionTexture;
 
-
+static SelectButton gameStartSelect;
 void InitGameStart() {
-	InitSelectButton();
+	gameStartSelect.Init();
 
 
 	Button startButton, tutorialButton, endButton;
@@ -59,9 +59,9 @@ void InitGameStart() {
 		PostQuitMessage(0);
 	};
 
-	AddSelectButton(startButton);
-	AddSelectButton(tutorialButton);
-	AddSelectButton(endButton);
+	gameStartSelect.Add(startButton);
+	gameStartSelect.Add(tutorialButton);
+	gameStartSelect.Add(endButton);
 
 	backGroundTexture = ReserveTextureLoadFile("texture/background/背景１.png");
 
@@ -69,13 +69,13 @@ void InitGameStart() {
 
 	buttonDescriptionTexture = ReserveTextureLoadFile("texture/ui/tips.png");
 
-	SetSelectButtonFrame(ReserveTextureLoadFile("texture/ui/select.png"));
+	gameStartSelect.SetFrame(ReserveTextureLoadFile("texture/ui/select.png"));
 
 	LoadTexture();
 }
 
 void UninitGameStart() {
-	UninitSelectButton();
+	gameStartSelect.Uninit();
 
 	ReleaseTexture(backGroundTexture);
 	ReleaseTexture(titleTextTexture);
@@ -86,9 +86,9 @@ void DrawGameStart() {
 	DrawSprite(backGroundTexture, { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT }, { 0,0 }, { SCREEN_WIDTH,SCREEN_HEIGHT });
 	DrawSprite(titleTextTexture, { 320,64 }, 10, { TITLE_LOGO_WIDTH,TITLE_LOGO_HEIGHT }, { 0,0 }, { TITLE_LOGO_WIDTH,TITLE_LOGO_HEIGHT });
 	DrawSprite(buttonDescriptionTexture, { 32,640 }, 10, { BUTTON_DESCRIPTION_LOGO_WIDTH,BUTTON_DESCRIPTION_LOGO_HEIGHT }, { 0,0 }, { BUTTON_DESCRIPTION_LOGO_WIDTH,BUTTON_DESCRIPTION_LOGO_HEIGHT });
-	DrawSelectButton();
+	gameStartSelect.Draw();
 }
 
 void UpdateGameStart() {
-	UpdateSelectButton();
+	gameStartSelect.Update();
 }

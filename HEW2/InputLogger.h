@@ -10,7 +10,6 @@ enum VirtualKey {
 	MYVK_BEACON,
 	MYVK_PURGE,
 
-	MYVK_PAUSE,
 
 	MYVK_CONTROL,
 	MYVK_PASTE,
@@ -19,6 +18,8 @@ enum VirtualKey {
 	MYVK_RIGHT_CLICK,
 
 
+
+	MYVK_ESC,
 
 	MYVK_START,
 	MYVK_GAME_CLEAR,

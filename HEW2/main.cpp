@@ -27,6 +27,7 @@
 #include "time.h"
 #include "font.h"
 #include <string>
+#include "pauseMenu.h"
 
 
 #define CLASS_NAME "GameWindow"
@@ -176,18 +177,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg)
 	{
-		//エスケープで終わるショートカット
-	case WM_KEYDOWN:
-		if (wParam == VK_ESCAPE) {
-			SendMessage(hWnd, WM_CLOSE, 0, 0);
-		}
-		break;
-
 	case WM_CLOSE:
-		if (MessageBox(hWnd, "終了していい？", "確認", MB_OKCANCEL | MB_DEFBUTTON2) == IDOK) {
-			DestroyWindow(hWnd);
-		}
-		return 0;
 	case WM_DESTROY:
 		PostQuitMessage(0);   //WM_QUITメッセージの送信
 		return 0;

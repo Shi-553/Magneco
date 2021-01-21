@@ -3,12 +3,12 @@
 
 static double g_lastUpdateTime;
 static double g_currentTime;
-
+static double scale;
 
 void InitTime(double currentTime) {
 	g_lastUpdateTime = currentTime;
 	g_currentTime = currentTime;
-
+	scale = 1;
 }
 
 void UninitTime() {
@@ -25,5 +25,9 @@ void UpdateTime(double currentTime) {
 
 double GetDeltaTime() {
 
-	return  g_currentTime - g_lastUpdateTime;
+	return  (g_currentTime - g_lastUpdateTime)*scale;
+}
+
+void SetTimeScale(double s) {
+	scale = s;
 }
