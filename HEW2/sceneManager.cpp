@@ -13,6 +13,8 @@
 #include "InputLogger.h"
 #include "importExport.h"
 #include "stageSelect.h"
+#include "pauseMenu.h"
+#include "time.h"
 
 
 typedef void (*SceneFunc)(void);
@@ -76,6 +78,8 @@ void InitSceneManager(Scene startScene) {
 }
 
 void UninitSceneManager() {
+	UninitPauseMenu();
+
 	if (NullScene < currentScene && currentScene < MaxScene) {
 		Uninits[currentScene]();
 	}
@@ -94,6 +98,9 @@ void DrawSceneManager() {
 
 		SetSpriteColor(D3DCOLOR_RGBA(255, 255, 255, 255));
 	}
+	else {
+		DrawPauseMenu();
+	}
 }
 
 void UpdateSceneManager() {
@@ -106,6 +113,8 @@ void UpdateSceneManager() {
 		if (1 > fade) {
 			return;
 		}
+		UninitPauseMenu();
+
 		//完全に真っ黒になったとき
 		if (NullScene < currentScene && currentScene < MaxScene) {
 			Uninits[currentScene]();
@@ -114,9 +123,11 @@ void UpdateSceneManager() {
 			Inits[nextScene]();
 		}
 
+
 		currentScene = nextScene;
 		fadeMode = FADE_IN;
 
+		InitPauseMenu();
 		return;
 	}
 
@@ -133,6 +144,12 @@ void UpdateSceneManager() {
 		return;
 	}
 
+		UpdatePauseMenu();
+	
+
+		if (GetDeltaTime() == 0) {
+			return;
+		}
 	//通常
 	if (NullScene < currentScene && currentScene < MaxScene) {
 		Updates[currentScene]();
@@ -169,8 +186,8 @@ void UpdateSceneManager() {
 
 }
 
-void GoNextScene(Scene scene, FadeMode mode) {
-	if (scene == currentScene)
+void GoNextScene(Scene scene, FadeMode mode, bool isForce ) {
+	if (!isForce&&scene == currentScene)
 		return;
 
 	if (mode == FADE_IN) {
@@ -182,4 +199,8 @@ void GoNextScene(Scene scene, FadeMode mode) {
 
 	fadeMode = FADE_OUT;
 	nextScene = scene;
+}
+
+Scene GetCurrentScene() {
+	return currentScene;
 }

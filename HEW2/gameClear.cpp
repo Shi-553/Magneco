@@ -17,9 +17,11 @@ static int frame = 0;
 static int backgroundTexture;
 static int gameClearTexture;
 
+static SelectButton gameClearSelect;
+
 void InitGameClear()
 {
-	InitSelectButton();
+	gameClearSelect.Init();
 
  Button returnTitleButton, retryButton;
 
@@ -45,13 +47,13 @@ void InitGameClear()
 		GoNextScene(GameScene);
 	};
 
-	AddSelectButton(returnTitleButton);
-	AddSelectButton(retryButton);
+	gameClearSelect.Add(returnTitleButton);
+	gameClearSelect.Add(retryButton);
 
 	backgroundTexture = ReserveTextureLoadFile("texture/background/背景１.png");
 	gameClearTexture = ReserveTextureLoadFile("texture/ui/stageclear_1024×256.png");
 
-	SetSelectButtonFrame(ReserveTextureLoadFile("texture/ui/select.png"));
+	gameClearSelect.SetFrame(ReserveTextureLoadFile("texture/ui/select.png"));
 
 	LoadTexture();
 
@@ -60,7 +62,7 @@ void InitGameClear()
 
 void UninitGameClear()
 {
-	UninitSelectButton();
+	gameClearSelect.Uninit();
 
 	ReleaseTexture(backgroundTexture);
 	ReleaseTexture(gameClearTexture);
@@ -76,12 +78,12 @@ void DrawGameClear()
 		);
 
 	DrawSprite(gameClearTexture, { 200,64 }, 10, { GAME_CLEAR_LOGO_WIDTH,GAME_CLEAR_LOGO_HEIGHT }, tPos, { GAME_CLEAR_LOGO_WIDTH,GAME_CLEAR_LOGO_HEIGHT });
-	DrawSelectButton();
+	gameClearSelect.Draw();
 }
 
 void UpdateGameClear()
 {
-	UpdateSelectButton();
+	gameClearSelect.Update();
 
 	frame++;
 }

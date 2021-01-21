@@ -518,6 +518,24 @@ bool DamagePlayer() {
 	return true;
 }
 
+bool DamageFlyingObject(int uid) {
+	if (IsPlayerInvicible()) {
+		return false;
+	}
+	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();) {
+		if (itr->uid != uid) {
+			ToFreeFlyingObject(*itr);
+		}
+		itr = player.flyingObjectList.erase(itr);
+	}
+	player.checkCheckpoint = false;
+
+	player.stanTime = DEFAULT_PLAYER_STAN_FRAME;
+	player.invicibleTime = DEFAULT_PLAYER_INVICIBLE_FRAME;
+	return true;
+}
+
+
 
 
 bool RemoteBlockToFreeFlyingObject() {
@@ -526,14 +544,14 @@ bool RemoteBlockToFreeFlyingObject() {
 
 	list<int> toFreeFlyingObjectIds;
 	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); itr++) {
-		toFreeFlyingObjectIds.push_back(itr->id);
+		toFreeFlyingObjectIds.push_back(itr->uid);
 	}
 
 	while (true) {
 		bool isModosita = false;
 
 		for (auto idItr = toFreeFlyingObjectIds.begin(); idItr != toFreeFlyingObjectIds.end(); idItr++) {
-			auto itr = find_if(player.flyingObjectList.begin(), player.flyingObjectList.end(), [idItr](FlyingObject f) {return f.id == *idItr; });
+			auto itr = find_if(player.flyingObjectList.begin(), player.flyingObjectList.end(), [idItr](FlyingObject f) {return f.uid == *idItr; });
 			if (itr == player.flyingObjectList.end()) {
 				continue;
 			}
@@ -560,7 +578,7 @@ bool RemoteBlockToFreeFlyingObject() {
 	}
 
 	for (auto idItr = toFreeFlyingObjectIds.begin(); idItr != toFreeFlyingObjectIds.end(); ) {
-		auto itr = find_if(player.flyingObjectList.begin(), player.flyingObjectList.end(), [idItr](FlyingObject f) {return f.id == *idItr; });
+		auto itr = find_if(player.flyingObjectList.begin(), player.flyingObjectList.end(), [idItr](FlyingObject f) {return f.uid == *idItr; });
 		if (itr == player.flyingObjectList.end()) {
 			idItr = toFreeFlyingObjectIds.erase(idItr);
 			continue;

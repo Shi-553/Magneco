@@ -14,13 +14,13 @@ jobs:
     runs-on: windows-latest
     
     steps: 
+    - name: Check mutex  
+      uses: shogo82148/actions-mutex@v1
+      
     - name: Checkout code
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-        
-    - name: Check mutex  
-      uses: shogo82148/actions-mutex@v1
           
     # Install MSBuild
     - name: Setup msbuild
@@ -29,7 +29,7 @@ jobs:
     # Activate cache
     - name: Start DXSDK Cache
       id:   dxcache
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
        path: DXSDK
        key:  dxsdk-includes
@@ -62,11 +62,13 @@ jobs:
     - name: Zip
       run: 7z a "Magneco-x64.zip" "./Magneco" -tzip
       
+        
       
     - name: Set releaser settings
       run: |
         git config --global user.name release-machine
         git config --global user.email email@example.com
+    
         
     - name: Major release
       id: major

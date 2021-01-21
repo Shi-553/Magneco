@@ -16,9 +16,10 @@
 static int backgroundTexture;
 static int gameOverTextTexture;
 
+static SelectButton gameOverSelect;
 
 void InitGameOver() {
-	InitSelectButton();
+	gameOverSelect.Init();
 
 Button retryButton, returnTitleButton;
 
@@ -42,20 +43,20 @@ Button retryButton, returnTitleButton;
 		GoNextScene(GameStartScene);
 	};
 
-	AddSelectButton(retryButton);
-	AddSelectButton(returnTitleButton);
+	gameOverSelect.Add(retryButton);
+	gameOverSelect.Add(returnTitleButton);
 
 	backgroundTexture = ReserveTextureLoadFile("texture/background/背景2.jpg");
 
 	gameOverTextTexture = ReserveTextureLoadFile("texture/ui/gameover.png");
 
-	SetSelectButtonFrame(ReserveTextureLoadFile("texture/ui/select.png"));
+	gameOverSelect.SetFrame(ReserveTextureLoadFile("texture/ui/select.png"));
 
 	LoadTexture();
 }
 
 void UninitGameOver() {
-	UninitSelectButton();
+	gameOverSelect.Uninit();
 
 	ReleaseTexture(backgroundTexture);
 	ReleaseTexture(gameOverTextTexture);
@@ -64,10 +65,10 @@ void UninitGameOver() {
 void DrawGameOver() {
 	DrawSprite(backgroundTexture, { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT }, { 0,0 }, { SCREEN_WIDTH,SCREEN_HEIGHT });
 	DrawSprite(gameOverTextTexture, { 200,64 }, 10, { GAME_OVER_LOGO_WIDTH,GAME_OVER_LOGO_HEIGHT }, { 0,0 }, { GAME_OVER_LOGO_WIDTH,GAME_OVER_LOGO_HEIGHT });
-	DrawSelectButton();
+	gameOverSelect.Draw();
 }
 
 void UpdateGameOver()
 {
-	UpdateSelectButton();
+	gameOverSelect.Update();
 }

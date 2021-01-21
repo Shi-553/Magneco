@@ -1,48 +1,19 @@
 ﻿#include "selectButton.h"
 #include "sprite.h"
-#include <vector>
 
 
 
-static std::vector<Button> buttons;
-static int selectedIndex;
-
-
-static bool isPressedEnter = false;
-static bool isPressedForward = false;
-static bool isPressedBack = false;
-
-static VirtualKey gEnterKey, gForwardKey, gBackKey;
-
-
-static int selectFrameTextureId = TEXTURE_INVALID_ID;
-
-static D3DXVECTOR2 forwardPos, backPos;
-static D3DXVECTOR2 forwardSize, backSize;
-
-static int forwardTextureId = TEXTURE_INVALID_ID;
-static int forwardPressedTextureId = TEXTURE_INVALID_ID;
-static int forwardCantSelectTextureId = TEXTURE_INVALID_ID;
-
-static int backTextureId = TEXTURE_INVALID_ID;
-static int backPressedTextureId = TEXTURE_INVALID_ID;
-static int backCantSelectTextureId = TEXTURE_INVALID_ID;
-
-
-void AllReleasePressedFlag();
-
-
-void InitSelectButton() {
-	UninitSelectButton();
+void SelectButton::Init() {
+	Uninit();
 
 	selectedIndex = 0;
 
-	SetSelectButtonKey(MYVK_ENTER, MYVK_DOWN, MYVK_UP);
+	SetKey(MYVK_ENTER, MYVK_DOWN, MYVK_UP);
 	AllReleasePressedFlag();
 }
 
 
-void DrawSelectButton() {
+void SelectButton::Draw() {
 	if (buttons.empty()) {
 		return;
 	}
@@ -111,7 +82,7 @@ void DrawSelectButton() {
 
 
 }
-void UpdateSelectButton() {
+void SelectButton::Update() {
 	if (TriggerInputLogger(gEnterKey)) {
 		AllReleasePressedFlag();
 		isPressedEnter = true;
@@ -155,7 +126,7 @@ void UpdateSelectButton() {
 	}
 }
 
-void UninitSelectButton() {
+void SelectButton::Uninit() {
 	ReleaseTexture(selectFrameTextureId);
 	ReleaseTexture(forwardTextureId);
 	ReleaseTexture(forwardPressedTextureId);
@@ -175,33 +146,33 @@ void UninitSelectButton() {
 	buttons.clear();
 }
 
-void AllReleasePressedFlag() {
+void SelectButton::AllReleasePressedFlag() {
 	isPressedEnter = false;
 	isPressedForward = false;
 	isPressedBack = false;
 }
 
-void AddSelectButton(Button& button) {
+void SelectButton::Add(Button& button) {
 
 	buttons.push_back(button);
 }
-void SetSelectButtonKey(VirtualKey enterKey, VirtualKey forwardKey, VirtualKey backKey) {
+void SelectButton::SetKey(VirtualKey enterKey, VirtualKey forwardKey, VirtualKey backKey) {
 	gEnterKey = enterKey;
 	gForwardKey = forwardKey;
 	gBackKey = backKey;
 }
 
-void SetSelectButtonFrame(int frame) {
+void SelectButton::SetFrame(int frame) {
 	selectFrameTextureId = frame;
 }
-void SetSelectButtonForward(int forward, int forwardPressed, int forwardCantSelect, D3DXVECTOR2 pos, D3DXVECTOR2 size) {
+void SelectButton::SetForward(int forward, int forwardPressed, int forwardCantSelect, D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 	forwardTextureId = forward;
 	forwardPressedTextureId = forwardPressed;
 	forwardCantSelectTextureId = forwardCantSelect;
 	forwardPos = pos;
 	forwardSize = size;
 }
-void SetSelectButtonBack(int back, int backPressed, int backCantSelect, D3DXVECTOR2 pos, D3DXVECTOR2 size) {
+void SelectButton::SetBack(int back, int backPressed, int backCantSelect, D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 	backTextureId = back;
 	backPressedTextureId = backPressed;
 	backCantSelectTextureId = backCantSelect;
@@ -209,6 +180,12 @@ void SetSelectButtonBack(int back, int backPressed, int backCantSelect, D3DXVECT
 	backSize = size;
 }
 
-int GetSelectButtonIndex() {
+int SelectButton::GetIndex() {
 	return selectedIndex;
+}
+void SelectButton::SetIndex(int index) {
+	if (index < 0 || buttons.size() <= index) {
+		return;
+	}
+	selectedIndex = index;
 }
