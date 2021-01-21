@@ -69,16 +69,6 @@ jobs:
         git config --global user.name release-machine
         git config --global user.email email@example.com
     
-  
-    - name: Cache node modules
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-node-modules
-      with:
-        # npm キャッシュファイルは Linux/macOS の「~/.npm」に保存される
-        path: ~/.npm
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        
         
     - name: Major release
       id: major
