@@ -14,6 +14,9 @@ jobs:
     runs-on: windows-latest
     
     steps: 
+    - name: Check mutex  
+      uses: shogo82148/actions-mutex@v1
+      
     - name: Checkout code
       uses: actions/checkout@v2
       with:
@@ -60,14 +63,12 @@ jobs:
       run: 7z a "Magneco-x64.zip" "./Magneco" -tzip
       
         
-    - name: Check mutex  
-      uses: shogo82148/actions-mutex@v1
       
     - name: Set releaser settings
       run: |
         git config --global user.name release-machine
         git config --global user.email email@example.com
-        
+    
   
     - name: Cache node modules
       uses: actions/cache@v2
