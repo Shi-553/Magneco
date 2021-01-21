@@ -105,7 +105,7 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2(), tPos, D3DXVECTOR2(FLYINGOBJECT_ITEM_TEXTURE_WIDTH, FLYINGOBJECT_ITEM_TEXTURE_HEIGHT));
 	}
 	else if (flyingObject.type == FLYING_OBJECT_UFO) {
-		if (flyingObject.hp == 3) {
+		if (flyingObject.hp >= 3) {
 			auto tPos = D3DXVECTOR2(
 				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 12 % 4),
 				0
