@@ -59,7 +59,7 @@ void InitFlyingObject() {
 	flyingObjectTextureIds[FLYING_OBJECT_BLOCK] = ReserveTextureLoadFile("texture/block/block02.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY] = ReserveTextureLoadFile("texture/enemy/jellyalienman_anime.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_BREAK_BLOCK] = ReserveTextureLoadFile("texture/enemy/meteorite_1.png");
-	flyingObjectTextureIds[FLYING_OBJECT_UFO] = ReserveTextureLoadFile("texture/enemy/ufo_spritesheet.png");
+	flyingObjectTextureIds[FLYING_OBJECT_UFO] = ReserveTextureLoadFile("texture/enemy/UFO.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_SECOND] = ReserveTextureLoadFile("texture/enemy/jellyaliengirl_anime.png");
 	flyingObjectTextureIds[FLYING_OBJECT_PLAYER_BLOCK] = ReserveTextureLoadFile("texture/block/block01.png");
 	flyingObjectTextureIds[FLYING_OBJECT_PURGE_BLOCK] = ReserveTextureLoadFile("texture/block/block01.png");
@@ -104,12 +104,30 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2(), tPos, D3DXVECTOR2(FLYINGOBJECT_ITEM_TEXTURE_WIDTH, FLYINGOBJECT_ITEM_TEXTURE_HEIGHT));
 	}
 	else if (flyingObject.type == FLYING_OBJECT_UFO) {
-		auto tPos = D3DXVECTOR2(
-			FLYINGOBJECT_TEXTURE_WIDTH * (frame / 12 % 4),
-			0
-		);
+		if (flyingObject.hp == 3) {
+			auto tPos = D3DXVECTOR2(
+				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 12 % 4),
+				0
+			);
 
-		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6, 50, D3DXVECTOR2(1.3, 1.3), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
+			DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6, 50, D3DXVECTOR2(1.3, 1.3), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
+		}
+		else if (flyingObject.hp == 2) {
+			auto tPos = D3DXVECTOR2(
+				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 12 % 4),
+				FLYINGOBJECT_TEXTURE_HEIGHT
+			);
+
+			DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6, 50, D3DXVECTOR2(1.3, 1.3), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
+		}	
+		else if (flyingObject.hp == 1) {
+			auto tPos = D3DXVECTOR2(
+				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 12 % 4),
+				FLYINGOBJECT_TEXTURE_HEIGHT * 2
+			);
+
+			DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6, 50, D3DXVECTOR2(1.3, 1.3), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
+		}
 		if (npc->contactUFO == true) {
 			auto tPos = D3DXVECTOR2(
 				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 8 % 4),
