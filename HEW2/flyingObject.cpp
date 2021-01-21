@@ -57,10 +57,10 @@ void AddFlyingObjects(FlyingObject* flyingObject) {
 void InitFlyingObject() {
 	flyingObjects.clear();
 	flyingObjectTextureIds[FLYING_OBJECT_BLOCK] = ReserveTextureLoadFile("texture/block/block02.png");
-	flyingObjectTextureIds[FLYING_OBJECT_ENEMY] = ReserveTextureLoadFile("texture/enemy/jellyalien01.png");
+	flyingObjectTextureIds[FLYING_OBJECT_ENEMY] = ReserveTextureLoadFile("texture/enemy/jellyalienman_anime.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_BREAK_BLOCK] = ReserveTextureLoadFile("texture/enemy/meteorite_1.png");
 	flyingObjectTextureIds[FLYING_OBJECT_UFO] = ReserveTextureLoadFile("texture/enemy/ufo_spritesheet.png");
-	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_SECOND] = ReserveTextureLoadFile("texture/enemy/jellyaliengirl01.png");
+	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_SECOND] = ReserveTextureLoadFile("texture/enemy/jellyaliengirl_anime.png");
 	flyingObjectTextureIds[FLYING_OBJECT_PLAYER_BLOCK] = ReserveTextureLoadFile("texture/block/block01.png");
 	flyingObjectTextureIds[FLYING_OBJECT_PURGE_BLOCK] = ReserveTextureLoadFile("texture/block/block01.png");
 	existsUFO = false;
@@ -95,7 +95,7 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 		DrawGameSprite(blockAnimationTextureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2(), { (float)(4 * player->putFrame / DEFAULT_PUT_REQUIRED_FRAME) * 32, 0 }, { 32, 32 });
 		return;
 	}
-	if (flyingObject.type == FLYING_OBJECT_ITEM_ADD_SPEED || flyingObject.type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
+	if (flyingObject.type == FLYING_OBJECT_ITEM_ADD_SPEED || flyingObject.type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE || flyingObject.type == FLYING_OBJECT_ENEMY || flyingObject.type == FLYING_OBJECT_ENEMY_SECOND) {
 		auto tPos = D3DXVECTOR2(
 			FLYINGOBJECT_ITEM_TEXTURE_WIDTH * (frame / 12 % 8),
 			0
