@@ -13,7 +13,8 @@ using namespace std;
 #define PAUSE_MENU_BUTTON_WIDTH 330
 #define PAUSE_MENU_BUTTON_HEIGHT 90
 
-static int blackTextureId = TEXTURE_INVALID_ID;
+static int backgroundTextureId = TEXTURE_INVALID_ID;
+static int pauseTextureId = TEXTURE_INVALID_ID;
 static bool isPause = false;
 static SelectButton pauseSelect;
 
@@ -21,7 +22,8 @@ void InitPauseMenu() {
 	isPause = false;
 	SetTimeScale(1);
 
-	blackTextureId = ReserveTextureLoadFile("texture/fade.png");
+	backgroundTextureId = ReserveTextureLoadFile("texture/background/背景3.jpg");
+	pauseTextureId = ReserveTextureLoadFile("texture/ui/pause.png");
 
 	pauseSelect.Init();
 	vector<Button> buttons;
@@ -72,9 +74,9 @@ void InitPauseMenu() {
 	}
 
 	for (auto itr = buttons.begin(); itr != buttons.end(); itr++) {
-		auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - PAUSE_MENU_BUTTON_WIDTH / 2, (SCREEN_HEIGHT / 2 - PAUSE_MENU_BUTTON_HEIGHT / 2));
+		auto buttonCenter = D3DXVECTOR2(475,314+90);
 
-		buttonCenter.y += (std::distance(buttons.begin(), itr) -( buttons.size()-1)/2.0f)*( PAUSE_MENU_BUTTON_HEIGHT+30);
+		buttonCenter.y += (std::distance(buttons.begin(), itr) -( buttons.size()-1)/2.0f)*( PAUSE_MENU_BUTTON_HEIGHT+20);
 
 		itr->pos = buttonCenter;
 		itr->size = D3DXVECTOR2(PAUSE_MENU_BUTTON_WIDTH, PAUSE_MENU_BUTTON_HEIGHT);
@@ -90,17 +92,17 @@ void DrawPauseMenu() {
 	if (!isPause) {
 		return;
 	}
-	SetSpriteColor(D3DCOLOR_RGBA(255, 255, 255, 200));
-	DrawSprite(blackTextureId, D3DXVECTOR2(0, 0), 10, D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	DrawSprite(backgroundTextureId, D3DXVECTOR2(0, 0), 10, D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	DrawSprite(pauseTextureId, D3DXVECTOR2(166, 62), 10);
 
-	SetSpriteColor(D3DCOLOR_RGBA(255, 255, 255, 255));
 
 	pauseSelect.Draw();
 }
 
 
 void UninitPauseMenu() {
-	ReleaseTexture(blackTextureId);
+	ReleaseTexture(backgroundTextureId);
+	ReleaseTexture(pauseTextureId);
 
 	pauseSelect.Uninit();
 
