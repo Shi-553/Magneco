@@ -33,7 +33,7 @@ void InitGame()
 
 	//StageExport();
 	StageImport();
-
+	StopSound();
 	PlaySound(SOUND_LABEL_BGM000);
 
 	LoadTexture();

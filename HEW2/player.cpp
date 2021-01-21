@@ -297,6 +297,7 @@ void PurgePlayerFlyingObject() {
 		itr->dir = itr->trans.pos - player.trans.pos;
 		itr->type = FLYING_OBJECT_PURGE_BLOCK;
 
+		PlaySound(SOUND_LABEL_SE_PURGE);
 		player.purgeFlyingObjectList.push_back(*itr);
 		itr = player.flyingObjectList.erase(itr);
 	}

@@ -6,6 +6,7 @@
 #include "sceneManager.h"
 #include "InputLogger.h"
 #include "selectButton.h"
+#include "sound.h"
 
 #define GAME_START_BUTTON_WIDTH 330
 #define GAME_START_BUTTON_HEIGHT 90
@@ -23,6 +24,8 @@ static int buttonDescriptionTexture;
 
 void InitGameStart() {
 	InitSelectButton();
+	StopSound();
+	PlaySound(SOUND_LABEL_BGM001);
 
 
 	Button startButton, tutorialButton, endButton;
@@ -35,6 +38,7 @@ void InitGameStart() {
 	startButton.pressedTextureId = ReserveTextureLoadFile("texture/start_pressed.png");
 
 	startButton.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
 		GoNextScene(StageSelect);
 	};
 
@@ -46,6 +50,7 @@ void InitGameStart() {
 
 
 	tutorialButton.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
 		GoNextScene(TutorialScene);
 	};
 

@@ -8,6 +8,7 @@
 #include "font.h"
 #include "sceneManager.h"
 #include "importExport.h"
+#include "sound.h"
 #include <algorithm>
 using namespace std;
 
@@ -55,6 +56,8 @@ enum StageSelectTexture {
 static int selectStageTextureIds[STAGE_SELECT_MAX];
 
 void InitStageSelect() {
+	StopSound();
+	PlaySound(SOUND_LABEL_BGM002);
 
 	InitSelectButton();
 	selectStageTextureIds[STAGE_SELECT_BACK_GROUND] = ReserveTextureLoadFile("texture/背景4.jpg");
@@ -100,6 +103,7 @@ void InitStageSelect() {
 
 	Button b;
 	b.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
 		SetStagePath(infos[GetSelectButtonIndex()].filename);
 		GoNextScene(GameScene);
 	};

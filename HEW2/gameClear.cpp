@@ -4,6 +4,7 @@
 #include "InputLogger.h"
 #include "sceneManager.h"
 #include "selectButton.h"
+#include "sound.h"
 
 
 #define GAME_CLEAR_BUTTON_WIDTH 330
@@ -17,6 +18,9 @@ static int gameClearTexture;
 
 void InitGameClear()
 {
+	StopSound();
+	PlaySound(SOUND_LABEL_BGM004);
+
 	InitSelectButton();
 
  Button returnTitleButton, retryButton;
@@ -30,6 +34,7 @@ void InitGameClear()
 	returnTitleButton.pressedTextureId = ReserveTextureLoadFile("texture/quit_pressed.png");
 
 	returnTitleButton.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
 		GoNextScene(GameStartScene);
 	};
 
@@ -40,6 +45,7 @@ void InitGameClear()
 
 
 	retryButton.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
 		GoNextScene(GameScene);
 	};
 
