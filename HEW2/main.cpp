@@ -26,6 +26,7 @@
 #include "sceneManager.h"
 #include "time.h"
 #include "font.h"
+#include "sound.h"
 #include <string>
 
 
@@ -221,7 +222,7 @@ bool Init(HWND hWnd,HINSTANCE hIns) {
 	frameCount = baseFrame = 0;
 	fps = 0.0;
 
-
+	InitSound(hWnd);
 	InitSprite();
 
 	return true;
@@ -285,6 +286,7 @@ void Draw() {
 void Uninit(void) {
 
 	UninitSprite();
+	UninitSound();
 	UninitSceneManager();
 
 

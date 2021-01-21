@@ -13,6 +13,7 @@
 #include "time.h"
 #include <math.h>
 #include "judge.h"
+#include "sound.h"
 
 #define PLAYER_TEXTURE_WIDTH 32
 #define PLAYER_TEXTURE_HEIGHT 32
@@ -95,6 +96,7 @@ void UpdatePlayer() {
 
 
 	if (player.stanTime == 0) {
+		//PlaySound(SOUND_LEBEL_SE_STAN);
 		auto length = D3DXVec2Length(&player.dir);
 		if (length > 1.0f) {
 			player.dir /= length;

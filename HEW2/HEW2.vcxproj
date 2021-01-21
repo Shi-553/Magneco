@@ -200,6 +200,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="npc.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="sceneManager.cpp" />
+    <ClCompile Include="sound.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="stageEditor.cpp" />
     <ClCompile Include="stageInfo.cpp" />
@@ -243,6 +244,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="npc.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="sceneManager.h" />
+    <ClInclude Include="sound.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="stageEditor.h" />
     <ClInclude Include="stageInfo.h" />
