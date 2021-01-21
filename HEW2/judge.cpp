@@ -8,6 +8,7 @@
 #include "map.h"
 #include "npc.h"
 #include "debugPrintf.h"
+#include "sound.h"
 #include <vector>
 
 using namespace std;
@@ -156,6 +157,7 @@ void JudgePlayerandFlyingObjectHit() {
 						npc->takeOutFrame = 0;
 						DestroyUFO();
 					}
+					PlaySound(SOUND_LABEL_SE_EXPLOSION);
 					itr = flyingObjectList->erase(itr);
 					continue;
 				}
@@ -190,6 +192,7 @@ void JudgePlayerandFlyingObjectHit() {
 						DestroyUFO();
 
 					}
+					PlaySound(SOUND_LABEL_SE_EXPLOSION);
 					itr = flyingObjectList->erase(itr);
 					isMatched = true;
 					break;
