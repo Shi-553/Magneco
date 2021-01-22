@@ -466,3 +466,16 @@ bool NPCRespone() {
 	return false;
 
 }
+void NPCContactUFO() {
+
+	npc.takeOutFrame++;
+	npc.contactUFO = true;
+	if (npc.takeOutFrame >= TAKE_OUT_FRAME_LIMIT) {
+		//itr = flyingObjectList->erase(itr);
+		GoNextScene(GameOverScene, FADE_IN);
+	}
+}
+void NPCDeleteUFO() {
+	npc.takeOutFrame = 0;
+	npc.contactUFO = false;
+}

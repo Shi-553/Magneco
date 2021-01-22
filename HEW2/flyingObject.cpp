@@ -30,6 +30,8 @@ static int ufoLightAnimationTextureId;
 static int ufoBottomLightAnimationTextureId;
 static int roadSignTextureId;
 
+void BreakBlock(INTVECTOR2 pos);
+
 static int frame = 0;
 
 static SponeId spone;
@@ -166,7 +168,7 @@ void BackFlyingObject(int frame) {
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
 		if (UpdateFlyingObject(&*itr, -frame * itr->speed)) {
 			if (itr->type == FLYING_OBJECT_UFO) {
-				DestroyUFO();
+				NPCDeleteUFO();
 			}
 			itr = flyingObjects.erase(itr);
 		}
@@ -197,10 +199,34 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 	}
 }
 
-void DestroyUFO() {
-	existsUFO = false;
+void BreakBlock(FlyingObject& f) {
+	if (f.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
+		BreakBlock(f.trans.GetIntPos());
+		BreakBlock(f.trans.GetIntPos() + INTVECTOR2(1, 0));
+		BreakBlock(f.trans.GetIntPos() + INTVECTOR2(0, 1));
+		BreakBlock(f.trans.GetIntPos() + INTVECTOR2(-1, 0));
+		BreakBlock(f.trans.GetIntPos() + INTVECTOR2(0, -1));
+	}
 }
+bool DamageFlyingObject(FlyingObject& f) {
+	f.hp--;
+	if (f.hp > 0) {
+		return false;
+	}
+	if (f.type == FLYING_OBJECT_UFO) {
+		existsUFO = false;
+		NPCDeleteUFO();
+	}
 
+	return true;
+}
+void BreakBlock(INTVECTOR2 pos) {
+	if (auto m = GetMap(pos)) {
+		if (m->type == MAP_BLOCK || m->type == MAP_ROCK) {
+			m->type = MAP_BLOCK_NONE;
+		}
+	}
+}
 
 
 bool IsFlyingObjectItem(FlyingObjectType type) {

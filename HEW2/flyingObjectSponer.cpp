@@ -2,6 +2,7 @@
 #include "map.h"
 #include <vector>
 #include "debugPrintf.h"
+#include "npc.h"
 
 using namespace std;
 
@@ -196,8 +197,8 @@ void SetFlyingObjectSponeFrame(int f) {
 				sponeIndex--;
 				auto itr = find_if(GetFlyingObjects()->begin(), GetFlyingObjects()->end(), [](FlyingObject f) {return sponeIndex == f.id; });
 				if (itr != GetFlyingObjects()->end()) {
-					if (itr->type == FLYING_OBJECT_UFO) {
-						DestroyUFO();
+					if (itr->type == FLYING_OBJECT_UFO){
+						NPCDeleteUFO();
 					}
 					GetFlyingObjects()->erase(itr);
 				}

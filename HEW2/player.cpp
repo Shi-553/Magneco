@@ -518,7 +518,7 @@ bool DamagePlayer() {
 	return true;
 }
 
-bool DamageFlyingObject(int uid) {
+bool DamagePlayerFlyingObject(int uid) {
 	if (IsPlayerInvicible()) {
 		return false;
 	}
