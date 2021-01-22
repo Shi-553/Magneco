@@ -158,6 +158,7 @@ void JudgePlayerandFlyingObjectHit() {
 				}
 
 				if (DamageFlyingObject(*itr)) {
+					BreakBlock(*itr);
 					itr = flyingObjectList->erase(itr);
 					isMatched = true;
 					break;

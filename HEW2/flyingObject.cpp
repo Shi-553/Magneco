@@ -177,6 +177,15 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 	}
 }
 
+void BreakBlock(FlyingObject& f) {
+	if (f.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
+		BreakBlock(f.trans.GetIntPos());
+		BreakBlock(f.trans.GetIntPos() + INTVECTOR2(1, 0));
+		BreakBlock(f.trans.GetIntPos() + INTVECTOR2(0, 1));
+		BreakBlock(f.trans.GetIntPos() + INTVECTOR2(-1, 0));
+		BreakBlock(f.trans.GetIntPos() + INTVECTOR2(0, -1));
+	}
+}
 bool DamageFlyingObject(FlyingObject& f) {
 	f.hp--;
 	if (f.hp > 0) {
@@ -185,13 +194,6 @@ bool DamageFlyingObject(FlyingObject& f) {
 	if (f.type == FLYING_OBJECT_UFO) {
 		existsUFO = false;
 		NPCDeleteUFO();
-	}
-	if (f.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
-		BreakBlock(f.trans.GetIntPos());
-		BreakBlock(f.trans.GetIntPos()+INTVECTOR2(1,0));
-		BreakBlock(f.trans.GetIntPos()+INTVECTOR2(0,1));
-		BreakBlock(f.trans.GetIntPos()+INTVECTOR2(-1,0));
-		BreakBlock(f.trans.GetIntPos()+INTVECTOR2(0,-1));
 	}
 
 	return true;
