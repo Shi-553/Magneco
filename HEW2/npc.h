@@ -12,6 +12,8 @@ typedef struct NPC_tag {
 	int takeOutFrame;
 	INTVECTOR2 responePos;
 	D3DXVECTOR2 size;
+	int fallFrame;
+	int respawnFrame;
 }NPC;
 
 #define TAKE_OUT_FRAME_LIMIT (10 * 60)
