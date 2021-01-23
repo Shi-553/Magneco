@@ -21,9 +21,9 @@ static SelectButton gameOverSelect;
 void InitGameOver() {
 	gameOverSelect.Init();
 
-Button retryButton, returnTitleButton;
+Button retryButton, stageSelectButton, returnTitleButton;
 
-	auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - GAME_OVER_BUTTON_WIDTH / 2, (SCREEN_HEIGHT / 2 - GAME_OVER_BUTTON_HEIGHT / 2) + 40);
+	auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - GAME_OVER_BUTTON_WIDTH / 2, (SCREEN_HEIGHT / 2 - GAME_OVER_BUTTON_HEIGHT / 2) + 30);
 
 	retryButton.pos = buttonCenter;
 	retryButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
@@ -34,7 +34,16 @@ Button retryButton, returnTitleButton;
 		GoNextScene(GameScene);
 	};
 
-	returnTitleButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_OVER_BUTTON_HEIGHT + 32);
+	stageSelectButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_OVER_BUTTON_HEIGHT + 16);
+	stageSelectButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
+	stageSelectButton.textureId = ReserveTextureLoadFile("texture/ui/stageselect.png");
+	stageSelectButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/stageselect_pressed.png");
+
+	stageSelectButton.releasedCallback = []() {
+		GoNextScene(StageSelect);
+	};
+
+	returnTitleButton.pos = stageSelectButton.pos + D3DXVECTOR2(0, GAME_OVER_BUTTON_HEIGHT + 16);
 	returnTitleButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
 	returnTitleButton.textureId = ReserveTextureLoadFile("texture/ui/quit.png");
 	returnTitleButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/quit_pressed.png");
@@ -44,6 +53,7 @@ Button retryButton, returnTitleButton;
 	};
 
 	gameOverSelect.Add(retryButton);
+	gameOverSelect.Add(stageSelectButton);
 	gameOverSelect.Add(returnTitleButton);
 
 	backgroundTexture = ReserveTextureLoadFile("texture/background/背景2.jpg");
