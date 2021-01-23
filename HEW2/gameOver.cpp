@@ -36,8 +36,8 @@ Button retryButton, stageSelectButton, returnTitleButton;
 
 	stageSelectButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_OVER_BUTTON_HEIGHT + 16);
 	stageSelectButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
-	stageSelectButton.textureId = ReserveTextureLoadFile("texture/ui/quit.png");
-	stageSelectButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/quit_pressed.png");
+	stageSelectButton.textureId = ReserveTextureLoadFile("texture/ui/stageselect.png");
+	stageSelectButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/stageselect_pressed.png");
 
 	stageSelectButton.releasedCallback = []() {
 		GoNextScene(StageSelect);

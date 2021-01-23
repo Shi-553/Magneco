@@ -31,8 +31,8 @@ void InitGameClear()
 
 	stageSelectButton.pos = buttonCenter;
 	stageSelectButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
-	stageSelectButton.textureId = ReserveTextureLoadFile("texture/ui/retry.png");
-	stageSelectButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/retry_pressed.png");
+	stageSelectButton.textureId = ReserveTextureLoadFile("texture/ui/stageselect.png");
+	stageSelectButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/stageselect_pressed.png");
 
 
 	stageSelectButton.releasedCallback = []() {
