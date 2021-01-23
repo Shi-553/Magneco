@@ -22,8 +22,7 @@ typedef enum
 	SOUND_LABEL_BGM005,			// ゲームオーバー時のBGM(たなびく黄昏)
 	SOUND_LABEL_BGM006,			// ゲームオーバー時のBGM(過去への旅路)
 	SOUND_LABEL_BGM007,			// ボス戦BGM(決着をつけるぞ)
-	SOUND_LABEL_BGM008,			// ボス戦BGM(逃げろ逃げろ逃げろ)
-	SOUND_LABEL_BGM009,			// ボス戦BGM(予期せぬ事態)
+	SOUND_LABEL_BGM008,			// ボス戦BGM(予期せぬ事態)
 	SOUND_LABEL_SE_COMPLETE,	// マグネッコがルートを作成しきった時のSE
 	SOUND_LABEL_SE_DECITION,	// 決定したときのSE
 	SOUND_LABEL_SE_EXPLOSION,	// 敵が爆発したときのSE
