@@ -43,6 +43,7 @@ static Message* nameMessage, *overviewMessage, *lavelMessage;
 
 static vector<StageInfo> infos;
 static vector<int> smunes;
+static std::string stageFoldername="stage";
 
 enum StageSelectTexture {
 	STAGE_SELECT_BACK_GROUND,
@@ -94,7 +95,7 @@ void InitStageSelect() {
 	lavelMessage->SetScale({ 1.2, 1.2 });
 	lavelMessage->SetFormat(DT_RIGHT);
 
-	GetStageInfos("stage", infos);
+	GetStageInfos(stageFoldername, infos);
 
 	std::sort(infos.begin(), infos.end(), [](StageInfo a, StageInfo b) {
 		return a.index < b.index;
@@ -147,6 +148,11 @@ void UninitStageSelect() {
 void UpdateStageSelect() {
 	stageSelect.Update();
 }
+
+void SetStageFolder(std::string foldername) {
+	stageFoldername = foldername;
+}
+
 void DrawStageSelect() {
 	DrawSprite(selectStageTextureIds[STAGE_SELECT_BACK_GROUND], D3DXVECTOR2(0, 0), 1);
 

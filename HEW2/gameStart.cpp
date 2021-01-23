@@ -6,6 +6,7 @@
 #include "sceneManager.h"
 #include "InputLogger.h"
 #include "selectButton.h"
+#include "stageSelect.h"
 
 #define GAME_START_BUTTON_WIDTH 330
 #define GAME_START_BUTTON_HEIGHT 90
@@ -35,6 +36,7 @@ void InitGameStart() {
 	startButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/start_pressed.png");
 
 	startButton.releasedCallback = []() {
+		SetStageFolder("stage/main");
 		GoNextScene(StageSelect);
 	};
 
@@ -46,7 +48,8 @@ void InitGameStart() {
 
 
 	tutorialButton.releasedCallback = []() {
-		GoNextScene(TutorialScene);
+		SetStageFolder("stage/tutorial");
+		GoNextScene(StageSelect);
 	};
 
 	endButton.pos = tutorialButton.pos + D3DXVECTOR2(0, GAME_START_BUTTON_HEIGHT + 16);
