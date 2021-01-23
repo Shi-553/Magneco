@@ -29,7 +29,6 @@ static int damageTextureId = TEXTURE_INVALID_ID;
 static int purgeTextureId = TEXTURE_INVALID_ID;
 static int notifyUFOTextureId = TEXTURE_INVALID_ID;
 static Player player;
-
 static int  playerTextureVertical = 0;
 
 static int putPredictionTextureId = TEXTURE_INVALID_ID;
