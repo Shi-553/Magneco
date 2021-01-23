@@ -38,6 +38,7 @@ void BlockDecision();
 void ToFreeFlyingObject(FlyingObject& flyingObject);
 void UpdatePutFlyingObject();
 bool IsOverlaped(FlyingObject& flyingObject);
+void MoveAdjust();
 
 void InitPlayer() {
 	textureId = ReserveTextureLoadFile("texture/player/player_64×64.png");
@@ -298,6 +299,9 @@ void UpdatePutFlyingObject() {
 		}
 
 	}
+	if (player.isPut&&!player.putFlyingObjectList.empty()) {
+		MoveAdjust();
+	}
 }
 
 
@@ -395,7 +399,17 @@ bool PlayerImport(FILE* fp) {
 
 	return true;
 }
+void MoveAdjust() {
+	auto last = player.trans.pos;
+	player.trans.pos = player.trans.GetIntPos().ToD3DXVECTOR2() + D3DXVECTOR2(0.5, 0.5);
+	player.trans.UpdatePos();
 
+	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+		itr != player.flyingObjectList.end(); itr++) {
+		itr->trans.pos += player.trans.pos - last;
+		itr->trans.UpdatePos();
+	}
+}
 void MakePut() {
 	if (player.flyingObjectList.empty()) {
 		return;
@@ -410,6 +424,7 @@ void MakePut() {
 		player.flyingObjectList.clear();
 		player.invicibleTime = 0;
 		player.checkCheckpoint = false;
+		MoveAdjust();
 		return;
 	}
 
