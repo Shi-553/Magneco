@@ -427,6 +427,9 @@ void PutCansel() {
 
 
 bool GetBlock(FlyingObject& itr, D3DXVECTOR2& attachPos) {
+	if (player.stanTime > 0) {
+		return false;
+	}
 	if (player.flyingObjectList.size() >= player.blockMax || player.checkCheckpoint || player.isPut) {
 		return false;
 	}
