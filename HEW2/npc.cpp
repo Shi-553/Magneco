@@ -36,8 +36,11 @@ bool NPCRespone();
 #define BEACON_TEXTURE_WIDTH 32
 #define BEACON_TEXTURE_HEIGHT 64
 
-#define NPC_SIZE_WIDTH 1.76
-#define NPC_SIZE_HEIGHT 1.76
+#define NPC_SIZE_WIDTH 1.6
+#define NPC_SIZE_HEIGHT 1.6
+
+#define NPC_FALL_FRAME_MAX (100.0)
+#define NPC_RESPONE_FRAME_MAX (50.0)
 
 static int beaconTextureId = TEXTURE_INVALID_ID;
 
@@ -80,7 +83,9 @@ void InitNPC() {
 	while (!nextPosQueue.empty()) {
 		nextPosQueue.pop();
 	}
-	font = new Message(D3DXVECTOR2(1.3,1.3));
+	font = new Message(D3DXVECTOR2(1.3, 1.3));
+	npc.fallFrame = 0;
+	npc.respawnFrame = 0;
 }
 
 void UninitNPC() {
@@ -97,10 +102,31 @@ void UninitNPC() {
 }
 
 void UpdateNPC() {
+	if (npc.respawnFrame > 0) {
+		npc.respawnFrame--;
+	}
+	if (npc.fallFrame > 0) {
+		npc.fallFrame--;
+		if (npc.fallFrame == 0) {
+			npc.contactUFO = false;
+			npc.respawnFrame = NPC_RESPONE_FRAME_MAX;
+			npc.trans.Init(npc.responePos);
+			npc.frame = 0;
+			dir = INTVECTOR2(0, 0);
+			npc.isMove = false;
+			nextPos = npc.trans.GetIntPos();
+			gBeaconPos = npc.trans.GetIntPos();
+			while (!nextPosQueue.empty()) {
+				nextPosQueue.pop();
+			}
+		}
+		return;
+	}
 
 	npc.aniFrame++;
 
 	if (NPCRespone()) {
+		npc.fallFrame = NPC_FALL_FRAME_MAX;
 		npc.frame = 0;
 		dir = INTVECTOR2(0, 0);
 		npc.isMove = false;
@@ -155,10 +181,27 @@ void UpdateNPC() {
 }
 
 void DrawNPC() {
-
 	auto drawingPos = npc.trans.pos;
-	drawingPos.x -= 0.39f;
-	drawingPos.y -= 1.05f;
+	drawingPos.x -= 0.30f;
+	drawingPos.y -= 0.9f;
+
+	auto ty = (1 - (npc.respawnFrame / NPC_RESPONE_FRAME_MAX));
+
+	if (npc.fallFrame > 0) {
+		auto tPos = D3DXVECTOR2(
+			NPC_TEXTURE_WIDTH * (npc.fallFrame / 6 % 6),
+			0
+		);
+		auto bef = D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT);
+		auto t = npc.fallFrame / NPC_FALL_FRAME_MAX;
+		auto aft = bef *t*(2-t);
+
+		drawingPos -= (aft - bef) / 2;
+		DrawGameSprite(npcTextureUFO, drawingPos, 30, aft* ty, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT* ty));
+
+		return;
+	}
+
 
 	if (!npc.isMove && !npc.contactUFO) {
 		auto tPos = D3DXVECTOR2(
@@ -166,19 +209,19 @@ void DrawNPC() {
 			npcTextureVertical
 		);
 
-		DrawGameSprite(npcTextureIdWait, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
+		DrawGameSprite(npcTextureIdWait, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT * ty) , tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT * ty));
 		DrawGameSprite(npcTextureIdShadow, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT));
 	}
-	else if(!npc.isMove && npc.contactUFO){
+	else if (!npc.isMove && npc.contactUFO) {
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 6 % 6),
 			0
 		);
 
-		DrawGameSprite(npcTextureUFO, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
+		DrawGameSprite(npcTextureUFO, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT * ty), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT * ty));
 		DrawGameSprite(npcTextureIdShadow, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT));
 	}
-	else 
+	else
 	{
 		auto tBeaconPos = D3DXVECTOR2(
 			BEACON_TEXTURE_WIDTH * (npc.aniFrame / 8 % 12),
@@ -192,20 +235,20 @@ void DrawNPC() {
 			npcTextureVertical
 		);
 
-		DrawGameSprite(npcTextureIdMove, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
+		DrawGameSprite(npcTextureIdMove, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT * ty), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT * ty));
 		DrawGameSprite(npcTextureIdShadow, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT));
 	}
 
 	if (npc.takeOutFrame > 0) {
-		auto string=std::to_string((TAKE_OUT_FRAME_LIMIT -npc.takeOutFrame+1)/100);
+		auto string = std::to_string((TAKE_OUT_FRAME_LIMIT - npc.takeOutFrame + 1) / 100);
 		auto g = npc.trans.pos + D3DXVECTOR2(0.5, 0.5);
 		auto screenPos = GameToScreenPos(g);
-		
-		font->SetPos(D3DXVECTOR2(screenPos.x,screenPos.y-150));
-		font->SetEndPos(D3DXVECTOR2(screenPos.x,screenPos.y-150));
-		font->SetFormat(DT_CENTER|DT_NOCLIP);
+
+		font->SetPos(D3DXVECTOR2(screenPos.x, screenPos.y - 150));
+		font->SetEndPos(D3DXVECTOR2(screenPos.x, screenPos.y - 150));
+		font->SetFormat(DT_CENTER | DT_NOCLIP);
 		font->ClearOffset();
-		font->Draw( string.c_str());
+		font->Draw(string.c_str());
 	}
 }
 
@@ -460,7 +503,6 @@ void SetNPCResponePos(INTVECTOR2 pos) {
 bool NPCRespone() {
 	auto mapType = GetMapType(npc.trans.GetIntPos());
 	if (!CanGoNPCMapType(mapType)) {
-		npc.trans.Init(npc.responePos);
 		return true;
 	}
 	return false;
