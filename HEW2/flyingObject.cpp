@@ -255,6 +255,10 @@ void BreakBlock(INTVECTOR2 pos) {
 	if (auto m = GetMap(pos)) {
 		if (m->type == MAP_BLOCK || m->type == MAP_ROCK) {
 			m->type = MAP_BLOCK_NONE;
+			BreakNotConnectBlock(pos + INTVECTOR2(0, 1));
+			BreakNotConnectBlock(pos + INTVECTOR2(0, -1));
+			BreakNotConnectBlock(pos + INTVECTOR2(1, 0));
+			BreakNotConnectBlock(pos + INTVECTOR2(-1, 0));
 		}
 	}
 }
