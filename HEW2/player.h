@@ -22,11 +22,12 @@ struct Player {
 	int blockMax;
 	bool checkCheckpoint;
 	bool isPut;
+	bool isMove;
 	int putFrame;
 	int putRequiredFrame;
-
 	int stanTime;
 	int invicibleTime;
+	int nekopunchTime;
 	D3DXVECTOR2 size;
 	std::vector<FlyingObject> putFlyingObjectList;
 };
@@ -60,6 +61,7 @@ bool GetBlock(FlyingObject& itr, D3DXVECTOR2& attachPos);
 bool IsPlayerInvicible();
 
 bool DamagePlayer();
+bool DamagePlayerFlyingObject(int uid);
 
 bool RemoteBlockToFreeFlyingObject();
 #endif // !_PLAYER_H
