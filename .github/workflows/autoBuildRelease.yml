@@ -5,6 +5,8 @@ on:
     branches:
       - master
 
+    paths-ignore:
+      - '**.yml'
 jobs:
   build:
     env:
@@ -14,8 +16,10 @@ jobs:
     runs-on: windows-latest
     
     steps: 
-    - name: Check mutex  
-      uses: shogo82148/actions-mutex@v1
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0
+      with:
+        access_token: ${{ github.token }}
       
     - name: Checkout code
       uses: actions/checkout@v2
