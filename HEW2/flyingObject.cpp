@@ -30,6 +30,9 @@ static int ufoLightAnimationTextureId;
 static int ufoBottomLightAnimationTextureId;
 static int roadSignTextureId;
 
+static int  nekoPanchiTextureId = TEXTURE_INVALID_ID;
+
+
 void BreakBlock(INTVECTOR2 pos);
 
 static int frame = 0;
@@ -65,7 +68,7 @@ void InitFlyingObject() {
 	flyingObjectTextureIds[FLYING_OBJECT_UFO] = ReserveTextureLoadFile("texture/enemy/UFO.png");
 	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_SECOND] = ReserveTextureLoadFile("texture/enemy/jellyaliengirl_anime.png");
 	flyingObjectTextureIds[FLYING_OBJECT_PLAYER_BLOCK] = ReserveTextureLoadFile("texture/block/block01.png");
-	flyingObjectTextureIds[FLYING_OBJECT_PURGE_BLOCK] = ReserveTextureLoadFile("texture/block/block01.png");
+	flyingObjectTextureIds[FLYING_OBJECT_PURGE_BLOCK] = ReserveTextureLoadFile("texture/block/nekopanchi_nikukyu.png");
 	existsUFO = false;
 
 	flyingObjectTextureIds[FLYING_OBJECT_ITEM_ADD_SPEED] = ReserveTextureLoadFile("texture/item/item_hane_anime.png");
@@ -75,6 +78,8 @@ void InitFlyingObject() {
 	ufoLightAnimationTextureId = ReserveTextureLoadFile("texture/enemy/beam_front.png");
 	ufoBottomLightAnimationTextureId = ReserveTextureLoadFile("texture/enemy/beam_behind.png");
 	roadSignTextureId = ReserveTextureLoadFile("texture/enemy/insekikuruyo.png");
+
+	nekoPanchiTextureId = ReserveTextureLoadFile("texture/block/nekopanchi.png");
 
 	frame = 0;
 	currentUID = 0;
@@ -87,12 +92,39 @@ void UninitFlyingObject() {
 	ReleaseTexture(ufoLightAnimationTextureId);
 	ReleaseTexture(ufoBottomLightAnimationTextureId);
 	ReleaseTexture(roadSignTextureId);
+	ReleaseTexture(nekoPanchiTextureId);
 }
 void DrawFlyingObject(FlyingObject& flyingObject) {
 	Player* player = GetPlayer();
 	NPC* npc = GetNpc();
 	auto textureId = flyingObjectTextureIds[flyingObject.type];
 
+	if (flyingObject.type == FLYING_OBJECT_PURGE_BLOCK) {
+		auto tPos = D3DXVECTOR2(
+					FLYINGOBJECT_ITEM_TEXTURE_WIDTH *2* (frame / 12 % 6),
+					0
+		);
+		auto size = flyingObject.size.ToD3DXVECTOR2();
+		size.x *= 2;
+		auto pos = flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0;
+		pos.x -= flyingObject.size.x;
+		auto d = D3DXVECTOR2(-1, 0);
+		auto dr = D3DXVec2Dot(&d, &flyingObject.dir);
+		if (dr > 1) {
+			dr = 1;
+		}
+		if (dr < -1) {
+			dr = -1;
+		}
+		auto rad = acosf(dr);
+		if (d.x * flyingObject.dir.y - d.y * flyingObject.dir.x<0) {
+			rad = -rad;
+		}
+		auto cp = flyingObject.size.ToD3DXVECTOR2() / 2.0;
+		cp.x += flyingObject.size.x;
+		DrawGameSprite(nekoPanchiTextureId, pos, 50, size, tPos, D3DXVECTOR2(FLYINGOBJECT_ITEM_TEXTURE_WIDTH * 2, FLYINGOBJECT_ITEM_TEXTURE_HEIGHT),cp, rad);
+
+	}
 
 	if (flyingObject.isAnime) {
 		DrawGameSprite(blockAnimationTextureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2(), { (float)(4 * player->putFrame / DEFAULT_PUT_REQUIRED_FRAME) * 32, 0 }, { 32, 32 });
@@ -122,7 +154,7 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 			);
 
 			DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6, 50, D3DXVECTOR2(1.3, 1.3), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
-		}	
+		}
 		else if (flyingObject.hp == 1) {
 			auto tPos = D3DXVECTOR2(
 				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 12 % 4),
@@ -140,7 +172,7 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 			DrawGameSprite(ufoLightAnimationTextureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6 + D3DXVECTOR2(-0.25, 0.5), 50, D3DXVECTOR2(1.8, 1.7), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, UFO_LIGHT_ANIMETION_TEXTURE));
 			DrawGameSprite(ufoBottomLightAnimationTextureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6 + D3DXVECTOR2(-0.25, 0.5), 50, D3DXVECTOR2(1.8, 1.7), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, UFO_LIGHT_ANIMETION_TEXTURE));
 		}
-	}	
+	}
 	else {
 		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2());
 	}
@@ -182,9 +214,8 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 		flyingObject->dir = (GetNpc()->trans.pos + ADD_UFO_POS) - flyingObject->trans.pos;
 
 	}
-	auto nomal = flyingObject->dir;
-	D3DXVec2Normalize(&nomal, &nomal);
-	flyingObject->trans.pos += nomal * speed * GetDeltaTime();
+	D3DXVec2Normalize(&flyingObject->dir, &flyingObject->dir);
+	flyingObject->trans.pos += flyingObject->dir * speed * GetDeltaTime();
 
 	flyingObject->trans.UpdatePos();
 
