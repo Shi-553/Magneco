@@ -194,7 +194,7 @@ void DrawNPC() {
 		);
 		auto bef = D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT);
 		auto t = npc.fallFrame / NPC_FALL_FRAME_MAX;
-		auto aft = bef * t;
+		auto aft = bef *t*(2-t);
 
 		drawingPos -= (aft - bef) / 2;
 		DrawGameSprite(npcTextureUFO, drawingPos, 30, aft* ty, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT* ty));
