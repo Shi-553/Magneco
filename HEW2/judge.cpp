@@ -85,6 +85,7 @@ void JudgePlayerandFlyingObjectHit() {
 							npc->takeOutFrame = 0;
 							DestroyUFO();
 						}
+						PlaySound(SOUND_LABEL_SE_EXPLOSION);
 						itr = flyingObjectList->erase(itr);
 						isMatched = true;
 						break;
