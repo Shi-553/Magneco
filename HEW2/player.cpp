@@ -121,6 +121,7 @@ void UpdatePlayer() {
 		}
 		if (player.putFrame >= DEFAULT_PUT_REQUIRED_FRAME) {
 			BlockDecision();
+			PlaySound(SOUND_LABEL_SE_STICK);
 		}
 
 
@@ -285,6 +286,7 @@ void PutBeacon() {
 	auto mapType = GetMapType(player.trans.GetIntPos());
 	if (CanGoNPCMapType(mapType)) {
 		UpdateNPCShortestPath(player.trans.GetIntPos());
+		PlaySound(SOUND_LABEL_SE_BEACON);
 	}
 }
 
@@ -339,6 +341,7 @@ void MakePut() {
 	}
 
 	player.isPut = true;
+
 }
 
 void PutCansel() {

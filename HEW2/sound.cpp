@@ -42,6 +42,7 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 	{"BGM/bgm006.wav", -1},		// ゲームオーバー時のBGM(過去への旅路)
 	{"BGM/bgm007.wav", -1},		// ボス戦BGM(決着をつけるぞ)
 	{"BGM/bgm008.wav", -1},		// ボス戦BGM(予期せぬ事態)
+	{"SE/beacon000.wav", 0},	// ビーコンを設置したときのSE
 	{"SE/complete000.wav", 0},	// マグネッコがルートを作成しきった時のSE
 	{"SE/decition000.wav", 0},	// 決定したときのSE
 	{"SE/explosion000.wav", 0},	// 敵が爆発したときのSE
