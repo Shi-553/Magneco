@@ -1,6 +1,9 @@
 name: auto build and release
 
 on:
+  workflow_dispatch:
+   branches:
+      - master
   push:
     branches:
       - master
