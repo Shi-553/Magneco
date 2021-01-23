@@ -47,7 +47,6 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 	{"SE/explosion000.wav", 0},	// 敵が爆発したときのSE
 	{"SE/purge000.wav", 0},		// マグネッコが所持ブロックをパージしたときのSE
 	{"SE/stan000.wav", 0},		// マグネッコスタン時のSE
-	{"SE/stan001.wav", 0},		// マグネッコスタン時のSE
 	{"SE/stick000.wav", 0},		// マグネッコがブロックをくっつけた時のSE
 	{"SE/ufo000.wav", -1},		// UFOが漂うSE
 	{"SE/ufo001.wav", -1},		// UFOがローズをさらっているときのSE

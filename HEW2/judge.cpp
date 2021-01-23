@@ -240,6 +240,7 @@ void JudgePlayerandFlyingObjectHit() {
 			D3DXVECTOR2 shiftPos = itr->trans.pos - ADD_UFO_POS;
 			if (CheckBlockBlock(npc->trans.pos, shiftPos, npc->size, itr->size)) {
 				npc->takeOutFrame++;
+				StopSound(SOUND_LABEL_SE_UFO);
 				if (npc->takeOutFrame >= TAKE_OUT_FRAME_LIMIT) {
 					//itr = flyingObjectList->erase(itr);
 					GoNextScene(GameOverScene, FADE_IN);
