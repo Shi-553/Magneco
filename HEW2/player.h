@@ -64,4 +64,6 @@ bool DamagePlayer();
 bool DamagePlayerFlyingObject(int uid);
 
 bool RemoteBlockToFreeFlyingObject();
+
+void GetItem(FlyingObjectType type);
 #endif // !_PLAYER_H

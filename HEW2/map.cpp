@@ -40,6 +40,7 @@ void InitMap(void)
 	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/block/warpblock32_64_anime.png");
 	textureIds[MAP_CHEST_CLOSED] = ReserveTextureLoadFile("texture/block/itembox_anime.png");
 	textureIds[MAP_CHEST_OPENED] = ReserveTextureLoadFile("texture/block/itembox_block.png");
+	textureIds[MAP_BLOCK_REMOVE] = ReserveTextureLoadFile("texture/block/road_block.png");
 
 	frame = 0;
 	mapHeight = 10;
@@ -183,6 +184,20 @@ void UninitMap(void)
 
 void UpdateMap(void)
 {
+	for (int i = 0; i < mapHeight; i++) {
+		for (int j = 0; j < mapWidth; j++) {
+			Map* map = GetMap(INTVECTOR2(j, i));
+			if (map == NULL) {
+				continue;
+			}
+			if (map->type == MAP_BLOCK_REMOVE) {
+				map->param--;
+				if (map->param < 0) {
+					map->type = MAP_BLOCK_NONE;
+				}
+			}
+		}
+	}
 	frame++;
 }
 
@@ -208,6 +223,11 @@ void DrawMap(void)
 				continue;
 			}
 
+			if (map->type == MAP_BLOCK_REMOVE) {
+				auto size = map->param / 100.0f;
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j+0.5- size/2, i + 0.5 - size / 2), 100, D3DXVECTOR2(size, size));
+				continue;
+			}
 			if (map->type == MAP_GOAL || map->type == MAP_CHEST_CLOSED) {
 				auto tPos = D3DXVECTOR2(
 					MAP_TEXTURE_WIDTH * (frame / 8 % 8),
@@ -475,7 +495,8 @@ bool BreakNotConnectBlock(INTVECTOR2 pos) {
 	for (auto itrV = v.begin(); itrV != v.end(); itrV++) {
 		Map* map = GetMap(*itrV);
 		if (map != NULL && map->type == MAP_BLOCK) {
-			map->type = MAP_BLOCK_NONE;
+			map->type = MAP_BLOCK_REMOVE;
+			map->param = 100;
 		}
 	}
 	return true;

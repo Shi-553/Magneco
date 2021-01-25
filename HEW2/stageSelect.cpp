@@ -57,6 +57,7 @@ enum StageSelectTexture {
 static int selectStageTextureIds[STAGE_SELECT_MAX];
 
 static SelectButton stageSelect;
+static int index = 0;
 
 void InitStageSelect() {
 	StopSound();
@@ -98,6 +99,7 @@ void InitStageSelect() {
 	lavelMessage->SetScale({ 1.2, 1.2 });
 	lavelMessage->SetFormat(DT_RIGHT);
 
+	infos.clear();
 	GetStageInfos(stageFoldername, infos);
 
 	std::sort(infos.begin(), infos.end(), [](StageInfo a, StageInfo b) {
@@ -106,8 +108,9 @@ void InitStageSelect() {
 
 	Button b;
 	b.releasedCallback = []() {
-		SetStagePath(infos[stageSelect.GetIndex()].filename);
 		PlaySound(SOUND_LABEL_SE_DECITION);
+		index = stageSelect.GetIndex();
+		SetStagePath(infos[index].filename);
 		GoNextScene(GameScene);
 	};
 	b.textureId = ReserveTextureLoadFile("texture/stageSelect/icon_noselect.png");
@@ -131,7 +134,7 @@ void InitStageSelect() {
 
 
 	stageSelect.SetKey(MYVK_ENTER, MYVK_RIGHT, MYVK_LEFT);
-
+	stageSelect.SetIndex(index);
 	LoadTexture();
 }
 void UninitStageSelect() {
@@ -143,7 +146,6 @@ void UninitStageSelect() {
 		ReleaseTexture(*itr);
 	}
 	smunes.clear();
-	infos.clear();
 	delete overviewMessage;
 	delete nameMessage    ;
 	delete lavelMessage   ;
@@ -155,6 +157,14 @@ void UpdateStageSelect() {
 
 void SetStageFolder(std::string foldername) {
 	stageFoldername = foldername;
+	index = 0;
+}
+bool IsNextStage() {
+	return infos.size() > index + 1;
+}
+void NextStaege() {
+	index++;
+	SetStagePath(infos[index].filename);
 }
 
 void DrawStageSelect() {

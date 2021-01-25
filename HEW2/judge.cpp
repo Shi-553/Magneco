@@ -102,12 +102,7 @@ void JudgePlayerandFlyingObjectHit() {
 		}
 
 		if (IsFlyingObjectItem(itr->type)) {
-			if (itr->type == FLYING_OBJECT_ITEM_ADD_SPEED) {
-				player->addSpeed++;
-			}
-			else if (itr->type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
-				player->blockMax++;
-			}
+			GetItem(itr->type);
 			itr = flyingObjectList->erase(itr);
 			continue;
 		}
@@ -135,6 +130,7 @@ void JudgePlayerandFlyingObjectHit() {
 					PlaySound(SOUND_LABEL_SE_EXPLOSION);
 					itr = flyingObjectList->erase(itr);
 				}
+					break;
 			}
 
 			itr++;
