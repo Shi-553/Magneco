@@ -124,6 +124,9 @@
     <ClCompile Include="pauseMenu.cpp">
       <Filter>cpp\others</Filter>
     </ClCompile>
+    <ClCompile Include="teamLogo.cpp">
+      <Filter>cpp\scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -254,6 +257,9 @@
     </ClInclude>
     <ClInclude Include="pauseMenu.h">
       <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="teamLogo.h">
+      <Filter>ヘッダー\scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

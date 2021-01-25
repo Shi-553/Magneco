@@ -203,7 +203,7 @@ bool Init(HWND hWnd,HINSTANCE hIns) {
 	InitFont();
 	InitTexture();
 
-	InitSceneManager(GameStartScene);
+	InitSceneManager(TeamLogoScene);
 
 	InitDebugFont();
 

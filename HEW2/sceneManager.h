@@ -4,6 +4,7 @@
 enum Scene
 {
 	NullScene=-1,
+	TeamLogoScene,
 	GameStartScene,
 	GameScene,
 	GameClearScene,
