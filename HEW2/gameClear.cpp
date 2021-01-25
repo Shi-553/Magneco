@@ -65,7 +65,7 @@ void InitGameClear()
 
 	stageSelectButton.releasedCallback = []() {
 		StopSound();
-		PlaySound(SOUND_LABEL_BGM004);
+		PlaySound(SOUND_LABEL_SE_DECITION);
 		GoNextScene(StageSelect);
 	};
 	gameClearSelect.Add(stageSelectButton);
