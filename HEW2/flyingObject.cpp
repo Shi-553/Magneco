@@ -247,7 +247,6 @@ bool DamageFlyingObject(FlyingObject& f) {
 	if (f.hp > 0) {
 		return false;
 	}
-	PlaySound(SOUND_LABEL_SE_EXPLOSION);
 	if (f.type == FLYING_OBJECT_UFO) {
 		existsUFO = false;
 		StopSound(SOUND_LABEL_SE_UFO);
