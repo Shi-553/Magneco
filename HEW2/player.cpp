@@ -102,7 +102,7 @@ void UpdatePlayer() {
 			}
 		}
 	}
-	auto speed = player.baseSpeed - (player.baseSpeed / 2 * player.flyingObjectList.size() / player.blockMax) + player.addSpeed;
+	auto speed = player.baseSpeed /*- (player.baseSpeed / 2 * player.flyingObjectList.size() / player.blockMax)*/ + player.addSpeed;
 
 	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
 		if (UpdateFlyingObject(&*itr, PLAYER_PURGE_SPEED)) {
