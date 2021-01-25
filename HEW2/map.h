@@ -21,6 +21,7 @@ enum MapType
 	MAP_GOAL,             // ゴール
 	MAP_CHEST_CLOSED,        // 宝箱閉じてる
 	MAP_CHEST_OPENED,        // 宝箱開いてる
+	MAP_BLOCK_REMOVE,        // 消えるブロック
 	MAP_MAX
 };
 
