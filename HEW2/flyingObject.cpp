@@ -32,7 +32,10 @@ static int ufoBottomLightAnimationTextureId;
 static int roadSignTextureId;
 
 static int  nekoPanchiTextureId = TEXTURE_INVALID_ID;
+
 static int  breakAlertTextureId = TEXTURE_INVALID_ID;
+static int  breakNoticeTextureId = TEXTURE_INVALID_ID;
+
 static float breakAleartFrame = 0;
 
 static bool isBreakAleartLeft = false;
@@ -85,6 +88,7 @@ void InitFlyingObject() {
 
 	nekoPanchiTextureId = ReserveTextureLoadFile("texture/block/nekopanchi.png");
 	breakAlertTextureId = ReserveTextureLoadFile("texture/enemy/breakAlert.png");
+	breakNoticeTextureId = ReserveTextureLoadFile("texture/enemy/breakNotice.png");
 
 	frame = 0;
 	breakAleartFrame = 0;
@@ -101,6 +105,7 @@ void UninitFlyingObject() {
 	ReleaseTexture(roadSignTextureId);
 	ReleaseTexture(nekoPanchiTextureId);
 	ReleaseTexture(breakAlertTextureId);
+	ReleaseTexture(breakNoticeTextureId);
 }
 void DrawFlyingObject(FlyingObject& flyingObject) {
 	Player* player = GetPlayer();
@@ -110,6 +115,10 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 	if (flyingObject.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 		auto pos = flyingObject.trans.pos;
 
+		if (GetMapType(pos) == MAP_ROCK) {
+			auto p = INTVECTOR2(pos).ToD3DXVECTOR2();
+			DrawGameSprite(breakNoticeTextureId, p, 10);
+		}
 
 		for (int i = 0; i < 100; i++) {
 			if (GetMapType(pos)!= MAP_BLOCK) {
@@ -201,14 +210,6 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2());
 	}
 
-	if (flyingObject.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
-		auto pos = flyingObject.trans.pos;
-
-		if (GetMapType(pos) == MAP_ROCK) {
-			auto p = INTVECTOR2(pos).ToD3DXVECTOR2();
-			DrawGameSprite(breakAlertTextureId, p, 10);
-		}
-	}
 }
 
 void DrawFlyingObject() {
