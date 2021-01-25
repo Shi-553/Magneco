@@ -53,7 +53,7 @@ void UpdateInput() {
 	}
 
 	// ブロックの決定
-	if (TriggerInputLogger(MYVK_ENTER)) {
+	if (PressInputLogger(MYVK_ENTER)) {
 		MakePut();
 	}
 	if (ReleaseInputLogger(MYVK_ENTER)) {

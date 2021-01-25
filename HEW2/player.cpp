@@ -455,7 +455,7 @@ void MoveAdjust() {
 	}
 }
 void MakePut() {
-	if (player.flyingObjectList.empty()) {
+	if (player.flyingObjectList.empty()|| player.isPut) {
 		return;
 	}
 
