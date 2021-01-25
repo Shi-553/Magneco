@@ -32,7 +32,7 @@
 
 
 #define CLASS_NAME "GameWindow"
-#define WINDOW_CAPTION "ウインドウ表示処理"
+#define WINDOW_CAPTION "マグネッコ"
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
