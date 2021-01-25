@@ -132,6 +132,7 @@ void JudgePlayerandFlyingObjectHit() {
 				if (DamageFlyingObject(*itr)) {
 					itr = flyingObjectList->erase(itr);
 				}
+					break;
 			}
 
 			itr++;
