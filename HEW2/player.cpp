@@ -13,6 +13,8 @@
 #include "time.h"
 #include <math.h>
 #include "judge.h"
+#include "messeage.h"
+
 
 #define PLAYER_TEXTURE_WIDTH 64
 #define PLAYER_TEXTURE_HEIGHT 64
@@ -32,6 +34,9 @@ static Player player;
 static int  playerTextureVertical = 0;
 
 static int putPredictionTextureId = TEXTURE_INVALID_ID;
+static FlyingObjectType itemType = FLYING_OBJECT_NONE;
+static int getItemFrame = 0;
+static Message* getItemMessage;
 
 void BlockDecision();
 void ToFreeFlyingObject(FlyingObject& flyingObject);
@@ -48,7 +53,8 @@ void InitPlayer() {
 	putPredictionTextureId = ReserveTextureLoadFile("texture/player/putPrediction.png");
 	notifyUFOTextureId = ReserveTextureLoadFile("texture/player/akan.png");
 
-
+	getItemMessage = new Message(D3DXVECTOR2(2,2));
+	getItemMessage->SetFormat(DT_CENTER|DT_NOCLIP);
 	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();
 	player.purgeFlyingObjectList.clear();
@@ -70,6 +76,8 @@ void InitPlayer() {
 }
 
 void UninitPlayer() {
+	delete getItemMessage;
+
 	ReleaseTexture(textureId);
 	ReleaseTexture(putPredictionTextureId);
 	ReleaseTexture(idleTextureId);
@@ -163,6 +171,10 @@ void UpdatePlayer() {
 	}
 
 	UpdatePutFlyingObject();
+
+	if (getItemFrame > 0) {
+		getItemFrame--;
+	}
 }
 
 void DrawPlayer() {
@@ -233,6 +245,25 @@ void DrawPlayer() {
 		);
 
 		DrawGameSprite(notifyUFOTextureId, player.trans.pos - D3DXVECTOR2(0.5, 1.5), 30, tPos, D3DXVECTOR2(NOTIFY_UFO_TEXTURE_WIDTH, NOTIFY_UFO_TEXTURE_HEIGHT));
+	}
+
+
+	if (getItemFrame > 0) {
+		auto y = getItemFrame;
+		if (y < 75) {
+			y = 75;
+		}
+		getItemMessage->SetPos(D3DXVECTOR2(SCREEN_WIDTH / 2, 35+(75- y)*3));
+		getItemMessage->SetEndPos(D3DXVECTOR2(SCREEN_WIDTH / 2, 35 + (75 - y)*3));
+
+		getItemMessage->ClearOffset();
+		if (itemType == FLYING_OBJECT_ITEM_ADD_SPEED) {
+			getItemMessage->Draw("スピードアップ！");
+		}
+		if (itemType == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
+			getItemMessage->Draw("磁力アップ！");
+		}
+
 	}
 }
 
@@ -612,4 +643,16 @@ void ToFreeFlyingObject(FlyingObject& flyingObject) {
 	flyingObject.speed = 3;
 	flyingObject.isAnime = false;
 	AddFlyingObjects(&flyingObject);
+}
+
+void GetItem(FlyingObjectType type) {
+	getItemFrame = 100;
+	itemType = type;
+	if (type == FLYING_OBJECT_ITEM_ADD_SPEED) {
+		player.addSpeed++;
+	}
+	else if (type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
+		player.blockMax++;
+	}
+
 }

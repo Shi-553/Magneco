@@ -100,12 +100,7 @@ void JudgePlayerandFlyingObjectHit() {
 		}
 
 		if (IsFlyingObjectItem(itr->type)) {
-			if (itr->type == FLYING_OBJECT_ITEM_ADD_SPEED) {
-				player->addSpeed++;
-			}
-			else if (itr->type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
-				player->blockMax++;
-			}
+			GetItem(itr->type);
 			itr = flyingObjectList->erase(itr);
 			continue;
 		}
