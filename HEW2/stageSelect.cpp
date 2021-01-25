@@ -44,6 +44,7 @@ static Message* nameMessage, *overviewMessage, *lavelMessage;
 
 static vector<StageInfo> infos;
 static vector<int> smunes;
+static std::string stageFoldername="stage";
 
 enum StageSelectTexture {
 	STAGE_SELECT_BACK_GROUND,
@@ -55,19 +56,21 @@ enum StageSelectTexture {
 
 static int selectStageTextureIds[STAGE_SELECT_MAX];
 
+static SelectButton stageSelect;
+
 void InitStageSelect() {
 	StopSound();
 	PlaySound(SOUND_LABEL_BGM002);
 
-	InitSelectButton();
-	selectStageTextureIds[STAGE_SELECT_BACK_GROUND] = ReserveTextureLoadFile("texture/背景4.jpg");
+	stageSelect.Init();
+	selectStageTextureIds[STAGE_SELECT_BACK_GROUND] = ReserveTextureLoadFile("texture/background/背景4.jpg");
 
-	SetSelectButtonBack(ReserveTextureLoadFile("texture/stageSelect/button_left.png"),
+	stageSelect.SetBack(ReserveTextureLoadFile("texture/stageSelect/button_left.png"),
 	 ReserveTextureLoadFile("texture/stageSelect/button_left_pushed.png"),
 	 ReserveTextureLoadFile("texture/stageSelect/button_left_cantselect.png"),
 		D3DXVECTOR2(BU_LEFT_X, BU_LEFT_Y));
 
-	SetSelectButtonForward(ReserveTextureLoadFile("texture/stageSelect/button_right.png"),
+	stageSelect.SetForward(ReserveTextureLoadFile("texture/stageSelect/button_right.png"),
 	ReserveTextureLoadFile("texture/stageSelect/button_right_pushed.png"),
 	ReserveTextureLoadFile("texture/stageSelect/button_right_cantselect.png"),
 		D3DXVECTOR2(BU_RIGHT_X, BU_RIGHT_Y));
@@ -76,7 +79,7 @@ void InitStageSelect() {
 
 	selectStageTextureIds[STAGE_SELECT_SAMUNE] = ReserveTextureLoadFile("texture/stageSelect/samune.png");
 	selectStageTextureIds[STAGE_SELECT_SAMUNE_PRE] = ReserveTextureLoadFile("texture/stageSelect/samune_pre.png");
-	selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX] = ReserveTextureLoadFile("texture/Textbox_Test.png");
+	selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX] = ReserveTextureLoadFile("texture/ui/Textbox_Test.png");
 
 	overviewMessage = new Message();
 	nameMessage = new Message();
@@ -95,7 +98,7 @@ void InitStageSelect() {
 	lavelMessage->SetScale({ 1.2, 1.2 });
 	lavelMessage->SetFormat(DT_RIGHT);
 
-	GetStageInfos("stage", infos);
+	GetStageInfos(stageFoldername, infos);
 
 	std::sort(infos.begin(), infos.end(), [](StageInfo a, StageInfo b) {
 		return a.index < b.index;
@@ -103,8 +106,8 @@ void InitStageSelect() {
 
 	Button b;
 	b.releasedCallback = []() {
+		SetStagePath(infos[stageSelect.GetIndex()].filename);
 		PlaySound(SOUND_LABEL_SE_DECITION);
-		SetStagePath(infos[GetSelectButtonIndex()].filename);
 		GoNextScene(GameScene);
 	};
 	b.textureId = ReserveTextureLoadFile("texture/stageSelect/icon_noselect.png");
@@ -118,21 +121,21 @@ void InitStageSelect() {
 
 		AddTextureReferenceCount(b.textureId);
 		AddTextureReferenceCount(b.textureId);
-		AddSelectButton(b);
+		stageSelect.Add(b);
 
 		smunes.push_back(ReserveTextureLoadFile(itr->samunename.c_str()));
 	}
 
 
-	SetSelectButtonFrame(ReserveTextureLoadFile("texture/stageSelect/icon_select.png"));
+	stageSelect.SetFrame(ReserveTextureLoadFile("texture/stageSelect/icon_select.png"));
 
 
-	SetSelectButtonKey(MYVK_ENTER, MYVK_RIGHT, MYVK_LEFT);
+	stageSelect.SetKey(MYVK_ENTER, MYVK_RIGHT, MYVK_LEFT);
 
 	LoadTexture();
 }
 void UninitStageSelect() {
-	UninitSelectButton();
+	stageSelect.Uninit();
 	ReleaseTexture(selectStageTextureIds, STAGE_SELECT_MAX);
 
 
@@ -147,16 +150,21 @@ void UninitStageSelect() {
 }
 
 void UpdateStageSelect() {
-	UpdateSelectButton();
+	stageSelect.Update();
 }
+
+void SetStageFolder(std::string foldername) {
+	stageFoldername = foldername;
+}
+
 void DrawStageSelect() {
 	DrawSprite(selectStageTextureIds[STAGE_SELECT_BACK_GROUND], D3DXVECTOR2(0, 0), 1);
 
 	if (infos.empty()) {
 		return ;
 	}
-	auto& info = infos[GetSelectButtonIndex()];
-	auto& samune = smunes[GetSelectButtonIndex()];
+	auto& info = infos[stageSelect.GetIndex()];
+	auto& samune = smunes[stageSelect.GetIndex()];
 
 	DrawSprite(samune, D3DXVECTOR2(SAMUNE_X, SAMUNE_Y), 1);
 
@@ -179,7 +187,7 @@ void DrawStageSelect() {
 	}
 
 
-	DrawSelectButton();
+	stageSelect.Draw();
 }
 
 StageInfo* GetCurrentInfo() {
@@ -187,5 +195,5 @@ StageInfo* GetCurrentInfo() {
 		return nullptr;
 	}
 
-	return &infos[GetSelectButtonIndex()];
+	return &infos[stageSelect.GetIndex()];
 }

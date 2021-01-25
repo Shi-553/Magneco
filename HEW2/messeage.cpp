@@ -5,6 +5,7 @@
 #include "trans.h"
 #include <stdio.h>
 #include <mbstring.h>
+#include "time.h"
 
 
 
@@ -91,6 +92,9 @@ void Message::SetColor(D3DCOLOR c) {
 }
 
 void Message::Draw(const char* str, va_list argp) {
+	if (GetDeltaTime() == 0) {
+		return;
+	}
 	int length = _vscprintf(str, argp) + 1;// +1 '\0'
 	if (length <= 1) {
 		return;

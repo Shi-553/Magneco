@@ -8,9 +8,12 @@ typedef struct NPC_tag {
 	int frame;
 	int aniFrame;
 	bool isMove;
+	bool contactUFO;
 	int takeOutFrame;
 	INTVECTOR2 responePos;
 	D3DXVECTOR2 size;
+	int fallFrame;
+	int respawnFrame;
 }NPC;
 
 #define TAKE_OUT_FRAME_LIMIT (10 * 60)
@@ -32,4 +35,6 @@ bool NPCImport(FILE* fp);
 
 void SetNPCResponePos(INTVECTOR2 pos);
 
+void NPCContactUFO();
+void NPCDeleteUFO();
 #endif // !_NPC_H

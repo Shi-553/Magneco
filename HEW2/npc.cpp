@@ -13,6 +13,7 @@
 #include "font.h"
 #include "sound.h"
 #include <string>
+#include "messeage.h"
 
 typedef struct MapLabel {
 	INTVECTOR2 pos;
@@ -33,13 +34,20 @@ bool NPCRespone();
 #define NPC_TEXTURE_WIDTH 64
 #define NPC_TEXTURE_HEIGHT 64
 
-#define NPC_SIZE_WIDTH 1.76
-#define NPC_SIZE_HEIGHT 1.76
+#define BEACON_TEXTURE_WIDTH 32
+#define BEACON_TEXTURE_HEIGHT 64
+
+#define NPC_SIZE_WIDTH 1.6
+#define NPC_SIZE_HEIGHT 1.6
+
+#define NPC_FALL_FRAME_MAX (100.0)
+#define NPC_RESPONE_FRAME_MAX (50.0)
 
 static int beaconTextureId = TEXTURE_INVALID_ID;
 
 static int npcTextureIdWait = TEXTURE_INVALID_ID;
 static int npcTextureIdMove = TEXTURE_INVALID_ID;
+static int npcTextureUFO = TEXTURE_INVALID_ID;
 static int npcTextureIdShadow = TEXTURE_INVALID_ID;
 static NPC npc;
 
@@ -52,18 +60,20 @@ static INTVECTOR2 gBeaconPos;
 
 static int  npcTextureVertical = 0;
 
-static LPD3DXFONT font = NULL;
+static Message* font;
 void InitNPC() {
-	beaconTextureId = ReserveTextureLoadFile("texture/beacon01.png");
+	beaconTextureId = ReserveTextureLoadFile("texture/npc/beacon_anime.png");
 
-	npcTextureIdWait = ReserveTextureLoadFile("texture/spr_rose_idle.png");
-	npcTextureIdMove = ReserveTextureLoadFile("texture/spr_rose_walk.png");
-	npcTextureIdShadow = ReserveTextureLoadFile("texture/spr_shadow.png");
+	npcTextureIdWait = ReserveTextureLoadFile("texture/npc/spr_rose_idle.png");
+	npcTextureIdMove = ReserveTextureLoadFile("texture/npc/spr_rose_walk.png");
+	npcTextureUFO = ReserveTextureLoadFile("texture/npc/Rose_UFO_64x64px.png");
+	npcTextureIdShadow = ReserveTextureLoadFile("texture/npc/spr_shadow.png");
 	npc.speed = 1;
 	npc.trans.Init(2, 7);
 	npc.frame = 30;
 	npc.aniFrame = 0;
 	npc.isMove = false;
+	npc.contactUFO = false;
 	npc.takeOutFrame = 0;
 	npc.responePos = npc.trans.pos;
 	npc.size = { 0.5,0.5 };
@@ -74,24 +84,50 @@ void InitNPC() {
 	while (!nextPosQueue.empty()) {
 		nextPosQueue.pop();
 	}
-	MyCreateFont(NPC_FONT_HIGHT, NPC_FONT_WIDTH, &font);
+	font = new Message(D3DXVECTOR2(1.3, 1.3));
+	npc.fallFrame = 0;
+	npc.respawnFrame = 0;
 }
 
 void UninitNPC() {
 	ReleaseTexture(npcTextureIdWait);
+	ReleaseTexture(npcTextureIdMove);
+	ReleaseTexture(npcTextureUFO);
+	ReleaseTexture(npcTextureIdShadow);
 
 	if (mapLabelList != NULL) {
 		delete[] mapLabelList;
 		mapLabelList = NULL;
 	}
-	font->Release();
+	delete font;
 }
 
 void UpdateNPC() {
+	if (npc.respawnFrame > 0) {
+		npc.respawnFrame--;
+	}
+	if (npc.fallFrame > 0) {
+		npc.fallFrame--;
+		if (npc.fallFrame == 0) {
+			npc.contactUFO = false;
+			npc.respawnFrame = NPC_RESPONE_FRAME_MAX;
+			npc.trans.Init(npc.responePos);
+			npc.frame = 0;
+			dir = INTVECTOR2(0, 0);
+			npc.isMove = false;
+			nextPos = npc.trans.GetIntPos();
+			gBeaconPos = npc.trans.GetIntPos();
+			while (!nextPosQueue.empty()) {
+				nextPosQueue.pop();
+			}
+		}
+		return;
+	}
 
 	npc.aniFrame++;
 
 	if (NPCRespone()) {
+		npc.fallFrame = NPC_FALL_FRAME_MAX;
 		npc.frame = 0;
 		dir = INTVECTOR2(0, 0);
 		npc.isMove = false;
@@ -146,43 +182,74 @@ void UpdateNPC() {
 }
 
 void DrawNPC() {
-
 	auto drawingPos = npc.trans.pos;
-	drawingPos.x -= 0.39f;
-	drawingPos.y -= 1.05f;
+	drawingPos.x -= 0.30f;
+	drawingPos.y -= 0.9f;
 
-	if (!npc.isMove) {
+	auto ty = (1 - (npc.respawnFrame / NPC_RESPONE_FRAME_MAX));
+
+	if (npc.fallFrame > 0) {
+		auto tPos = D3DXVECTOR2(
+			NPC_TEXTURE_WIDTH * (npc.fallFrame / 6 % 6),
+			0
+		);
+		auto bef = D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT);
+		auto t = npc.fallFrame / NPC_FALL_FRAME_MAX;
+		auto aft = bef *t*(2-t);
+
+		drawingPos -= (aft - bef) / 2;
+		DrawGameSprite(npcTextureUFO, drawingPos, 30, aft* ty, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT* ty));
+
+		return;
+	}
+
+
+	if (!npc.isMove && !npc.contactUFO) {
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 7 % 15),
 			npcTextureVertical
 		);
 
-		DrawGameSprite(npcTextureIdWait, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
+		DrawGameSprite(npcTextureIdWait, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT * ty) , tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT * ty));
+		DrawGameSprite(npcTextureIdShadow, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT));
+	}
+	else if (!npc.isMove && npc.contactUFO) {
+		auto tPos = D3DXVECTOR2(
+			NPC_TEXTURE_WIDTH * (npc.aniFrame / 6 % 6),
+			0
+		);
+
+		DrawGameSprite(npcTextureUFO, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT * ty), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT * ty));
 		DrawGameSprite(npcTextureIdShadow, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT));
 	}
 	else
 	{
-		DrawGameSprite(beaconTextureId, gBeaconPos.ToD3DXVECTOR2() + D3DXVECTOR2(0.0f, -0.4f), 30);
+		auto tBeaconPos = D3DXVECTOR2(
+			BEACON_TEXTURE_WIDTH * (npc.aniFrame / 8 % 12),
+			0
+		);
+
+		DrawGameSprite(beaconTextureId, gBeaconPos.ToD3DXVECTOR2() + D3DXVECTOR2(0.0f, -1.0f), 30, D3DXVECTOR2(1, 2), tBeaconPos, D3DXVECTOR2(BEACON_TEXTURE_WIDTH, BEACON_TEXTURE_HEIGHT));
 
 		auto tPos = D3DXVECTOR2(
 			NPC_TEXTURE_WIDTH * (npc.aniFrame / 6 % 6),
 			npcTextureVertical
 		);
 
-		DrawGameSprite(npcTextureIdMove, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT));
+		DrawGameSprite(npcTextureIdMove, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT * ty), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT * ty));
 		DrawGameSprite(npcTextureIdShadow, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT));
 	}
 
 	if (npc.takeOutFrame > 0) {
-		auto string=std::to_string((TAKE_OUT_FRAME_LIMIT -npc.takeOutFrame+1)/100);
-		RECT r;
+		auto string = std::to_string((TAKE_OUT_FRAME_LIMIT - npc.takeOutFrame + 1) / 100);
 		auto g = npc.trans.pos + D3DXVECTOR2(0.5, 0.5);
 		auto screenPos = GameToScreenPos(g);
-		r.left = screenPos.x;
-		r.right = screenPos.x;
-		r.top = screenPos.y-150;
-		
-		font->DrawTextA(NULL, string.c_str(), string.size(), &r, DT_CENTER | DT_NOCLIP, D3DCOLOR_RGBA(255,255,255,255));
+
+		font->SetPos(D3DXVECTOR2(screenPos.x, screenPos.y - 150));
+		font->SetEndPos(D3DXVECTOR2(screenPos.x, screenPos.y - 150));
+		font->SetFormat(DT_CENTER | DT_NOCLIP);
+		font->ClearOffset();
+		font->Draw(string.c_str());
 	}
 }
 
@@ -437,9 +504,21 @@ void SetNPCResponePos(INTVECTOR2 pos) {
 bool NPCRespone() {
 	auto mapType = GetMapType(npc.trans.GetIntPos());
 	if (!CanGoNPCMapType(mapType)) {
-		npc.trans.Init(npc.responePos);
 		return true;
 	}
 	return false;
 
+}
+void NPCContactUFO() {
+
+	npc.takeOutFrame++;
+	npc.contactUFO = true;
+	if (npc.takeOutFrame >= TAKE_OUT_FRAME_LIMIT) {
+		//itr = flyingObjectList->erase(itr);
+		GoNextScene(GameOverScene, FADE_IN);
+	}
+}
+void NPCDeleteUFO() {
+	npc.takeOutFrame = 0;
+	npc.contactUFO = false;
 }

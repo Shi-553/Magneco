@@ -73,7 +73,7 @@ void InitMapEditor() {
 	{
 		textureIds[i] = GetMapTextureId((MapType)i);
 	}
-	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE_ERASE.png");
+	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/block/MAP_BLOCK_NONE_ERASE.png");
 	playerTextureId = ReserveTextureLoadFile("texture/player_32×32.png");
 	npcTextureId = ReserveTextureLoadFile("texture/spr_rose_idle.png");
 

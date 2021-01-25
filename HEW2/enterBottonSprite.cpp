@@ -15,7 +15,7 @@ static int anime_frame;
 
 
 void InitEnterBottonSprite() {
-	enterBottonTexture = ReserveTextureLoadFile("texture/entersozai_anime.png");
+	enterBottonTexture = ReserveTextureLoadFile("texture/ui/entersozai_anime.png");
 
 	LoadTexture();
 
