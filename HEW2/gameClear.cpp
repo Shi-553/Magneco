@@ -4,6 +4,7 @@
 #include "InputLogger.h"
 #include "sceneManager.h"
 #include "selectButton.h"
+#include "stageSelect.h"
 
 
 #define GAME_CLEAR_BUTTON_WIDTH 330
@@ -23,13 +24,35 @@ void InitGameClear()
 {
 	gameClearSelect.Init();
 
- Button returnTitleButton, stageSelectButton, retryButton;
+ Button returnTitleButton, stageSelectButton, nextButton;
 
 
 	auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - GAME_CLEAR_BUTTON_WIDTH / 2, (SCREEN_HEIGHT / 2 - GAME_CLEAR_BUTTON_HEIGHT / 2) + 30);
 
+	if (IsNextStage()) {
+		nextButton.pos = buttonCenter ;
+		stageSelectButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 16);
+		returnTitleButton.pos = stageSelectButton.pos + D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 16);
+	}
+	else {
+		stageSelectButton.pos = buttonCenter + (D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 16)/3);
+		returnTitleButton.pos = stageSelectButton.pos + D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 16);
+	}
 
-	stageSelectButton.pos = buttonCenter;
+	if (IsNextStage()) {
+		nextButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
+		nextButton.textureId = ReserveTextureLoadFile("texture/ui/next.png");
+		nextButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/next_pressed.png");
+
+
+		nextButton.releasedCallback = []() {
+			NextStaege();
+			GoNextScene(GameScene);
+		};
+		gameClearSelect.Add(nextButton);
+	}
+
+
 	stageSelectButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
 	stageSelectButton.textureId = ReserveTextureLoadFile("texture/ui/stageselect.png");
 	stageSelectButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/stageselect_pressed.png");
@@ -38,18 +61,9 @@ void InitGameClear()
 	stageSelectButton.releasedCallback = []() {
 		GoNextScene(StageSelect);
 	};
-
-	retryButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 16);
-	retryButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
-	retryButton.textureId = ReserveTextureLoadFile("texture/ui/retry.png");
-	retryButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/retry_pressed.png");
+	gameClearSelect.Add(stageSelectButton);
 
 
-	retryButton.releasedCallback = []() {
-		GoNextScene(GameScene);
-	};
-
-	returnTitleButton.pos = retryButton.pos + D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 16);
 	returnTitleButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
 	returnTitleButton.textureId = ReserveTextureLoadFile("texture/ui/quit.png");
 	returnTitleButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/quit_pressed.png");
@@ -57,9 +71,6 @@ void InitGameClear()
 	returnTitleButton.releasedCallback = []() {
 		GoNextScene(GameStartScene);
 	};
-	
-	gameClearSelect.Add(stageSelectButton);
-	gameClearSelect.Add(retryButton);
 	gameClearSelect.Add(returnTitleButton);
 
 	backgroundTexture = ReserveTextureLoadFile("texture/background/背景１.png");
