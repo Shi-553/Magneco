@@ -8,6 +8,7 @@
 #include "map.h"
 #include "npc.h"
 #include "debugPrintf.h"
+#include "sound.h"
 #include <vector>
 
 using namespace std;
@@ -70,6 +71,7 @@ void JudgePlayerandFlyingObjectHit() {
 					isEnd = true;
 
 					if (DamageFlyingObject(*itr)) {
+						PlaySound(SOUND_LABEL_SE_EXPLOSION);
 						flyingObjectList->erase(itr);
 					}
 					break;
@@ -125,6 +127,7 @@ void JudgePlayerandFlyingObjectHit() {
 
 			if (DamagePlayer()) {
 				if (DamageFlyingObject(*itr)) {
+					PlaySound(SOUND_LABEL_SE_EXPLOSION);
 					itr = flyingObjectList->erase(itr);
 				}
 					break;
@@ -154,6 +157,7 @@ void JudgePlayerandFlyingObjectHit() {
 				}
 
 				if (DamageFlyingObject(*itr)) {
+					PlaySound(SOUND_LABEL_SE_EXPLOSION);
 					BreakBlock(*itr);
 					itr = flyingObjectList->erase(itr);
 					isMatched = true;

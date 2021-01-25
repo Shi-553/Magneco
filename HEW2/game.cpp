@@ -15,6 +15,7 @@
 #include "debugPrintf.h"
 #include "importExport.h"
 #include "stageInfo.h"
+#include "sound.h"
 
 
 void InitGame() 
@@ -32,6 +33,8 @@ void InitGame()
 
 	//StageExport();
 	StageImport();
+	StopSound();
+	PlaySound(SOUND_LABEL_BGM000);
 
 	LoadTexture();
 }

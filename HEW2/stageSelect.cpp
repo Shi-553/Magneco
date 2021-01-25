@@ -8,6 +8,7 @@
 #include "font.h"
 #include "sceneManager.h"
 #include "importExport.h"
+#include "sound.h"
 #include <algorithm>
 using namespace std;
 
@@ -59,6 +60,8 @@ static SelectButton stageSelect;
 static int index = 0;
 
 void InitStageSelect() {
+	StopSound();
+	PlaySound(SOUND_LABEL_BGM002);
 
 	stageSelect.Init();
 	selectStageTextureIds[STAGE_SELECT_BACK_GROUND] = ReserveTextureLoadFile("texture/background/背景4.jpg");
@@ -105,6 +108,7 @@ void InitStageSelect() {
 
 	Button b;
 	b.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
 		index = stageSelect.GetIndex();
 		SetStagePath(infos[index].filename);
 		GoNextScene(GameScene);

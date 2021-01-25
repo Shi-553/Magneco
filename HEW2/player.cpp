@@ -13,6 +13,7 @@
 #include "time.h"
 #include <math.h>
 #include "judge.h"
+#include "sound.h"
 #include "messeage.h"
 
 
@@ -149,6 +150,7 @@ void UpdatePlayer() {
 		}
 		if (player.putFrame >= DEFAULT_PUT_REQUIRED_FRAME) {
 			BlockDecision();
+			PlaySound(SOUND_LABEL_SE_STICK);
 		}
 
 
@@ -394,6 +396,7 @@ void PutBeacon() {
 	auto mapType = GetMapType(player.trans.GetIntPos());
 	if (CanGoNPCMapType(mapType)) {
 		UpdateNPCShortestPath(player.trans.GetIntPos());
+		PlaySound(SOUND_LABEL_SE_BEACON);
 	}
 }
 
@@ -406,6 +409,7 @@ void PurgePlayerFlyingObject() {
 		itr->dir = itr->trans.pos - player.trans.pos;
 		itr->type = FLYING_OBJECT_PURGE_BLOCK;
 
+		PlaySound(SOUND_LABEL_SE_PURGE);
 		player.purgeFlyingObjectList.push_back(*itr);
 		itr = player.flyingObjectList.erase(itr);
 		player.nekopunchTime++;
@@ -459,6 +463,7 @@ void MakePut() {
 	}
 
 	player.isPut = true;
+
 }
 
 void PutCansel() {
@@ -561,6 +566,7 @@ bool DamagePlayer() {
 	}
 	player.checkCheckpoint = false;
 
+	PlaySound(SOUND_LEBEL_SE_STAN);
 	player.stanTime = DEFAULT_PLAYER_STAN_FRAME;
 	player.invicibleTime = DEFAULT_PLAYER_INVICIBLE_FRAME;
 	return true;

@@ -11,6 +11,7 @@
 #include "sceneManager.h"
 #include "InputLogger.h"
 #include "font.h"
+#include "sound.h"
 #include <string>
 #include "messeage.h"
 

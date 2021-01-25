@@ -9,6 +9,7 @@
 #include "npc.h"
 #include "player.h"
 #include "flyingObjectSponer.h"
+#include "sound.h"
 
 // flyingObject描画範囲の加算分
 #define FLYINGOBJECT_ADD_RANGE (5)
@@ -51,10 +52,10 @@ void AddFlyingObjects(FlyingObject* flyingObject) {
 			return;
 		}
 		existsUFO = true;
+		PlaySound(SOUND_LABEL_SE_UFO);
 	}
 	flyingObject->uid = currentUID;
 	currentUID++;
-
 	flyingObjects.push_back(*flyingObject);
 
 }
@@ -230,6 +231,8 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 	}
 }
 
+
+
 void BreakBlock(FlyingObject& f) {
 	if (f.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 		BreakBlock(f.trans.GetIntPos());
@@ -246,6 +249,7 @@ bool DamageFlyingObject(FlyingObject& f) {
 	}
 	if (f.type == FLYING_OBJECT_UFO) {
 		existsUFO = false;
+		StopSound(SOUND_LABEL_SE_UFO);
 		NPCDeleteUFO();
 	}
 

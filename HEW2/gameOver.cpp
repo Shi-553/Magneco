@@ -6,6 +6,7 @@
 #include "sceneManager.h"
 #include "InputLogger.h"
 #include "selectButton.h"
+#include "sound.h"
 
 #define GAME_OVER_BUTTON_WIDTH 330
 #define GAME_OVER_BUTTON_HEIGHT 90
@@ -19,6 +20,10 @@ static int gameOverTextTexture;
 static SelectButton gameOverSelect;
 
 void InitGameOver() {
+
+	StopSound();
+	PlaySound(SOUND_LABEL_BGM005);
+
 	gameOverSelect.Init();
 
 Button retryButton, stageSelectButton, returnTitleButton;
@@ -31,6 +36,7 @@ Button retryButton, stageSelectButton, returnTitleButton;
 	retryButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/retry_pressed.png");
 
 	retryButton.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
 		GoNextScene(GameScene);
 	};
 
@@ -49,6 +55,7 @@ Button retryButton, stageSelectButton, returnTitleButton;
 	returnTitleButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/quit_pressed.png");
 
 	returnTitleButton.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
 		GoNextScene(GameStartScene);
 	};
 

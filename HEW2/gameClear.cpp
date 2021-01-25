@@ -4,6 +4,7 @@
 #include "InputLogger.h"
 #include "sceneManager.h"
 #include "selectButton.h"
+#include "sound.h"
 #include "stageSelect.h"
 
 
@@ -23,6 +24,9 @@ static SelectButton gameClearSelect;
 void InitGameClear()
 {
 	gameClearSelect.Init();
+	StopSound();
+	PlaySound(SOUND_LABEL_BGM004);
+
 
  Button returnTitleButton, stageSelectButton, nextButton;
 
@@ -46,6 +50,7 @@ void InitGameClear()
 
 
 		nextButton.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
 			NextStaege();
 			GoNextScene(GameScene);
 		};
@@ -59,6 +64,8 @@ void InitGameClear()
 
 
 	stageSelectButton.releasedCallback = []() {
+		StopSound();
+		PlaySound(SOUND_LABEL_BGM004);
 		GoNextScene(StageSelect);
 	};
 	gameClearSelect.Add(stageSelectButton);
@@ -69,6 +76,7 @@ void InitGameClear()
 	returnTitleButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/quit_pressed.png");
 
 	returnTitleButton.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
 		GoNextScene(GameStartScene);
 	};
 	gameClearSelect.Add(returnTitleButton);
