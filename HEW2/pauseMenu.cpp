@@ -49,18 +49,30 @@ void InitPauseMenu() {
 		};
 		buttons.push_back(retryButton);
 
-		Button returnTitleButton;
-		returnTitleButton.textureId = ReserveTextureLoadFile("texture/ui/quit.png");
-		returnTitleButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/quit_pressed.png");
-
-		returnTitleButton.releasedCallback = []() {
-			GoNextScene(GameStartScene);
+		Button stageSelectButton;
+		stageSelectButton.textureId = ReserveTextureLoadFile("texture/ui/stageselect.png");
+		stageSelectButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/stageselect_pressed.png");
+		stageSelectButton.releasedCallback = []() {
+			GoNextScene(StageSelect);
 			isPause = false;
 			SetTimeScale(1);
 		};
-		buttons.push_back(returnTitleButton);
+		buttons.push_back(stageSelectButton);
+
 	}
 	else {
+		if (GetCurrentScene() !=GameStartScene) {
+			Button returnTitleButton;
+			returnTitleButton.textureId = ReserveTextureLoadFile("texture/ui/quit.png");
+			returnTitleButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/quit_pressed.png");
+
+			returnTitleButton.releasedCallback = []() {
+				GoNextScene(GameStartScene);
+				isPause = false;
+				SetTimeScale(1);
+			};
+		buttons.push_back(returnTitleButton);
+		}
 		Button endButton;
 		endButton.textureId = ReserveTextureLoadFile("texture/ui/end.png");
 		endButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/end_pressed.png");
