@@ -92,58 +92,61 @@ void UpdatePlayer() {
 	if (player.invicibleTime > 0) {
 		player.invicibleTime--;
 	}
-
-	if (player.dir.x != 0 || player.dir.y != 0) {
-		if (fabsf(player.dir.y) > fabsf(player.dir.x)) {
-			if (0 < player.dir.y) {
-				playerTextureVertical = 0;
+	if (!player.isPut) {
+		if (player.dir.x != 0 || player.dir.y != 0) {
+			if (fabsf(player.dir.y) > fabsf(player.dir.x)) {
+				if (0 < player.dir.y) {
+					playerTextureVertical = 0;
+				}
+				else {
+					playerTextureVertical = PLAYER_TEXTURE_HEIGHT * 3;
+				}
 			}
 			else {
-				playerTextureVertical = PLAYER_TEXTURE_HEIGHT * 3;
+				if (0 < player.dir.x) {
+					playerTextureVertical = PLAYER_TEXTURE_HEIGHT * 2;
+				}
+				else {
+					playerTextureVertical = PLAYER_TEXTURE_HEIGHT;
+				}
 			}
 		}
-		else {
-			if (0 < player.dir.x) {
-				playerTextureVertical = PLAYER_TEXTURE_HEIGHT * 2;
+		auto speed = player.baseSpeed /*- (player.baseSpeed / 2 * player.flyingObjectList.size() / player.blockMax)*/ + player.addSpeed;
+
+		for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
+			if (UpdateFlyingObject(&*itr, PLAYER_PURGE_SPEED)) {
+				itr = player.purgeFlyingObjectList.erase(itr);
 			}
 			else {
-				playerTextureVertical = PLAYER_TEXTURE_HEIGHT;
+				itr++;
 			}
 		}
-	}
-	auto speed = player.baseSpeed /*- (player.baseSpeed / 2 * player.flyingObjectList.size() / player.blockMax)*/ + player.addSpeed;
 
-	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
-		if (UpdateFlyingObject(&*itr, PLAYER_PURGE_SPEED)) {
-			itr = player.purgeFlyingObjectList.erase(itr);
+		if (player.stanTime == 0) {
+			auto length = D3DXVec2Length(&player.dir);
+			if (length > 1.0f) {
+				player.dir /= length;
+			}
+			auto last = player.trans.pos;
+			auto move = player.dir * speed * GetDeltaTime();
+
+
+			player.trans.pos += move;
+
+
+			player.trans.UpdatePos();
+
+			for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+				itr != player.flyingObjectList.end(); itr++) {
+				itr->trans.pos += player.trans.pos - last;
+				itr->trans.UpdatePos();
+			}
 		}
-		else {
-			itr++;
-		}
+
+
 	}
-
-
 
 	if (player.stanTime == 0) {
-		auto length = D3DXVec2Length(&player.dir);
-		if (length > 1.0f) {
-			player.dir /= length;
-		}
-		auto last = player.trans.pos;
-		auto move = player.dir * speed * GetDeltaTime();
-
-
-		player.trans.pos += move;
-
-
-		player.trans.UpdatePos();
-
-		for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
-			itr != player.flyingObjectList.end(); itr++) {
-			itr->trans.pos += player.trans.pos - last;
-			itr->trans.UpdatePos();
-		}
-
 		// ブロックを置く処理
 		if (player.isPut) {
 			player.putFrame++;
@@ -331,9 +334,6 @@ void UpdatePutFlyingObject() {
 		}
 
 	}
-	if (player.isPut&&!player.putFlyingObjectList.empty()) {
-		MoveAdjust();
-	}
 }
 
 
@@ -346,23 +346,33 @@ void RotateRightPlayer() {
 }
 
 void MoveUpPlayer() {
-	player.dir.y--;
+	if (!player.isPut) {
+		player.dir.y--;
+	}
 }
 
 void MoveDownPlayer() {
-	player.dir.y++;
+	if (!player.isPut) {
+		player.dir.y++;
+	}
 }
 
 void MoveLeftPlayer() {
-	player.dir.x--;
+	if (!player.isPut) {
+		player.dir.x--;
+	}
 }
 void MoveRightPlayer() {
-	player.dir.x++;
+	if (!player.isPut) {
+		player.dir.x++;
+	}
 }
 
 
 void MovePlayer(D3DXVECTOR2 dir) {
-	player.dir = dir;
+	if (!player.isPut) {
+		player.dir = dir;
+	}
 
 }
 
@@ -462,7 +472,11 @@ void MakePut() {
 		return;
 	}
 
-	player.isPut = true;
+	if (!player.putFlyingObjectList.empty()) {
+		player.isPut = true;
+		MoveAdjust();
+
+	}
 
 }
 

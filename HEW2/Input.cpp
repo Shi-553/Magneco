@@ -16,19 +16,19 @@ void UpdateInput() {
 	// プレイヤーの移動
 	if (PressInputLogger(MYVK_UP)) {
 		MoveUpPlayer();
-		PutCansel();
+		//PutCansel();
 	}
 	if (PressInputLogger(MYVK_DOWN)) {
 		MoveDownPlayer();
-		PutCansel();
+		//PutCansel();
 	}
 	if (PressInputLogger(MYVK_LEFT)) {
 		MoveLeftPlayer();
-		PutCansel();
+		//PutCansel();
 	}
 	if (PressInputLogger(MYVK_RIGHT)) {
 		MoveRightPlayer();
-		PutCansel();
+		//PutCansel();
 	}
 
 	//if (GetInputLoggerAxis(MYVA_GLY)<0) {
@@ -49,7 +49,7 @@ void UpdateInput() {
 
 	if (gamepadAxis.x != 0 || gamepadAxis.y != 0) {
 		MovePlayer(gamepadAxis);
-		PutCansel();
+		//PutCansel();
 	}
 
 	// ブロックの決定
