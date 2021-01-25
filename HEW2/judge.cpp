@@ -152,10 +152,11 @@ void JudgePlayerandFlyingObjectHit() {
 				continue;
 			}
 			if (IsFlyingObjectEnemy(itr->type)) {
+				itr2->hp = 1;
 				if (DamageFlyingObject(*itr2)) {
 					itr2 = player->purgeFlyingObjectList.erase(itr2);
 				}
-
+				
 				if (DamageFlyingObject(*itr)) {
 					PlaySound(SOUND_LABEL_SE_EXPLOSION);
 					BreakBlock(*itr);
@@ -163,7 +164,7 @@ void JudgePlayerandFlyingObjectHit() {
 					isMatched = true;
 					break;
 				}
-				continue;
+				break;
 
 			}
 			else {
