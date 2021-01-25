@@ -19,6 +19,7 @@ struct SponeId {
 void InitFlyingSponer();
 void UninitFlyingSponer();
 void UpdateFlyingSponer();
+void DrawFlyingSponer();
 
 void SetFlyingObjectSponerLoop(bool f);
 bool GetFlyingObjectSponerLoop();
