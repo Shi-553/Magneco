@@ -62,6 +62,7 @@ void DrawGame()
 	
 	DrawJudge();
 	DrawFlyingObject();
+	DrawFlyingSponer();
 
 	DrawPlayer();
 
