@@ -109,6 +109,8 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 
 	if (flyingObject.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 		auto pos = flyingObject.trans.pos;
+
+
 		for (int i = 0; i < 100; i++) {
 			if (GetMapType(pos)!= MAP_BLOCK) {
 				pos += flyingObject.dir;
@@ -197,6 +199,15 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 	}
 	else {
 		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2());
+	}
+
+	if (flyingObject.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
+		auto pos = flyingObject.trans.pos;
+
+		if (GetMapType(pos) == MAP_ROCK) {
+			auto p = INTVECTOR2(pos).ToD3DXVECTOR2();
+			DrawGameSprite(breakAlertTextureId, p, 10);
+		}
 	}
 }
 
@@ -302,6 +313,7 @@ bool DamageFlyingObject(FlyingObject& f) {
 		StopSound(SOUND_LABEL_SE_UFO);
 		NPCDeleteUFO();
 	}
+	DestrySpone(f.id);
 
 	return true;
 }
