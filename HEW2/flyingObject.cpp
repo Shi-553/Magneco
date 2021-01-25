@@ -126,7 +126,12 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 				continue;
 			}
 			pos = INTVECTOR2(pos).ToD3DXVECTOR2();
-			pos.x += breakAleartFrame ;
+			if (fabs(flyingObject.dir.x) > 0) {
+				pos.x += breakAleartFrame;
+			}
+			else {
+				pos.y += breakAleartFrame;
+			}
 			DrawGameSprite(breakAlertTextureId, pos, 10);
 			break;
 		}
