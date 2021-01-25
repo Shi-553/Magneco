@@ -164,7 +164,7 @@ void JudgePlayerandFlyingObjectHit() {
 					isMatched = true;
 					break;
 				}
-				break;
+				continue;
 
 			}
 			else {
