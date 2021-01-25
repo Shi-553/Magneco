@@ -18,6 +18,7 @@ enum FlyingObjectType
 	FLYING_OBJECT_ITEM_ADD_SPEED,
 	FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE,
 	FLYING_OBJECT_CHECKPOINT_OFF,
+	FLYING_OBJECT_ENEMY_BREAK_BLOCK_SECOND,
 	FLYING_OBJECT_MAX	
 };
 struct FlyingObject
@@ -55,6 +56,7 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
 
 void BackFlyingObject(int frame);
 
-void DestroyUFO();
+void BreakBlock(FlyingObject& f);
+bool DamageFlyingObject(FlyingObject& f);
 
 int GetFlyingObjectTextureId(FlyingObjectType type);

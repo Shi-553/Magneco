@@ -17,52 +17,63 @@
 static int backgroundTexture;
 static int gameOverTextTexture;
 
+static SelectButton gameOverSelect;
 
 void InitGameOver() {
 
 	StopSound();
 	PlaySound(SOUND_LABEL_BGM005);
 
-	InitSelectButton();
+	gameOverSelect.Init();
 
-Button retryButton, returnTitleButton;
+Button retryButton, stageSelectButton, returnTitleButton;
 
-	auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - GAME_OVER_BUTTON_WIDTH / 2, (SCREEN_HEIGHT / 2 - GAME_OVER_BUTTON_HEIGHT / 2) + 40);
+	auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - GAME_OVER_BUTTON_WIDTH / 2, (SCREEN_HEIGHT / 2 - GAME_OVER_BUTTON_HEIGHT / 2) + 30);
 
 	retryButton.pos = buttonCenter;
 	retryButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
-	retryButton.textureId = ReserveTextureLoadFile("texture/retry.png");
-	retryButton.pressedTextureId = ReserveTextureLoadFile("texture/retry_pressed.png");
+	retryButton.textureId = ReserveTextureLoadFile("texture/ui/retry.png");
+	retryButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/retry_pressed.png");
 
 	retryButton.releasedCallback = []() {
 		PlaySound(SOUND_LABEL_SE_DECITION);
 		GoNextScene(GameScene);
 	};
 
-	returnTitleButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_OVER_BUTTON_HEIGHT + 32);
+	stageSelectButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_OVER_BUTTON_HEIGHT + 16);
+	stageSelectButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
+	stageSelectButton.textureId = ReserveTextureLoadFile("texture/ui/stageselect.png");
+	stageSelectButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/stageselect_pressed.png");
+
+	stageSelectButton.releasedCallback = []() {
+		GoNextScene(StageSelect);
+	};
+
+	returnTitleButton.pos = stageSelectButton.pos + D3DXVECTOR2(0, GAME_OVER_BUTTON_HEIGHT + 16);
 	returnTitleButton.size = D3DXVECTOR2(GAME_OVER_BUTTON_WIDTH, GAME_OVER_BUTTON_HEIGHT);
-	returnTitleButton.textureId = ReserveTextureLoadFile("texture/quit.png");
-	returnTitleButton.pressedTextureId = ReserveTextureLoadFile("texture/quit_pressed.png");
+	returnTitleButton.textureId = ReserveTextureLoadFile("texture/ui/quit.png");
+	returnTitleButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/quit_pressed.png");
 
 	returnTitleButton.releasedCallback = []() {
 		PlaySound(SOUND_LABEL_SE_DECITION);
 		GoNextScene(GameStartScene);
 	};
 
-	AddSelectButton(retryButton);
-	AddSelectButton(returnTitleButton);
+	gameOverSelect.Add(retryButton);
+	gameOverSelect.Add(stageSelectButton);
+	gameOverSelect.Add(returnTitleButton);
 
-	backgroundTexture = ReserveTextureLoadFile("texture/背景2.jpg");
+	backgroundTexture = ReserveTextureLoadFile("texture/background/背景2.jpg");
 
-	gameOverTextTexture = ReserveTextureLoadFile("texture/gameover.png");
+	gameOverTextTexture = ReserveTextureLoadFile("texture/ui/gameover.png");
 
-	SetSelectButtonFrame(ReserveTextureLoadFile("texture/select.png"));
+	gameOverSelect.SetFrame(ReserveTextureLoadFile("texture/ui/select.png"));
 
 	LoadTexture();
 }
 
 void UninitGameOver() {
-	UninitSelectButton();
+	gameOverSelect.Uninit();
 
 	ReleaseTexture(backgroundTexture);
 	ReleaseTexture(gameOverTextTexture);
@@ -71,10 +82,10 @@ void UninitGameOver() {
 void DrawGameOver() {
 	DrawSprite(backgroundTexture, { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT }, { 0,0 }, { SCREEN_WIDTH,SCREEN_HEIGHT });
 	DrawSprite(gameOverTextTexture, { 200,64 }, 10, { GAME_OVER_LOGO_WIDTH,GAME_OVER_LOGO_HEIGHT }, { 0,0 }, { GAME_OVER_LOGO_WIDTH,GAME_OVER_LOGO_HEIGHT });
-	DrawSelectButton();
+	gameOverSelect.Draw();
 }
 
 void UpdateGameOver()
 {
-	UpdateSelectButton();
+	gameOverSelect.Update();
 }

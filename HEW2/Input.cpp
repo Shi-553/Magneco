@@ -13,7 +13,6 @@ void UninitInput() {
 }
 
 void UpdateInput() {
-
 	// プレイヤーの移動
 	if (PressInputLogger(MYVK_UP)) {
 		MoveUpPlayer();
@@ -66,9 +65,7 @@ void UpdateInput() {
 	if (TriggerInputLogger(MYVK_PURGE)) {
 		PurgePlayerFlyingObject();
 	}
-	if (ReleaseInputLogger(MYVK_PAUSE)) {
-		PostQuitMessage(0);
-	}
+
 
 #ifdef _DEBUG
 	//DebugPrintInputLogger(OutputLogType::MOUSE_AXIS);

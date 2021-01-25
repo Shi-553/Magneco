@@ -8,10 +8,11 @@
 #define MAP_TEXTURE_WIDTH 32
 #define MAP_TEXTURE_HEIGHT 32
 
-#define MAP_GOAL_TEXTURE_HEIGHT 64
+#define MAP_GOAL_AND_ITEM_TEXTURE_HEIGHT 64
 
-#define MAP_GOAL_DRAW_SIZE_WIDTH 1
-#define MAP_GOAL_DRAW_SIZE_HEIGHT 2
+#define MAP_GOAL_AND_ITEMDRAW_SIZE_WIDTH 1
+#define MAP_GOAL_AND_ITEMDRAW_SIZE_HEIGHT 2
+
 
 
 bool CanAttachedMapType(INTVECTOR2& pos, MapType type);
@@ -27,26 +28,29 @@ static int mapWidth = 10;
 
 void InitMap(void)
 {
-	map_textureIds = ReserveTextureLoadFile("texture/背景１.png");
+	map_textureIds = ReserveTextureLoadFile("texture/background/背景１.png");
 
-	textureIds[MAP_NONE] = ReserveTextureLoadFile("texture/MAP_NONE.png");
-	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/MAP_BLOCK_NONE.png");
-	textureIds[MAP_BLOCK] = ReserveTextureLoadFile("texture/block02.png");
-	textureIds[MAP_CHAECKPOINT_ON] = ReserveTextureLoadFile("texture/checkpoint_on.png");
-	textureIds[MAP_CHAECKPOINT_OFF] = ReserveTextureLoadFile("texture/checkpoint_off.png");
-	textureIds[MAP_WALL] = ReserveTextureLoadFile("texture/wall.png");
-	textureIds[MAP_ROCK] = ReserveTextureLoadFile("texture/brokenblock01.png");
-	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/warpblock32_64_anime.png");
-	textureIds[MAP_CHEST_CLOSED] = ReserveTextureLoadFile("texture/chestClose.png");
-	textureIds[MAP_CHEST_OPENED] = ReserveTextureLoadFile("texture/chestOpen.png");
+	textureIds[MAP_NONE] = ReserveTextureLoadFile("texture/block/MAP_NONE.png");
+	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/block/MAP_BLOCK_NONE.png");
+	textureIds[MAP_BLOCK] = ReserveTextureLoadFile("texture/block/road_block.png");
+	textureIds[MAP_CHAECKPOINT_ON] = ReserveTextureLoadFile("texture/block/link_block.png");
+	textureIds[MAP_CHAECKPOINT_OFF] = ReserveTextureLoadFile("texture/block/point_block.png");
+	textureIds[MAP_WALL] = ReserveTextureLoadFile("texture/block/wall.png");
+	textureIds[MAP_ROCK] = ReserveTextureLoadFile("texture/block/road_block_broken.png");
+	textureIds[MAP_GOAL] = ReserveTextureLoadFile("texture/block/warpblock32_64_anime.png");
+	textureIds[MAP_CHEST_CLOSED] = ReserveTextureLoadFile("texture/block/itembox_anime.png");
+	textureIds[MAP_CHEST_OPENED] = ReserveTextureLoadFile("texture/block/itembox_block.png");
 
 	frame = 0;
-
+	mapHeight = 10;
+	mapWidth = 10;
 
 	if (MapChipList != NULL) {
 		delete[] MapChipList;
 		MapChipList = NULL;
 	}
+#ifdef _DEBUG
+
 	MapChipList = new Map[mapHeight * mapWidth]{
 		{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},
 		{MAP_WALL, INTVECTOR2::GetUp()},
@@ -161,6 +165,8 @@ void InitMap(void)
 	};
 
 	SecureMapLabelList();
+
+#endif // _DEBUG
 }
 
 void UninitMap(void)
@@ -202,13 +208,13 @@ void DrawMap(void)
 				continue;
 			}
 
-			if (map->type == MAP_GOAL) {
+			if (map->type == MAP_GOAL || map->type == MAP_CHEST_CLOSED) {
 				auto tPos = D3DXVECTOR2(
 					MAP_TEXTURE_WIDTH * (frame / 8 % 8),
 					0
 				);
 
-				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j, i - 1), 100, D3DXVECTOR2(MAP_GOAL_DRAW_SIZE_WIDTH, MAP_GOAL_DRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_TEXTURE_HEIGHT));
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j, i - 1), 100, D3DXVECTOR2(MAP_GOAL_AND_ITEMDRAW_SIZE_WIDTH, MAP_GOAL_AND_ITEMDRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_AND_ITEM_TEXTURE_HEIGHT));
 			}
 			else
 			{

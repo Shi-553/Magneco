@@ -293,18 +293,22 @@ void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, D3DXV
 
 void Rotate(Vertex2D* v, D3DXVECTOR2 pos, D3DXVECTOR2 cPos, float rad) {
 
-	D3DXMATRIX mtxRotation, mtxTransToCenter, mtxResult;
+	D3DXMATRIX mtxRotation, mtxTransToCenter, mtxResult, mtxTransToICenter;
 
 	D3DXMatrixTranslation(&mtxTransToCenter, -pos.x - cPos.x, -pos.y - cPos.y, 0);
+	D3DXMatrixTranslation(&mtxTransToICenter, pos.x + cPos.x, pos.y + cPos.y, 0);
 
 	D3DXMatrixRotationZ(&mtxRotation, rad-3.141519);
 
-	mtxResult = mtxTransToCenter * mtxRotation * -mtxTransToCenter;
+	mtxResult = mtxTransToCenter * mtxRotation * mtxTransToICenter;
 
 
 	for (int i = 0; i < 4; i++)
 	{
-		D3DXVec4Transform(&v[i].pos, &v[i].pos, &mtxResult);
+		auto vv = D3DXVECTOR2(v[i].pos.x, v[i].pos.y);
+		D3DXVec2TransformCoord(&vv, &vv, &mtxResult);
+		v[i].pos.x = vv.x;
+		v[i].pos.y = vv.y;
 	}
 }
 

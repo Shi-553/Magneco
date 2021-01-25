@@ -17,6 +17,7 @@ void DrawGameSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 tPos, D
 void DrawGameSprite(int textureId, D3DXVECTOR2 pos, float z);
 
 void DrawGameSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size);
+void DrawGameSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, D3DXVECTOR2 tPos, D3DXVECTOR2 tSize, D3DXVECTOR2 cPos, float rad);
 
 D3DXVECTOR2 ScreenToGamePos(D3DXVECTOR2& screenPos);
 D3DXVECTOR2 GameToScreenPos(D3DXVECTOR2& gamePos);

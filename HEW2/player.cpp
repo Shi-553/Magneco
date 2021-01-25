@@ -15,14 +15,21 @@
 #include "judge.h"
 #include "sound.h"
 
-#define PLAYER_TEXTURE_WIDTH 32
-#define PLAYER_TEXTURE_HEIGHT 32
+#define PLAYER_TEXTURE_WIDTH 64
+#define PLAYER_TEXTURE_HEIGHT 64
+
+#define NOTIFY_UFO_TEXTURE_WIDTH  32
+#define NOTIFY_UFO_TEXTURE_HEIGHT 32
 
 #define PLAYER_PURGE_SPEED 6
 
 static int textureId = TEXTURE_INVALID_ID;
+static int idleTextureId = TEXTURE_INVALID_ID;
+static int invincibleTextureId = TEXTURE_INVALID_ID;
+static int damageTextureId = TEXTURE_INVALID_ID;
+static int purgeTextureId = TEXTURE_INVALID_ID;
+static int notifyUFOTextureId = TEXTURE_INVALID_ID;
 static Player player;
-
 static int  playerTextureVertical = 0;
 
 static int putPredictionTextureId = TEXTURE_INVALID_ID;
@@ -31,10 +38,17 @@ void BlockDecision();
 void ToFreeFlyingObject(FlyingObject& flyingObject);
 void UpdatePutFlyingObject();
 bool IsOverlaped(FlyingObject& flyingObject);
+void MoveAdjust();
 
 void InitPlayer() {
-	textureId = ReserveTextureLoadFile("texture/player_32×32.png");
-	putPredictionTextureId = ReserveTextureLoadFile("texture/putPrediction.png");
+	textureId = ReserveTextureLoadFile("texture/player/player_64×64.png");
+	idleTextureId = ReserveTextureLoadFile("texture/player/player_idle_64x64.png");
+	invincibleTextureId = ReserveTextureLoadFile("texture/player/player_tikatika_64×64.png");
+	damageTextureId = ReserveTextureLoadFile("texture/player/player_naepoyo_64×64.png");
+	purgeTextureId = ReserveTextureLoadFile("texture/player/player_nekopunch_64×64.png");
+	putPredictionTextureId = ReserveTextureLoadFile("texture/player/putPrediction.png");
+	notifyUFOTextureId = ReserveTextureLoadFile("texture/player/akan.png");
+
 
 	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();
@@ -48,15 +62,22 @@ void InitPlayer() {
 	player.blockMax = 4;
 	player.checkCheckpoint = false;
 	player.isPut = false;
+	player.isMove = false;
 	player.putFrame = 0;
 	player.stanTime = 0;
 	player.invicibleTime = 0;
+	player.nekopunchTime = 0;
 	player.size = { 1,1 };
 }
 
 void UninitPlayer() {
 	ReleaseTexture(textureId);
 	ReleaseTexture(putPredictionTextureId);
+	ReleaseTexture(idleTextureId);
+	ReleaseTexture(invincibleTextureId);
+	ReleaseTexture(damageTextureId);
+	ReleaseTexture(purgeTextureId);
+	ReleaseTexture(notifyUFOTextureId);
 }
 
 void UpdatePlayer() {
@@ -125,20 +146,29 @@ void UpdatePlayer() {
 		}
 
 
-		player.frame++;
-
 	}
 	else {
 
 		player.stanTime--;
 	}
 
+	player.isMove = player.dir != D3DXVECTOR2(0, 0);
+
 	player.dir = { 0,0 };
+	player.frame++;
+
+	if (player.nekopunchTime > 0) {
+		player.nekopunchTime++;
+		if (player.nekopunchTime >= 33) {
+			player.nekopunchTime = 0;
+		}
+	}
 
 	UpdatePutFlyingObject();
 }
 
 void DrawPlayer() {
+	NPC* npc = GetNpc();
 
 	for (auto& v : player.putFlyingObjectList) {
 		DrawGameSprite(putPredictionTextureId, v.trans.GetIntPos().ToD3DXVECTOR2(), 1);
@@ -149,17 +179,62 @@ void DrawPlayer() {
 	}
 
 
-	auto tPos = D3DXVECTOR2(
-		PLAYER_TEXTURE_WIDTH * (player.frame / 16 % 4),
-		playerTextureVertical
-	);
+	if (player.stanTime > 0) {
+		auto tPos = D3DXVECTOR2(
+			PLAYER_TEXTURE_WIDTH * (player.frame / 16 % 4),
+			playerTextureVertical
+		);
 
-	DrawGameSprite(textureId, player.trans.pos - D3DXVECTOR2(0.5, 0.5), 30, tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+		DrawGameSprite(damageTextureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+	}
+	else if (player.nekopunchTime > 0) {
+		auto tPos = D3DXVECTOR2(
+			PLAYER_TEXTURE_WIDTH * (player.nekopunchTime / 8 % 4),
+			playerTextureVertical
+		);
 
+		DrawGameSprite(purgeTextureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+	}
+	else if (IsPlayerInvicible())
+	{
+		auto tPos = D3DXVECTOR2(
+			PLAYER_TEXTURE_WIDTH * (player.frame / 12 % 4),
+			playerTextureVertical
+		);
+
+		DrawGameSprite(invincibleTextureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+	}
+	else if (!player.isMove) {
+		auto tPos = D3DXVECTOR2(
+			PLAYER_TEXTURE_WIDTH * (player.frame / 10 % 6),
+			playerTextureVertical
+		);
+
+		DrawGameSprite(idleTextureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+	}
+	else if (player.isMove)
+	{
+		auto tPos = D3DXVECTOR2(
+			PLAYER_TEXTURE_WIDTH * (player.frame / 16 % 4),
+			playerTextureVertical
+		);
+
+		DrawGameSprite(textureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+	}
 
 	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
 		itr != player.flyingObjectList.end(); itr++) {
 		DrawFlyingObject(*itr);
+	}
+
+
+	if (npc->contactUFO) {
+		auto tPos = D3DXVECTOR2(
+				NOTIFY_UFO_TEXTURE_WIDTH * (player.frame / 8 % 4),
+				0
+		);
+
+		DrawGameSprite(notifyUFOTextureId, player.trans.pos - D3DXVECTOR2(0.5, 1.5), 30, tPos, D3DXVECTOR2(NOTIFY_UFO_TEXTURE_WIDTH, NOTIFY_UFO_TEXTURE_HEIGHT));
 	}
 }
 
@@ -225,6 +300,9 @@ void UpdatePutFlyingObject() {
 		}
 
 	}
+	if (player.isPut&&!player.putFlyingObjectList.empty()) {
+		MoveAdjust();
+	}
 }
 
 
@@ -254,6 +332,7 @@ void MoveRightPlayer() {
 
 void MovePlayer(D3DXVECTOR2 dir) {
 	player.dir = dir;
+
 }
 
 void BlockDecision() {
@@ -302,6 +381,7 @@ void PurgePlayerFlyingObject() {
 		PlaySound(SOUND_LABEL_SE_PURGE);
 		player.purgeFlyingObjectList.push_back(*itr);
 		itr = player.flyingObjectList.erase(itr);
+		player.nekopunchTime++;
 	}
 }
 bool PlayerExport(FILE* fp) {
@@ -322,7 +402,17 @@ bool PlayerImport(FILE* fp) {
 
 	return true;
 }
+void MoveAdjust() {
+	auto last = player.trans.pos;
+	player.trans.pos = player.trans.GetIntPos().ToD3DXVECTOR2() + D3DXVECTOR2(0.5, 0.5);
+	player.trans.UpdatePos();
 
+	for (std::list<FlyingObject>::iterator itr = player.flyingObjectList.begin();
+		itr != player.flyingObjectList.end(); itr++) {
+		itr->trans.pos += player.trans.pos - last;
+		itr->trans.UpdatePos();
+	}
+}
 void MakePut() {
 	if (player.flyingObjectList.empty()) {
 		return;
@@ -337,6 +427,7 @@ void MakePut() {
 		player.flyingObjectList.clear();
 		player.invicibleTime = 0;
 		player.checkCheckpoint = false;
+		MoveAdjust();
 		return;
 	}
 
@@ -355,6 +446,9 @@ void PutCansel() {
 
 
 bool GetBlock(FlyingObject& itr, D3DXVECTOR2& attachPos) {
+	if (player.stanTime > 0) {
+		return false;
+	}
 	if (player.flyingObjectList.size() >= player.blockMax || player.checkCheckpoint || player.isPut) {
 		return false;
 	}
@@ -400,9 +494,9 @@ bool GetBlock(FlyingObject& itr, D3DXVECTOR2& attachPos) {
 
 			itr.trans.Init(pos);
 
-		} 
+		}
 	}
-	itr.trans.pos = itr.trans.GetIntPos().ToD3DXVECTOR2() + player.trans.pos-player.trans.GetIntPos().ToD3DXVECTOR2();
+	itr.trans.pos = itr.trans.GetIntPos().ToD3DXVECTOR2() + player.trans.pos - player.trans.GetIntPos().ToD3DXVECTOR2();
 
 	if (itr.type == FLYING_OBJECT_CHECKPOINT_OFF) {
 
@@ -447,6 +541,24 @@ bool DamagePlayer() {
 	return true;
 }
 
+bool DamagePlayerFlyingObject(int uid) {
+	if (IsPlayerInvicible()) {
+		return false;
+	}
+	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();) {
+		if (itr->uid != uid) {
+			ToFreeFlyingObject(*itr);
+		}
+		itr = player.flyingObjectList.erase(itr);
+	}
+	player.checkCheckpoint = false;
+
+	player.stanTime = DEFAULT_PLAYER_STAN_FRAME;
+	player.invicibleTime = DEFAULT_PLAYER_INVICIBLE_FRAME;
+	return true;
+}
+
+
 
 
 bool RemoteBlockToFreeFlyingObject() {
@@ -455,14 +567,14 @@ bool RemoteBlockToFreeFlyingObject() {
 
 	list<int> toFreeFlyingObjectIds;
 	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end(); itr++) {
-		toFreeFlyingObjectIds.push_back(itr->id);
+		toFreeFlyingObjectIds.push_back(itr->uid);
 	}
 
 	while (true) {
 		bool isModosita = false;
 
 		for (auto idItr = toFreeFlyingObjectIds.begin(); idItr != toFreeFlyingObjectIds.end(); idItr++) {
-			auto itr = find_if(player.flyingObjectList.begin(), player.flyingObjectList.end(), [idItr](FlyingObject f) {return f.id == *idItr; });
+			auto itr = find_if(player.flyingObjectList.begin(), player.flyingObjectList.end(), [idItr](FlyingObject f) {return f.uid == *idItr; });
 			if (itr == player.flyingObjectList.end()) {
 				continue;
 			}
@@ -489,7 +601,7 @@ bool RemoteBlockToFreeFlyingObject() {
 	}
 
 	for (auto idItr = toFreeFlyingObjectIds.begin(); idItr != toFreeFlyingObjectIds.end(); ) {
-		auto itr = find_if(player.flyingObjectList.begin(), player.flyingObjectList.end(), [idItr](FlyingObject f) {return f.id == *idItr; });
+		auto itr = find_if(player.flyingObjectList.begin(), player.flyingObjectList.end(), [idItr](FlyingObject f) {return f.uid == *idItr; });
 		if (itr == player.flyingObjectList.end()) {
 			idItr = toFreeFlyingObjectIds.erase(idItr);
 			continue;

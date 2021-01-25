@@ -14,11 +14,29 @@
 // flyingObject描画範囲の加算分
 #define FLYINGOBJECT_ADD_RANGE (5)
 
+#define FLYINGOBJECT_TEXTURE_WIDTH (64)
+#define FLYINGOBJECT_TEXTURE_HEIGHT (64)
+
+#define FLYINGOBJECT_ITEM_TEXTURE_WIDTH (32)
+#define FLYINGOBJECT_ITEM_TEXTURE_HEIGHT (32)
+
+#define UFO_LIGHT_ANIMETION_TEXTURE (96)
+
 
 static std::list<FlyingObject> flyingObjects;
 static bool existsUFO = false;
 static int flyingObjectTextureIds[FLYING_OBJECT_MAX];
 static int blockAnimationTextureId;
+static int ufoLightAnimationTextureId;
+static int ufoBottomLightAnimationTextureId;
+static int roadSignTextureId;
+
+static int  nekoPanchiTextureId = TEXTURE_INVALID_ID;
+
+
+void BreakBlock(INTVECTOR2 pos);
+
+static int frame = 0;
 
 static SponeId spone;
 
@@ -44,20 +62,27 @@ void AddFlyingObjects(FlyingObject* flyingObject) {
 
 void InitFlyingObject() {
 	flyingObjects.clear();
-	flyingObjectTextureIds[FLYING_OBJECT_BLOCK] = ReserveTextureLoadFile("texture/block01.png");
-	flyingObjectTextureIds[FLYING_OBJECT_ENEMY] = ReserveTextureLoadFile("texture/jellyalien01.png");
-	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_BREAK_BLOCK] = ReserveTextureLoadFile("texture/meteorite_1.png");
-	flyingObjectTextureIds[FLYING_OBJECT_UFO] = ReserveTextureLoadFile("texture/ufo.png");
-	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_SECOND] = ReserveTextureLoadFile("texture/jellyaliengirl01.png");
-	flyingObjectTextureIds[FLYING_OBJECT_PLAYER_BLOCK] = ReserveTextureLoadFile("texture/block03.png");
-	flyingObjectTextureIds[FLYING_OBJECT_PURGE_BLOCK] = ReserveTextureLoadFile("texture/block03.png");
+	flyingObjectTextureIds[FLYING_OBJECT_BLOCK] = ReserveTextureLoadFile("texture/block/block02.png");
+	flyingObjectTextureIds[FLYING_OBJECT_ENEMY] = ReserveTextureLoadFile("texture/enemy/jellyalienman_anime.png");
+	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_BREAK_BLOCK] = ReserveTextureLoadFile("texture/enemy/meteorite_1.png");
+	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_BREAK_BLOCK_SECOND] = ReserveTextureLoadFile("texture/enemy/meteorite_2.png");
+	flyingObjectTextureIds[FLYING_OBJECT_UFO] = ReserveTextureLoadFile("texture/enemy/UFO.png");
+	flyingObjectTextureIds[FLYING_OBJECT_ENEMY_SECOND] = ReserveTextureLoadFile("texture/enemy/jellyaliengirl_anime.png");
+	flyingObjectTextureIds[FLYING_OBJECT_PLAYER_BLOCK] = ReserveTextureLoadFile("texture/block/block01.png");
+	flyingObjectTextureIds[FLYING_OBJECT_PURGE_BLOCK] = ReserveTextureLoadFile("texture/block/nekopanchi_nikukyu.png");
 	existsUFO = false;
 
-	flyingObjectTextureIds[FLYING_OBJECT_ITEM_ADD_SPEED] = ReserveTextureLoadFile("texture/hane.png");
-	flyingObjectTextureIds[FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE] = ReserveTextureLoadFile("texture/maguneticPower.png");
-	flyingObjectTextureIds[FLYING_OBJECT_CHECKPOINT_OFF] = ReserveTextureLoadFile("texture/checkpoint_off.png");
-	blockAnimationTextureId = ReserveTextureLoadFile("texture/block_anime.png");
+	flyingObjectTextureIds[FLYING_OBJECT_ITEM_ADD_SPEED] = ReserveTextureLoadFile("texture/item/item_hane_anime.png");
+	flyingObjectTextureIds[FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE] = ReserveTextureLoadFile("texture/item/item_hueru_anime.png");
+	flyingObjectTextureIds[FLYING_OBJECT_CHECKPOINT_OFF] = ReserveTextureLoadFile("texture/block/point_block.png");
+	blockAnimationTextureId = ReserveTextureLoadFile("texture/block/put_anime.png");
+	ufoLightAnimationTextureId = ReserveTextureLoadFile("texture/enemy/beam_front.png");
+	ufoBottomLightAnimationTextureId = ReserveTextureLoadFile("texture/enemy/beam_behind.png");
+	roadSignTextureId = ReserveTextureLoadFile("texture/enemy/insekikuruyo.png");
 
+	nekoPanchiTextureId = ReserveTextureLoadFile("texture/block/nekopanchi.png");
+
+	frame = 0;
 	currentUID = 0;
 }
 void UninitFlyingObject() {
@@ -65,17 +90,93 @@ void UninitFlyingObject() {
 		ReleaseTexture(flyingObjectTextureIds[i]);
 	}
 	ReleaseTexture(blockAnimationTextureId);
+	ReleaseTexture(ufoLightAnimationTextureId);
+	ReleaseTexture(ufoBottomLightAnimationTextureId);
+	ReleaseTexture(roadSignTextureId);
+	ReleaseTexture(nekoPanchiTextureId);
 }
 void DrawFlyingObject(FlyingObject& flyingObject) {
 	Player* player = GetPlayer();
+	NPC* npc = GetNpc();
 	auto textureId = flyingObjectTextureIds[flyingObject.type];
 
+	if (flyingObject.type == FLYING_OBJECT_PURGE_BLOCK) {
+		auto tPos = D3DXVECTOR2(
+					FLYINGOBJECT_ITEM_TEXTURE_WIDTH *2* (frame / 12 % 6),
+					0
+		);
+		auto size = flyingObject.size.ToD3DXVECTOR2();
+		size.x *= 2;
+		auto pos = flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0;
+		pos.x -= flyingObject.size.x;
+		auto d = D3DXVECTOR2(-1, 0);
+		auto dr = D3DXVec2Dot(&d, &flyingObject.dir);
+		if (dr > 1) {
+			dr = 1;
+		}
+		if (dr < -1) {
+			dr = -1;
+		}
+		auto rad = acosf(dr);
+		if (d.x * flyingObject.dir.y - d.y * flyingObject.dir.x<0) {
+			rad = -rad;
+		}
+		auto cp = flyingObject.size.ToD3DXVECTOR2() / 2.0;
+		cp.x += flyingObject.size.x;
+		DrawGameSprite(nekoPanchiTextureId, pos, 50, size, tPos, D3DXVECTOR2(FLYINGOBJECT_ITEM_TEXTURE_WIDTH * 2, FLYINGOBJECT_ITEM_TEXTURE_HEIGHT),cp, rad);
+
+	}
 
 	if (flyingObject.isAnime) {
 		DrawGameSprite(blockAnimationTextureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2(), { (float)(4 * player->putFrame / DEFAULT_PUT_REQUIRED_FRAME) * 32, 0 }, { 32, 32 });
 		return;
 	}
-	DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2());
+	if (flyingObject.type == FLYING_OBJECT_ITEM_ADD_SPEED || flyingObject.type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE || flyingObject.type == FLYING_OBJECT_ENEMY || flyingObject.type == FLYING_OBJECT_ENEMY_SECOND) {
+		auto tPos = D3DXVECTOR2(
+			FLYINGOBJECT_ITEM_TEXTURE_WIDTH * (frame / 12 % 8),
+			0
+		);
+
+		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2(), tPos, D3DXVECTOR2(FLYINGOBJECT_ITEM_TEXTURE_WIDTH, FLYINGOBJECT_ITEM_TEXTURE_HEIGHT));
+	}
+	else if (flyingObject.type == FLYING_OBJECT_UFO) {
+		if (flyingObject.hp >= 3) {
+			auto tPos = D3DXVECTOR2(
+				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 12 % 4),
+				0
+			);
+
+			DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6, 50, D3DXVECTOR2(1.3, 1.3), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
+		}
+		else if (flyingObject.hp == 2) {
+			auto tPos = D3DXVECTOR2(
+				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 12 % 4),
+				FLYINGOBJECT_TEXTURE_HEIGHT
+			);
+
+			DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6, 50, D3DXVECTOR2(1.3, 1.3), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
+		}
+		else if (flyingObject.hp == 1) {
+			auto tPos = D3DXVECTOR2(
+				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 12 % 4),
+				FLYINGOBJECT_TEXTURE_HEIGHT * 2
+			);
+
+			DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6, 50, D3DXVECTOR2(1.3, 1.3), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
+		}
+		if (npc->contactUFO == true) {
+			auto tPos = D3DXVECTOR2(
+				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 8 % 4),
+				0
+			);
+
+			DrawGameSprite(ufoLightAnimationTextureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6 + D3DXVECTOR2(-0.25, 0.5), 50, D3DXVECTOR2(1.8, 1.7), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, UFO_LIGHT_ANIMETION_TEXTURE));
+			DrawGameSprite(ufoBottomLightAnimationTextureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6 + D3DXVECTOR2(-0.25, 0.5), 50, D3DXVECTOR2(1.8, 1.7), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, UFO_LIGHT_ANIMETION_TEXTURE));
+		}
+	}
+	else {
+		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2());
+	}
 }
 
 void DrawFlyingObject() {
@@ -93,12 +194,14 @@ void UpdateFlyingObject() {
 			itr++;
 		}
 	}
+
+	frame++;
 }
 void BackFlyingObject(int frame) {
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
 		if (UpdateFlyingObject(&*itr, -frame * itr->speed)) {
 			if (itr->type == FLYING_OBJECT_UFO) {
-				DestroyUFO();
+				NPCDeleteUFO();
 			}
 			itr = flyingObjects.erase(itr);
 		}
@@ -112,9 +215,8 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 		flyingObject->dir = (GetNpc()->trans.pos + ADD_UFO_POS) - flyingObject->trans.pos;
 
 	}
-	auto nomal = flyingObject->dir;
-	D3DXVec2Normalize(&nomal, &nomal);
-	flyingObject->trans.pos += nomal * speed * GetDeltaTime();
+	D3DXVec2Normalize(&flyingObject->dir, &flyingObject->dir);
+	flyingObject->trans.pos += flyingObject->dir * speed * GetDeltaTime();
 
 	flyingObject->trans.UpdatePos();
 
@@ -127,14 +229,44 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 	else {
 		return false;
 	}
-
 }
 
-void DestroyUFO() {
-	StopSound(SOUND_LABEL_SE_UFO);
-	existsUFO = false;
-}
 
+
+void BreakBlock(FlyingObject& f) {
+	if (f.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
+		BreakBlock(f.trans.GetIntPos());
+		BreakBlock(f.trans.GetIntPos() + INTVECTOR2(1, 0));
+		BreakBlock(f.trans.GetIntPos() + INTVECTOR2(0, 1));
+		BreakBlock(f.trans.GetIntPos() + INTVECTOR2(-1, 0));
+		BreakBlock(f.trans.GetIntPos() + INTVECTOR2(0, -1));
+	}
+}
+bool DamageFlyingObject(FlyingObject& f) {
+	f.hp--;
+	if (f.hp > 0) {
+		return false;
+	}
+	PlaySound(SOUND_LABEL_SE_EXPLOSION);
+	if (f.type == FLYING_OBJECT_UFO) {
+		existsUFO = false;
+		StopSound(SOUND_LABEL_SE_UFO);
+		NPCDeleteUFO();
+	}
+
+	return true;
+}
+void BreakBlock(INTVECTOR2 pos) {
+	if (auto m = GetMap(pos)) {
+		if (m->type == MAP_BLOCK || m->type == MAP_ROCK) {
+			m->type = MAP_BLOCK_NONE;
+			BreakNotConnectBlock(pos + INTVECTOR2(0, 1));
+			BreakNotConnectBlock(pos + INTVECTOR2(0, -1));
+			BreakNotConnectBlock(pos + INTVECTOR2(1, 0));
+			BreakNotConnectBlock(pos + INTVECTOR2(-1, 0));
+		}
+	}
+}
 
 
 bool IsFlyingObjectItem(FlyingObjectType type) {
@@ -153,6 +285,7 @@ bool IsFlyingObjectEnemy(FlyingObjectType type) {
 	{
 	case FLYING_OBJECT_ENEMY:
 	case FLYING_OBJECT_ENEMY_BREAK_BLOCK:
+	case FLYING_OBJECT_ENEMY_BREAK_BLOCK_SECOND:
 	case FLYING_OBJECT_UFO:
 	case FLYING_OBJECT_ENEMY_SECOND:
 		return true;
@@ -174,6 +307,7 @@ bool IsFlyingObjectBreakBlockEnemy(FlyingObjectType type) {
 	switch (type)
 	{
 	case FLYING_OBJECT_ENEMY_BREAK_BLOCK:
+	case FLYING_OBJECT_ENEMY_BREAK_BLOCK_SECOND:
 		return true;
 	default:
 		return false;
