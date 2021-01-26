@@ -104,11 +104,14 @@ void SelectButton::Update() {
 		}
 	}
 	if (TriggerInputLogger(gForwardKey)) {
-		if (buttons.size() - 1 > selectedIndex) {
-			selectedIndex++;
+		selectedIndex++;
+		if (buttons.size() <= selectedIndex) {
+			selectedIndex = 0;
+		}
 
-			AllReleasePressedFlag();
-			isPressedForward = true;
+		AllReleasePressedFlag();
+		isPressedForward = true;
+		if (buttons[selectedIndex].rightCallback != NULL) {
 			buttons[selectedIndex].rightCallback();
 		}
 	}
@@ -116,10 +119,13 @@ void SelectButton::Update() {
 		AllReleasePressedFlag();
 	}
 	if (TriggerInputLogger(gBackKey)) {
-		if (selectedIndex > 0) {
-			selectedIndex--;
-			AllReleasePressedFlag();
-			isPressedBack = true;
+		selectedIndex--;
+		if (selectedIndex <0) {
+			selectedIndex=buttons.size() - 1;
+		}
+		AllReleasePressedFlag();
+		isPressedBack = true;
+		if (buttons[selectedIndex].leftCallback != NULL) {
 			buttons[selectedIndex].leftCallback();
 		}
 	}
@@ -167,17 +173,15 @@ void SelectButton::SetKey(VirtualKey enterKey, VirtualKey forwardKey, VirtualKey
 void SelectButton::SetFrame(int frame) {
 	selectFrameTextureId = frame;
 }
-void SelectButton::SetForward(int forward, int forwardPressed, int forwardCantSelect, D3DXVECTOR2 pos, D3DXVECTOR2 size) {
+void SelectButton::SetForward(int forward, int forwardPressed, D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 	forwardTextureId = forward;
 	forwardPressedTextureId = forwardPressed;
-	forwardCantSelectTextureId = forwardCantSelect;
 	forwardPos = pos;
 	forwardSize = size;
 }
-void SelectButton::SetBack(int back, int backPressed, int backCantSelect, D3DXVECTOR2 pos, D3DXVECTOR2 size) {
+void SelectButton::SetBack(int back, int backPressed, D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 	backTextureId = back;
 	backPressedTextureId = backPressed;
-	backCantSelectTextureId = backCantSelect;
 	backPos = pos;
 	backSize = size;
 }

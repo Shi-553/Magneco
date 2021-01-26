@@ -75,12 +75,10 @@ void InitStageSelect() {
 
 	stageSelect.SetBack(ReserveTextureLoadFile("texture/stageSelect/button_left.png"),
 	 ReserveTextureLoadFile("texture/stageSelect/button_left_pushed.png"),
-	 ReserveTextureLoadFile("texture/stageSelect/button_left_cantselect.png"),
 		D3DXVECTOR2(BU_LEFT_X, BU_Y));
 
 	stageSelect.SetForward(ReserveTextureLoadFile("texture/stageSelect/button_right.png"),
 	ReserveTextureLoadFile("texture/stageSelect/button_right_pushed.png"),
-	ReserveTextureLoadFile("texture/stageSelect/button_right_cantselect.png"),
 		D3DXVECTOR2(BU_RIGHT_X, BU_Y));
 
 	//selectStageTextureIds[STAGE_SELECT_ICON_NOT_OPEN ] =   ReserveTextureLoadFile("texture/stageSelect/icon_notopen.png");

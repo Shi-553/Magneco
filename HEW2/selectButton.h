@@ -30,11 +30,12 @@ public:
 	void SetKey(VirtualKey enterKey, VirtualKey forwardKey, VirtualKey backKey);
 
 	void SetFrame(int frame);
-	void SetForward(int forward, int forwardPressed, int forwardCantSelect, D3DXVECTOR2 pos, D3DXVECTOR2 size = D3DXVECTOR2(0, 0));
-	void SetBack(int back, int backPressed, int backCantSelect, D3DXVECTOR2 pos, D3DXVECTOR2 size = D3DXVECTOR2(0, 0));
+	void SetForward(int forward, int forwardPressed, D3DXVECTOR2 pos, D3DXVECTOR2 size = D3DXVECTOR2(0, 0));
+	void SetBack(int back, int backPressed, D3DXVECTOR2 pos, D3DXVECTOR2 size = D3DXVECTOR2(0, 0));
 
 	int GetIndex();
 	void SetIndex(int index);
+
 private:
 
 	void AllReleasePressedFlag();
@@ -57,9 +58,7 @@ private:
 
 	 int forwardTextureId = TEXTURE_INVALID_ID;
 	 int forwardPressedTextureId = TEXTURE_INVALID_ID;
-	 int forwardCantSelectTextureId = TEXTURE_INVALID_ID;
 
 	 int backTextureId = TEXTURE_INVALID_ID;
 	 int backPressedTextureId = TEXTURE_INVALID_ID;
-	 int backCantSelectTextureId = TEXTURE_INVALID_ID;
 };
