@@ -13,7 +13,7 @@ static int frame = 0;
 
 void InitTeamLogo()
 {
-	backGroundTexture = ReserveTextureLoadFile("texture/teamlogo/block.png");
+	backGroundTexture = ReserveTextureLoadFile("texture/teamlogo/black.png");
 	teamLogoTexture = ReserveTextureLoadFile("texture/teamlogo/rogo_siro_1024×512.png");
 
 	LoadTexture();
