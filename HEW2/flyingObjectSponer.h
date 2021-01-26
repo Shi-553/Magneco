@@ -34,4 +34,4 @@ bool FlyingObjectSponerImport(FILE* fp);
 int GetFlyingObjectSponeFrame();
 void SetFlyingObjectSponeFrame(int f);
 
-void DestrySpone(int id);
+void DestrySpone(FlyingObject& f);

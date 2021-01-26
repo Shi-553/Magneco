@@ -593,12 +593,12 @@ bool DamagePlayerFlyingObject(int uid) {
 	if (IsPlayerInvicible()) {
 		return false;
 	}
-	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();) {
+	for (auto itr = player.flyingObjectList.begin(); itr != player.flyingObjectList.end();itr++) {
 		if (itr->uid != uid) {
 			ToFreeFlyingObject(*itr);
 		}
-		itr = player.flyingObjectList.erase(itr);
 	}
+	player.flyingObjectList.clear();
 	player.checkCheckpoint = false;
 
 	player.stanTime = DEFAULT_PLAYER_STAN_FRAME;

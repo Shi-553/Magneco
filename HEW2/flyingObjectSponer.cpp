@@ -94,47 +94,47 @@ void DrawFlyingSponer() {
 		}
 		auto befFraame = frame - 150;
 		auto aftFrame = frame + 150;
-		auto fMax=spones.back().s.frame;
+		auto fMax = spones.back().s.frame;
 
-		auto a=spone.s.frame >befFraame && spone.s.frame < aftFrame;
+		auto a = spone.s.frame > befFraame && spone.s.frame < aftFrame;
 
 		aftFrame -= fMax;
 		befFraame -= fMax;
 		auto b = spone.s.frame > befFraame && spone.s.frame < aftFrame;
-		if ((a||b)&& (spone.isAlive>0|| spone.s.frame>frame)) {
-				auto pos = spone.s.initPos - spone.s.size.ToD3DXVECTOR2() / 2;
-				if (pos.x < gameMapSizeZero.x) {
-					pos.x = gameMapSizeZero.x;
-				}
-				if (pos.y < gameMapSizeZero.y) {
-					pos.y = gameMapSizeZero.y;
-				}
-
-				if (pos.x + spone.s.size.x > gameMapSize.x) {
-					pos.x = gameMapSize.x - spone.s.size.x;
-				}
-				if (pos.y + spone.s.size.y > gameMapSize.y) {
-					pos.y = gameMapSize.y - spone.s.size.y;
-				}
-				auto ty = 0;
-				if (spone.s.dir.x == 1) {
-					ty = 1;
-				}
-				if (spone.s.dir.x == -1) {
-					ty = 3;
-				}
-				if (spone.s.dir.y == 1) {
-					ty = 2;
-				}
-				if (spone.s.dir.y == -1) {
-					ty = 0;
-				}
-
-				DrawGameSprite(meteoriteIconTextureId, pos, 10, spone.s.size.ToD3DXVECTOR2(),
-					D3DXVECTOR2(32 * (meteoriteIconFrame / 16 % 4), 32 * ty),
-					D3DXVECTOR2(32, 32));
+		if ((a || b) && (spone.isAlive > 0 || spone.s.frame > frame)) {
+			auto pos = spone.s.initPos - spone.s.size.ToD3DXVECTOR2() / 2;
+			if (pos.x < gameMapSizeZero.x) {
+				pos.x = gameMapSizeZero.x;
 			}
-		
+			if (pos.y < gameMapSizeZero.y) {
+				pos.y = gameMapSizeZero.y;
+			}
+
+			if (pos.x + spone.s.size.x > gameMapSize.x) {
+				pos.x = gameMapSize.x - spone.s.size.x;
+			}
+			if (pos.y + spone.s.size.y > gameMapSize.y) {
+				pos.y = gameMapSize.y - spone.s.size.y;
+			}
+			auto ty = 0;
+			if (spone.s.dir.x == 1) {
+				ty = 1;
+			}
+			if (spone.s.dir.x == -1) {
+				ty = 3;
+			}
+			if (spone.s.dir.y == 1) {
+				ty = 2;
+			}
+			if (spone.s.dir.y == -1) {
+				ty = 0;
+			}
+
+			DrawGameSprite(meteoriteIconTextureId, pos, 10, spone.s.size.ToD3DXVECTOR2(),
+				D3DXVECTOR2(32 * (meteoriteIconFrame / 16 % 4), 32 * ty),
+				D3DXVECTOR2(32, 32));
+		}
+
 	}
 	meteoriteIconFrame++;
 }
@@ -146,15 +146,23 @@ void CheckSpone() {
 			f.size = spones[sponeIndex].s.size;
 			f.speed = spones[sponeIndex].s.speed;
 			AddFlyingObjects(&f);
-			spones[sponeIndex].isAlive++;
+
 			sponeIndex++;
+
+			if (f.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
+				spones[sponeIndex].isAlive++;
+			}
 		}
 		else {
 			break;
 		}
 	}
 }
-void DestrySpone(int id) {
+void DestrySpone(FlyingObject& f) {
+	if (f.type != FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
+		return;
+	}
+	auto id = f.id;
 	auto sponeId = std::find_if(spones.begin(), spones.end(), [&id](SponeId f) {return id == f.id; });
 	if (sponeId != spones.end()) {
 		sponeId->isAlive--;
