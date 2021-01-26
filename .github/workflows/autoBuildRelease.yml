@@ -14,7 +14,6 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       RELEASE_IT_VERSION: 14
-      PROJECT_NAME: マグネッコ
         
     runs-on: windows-latest
     
@@ -54,19 +53,23 @@ jobs:
       
     # Run the msbuild command
     - name: Build
-      run: msbuild ${PROJECT_NAME}.sln /m /p:Configuration=Release /p:Platform=x64
+      run: msbuild マグネッコ.sln /m /p:Configuration=Release /p:Platform=x64
       env:
         DXSDK_DIR: ${{ github.workspace  }}\DXSDK\
         
     - name: FileMove
       run: |
-           pwsh -command "Get-ChildItem ./$PROJECT_NAME/* -File|Remove-Item"
-           pwsh -command "Move-Item ./x64/Release/*.exe ./$PROJECT_NAME"
-           pwsh -command "Remove-Item ./$PROJECT_NAME/x64 -Recurse"
+           pwsh -command "New-Item ./Magneco -itemType Directory"
+           pwsh -command "Move-Item ./マグネッコ/font ./Magneco"
+           pwsh -command "Move-Item ./マグネッコ/stage ./Magneco"
+           pwsh -command "Move-Item ./マグネッコ/texture ./Magneco"
+           pwsh -command "Move-Item ./マグネッコ/BGM ./Magneco"
+           pwsh -command "Move-Item ./マグネッコ/SE ./Magneco"
+           pwsh -command "Move-Item ./x64/Release/*.exe ./Magneco"
            
       
     - name: Zip
-      run: 7z a "./Maguneco-x64.zip" "./マグネッコ" -tzip
+      run: 7z a "./Maguneco-x64.zip" "./Magneco" -tzip
       
         
       
