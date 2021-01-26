@@ -226,6 +226,7 @@ void JudgePlayerandFlyingObjectHit() {
 			INTVECTOR2 pos = itr->trans.GetIntPos();
 			Map* map = GetMap(pos);
 			if (map != NULL && map->type == MAP_BLOCK) {
+				CreateEffect(itr->trans.pos);
 
 				if (DamageFlyingObject(*itr)) {
 					itr = flyingObjectList->erase(itr);
