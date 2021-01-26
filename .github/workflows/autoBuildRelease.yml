@@ -59,7 +59,7 @@ jobs:
         
     - name: FileMove
       run: |
-           pwsh -command "Delete-Item ./マグネッコ/* | ? { $_.PSIsContainer }"
+           pwsh -command "Remove-Item ./マグネッコ/* | ? { $_.PSIsContainer }"
            
            pwsh -command "Move-Item ./x64/Release/*.exe ./マグネッコ"
       
