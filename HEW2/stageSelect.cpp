@@ -12,10 +12,10 @@
 #include <algorithm>
 using namespace std;
 
-#define POS_Y (-20)
+#define POS_Y (15)
 
 #define SAMUNE_X (320)
-#define SAMUNE_Y (94+POS_Y)
+#define SAMUNE_Y (40+POS_Y)
 
 #define NAME_X (SAMUNE_X + 20)
 #define NAME_Y (SAMUNE_Y + 30)
@@ -24,21 +24,24 @@ using namespace std;
 #define LEVEL_Y (SAMUNE_Y+30)
 
 #define BU_LEFT_X (152)
-#define BU_LEFT_Y (230+POS_Y)
+#define BU_Y (176+POS_Y)
 #define BU_RIGHT_X (1000)
-#define BU_RIGHT_Y (230+POS_Y)
 
-#define ICON_Y (650+POS_Y)
-#define ICON_TO_ICON_WIDTH (553-441)
+#define ICON_Y (410+POS_Y)
+#define ICON_TO_ICON_WIDTH (50)
+
+#define MESSAGEBOX_WIDTH (700)
+#define MESSAGEBOX_HEIGHT (135)
 
 #define MESSAGEBOX_X (SCREEN_WIDTH/2- MESSAGEBOX_WIDTH/2)
-#define MESSAGEBOX_Y (SCREEN_HEIGHT / 2 +120+POS_Y)
+#define MESSAGEBOX_Y (440+POS_Y)
 
 #define MESSAGE_X (MESSAGEBOX_X+30)
 #define MESSAGE_Y (MESSAGEBOX_Y+20)
 
-#define MESSAGEBOX_WIDTH (700)
-#define MESSAGEBOX_HEIGHT (135)
+#define BU_START_X (475)
+#define BU_START_Y (587+POS_Y)
+
 
 static Message* nameMessage, *overviewMessage, *lavelMessage;
 
@@ -51,10 +54,14 @@ enum StageSelectTexture {
 	STAGE_SELECT_SAMUNE,
 	STAGE_SELECT_SAMUNE_PRE,
 	STAGE_SELECT_MESSAGE_BOX,
+	STAGE_SELECT_BU_START,
+	STAGE_SELECT_BU_START_PRESSED,
 	STAGE_SELECT_MAX
 };
 
 static int selectStageTextureIds[STAGE_SELECT_MAX];
+static bool isPress = false;
+
 
 static SelectButton stageSelect;
 static int index = 0;
@@ -69,22 +76,26 @@ void InitStageSelect() {
 	stageSelect.SetBack(ReserveTextureLoadFile("texture/stageSelect/button_left.png"),
 	 ReserveTextureLoadFile("texture/stageSelect/button_left_pushed.png"),
 	 ReserveTextureLoadFile("texture/stageSelect/button_left_cantselect.png"),
-		D3DXVECTOR2(BU_LEFT_X, BU_LEFT_Y));
+		D3DXVECTOR2(BU_LEFT_X, BU_Y));
 
 	stageSelect.SetForward(ReserveTextureLoadFile("texture/stageSelect/button_right.png"),
 	ReserveTextureLoadFile("texture/stageSelect/button_right_pushed.png"),
 	ReserveTextureLoadFile("texture/stageSelect/button_right_cantselect.png"),
-		D3DXVECTOR2(BU_RIGHT_X, BU_RIGHT_Y));
+		D3DXVECTOR2(BU_RIGHT_X, BU_Y));
 
 	//selectStageTextureIds[STAGE_SELECT_ICON_NOT_OPEN ] =   ReserveTextureLoadFile("texture/stageSelect/icon_notopen.png");
 
 	selectStageTextureIds[STAGE_SELECT_SAMUNE] = ReserveTextureLoadFile("texture/stageSelect/samune.png");
 	selectStageTextureIds[STAGE_SELECT_SAMUNE_PRE] = ReserveTextureLoadFile("texture/stageSelect/samune_pre.png");
 	selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX] = ReserveTextureLoadFile("texture/ui/Textbox_Test.png");
+	selectStageTextureIds[STAGE_SELECT_BU_START] = ReserveTextureLoadFile("texture/stageSelect/gamestart.png");
+	selectStageTextureIds[STAGE_SELECT_BU_START_PRESSED] = ReserveTextureLoadFile("texture/stageSelect/gamestart_pressed.png");
 
 	overviewMessage = new Message();
 	nameMessage = new Message();
 	lavelMessage = new Message();
+
+	isPress = false;
 
 	overviewMessage->SetScale(D3DXVECTOR2(0.7, 0.7));
 	overviewMessage->SetMargin(7);
@@ -107,6 +118,15 @@ void InitStageSelect() {
   });
 
 	Button b;
+	b.rightCallback = []() {
+		isPress = false;
+	};
+	b.leftCallback = []() {
+		isPress = false;
+	};
+	b.triggeredCallback = []() {
+		isPress = true;
+	};
 	b.releasedCallback = []() {
 		PlaySound(SOUND_LABEL_SE_DECITION);
 		index = stageSelect.GetIndex();
@@ -196,6 +216,8 @@ void DrawStageSelect() {
 		lavelMessage->Draw("☆");
 	}
 
+	auto startTexture = isPress ? STAGE_SELECT_BU_START_PRESSED : STAGE_SELECT_BU_START;
+	DrawSprite(selectStageTextureIds[startTexture], { BU_START_X ,  BU_START_Y }, 10);
 
 	stageSelect.Draw();
 }

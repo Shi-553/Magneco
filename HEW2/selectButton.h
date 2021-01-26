@@ -14,6 +14,8 @@ struct Button {
 	void (*pressedCallback)  ()=NULL;
 	void (*triggeredCallback)()=NULL;
 	void (*releasedCallback) ()=NULL;
+	void (*rightCallback) ()=NULL;
+	void (*leftCallback) ()=NULL;
 
 };
 class SelectButton {

@@ -109,6 +109,7 @@ void SelectButton::Update() {
 
 			AllReleasePressedFlag();
 			isPressedForward = true;
+			buttons[selectedIndex].rightCallback();
 		}
 	}
 	if (ReleaseInputLogger(gForwardKey)) {
@@ -119,6 +120,7 @@ void SelectButton::Update() {
 			selectedIndex--;
 			AllReleasePressedFlag();
 			isPressedBack = true;
+			buttons[selectedIndex].leftCallback();
 		}
 	}
 	if (ReleaseInputLogger(gBackKey)) {
