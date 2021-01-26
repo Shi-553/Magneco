@@ -54,8 +54,8 @@ void InitPlayer() {
 	putPredictionTextureId = ReserveTextureLoadFile("texture/player/putPrediction.png");
 	notifyUFOTextureId = ReserveTextureLoadFile("texture/player/akan.png");
 
-	getItemMessage = new Message(D3DXVECTOR2(2,2));
-	getItemMessage->SetFormat(DT_CENTER|DT_NOCLIP);
+	getItemMessage = new Message(D3DXVECTOR2(2, 2));
+	getItemMessage->SetFormat(DT_CENTER | DT_NOCLIP);
 	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();
 	player.purgeFlyingObjectList.clear();
@@ -113,14 +113,6 @@ void UpdatePlayer() {
 		}
 		auto speed = player.baseSpeed /*- (player.baseSpeed / 2 * player.flyingObjectList.size() / player.blockMax)*/ + player.addSpeed;
 
-		for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
-			if (UpdateFlyingObject(&*itr, PLAYER_PURGE_SPEED)) {
-				itr = player.purgeFlyingObjectList.erase(itr);
-			}
-			else {
-				itr++;
-			}
-		}
 
 		if (player.stanTime == 0) {
 			auto length = D3DXVec2Length(&player.dir);
@@ -146,6 +138,14 @@ void UpdatePlayer() {
 
 	}
 
+	for (auto itr = player.purgeFlyingObjectList.begin(); itr != player.purgeFlyingObjectList.end(); ) {
+		if (UpdateFlyingObject(&*itr, PLAYER_PURGE_SPEED)) {
+			itr = player.purgeFlyingObjectList.erase(itr);
+		}
+		else {
+			itr++;
+		}
+	}
 	if (player.stanTime == 0) {
 		// ブロックを置く処理
 		if (player.isPut) {
@@ -258,8 +258,8 @@ void DrawPlayer() {
 		if (y < 75) {
 			y = 75;
 		}
-		getItemMessage->SetPos(D3DXVECTOR2(SCREEN_WIDTH / 2, 35+(75- y)*3));
-		getItemMessage->SetEndPos(D3DXVECTOR2(SCREEN_WIDTH / 2, 35 + (75 - y)*3));
+		getItemMessage->SetPos(D3DXVECTOR2(SCREEN_WIDTH / 2, 35 + (75 - y) * 3));
+		getItemMessage->SetEndPos(D3DXVECTOR2(SCREEN_WIDTH / 2, 35 + (75 - y) * 3));
 
 		getItemMessage->ClearOffset();
 		if (itemType == FLYING_OBJECT_ITEM_ADD_SPEED) {
@@ -402,7 +402,10 @@ Player* GetPlayer() {
 }
 
 void PutBeacon() {
-
+	if (player.isPut || player.stanTime > 0)
+	{
+		return;
+	}
 	auto mapType = GetMapType(player.trans.GetIntPos());
 	if (CanGoNPCMapType(mapType)) {
 		UpdateNPCShortestPath(player.trans.GetIntPos());
@@ -411,7 +414,7 @@ void PutBeacon() {
 }
 
 void PurgePlayerFlyingObject() {
-	if (player.checkCheckpoint)
+	if (player.checkCheckpoint || player.isPut)
 	{
 		return;
 	}
@@ -455,7 +458,7 @@ void MoveAdjust() {
 	}
 }
 void MakePut() {
-	if (player.flyingObjectList.empty()|| player.isPut) {
+	if (player.flyingObjectList.empty() || player.isPut) {
 		return;
 	}
 
