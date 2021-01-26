@@ -123,7 +123,7 @@ void UninitPauseMenu() {
 
 void UpdatePauseMenu() {
 
-	if (TriggerInputLogger(MYVK_ESC)) {
+	if (TriggerInputLogger(MYVK_ESC)|| (isPause&&TriggerInputLogger(MYVK_CANCEL))) {
 		isPause = !isPause;
 		if (isPause) {
 			pauseSelect.SetIndex(0);
