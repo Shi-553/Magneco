@@ -42,12 +42,15 @@ using namespace std;
 #define BU_START_X (475)
 #define BU_START_Y (587+POS_Y)
 
+#define BU_TO_TITLE_X (SCREEN_WIDTH/2-330/2)
+#define BU_TO_TITLE_Y (220)
 
-static Message* nameMessage, *overviewMessage, *lavelMessage;
+
+static Message* nameMessage, * overviewMessage, * lavelMessage;
 
 static vector<StageInfo> infos;
 static vector<int> smunes;
-static std::string stageFoldername="stage";
+static std::string stageFoldername = "stage";
 
 enum StageSelectTexture {
 	STAGE_SELECT_BACK_GROUND,
@@ -56,6 +59,8 @@ enum StageSelectTexture {
 	STAGE_SELECT_MESSAGE_BOX,
 	STAGE_SELECT_BU_START,
 	STAGE_SELECT_BU_START_PRESSED,
+	STAGE_SELECT_BU_TO_TITLE,
+	STAGE_SELECT_BU_TO_TITLE_PRESSED,
 	STAGE_SELECT_MAX
 };
 
@@ -88,6 +93,8 @@ void InitStageSelect() {
 	selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX] = ReserveTextureLoadFile("texture/ui/Textbox_Test.png");
 	selectStageTextureIds[STAGE_SELECT_BU_START] = ReserveTextureLoadFile("texture/stageSelect/gamestart.png");
 	selectStageTextureIds[STAGE_SELECT_BU_START_PRESSED] = ReserveTextureLoadFile("texture/stageSelect/gamestart_pressed.png");
+	selectStageTextureIds[STAGE_SELECT_BU_TO_TITLE] = ReserveTextureLoadFile("texture/ui/quit.png");
+	selectStageTextureIds[STAGE_SELECT_BU_TO_TITLE_PRESSED] = ReserveTextureLoadFile("texture/ui/quit_pressed.png");
 
 	overviewMessage = new Message();
 	nameMessage = new Message();
@@ -100,7 +107,7 @@ void InitStageSelect() {
 	overviewMessage->SetPos(D3DXVECTOR2(MESSAGE_X, MESSAGE_Y));
 
 	nameMessage->SetPos(D3DXVECTOR2(NAME_X, NAME_Y));
-	nameMessage->SetScale({1.2, 1.2});
+	nameMessage->SetScale({ 1.2, 1.2 });
 
 	lavelMessage->SetEndPos(D3DXVECTOR2(LEVEL_RX, -1));
 
@@ -146,7 +153,25 @@ void InitStageSelect() {
 
 		smunes.push_back(ReserveTextureLoadFile(itr->samunename.c_str()));
 	}
+	Button toTitile;
 
+	toTitile.rightCallback = []() {
+		isPress = false;
+	};
+	toTitile.leftCallback = []() {
+		isPress = false;
+	};
+	toTitile.triggeredCallback = []() {
+		isPress = true;
+	};
+	toTitile.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
+		index = 0;
+		GoNextScene(GameStartScene);
+	};
+
+
+	stageSelect.Add(toTitile);
 
 	stageSelect.SetFrame(ReserveTextureLoadFile("texture/stageSelect/icon_select.png"));
 
@@ -165,8 +190,8 @@ void UninitStageSelect() {
 	}
 	smunes.clear();
 	delete overviewMessage;
-	delete nameMessage    ;
-	delete lavelMessage   ;
+	delete nameMessage;
+	delete lavelMessage;
 }
 
 void UpdateStageSelect() {
@@ -189,35 +214,42 @@ void DrawStageSelect() {
 	DrawSprite(selectStageTextureIds[STAGE_SELECT_BACK_GROUND], D3DXVECTOR2(0, 0), 1);
 
 	if (infos.empty()) {
-		return ;
+		return;
 	}
-	auto& info = infos[stageSelect.GetIndex()];
-	auto& samune = smunes[stageSelect.GetIndex()];
+	auto index = stageSelect.GetIndex();
+	if (0 <= index && index < infos.size()) {
+		auto& info = infos[index];
+		auto& samune = smunes[index];
 
-	DrawSprite(samune, D3DXVECTOR2(SAMUNE_X, SAMUNE_Y), 1);
+		DrawSprite(samune, D3DXVECTOR2(SAMUNE_X, SAMUNE_Y), 1);
 
-	DrawSprite(selectStageTextureIds[STAGE_SELECT_SAMUNE], D3DXVECTOR2(SAMUNE_X, SAMUNE_Y), 1);
+		DrawSprite(selectStageTextureIds[STAGE_SELECT_SAMUNE], D3DXVECTOR2(SAMUNE_X, SAMUNE_Y), 1);
 
-	nameMessage->ClearOffset();
-	nameMessage->Draw(info.name.c_str());
+		nameMessage->ClearOffset();
+		nameMessage->Draw(info.name.c_str());
 
-	DrawSprite(selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
+		DrawSprite(selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 
-	if (!info.overview.empty()) {
-		overviewMessage->ClearOffset();
-		overviewMessage->Draw(info.overview.c_str());
+		if (!info.overview.empty()) {
+			overviewMessage->ClearOffset();
+			overviewMessage->Draw(info.overview.c_str());
+		}
+
+		lavelMessage->ClearOffset();
+		for (int i = 0; i < info.level; i++) {
+			lavelMessage->Draw("☆");
+		}
+
+		auto startTexture = isPress ? STAGE_SELECT_BU_START_PRESSED : STAGE_SELECT_BU_START;
+		DrawSprite(selectStageTextureIds[startTexture], { BU_START_X ,  BU_START_Y }, 10);
+		stageSelect.DrawMain();
 	}
-
-	lavelMessage->ClearOffset();
-	for (int i = 0; i < info.level; i++) {
-		lavelMessage->Draw("☆");
+	else {
+		auto startTexture = isPress ? STAGE_SELECT_BU_TO_TITLE_PRESSED : STAGE_SELECT_BU_TO_TITLE;
+		DrawSprite(selectStageTextureIds[startTexture], { BU_TO_TITLE_X ,  BU_TO_TITLE_Y }, 10);
 	}
-
-	auto startTexture = isPress ? STAGE_SELECT_BU_START_PRESSED : STAGE_SELECT_BU_START;
-	DrawSprite(selectStageTextureIds[startTexture], { BU_START_X ,  BU_START_Y }, 10);
-
-	stageSelect.Draw();
+	stageSelect.DrawLR();
 }
 
 StageInfo* GetCurrentInfo() {

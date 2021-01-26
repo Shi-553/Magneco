@@ -21,7 +21,8 @@ struct Button {
 class SelectButton {
 public:
 	void Init();
-	void Draw();
+	void DrawMain();
+	void DrawLR();
 	void Update();
 	void Uninit();
 

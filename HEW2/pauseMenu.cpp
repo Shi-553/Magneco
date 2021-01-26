@@ -108,7 +108,8 @@ void DrawPauseMenu() {
 	DrawSprite(pauseTextureId, D3DXVECTOR2(166, 62), 10);
 
 
-	pauseSelect.Draw();
+	pauseSelect.DrawMain();
+	pauseSelect.DrawLR();
 }
 
 

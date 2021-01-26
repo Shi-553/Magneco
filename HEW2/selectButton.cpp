@@ -13,14 +13,16 @@ void SelectButton::Init() {
 }
 
 
-void SelectButton::Draw() {
+void SelectButton::DrawMain() {
 	if (buttons.empty()) {
 		return;
 	}
 	//ボタンの描画
 	for (auto itr = buttons.begin(); itr != buttons.end(); itr++) {
 		bool isSelected = std::distance(buttons.begin(), itr) == selectedIndex;
-
+		if (itr->textureId == TEXTURE_INVALID_ID) {
+			continue;
+		}
 		if (itr->size == D3DXVECTOR2(0, 0)) {
 			if (auto s = GetTextureSize(itr->textureId)) {
 				itr->size = *s;
@@ -38,25 +40,21 @@ void SelectButton::Draw() {
 			DrawSprite(selectFrameTextureId, itr->pos, 100, itr->size);
 		}
 	}
+}
 
+void SelectButton::DrawLR() {
 	if (forwardPressedTextureId != TEXTURE_INVALID_ID) {
 		if (forwardSize == D3DXVECTOR2(0, 0)) {
 			if (auto s = GetTextureSize(forwardTextureId)) {
 				forwardSize = *s;
 			}
 		}
-		if (buttons.size() - 1 > selectedIndex) {
-
 			if (isPressedForward) {
 				DrawSprite(forwardPressedTextureId, forwardPos, 100, forwardSize);
 			}
 			else {
 				DrawSprite(forwardTextureId, forwardPos, 100, forwardSize);
 			}
-		}
-		else {
-			DrawSprite(forwardCantSelectTextureId, forwardPos, 100, forwardSize);
-		}
 	}
 
 	if (backTextureId != TEXTURE_INVALID_ID) {
@@ -65,19 +63,13 @@ void SelectButton::Draw() {
 				backSize = *s;
 			}
 		}
-		if (selectedIndex > 0) {
-
 			if (isPressedBack) {
 				DrawSprite(backPressedTextureId, backPos, 100, backSize);
 			}
 			else {
 				DrawSprite(backTextureId, backPos, 100, backSize);
 			}
-		}
-		else {
-
-			DrawSprite(backCantSelectTextureId, backPos, 100, backSize);
-		}
+		
 	}
 
 

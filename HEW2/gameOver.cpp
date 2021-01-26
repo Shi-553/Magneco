@@ -82,7 +82,8 @@ void UninitGameOver() {
 void DrawGameOver() {
 	DrawSprite(backgroundTexture, { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT }, { 0,0 }, { SCREEN_WIDTH,SCREEN_HEIGHT });
 	DrawSprite(gameOverTextTexture, { 200,64 }, 10, { GAME_OVER_LOGO_WIDTH,GAME_OVER_LOGO_HEIGHT }, { 0,0 }, { GAME_OVER_LOGO_WIDTH,GAME_OVER_LOGO_HEIGHT });
-	gameOverSelect.Draw();
+	gameOverSelect.DrawMain();
+	gameOverSelect.DrawLR();
 }
 
 void UpdateGameOver()
