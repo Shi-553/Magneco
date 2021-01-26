@@ -109,7 +109,9 @@ void DrawGameClear()
 		);
 
 	DrawSprite(gameClearTexture, { 200,64 }, 10, { GAME_CLEAR_LOGO_WIDTH,GAME_CLEAR_LOGO_HEIGHT }, tPos, { GAME_CLEAR_LOGO_WIDTH,GAME_CLEAR_LOGO_HEIGHT });
-	gameClearSelect.Draw();
+	gameClearSelect.DrawMain();
+	gameClearSelect.DrawLR();
+
 }
 
 void UpdateGameClear()
