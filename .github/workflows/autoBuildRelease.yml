@@ -82,15 +82,15 @@ jobs:
     - name: Major release
       id: major
       if: contains(toJSON(github.event.commits.*.message), 'major update')
-      run:  npx release-it@${RELEASE_IT_VERSION} -- major --ci --no-requireCleanWorkingDir
+      run:  npx release-it@${RELEASE_IT_VERSION} -- major --ci
       
     - name: Minor release
       id: minor
       # メジャーバージョンアップをしていないときマイナーバージョンアップを行なうか
       if: steps.major.conclusion == 'skipped'  && contains(toJSON(github.event.commits.*.message), 'minor update')
-      run:  npx release-it@${RELEASE_IT_VERSION} -- minor --ci --no-requireCleanWorkingDir
+      run:  npx release-it@${RELEASE_IT_VERSION} -- minor --ci
       
     - name: Patch release
       # コミットメッセージに特に指定がない場合はパッチバージョンを更新する
       if: "!(steps.major.conclusion == 'success' || steps.minor.conclusion == 'success')"
-      run:  npx release-it@${RELEASE_IT_VERSION} -- patch --ci --no-requireCleanWorkingDir
+      run:  npx release-it@${RELEASE_IT_VERSION} -- patch --ci
