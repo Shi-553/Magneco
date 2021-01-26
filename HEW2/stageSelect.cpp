@@ -20,14 +20,14 @@ using namespace std;
 #define NAME_X (SAMUNE_X + 20)
 #define NAME_Y (SAMUNE_Y + 30)
 
-#define LEVEL_RX (930)
-#define LEVEL_Y (SAMUNE_Y+30)
+#define LEVEL_RX (NAME_X)
+#define LEVEL_Y (SAMUNE_Y+85)
 
 #define BU_LEFT_X (152)
 #define BU_Y (176+POS_Y)
 #define BU_RIGHT_X (1000)
 
-#define ICON_Y (410+POS_Y)
+#define ICON_Y (415+POS_Y)
 #define ICON_TO_ICON_WIDTH (50)
 
 #define MESSAGEBOX_WIDTH (700)
@@ -113,11 +113,9 @@ void InitStageSelect() {
 	nameMessage->SetPos(D3DXVECTOR2(NAME_X, NAME_Y));
 	nameMessage->SetScale({ 1.2, 1.2 });
 
-	lavelMessage->SetEndPos(D3DXVECTOR2(LEVEL_RX, -1));
 
-	lavelMessage->SetPos(D3DXVECTOR2(-1, LEVEL_Y));
-	lavelMessage->SetScale({ 1.2, 1.2 });
-	lavelMessage->SetFormat(DT_RIGHT);
+	lavelMessage->SetPos(D3DXVECTOR2(LEVEL_RX, LEVEL_Y));
+	lavelMessage->SetScale({ 0.5,0.5 });
 
 	infos.clear();
 	GetStageInfos(stageFoldername, infos);
@@ -241,7 +239,7 @@ void DrawStageSelect() {
 
 		lavelMessage->ClearOffset();
 		for (int i = 0; i < info.level; i++) {
-			lavelMessage->Draw("☆");
+			lavelMessage->Draw("★");
 		}
 
 		auto startTexture = isPress ? STAGE_SELECT_BU_START_PRESSED : STAGE_SELECT_BU_START;
