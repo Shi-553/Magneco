@@ -7,6 +7,7 @@
 #include "map.h"
 #include "time.h"
 #include "npc.h"
+#include "effect.h"
 #include "player.h"
 #include "flyingObjectSponer.h"
 #include "sound.h"

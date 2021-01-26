@@ -7,6 +7,7 @@
 #include "trans.h"
 #include "map.h"
 #include "npc.h"
+#include "effect.h"
 #include "debugPrintf.h"
 #include "sound.h"
 #include <vector>
@@ -69,7 +70,7 @@ void JudgePlayerandFlyingObjectHit() {
 			else if (IsFlyingObjectEnemy(itr->type)) {
 				if (DamagePlayerFlyingObject(itr2->uid)) {
 					isEnd = true;
-
+					CreateEffect(itr->trans.pos);
 					if (DamageFlyingObject(*itr)) {
 						PlaySound(SOUND_LABEL_SE_EXPLOSION);
 						flyingObjectList->erase(itr);
@@ -126,6 +127,7 @@ void JudgePlayerandFlyingObjectHit() {
 		else if (IsFlyingObjectEnemy(itr->type)) {
 
 			if (DamagePlayer()) {
+				CreateEffect(itr->trans.pos);
 				if (DamageFlyingObject(*itr)) {
 					PlaySound(SOUND_LABEL_SE_EXPLOSION);
 					itr = flyingObjectList->erase(itr);
@@ -153,6 +155,7 @@ void JudgePlayerandFlyingObjectHit() {
 			}
 			if (IsFlyingObjectEnemy(itr->type)) {
 				itr2->hp = 1;
+				CreateEffect(itr->trans.pos);
 				if (DamageFlyingObject(*itr2)) {
 					itr2 = player->purgeFlyingObjectList.erase(itr2);
 				}
@@ -223,6 +226,7 @@ void JudgePlayerandFlyingObjectHit() {
 			INTVECTOR2 pos = itr->trans.GetIntPos();
 			Map* map = GetMap(pos);
 			if (map != NULL && map->type == MAP_BLOCK) {
+				CreateEffect(itr->trans.pos);
 
 				if (DamageFlyingObject(*itr)) {
 					itr = flyingObjectList->erase(itr);
