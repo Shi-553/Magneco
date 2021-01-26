@@ -14,6 +14,7 @@ struct Spone {
 struct SponeId {
 	Spone s;
 	int id;
+	int isAlive;
 };
 
 void InitFlyingSponer();
@@ -32,3 +33,5 @@ bool FlyingObjectSponerImport(FILE* fp);
 
 int GetFlyingObjectSponeFrame();
 void SetFlyingObjectSponeFrame(int f);
+
+void DestrySpone(int id);

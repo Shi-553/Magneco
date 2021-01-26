@@ -62,7 +62,7 @@ void InitFlyingSponer() {
 	};
 	for (int i = 0; i < 24; i++)
 	{
-		spones.push_back({ initSpone[i],currentSponeId });
+		spones.push_back({ initSpone[i],currentSponeId,0 });
 		currentSponeId++;
 	}
 #endif
@@ -92,15 +92,16 @@ void DrawFlyingSponer() {
 		if (spone.s.type != FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 			continue;
 		}
-		auto befFraame = frame - 200;
+		auto befFraame = frame - 150;
 		auto aftFrame = frame + 150;
 		auto fMax=spones.back().s.frame;
 
 		auto a=spone.s.frame >befFraame && spone.s.frame < aftFrame;
+
 		aftFrame -= fMax;
 		befFraame -= fMax;
 		auto b = spone.s.frame > befFraame && spone.s.frame < aftFrame;
-		if (a||b) {
+		if ((a||b)&& (spone.isAlive>0|| spone.s.frame>frame)) {
 				auto pos = spone.s.initPos - spone.s.size.ToD3DXVECTOR2() / 2;
 				if (pos.x < gameMapSizeZero.x) {
 					pos.x = gameMapSizeZero.x;
@@ -145,12 +146,20 @@ void CheckSpone() {
 			f.size = spones[sponeIndex].s.size;
 			f.speed = spones[sponeIndex].s.speed;
 			AddFlyingObjects(&f);
+			spones[sponeIndex].isAlive++;
 			sponeIndex++;
 		}
 		else {
 			break;
 		}
 	}
+}
+void DestrySpone(int id) {
+	auto sponeId = std::find_if(spones.begin(), spones.end(), [&id](SponeId f) {return id == f.id; });
+	if (sponeId != spones.end()) {
+		sponeId->isAlive--;
+	}
+
 }
 
 void AddFlyingObjectSponer(Spone s) {
