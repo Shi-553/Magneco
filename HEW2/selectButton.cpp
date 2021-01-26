@@ -1,5 +1,6 @@
 ﻿#include "selectButton.h"
 #include "sprite.h"
+#include "debugPrintf.h"
 
 
 
@@ -49,12 +50,12 @@ void SelectButton::DrawLR() {
 				forwardSize = *s;
 			}
 		}
-			if (isPressedForward) {
-				DrawSprite(forwardPressedTextureId, forwardPos, 100, forwardSize);
-			}
-			else {
-				DrawSprite(forwardTextureId, forwardPos, 100, forwardSize);
-			}
+		if (isPressedForward) {
+			DrawSprite(forwardPressedTextureId, forwardPos, 100, forwardSize);
+		}
+		else {
+			DrawSprite(forwardTextureId, forwardPos, 100, forwardSize);
+		}
 	}
 
 	if (backTextureId != TEXTURE_INVALID_ID) {
@@ -63,16 +64,32 @@ void SelectButton::DrawLR() {
 				backSize = *s;
 			}
 		}
-			if (isPressedBack) {
-				DrawSprite(backPressedTextureId, backPos, 100, backSize);
-			}
-			else {
-				DrawSprite(backTextureId, backPos, 100, backSize);
-			}
-		
+		if (isPressedBack) {
+			DrawSprite(backPressedTextureId, backPos, 100, backSize);
+		}
+		else {
+			DrawSprite(backTextureId, backPos, 100, backSize);
+		}
+
 	}
 
 
+}
+void SelectButton::PressInit() {
+	isPressExceeded = pressFrame > PRESS_FRAME_LIMIT;
+	pressFrame = 0;
+}
+void SelectButton::Press() {
+	pressFrame++;
+}
+bool SelectButton::IsExceed() {
+	if (isPressExceeded && pressFrame > PRESS_FRAME_LIMIT) {
+		return true;
+	}
+	if (pressFrame > PRESS_FRAME_FIRST_LIMIT) {
+		return true;
+	}
+	return false;
 }
 void SelectButton::Update() {
 	if (TriggerInputLogger(gEnterKey)) {
@@ -95,7 +112,13 @@ void SelectButton::Update() {
 			}
 		}
 	}
-	if (TriggerInputLogger(gForwardKey)) {
+
+	if (PressInputLogger(gForwardKey) || PressInputLogger(gBackKey)) {
+		Press();
+	}
+
+	if (TriggerInputLogger(gForwardKey) || (PressInputLogger(gForwardKey) && IsExceed())) {
+		PressInit();
 		selectedIndex++;
 		if (buttons.size() <= selectedIndex) {
 			selectedIndex = 0;
@@ -108,12 +131,14 @@ void SelectButton::Update() {
 		}
 	}
 	if (ReleaseInputLogger(gForwardKey)) {
+		PressInit();
 		AllReleasePressedFlag();
 	}
-	if (TriggerInputLogger(gBackKey)) {
+	if (TriggerInputLogger(gBackKey) || (PressInputLogger(gBackKey) && IsExceed())) {
+		PressInit();
 		selectedIndex--;
-		if (selectedIndex <0) {
-			selectedIndex=buttons.size() - 1;
+		if (selectedIndex < 0) {
+			selectedIndex = buttons.size() - 1;
 		}
 		AllReleasePressedFlag();
 		isPressedBack = true;
@@ -122,6 +147,7 @@ void SelectButton::Update() {
 		}
 	}
 	if (ReleaseInputLogger(gBackKey)) {
+		PressInit();
 		AllReleasePressedFlag();
 	}
 }

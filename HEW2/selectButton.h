@@ -37,6 +37,8 @@ public:
 	int GetIndex();
 	void SetIndex(int index);
 
+	static const int PRESS_FRAME_FIRST_LIMIT = 30;
+	static const int PRESS_FRAME_LIMIT = 15;
 private:
 
 	void AllReleasePressedFlag();
@@ -62,4 +64,10 @@ private:
 
 	 int backTextureId = TEXTURE_INVALID_ID;
 	 int backPressedTextureId = TEXTURE_INVALID_ID;
+
+	 void PressInit();
+	 void Press();
+	 bool IsExceed();
+	 int pressFrame = 0;
+	 bool isPressExceeded = false;
 };
