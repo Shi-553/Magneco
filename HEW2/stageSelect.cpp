@@ -45,6 +45,8 @@ using namespace std;
 #define BU_TO_TITLE_X (SCREEN_WIDTH/2-330/2)
 #define BU_TO_TITLE_Y (220)
 
+#define BU_TITLE_X (SAMUNE_X)
+#define BU_TITLE_Y (SAMUNE_Y+80)
 
 static Message* nameMessage, * overviewMessage, * lavelMessage;
 
@@ -61,6 +63,7 @@ enum StageSelectTexture {
 	STAGE_SELECT_BU_START_PRESSED,
 	STAGE_SELECT_BU_TO_TITLE,
 	STAGE_SELECT_BU_TO_TITLE_PRESSED,
+	STAGE_SELECT_TITLE,
 	STAGE_SELECT_MAX
 };
 
@@ -95,6 +98,7 @@ void InitStageSelect() {
 	selectStageTextureIds[STAGE_SELECT_BU_START_PRESSED] = ReserveTextureLoadFile("texture/stageSelect/gamestart_pressed.png");
 	selectStageTextureIds[STAGE_SELECT_BU_TO_TITLE] = ReserveTextureLoadFile("texture/ui/quit.png");
 	selectStageTextureIds[STAGE_SELECT_BU_TO_TITLE_PRESSED] = ReserveTextureLoadFile("texture/ui/quit_pressed.png");
+	selectStageTextureIds[STAGE_SELECT_TITLE] = ReserveTextureLoadFile("texture/ui/title_640×240.png");
 
 	overviewMessage = new Message();
 	nameMessage = new Message();
@@ -228,7 +232,6 @@ void DrawStageSelect() {
 		nameMessage->ClearOffset();
 		nameMessage->Draw(info.name.c_str());
 
-		DrawSprite(selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 
 		if (!info.overview.empty()) {
@@ -246,9 +249,15 @@ void DrawStageSelect() {
 		stageSelect.DrawMain();
 	}
 	else {
+		overviewMessage->ClearOffset();
+		overviewMessage->Draw("タイトルに戻る？");
+
 		auto startTexture = isPress ? STAGE_SELECT_BU_TO_TITLE_PRESSED : STAGE_SELECT_BU_TO_TITLE;
-		DrawSprite(selectStageTextureIds[startTexture], { BU_TO_TITLE_X ,  BU_TO_TITLE_Y }, 10);
+		DrawSprite(selectStageTextureIds[startTexture], { BU_START_X ,  BU_START_Y }, 10);
+
+		DrawSprite(selectStageTextureIds[STAGE_SELECT_TITLE], { BU_TITLE_X ,  BU_TITLE_Y }, 10);
 	}
+		DrawSprite(selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 	stageSelect.DrawLR();
 }
 
