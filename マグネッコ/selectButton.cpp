@@ -131,8 +131,9 @@ void SelectButton::Update() {
 		}
 	}
 	if (ReleaseInputLogger(gForwardKey)) {
-		PressInit();
-		AllReleasePressedFlag();
+		isPressedForward = false;
+		//PressInit();
+		//AllReleasePressedFlag();
 	}
 	if (TriggerInputLogger(gBackKey) || (PressInputLogger(gBackKey) && IsExceed())) {
 		PressInit();
@@ -147,8 +148,9 @@ void SelectButton::Update() {
 		}
 	}
 	if (ReleaseInputLogger(gBackKey)) {
-		PressInit();
-		AllReleasePressedFlag();
+		isPressedBack = false;
+		//PressInit();
+		//AllReleasePressedFlag();
 	}
 }
 
