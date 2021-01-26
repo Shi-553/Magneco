@@ -121,7 +121,7 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 		}
 
 		for (int i = 0; i < 100; i++) {
-			if (GetMapType(pos)!= MAP_BLOCK) {
+			if (GetMapType(pos) != MAP_BLOCK) {
 				pos += flyingObject.dir;
 				continue;
 			}
@@ -139,7 +139,7 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 
 	if (flyingObject.type == FLYING_OBJECT_PURGE_BLOCK) {
 		auto tPos = D3DXVECTOR2(
-					FLYINGOBJECT_ITEM_TEXTURE_WIDTH *2* (frame / 12 % 6),
+					FLYINGOBJECT_ITEM_TEXTURE_WIDTH * 2 * (frame / 12 % 6),
 					0
 		);
 		auto size = flyingObject.size.ToD3DXVECTOR2();
@@ -155,12 +155,12 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 			dr = -1;
 		}
 		auto rad = acosf(dr);
-		if (d.x * flyingObject.dir.y - d.y * flyingObject.dir.x<0) {
+		if (d.x * flyingObject.dir.y - d.y * flyingObject.dir.x < 0) {
 			rad = -rad;
 		}
 		auto cp = flyingObject.size.ToD3DXVECTOR2() / 2.0;
 		cp.x += flyingObject.size.x;
-		DrawGameSprite(nekoPanchiTextureId, pos, 50, size, tPos, D3DXVECTOR2(FLYINGOBJECT_ITEM_TEXTURE_WIDTH * 2, FLYINGOBJECT_ITEM_TEXTURE_HEIGHT),cp, rad);
+		DrawGameSprite(nekoPanchiTextureId, pos, 50, size, tPos, D3DXVECTOR2(FLYINGOBJECT_ITEM_TEXTURE_WIDTH * 2, FLYINGOBJECT_ITEM_TEXTURE_HEIGHT), cp, rad);
 
 	}
 
@@ -226,6 +226,7 @@ void DrawFlyingObject() {
 void UpdateFlyingObject() {
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
 		if (UpdateFlyingObject(&*itr, itr->speed)) {
+			DestrySpone(*itr);
 			itr = flyingObjects.erase(itr);
 		}
 		else {
@@ -235,7 +236,7 @@ void UpdateFlyingObject() {
 
 	frame++;
 	if (!isBreakAleartLeft) {
-		breakAleartFrame+=0.04;
+		breakAleartFrame += 0.04;
 		if (breakAleartFrame > 0.05) {
 			isBreakAleartLeft = true;
 		}
@@ -253,6 +254,7 @@ void BackFlyingObject(int frame) {
 			if (itr->type == FLYING_OBJECT_UFO) {
 				NPCDeleteUFO();
 			}
+			DestrySpone(*itr);
 			itr = flyingObjects.erase(itr);
 		}
 		else {
@@ -264,7 +266,7 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 	if (flyingObject->type == FLYING_OBJECT_UFO) {
 		flyingObject->dir = (GetNpc()->trans.pos + ADD_UFO_POS) - flyingObject->trans.pos;
 
-	D3DXVec2Normalize(&flyingObject->dir, &flyingObject->dir);
+		D3DXVec2Normalize(&flyingObject->dir, &flyingObject->dir);
 	}
 	else if (flyingObject->type == FLYING_OBJECT_PURGE_BLOCK) {
 		D3DXVec2Normalize(&flyingObject->dir, &flyingObject->dir);
@@ -319,7 +321,9 @@ bool DamageFlyingObject(FlyingObject& f) {
 		StopSound(SOUND_LABEL_SE_UFO);
 		NPCDeleteUFO();
 	}
-	DestrySpone(f.id);
+	
+	DestrySpone(f);
+
 
 	return true;
 }
