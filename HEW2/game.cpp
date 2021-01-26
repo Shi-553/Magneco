@@ -4,6 +4,7 @@
 #include "debugFont.h"
 #include "player.h"
 #include "npc.h"
+#include "effect.h"
 #include "gameSrite.h"
 #include "game.h"
 
@@ -25,6 +26,7 @@ void InitGame()
 	InitPlayer();
 	InitInput();
 	InitNPC();
+	InitEffect();
 	InitMap();
 	InitJudge();
 	InitFlyingObject();
@@ -48,6 +50,7 @@ void UpdateGame()
 	UpdateInput();
 
 	UpdateNPC();
+	UpdateEffect();
 
 	UpdateJudge();
 	UpdateFlyingObject();
@@ -62,10 +65,11 @@ void DrawGame()
 
 	DrawInput();
 
-	
 	DrawJudge();
 	DrawFlyingObject();
 	DrawFlyingSponer();
+
+	DrawEffect();
 
 	DrawPlayer();
 
@@ -76,6 +80,7 @@ void UninitGame()
 	UninitInput();
 	UninitPlayer();
 	UninitNPC();
+	UninitEffect();
 	UninitJudge();
 	UninitMap();
 

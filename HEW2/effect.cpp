@@ -6,39 +6,66 @@
 #include "flyingObject.h"
 #include "effect.h"
 #include "judge.h"
+#include <vector>
 
 #define EFFECT_TEXTURE_WIDTH  (32)
 #define EFFECT_TEXTURE_HEIGHT (32)
 
+#define EFFECT_ANIMATION_MAX (30)
 
 static int textureId = TEXTURE_INVALID_ID;
 
-static Effect effect;
+struct Effect {
+	D3DXVECTOR2 pos;
+	int frame;
+};
+static std::vector<Effect> effects;
 
 void InitEffect()
 {
 	textureId = ReserveTextureLoadFile("texture/effect/explosion_anime.png");
 
-	effect.effectPos = D3DXVECTOR2(0, 0);
-	effect.frame = 0;
+	effects.clear();
 }
 
 void UninitEffect()
 {
 	ReleaseTexture(textureId);
 }
-
 void UpdateEffect()
 {
-	effect.frame++;
+	for (auto itr = effects.begin(); itr != effects.end();) {
+
+		itr->frame++;
+		if (itr->frame >= EFFECT_ANIMATION_MAX) {
+			itr = effects.erase(itr);
+
+		}
+
+		else {
+			itr++;
+		}
+	}
 }
 
 void DrawEffect()
 {
+	for (auto itr = effects.begin(); itr != effects.end(); itr++) {
+
 		auto tPos = D3DXVECTOR2(
-			EFFECT_TEXTURE_WIDTH * (effect.frame / 12 % 12),
+			EFFECT_TEXTURE_WIDTH * (itr->frame / 12 % 12),
 			0
 		);
 
-		DrawGameSprite(textureId, effect.effectPos, 30, D3DXVECTOR2(EFFECT_TEXTURE_WIDTH, EFFECT_TEXTURE_HEIGHT), tPos, D3DXVECTOR2(EFFECT_TEXTURE_WIDTH, EFFECT_TEXTURE_HEIGHT));
+		DrawGameSprite(textureId, itr->pos, 30, D3DXVECTOR2(EFFECT_TEXTURE_WIDTH, EFFECT_TEXTURE_HEIGHT), tPos, D3DXVECTOR2(EFFECT_TEXTURE_WIDTH, EFFECT_TEXTURE_HEIGHT));
+	}
+}
+
+void CreateEffect(D3DXVECTOR2 pos)
+{
+	Effect effect;
+	effect.pos = pos;
+	effect.frame = 0;
+
+	effects.push_back(effect);
 }
