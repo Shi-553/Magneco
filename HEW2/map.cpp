@@ -26,6 +26,8 @@ static int frame = 0;
 static int mapHeight = 10;
 static int mapWidth = 10;
 
+static int putPredictionThinTextureId = TEXTURE_INVALID_ID;
+
 void InitMap(void)
 {
 	map_textureIds = ReserveTextureLoadFile("texture/background/背景１.png");
@@ -41,6 +43,7 @@ void InitMap(void)
 	textureIds[MAP_CHEST_CLOSED] = ReserveTextureLoadFile("texture/block/itembox_anime.png");
 	textureIds[MAP_CHEST_OPENED] = ReserveTextureLoadFile("texture/block/itembox_block.png");
 	textureIds[MAP_BLOCK_REMOVE] = ReserveTextureLoadFile("texture/block/road_block.png");
+	putPredictionThinTextureId = ReserveTextureLoadFile("texture/player/putPredictionThin.png");
 
 	frame = 0;
 	mapHeight = 10;
@@ -174,6 +177,7 @@ void UninitMap(void)
 {
 	ReleaseTexture(textureIds, MAP_MAX);
 	ReleaseTexture(map_textureIds);
+	ReleaseTexture(putPredictionThinTextureId);
 
 	if (MapChipList != NULL) {
 		delete[] MapChipList;
@@ -208,9 +212,14 @@ void DrawMap(void)
 
 	for (int i = 0; i < mapHeight; i++) {
 		for (int j = 0; j < mapWidth; j++) {
-			Map* map = GetMap(INTVECTOR2(j, i));
+			auto mapPos = INTVECTOR2(j, i);
+			Map* map = GetMap(mapPos);
 			if (map == NULL) {
 				continue;
+			}
+			if (map->type == MAP_BLOCK_NONE&& MapFourDirectionsJudgment(mapPos)) {
+				DrawGameSprite(putPredictionThinTextureId, D3DXVECTOR2(j, i), 100);
+
 			}
 			if (map->type == MAP_WALL) {
 				auto addDir = map->dir + INTVECTOR2(1, 1);
