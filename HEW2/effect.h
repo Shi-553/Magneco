@@ -1,11 +1,9 @@
 ﻿#pragma once
 
-#include "trans.h"
-
 
 void InitEffect();
 void UninitEffect();
 void UpdateEffect();
 void DrawEffect();
 
-void CreateEffect();
+void CreateEffect(D3DXVECTOR2 pos);

@@ -3,9 +3,8 @@
 #include "sprite.h"
 #include "myd3d.h"
 #include "gameSrite.h"
-#include "flyingObject.h"
 #include "effect.h"
-#include "judge.h"
+#include "trans.h"
 #include <vector>
 
 #define EFFECT_TEXTURE_WIDTH  (32)
@@ -57,7 +56,7 @@ void DrawEffect()
 			0
 		);
 
-		DrawGameSprite(textureId, itr->pos, 30, D3DXVECTOR2(EFFECT_TEXTURE_WIDTH, EFFECT_TEXTURE_HEIGHT), tPos, D3DXVECTOR2(EFFECT_TEXTURE_WIDTH, EFFECT_TEXTURE_HEIGHT));
+		DrawGameSprite(textureId, itr->pos - D3DXVECTOR2(0.5, 0.5), 30, tPos, D3DXVECTOR2(EFFECT_TEXTURE_WIDTH, EFFECT_TEXTURE_HEIGHT));
 	}
 }
 
