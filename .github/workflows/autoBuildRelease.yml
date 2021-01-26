@@ -61,13 +61,13 @@ jobs:
         
     - name: FileMove
       run: |
-           pwsh -command "Get-ChildItem ./${{PROJECT_NAME}}/* -File|Remove-Item"
-           pwsh -command "Move-Item ./x64/Release/*.exe ./${{PROJECT_NAME}}"
-           pwsh -command "Remove-Item ./${{PROJECT_NAME}}/x64 -Recurse"
+           pwsh -command "Get-ChildItem ./$PROJECT_NAME/* -File|Remove-Item"
+           pwsh -command "Move-Item ./x64/Release/*.exe ./$PROJECT_NAME"
+           pwsh -command "Remove-Item ./$PROJECT_NAME/x64 -Recurse"
            
       
     - name: Zip
-      run: 7z a "./${{PROJECT_NAME_EN}}-x64.zip" "./${{PROJECT_NAME}}" -tzip
+      run: 7z a "./$PROJECT_NAME_EN-x64.zip" "./$PROJECT_NAME" -tzip
       
         
       
