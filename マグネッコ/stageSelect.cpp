@@ -197,6 +197,12 @@ void UninitStageSelect() {
 }
 
 void UpdateStageSelect() {
+	if (TriggerInputLogger(MYVK_CANCEL)) {
+		PlaySound(SOUND_LABEL_SE_DECITION);
+		index = 0;
+		GoNextScene(GameStartScene);
+		return;
+	}
 	stageSelect.Update();
 }
 

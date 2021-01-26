@@ -52,7 +52,7 @@ void UpdateInput() {
 
 
 #ifdef _DEBUG
-	DebugPrintInputLogger(OutputLogType::GAMEPAD_BUTTON);
+	//DebugPrintInputLogger(OutputLogType::GAMEPAD_BUTTON);
 #endif // _DEBUG
 }
 
