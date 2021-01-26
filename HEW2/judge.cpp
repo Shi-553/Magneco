@@ -226,9 +226,12 @@ void JudgePlayerandFlyingObjectHit() {
 			INTVECTOR2 pos = itr->trans.GetIntPos();
 			Map* map = GetMap(pos);
 			if (map != NULL && map->type == MAP_BLOCK) {
-				itr = flyingObjectList->erase(itr);
-				map->type = MAP_BLOCK_NONE;
-				isMatched = true;
+
+				if (DamageFlyingObject(*itr)) {
+					itr = flyingObjectList->erase(itr);
+					map->type = MAP_BLOCK_NONE;
+					isMatched = true;
+				}
 
 				//チェックポイントとつながってないブロックを消す
 				BreakNotConnectBlock(pos + INTVECTOR2(0, 1));
