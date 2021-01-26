@@ -316,14 +316,14 @@
     <None Include=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="HEW2.rc">
-      <Filter>リソース</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="texture\icon.ico">
       <Filter>リソース</Filter>
     </Image>
     <Image Include="texture\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="マグネッコ.rc">
+      <Filter>リソース</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
