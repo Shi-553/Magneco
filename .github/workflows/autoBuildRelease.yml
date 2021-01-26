@@ -53,22 +53,18 @@ jobs:
     
     # Run the msbuild command
     - name: Build
-      run: msbuild HEW2.sln /m /p:Configuration=Release /p:Platform=x64
+      run: msbuild マグネッコ.sln /m /p:Configuration=Release /p:Platform=x64
       env:
         DXSDK_DIR: ${{ github.workspace  }}\DXSDK\
         
     - name: FileMove
       run: |
-           pwsh -command "New-Item ./Magneco -itemType Directory"
-           pwsh -command "Move-Item ./HEW2/font ./Magneco"
-           pwsh -command "Move-Item ./HEW2/stage ./Magneco"
-           pwsh -command "Move-Item ./HEW2/texture ./Magneco"
-           pwsh -command "Move-Item ./HEW2/BGM ./Magneco"
-           pwsh -command "Move-Item ./HEW2/SE ./Magneco"
-           pwsh -command "Move-Item ./x64/Release/*.exe ./Magneco"
+           pwsh -command "Delete-Item ./マグネッコ/* | ? { $_.PSIsContainer }"
+           
+           pwsh -command "Move-Item ./x64/Release/*.exe ./マグネッコ"
       
     - name: Zip
-      run: 7z a "Magneco-x64.zip" "./Magneco" -tzip
+      run: 7z a "Magneco-x64.zip" "./マグネッコ" -tzip
       
         
       
