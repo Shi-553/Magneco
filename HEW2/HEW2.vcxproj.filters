@@ -127,6 +127,9 @@
     <ClCompile Include="teamLogo.cpp">
       <Filter>cpp\scenes</Filter>
     </ClCompile>
+    <ClCompile Include="effect.cpp">
+      <Filter>cpp\scenes\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -263,6 +266,9 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>リソース</Filter>
+    </ClInclude>
+    <ClInclude Include="effect.h">
+      <Filter>ヘッダー\scenes\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
