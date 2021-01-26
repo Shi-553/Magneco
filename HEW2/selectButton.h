@@ -14,12 +14,15 @@ struct Button {
 	void (*pressedCallback)  ()=NULL;
 	void (*triggeredCallback)()=NULL;
 	void (*releasedCallback) ()=NULL;
+	void (*rightCallback) ()=NULL;
+	void (*leftCallback) ()=NULL;
 
 };
 class SelectButton {
 public:
 	void Init();
-	void Draw();
+	void DrawMain();
+	void DrawLR();
 	void Update();
 	void Uninit();
 
@@ -28,11 +31,14 @@ public:
 	void SetKey(VirtualKey enterKey, VirtualKey forwardKey, VirtualKey backKey);
 
 	void SetFrame(int frame);
-	void SetForward(int forward, int forwardPressed, int forwardCantSelect, D3DXVECTOR2 pos, D3DXVECTOR2 size = D3DXVECTOR2(0, 0));
-	void SetBack(int back, int backPressed, int backCantSelect, D3DXVECTOR2 pos, D3DXVECTOR2 size = D3DXVECTOR2(0, 0));
+	void SetForward(int forward, int forwardPressed, D3DXVECTOR2 pos, D3DXVECTOR2 size = D3DXVECTOR2(0, 0));
+	void SetBack(int back, int backPressed, D3DXVECTOR2 pos, D3DXVECTOR2 size = D3DXVECTOR2(0, 0));
 
 	int GetIndex();
 	void SetIndex(int index);
+
+	static const int PRESS_FRAME_FIRST_LIMIT = 30;
+	static const int PRESS_FRAME_LIMIT = 15;
 private:
 
 	void AllReleasePressedFlag();
@@ -55,9 +61,13 @@ private:
 
 	 int forwardTextureId = TEXTURE_INVALID_ID;
 	 int forwardPressedTextureId = TEXTURE_INVALID_ID;
-	 int forwardCantSelectTextureId = TEXTURE_INVALID_ID;
 
 	 int backTextureId = TEXTURE_INVALID_ID;
 	 int backPressedTextureId = TEXTURE_INVALID_ID;
-	 int backCantSelectTextureId = TEXTURE_INVALID_ID;
+
+	 void PressInit();
+	 void Press();
+	 bool IsExceed();
+	 int pressFrame = 0;
+	 bool isPressExceeded = false;
 };
