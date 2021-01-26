@@ -51,6 +51,12 @@ jobs:
              rm -fR _DX*_ _DX*_.exe
       shell: bash
     
+    - name: FileMove
+      run: |
+           pwsh -command "Get-ChildItem ./マグネッコ/* | Where-Object { ! $_.PSIsContainer } | Remove-Item"
+           pwsh -command "Remove-Item ./マグネッコ/x64 -Recurse"
+           
+           pwsh -command "Move-Item ./x64/Release/*.exe ./マグネッコ"
     # Run the msbuild command
     - name: Build
       run: msbuild マグネッコ.sln /m /p:Configuration=Release /p:Platform=x64
@@ -59,7 +65,7 @@ jobs:
         
     - name: FileMove
       run: |
-           pwsh -command "Get-ChildItem ./マグネッコ* | Where-Object { ! $_.PSIsContainer } | Remove-Item"
+           pwsh -command "Get-ChildItem ./マグネッコ/* | Where-Object { ! $_.PSIsContainer } | Remove-Item"
            pwsh -command "Remove-Item ./マグネッコ/x64 -Recurse"
            
            pwsh -command "Move-Item ./x64/Release/*.exe ./マグネッコ"
