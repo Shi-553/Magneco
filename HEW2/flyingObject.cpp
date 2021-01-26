@@ -33,6 +33,12 @@ static int roadSignTextureId;
 
 static int  nekoPanchiTextureId = TEXTURE_INVALID_ID;
 
+static int  breakAlertTextureId = TEXTURE_INVALID_ID;
+static int  breakNoticeTextureId = TEXTURE_INVALID_ID;
+
+static float breakAleartFrame = 0;
+
+static bool isBreakAleartLeft = false;
 
 void BreakBlock(INTVECTOR2 pos);
 
@@ -81,9 +87,13 @@ void InitFlyingObject() {
 	roadSignTextureId = ReserveTextureLoadFile("texture/enemy/insekikuruyo.png");
 
 	nekoPanchiTextureId = ReserveTextureLoadFile("texture/block/nekopanchi.png");
+	breakAlertTextureId = ReserveTextureLoadFile("texture/enemy/breakAlert.png");
+	breakNoticeTextureId = ReserveTextureLoadFile("texture/enemy/breakNotice.png");
 
 	frame = 0;
+	breakAleartFrame = 0;
 	currentUID = 0;
+	isBreakAleartLeft = false;
 }
 void UninitFlyingObject() {
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
@@ -94,11 +104,38 @@ void UninitFlyingObject() {
 	ReleaseTexture(ufoBottomLightAnimationTextureId);
 	ReleaseTexture(roadSignTextureId);
 	ReleaseTexture(nekoPanchiTextureId);
+	ReleaseTexture(breakAlertTextureId);
+	ReleaseTexture(breakNoticeTextureId);
 }
 void DrawFlyingObject(FlyingObject& flyingObject) {
 	Player* player = GetPlayer();
 	NPC* npc = GetNpc();
 	auto textureId = flyingObjectTextureIds[flyingObject.type];
+
+	if (flyingObject.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
+		auto pos = flyingObject.trans.pos;
+
+		if (GetMapType(pos) == MAP_ROCK) {
+			auto p = INTVECTOR2(pos).ToD3DXVECTOR2();
+			DrawGameSprite(breakNoticeTextureId, p, 10);
+		}
+
+		for (int i = 0; i < 100; i++) {
+			if (GetMapType(pos)!= MAP_BLOCK) {
+				pos += flyingObject.dir;
+				continue;
+			}
+			pos = INTVECTOR2(pos).ToD3DXVECTOR2();
+			if (fabs(flyingObject.dir.x) > 0) {
+				pos.x += breakAleartFrame;
+			}
+			else {
+				pos.y += breakAleartFrame;
+			}
+			DrawGameSprite(breakAlertTextureId, pos, 10);
+			break;
+		}
+	}
 
 	if (flyingObject.type == FLYING_OBJECT_PURGE_BLOCK) {
 		auto tPos = D3DXVECTOR2(
@@ -177,6 +214,7 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 	else {
 		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2());
 	}
+
 }
 
 void DrawFlyingObject() {
@@ -196,6 +234,18 @@ void UpdateFlyingObject() {
 	}
 
 	frame++;
+	if (!isBreakAleartLeft) {
+		breakAleartFrame+=0.04;
+		if (breakAleartFrame > 0.05) {
+			isBreakAleartLeft = true;
+		}
+	}
+	else {
+		breakAleartFrame -= 0.04;
+		if (breakAleartFrame < -0.05) {
+			isBreakAleartLeft = false;
+		}
+	}
 }
 void BackFlyingObject(int frame) {
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
@@ -214,8 +264,25 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 	if (flyingObject->type == FLYING_OBJECT_UFO) {
 		flyingObject->dir = (GetNpc()->trans.pos + ADD_UFO_POS) - flyingObject->trans.pos;
 
-	}
 	D3DXVec2Normalize(&flyingObject->dir, &flyingObject->dir);
+	}
+	else if (flyingObject->type == FLYING_OBJECT_PURGE_BLOCK) {
+		D3DXVec2Normalize(&flyingObject->dir, &flyingObject->dir);
+	}
+	else {
+		if (flyingObject->dir.x > 0) {
+			flyingObject->dir.x = 1;
+		}
+		if (flyingObject->dir.x < 0) {
+			flyingObject->dir.x = -1;
+		}
+		if (flyingObject->dir.y > 0) {
+			flyingObject->dir.y = 1;
+		}
+		if (flyingObject->dir.y < 0) {
+			flyingObject->dir.y = -1;
+		}
+	}
 	flyingObject->trans.pos += flyingObject->dir * speed * GetDeltaTime();
 
 	flyingObject->trans.UpdatePos();
@@ -252,6 +319,7 @@ bool DamageFlyingObject(FlyingObject& f) {
 		StopSound(SOUND_LABEL_SE_UFO);
 		NPCDeleteUFO();
 	}
+	DestrySpone(f.id);
 
 	return true;
 }

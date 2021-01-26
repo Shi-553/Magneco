@@ -63,6 +63,8 @@ jobs:
            pwsh -command "Move-Item ./HEW2/font ./Magneco"
            pwsh -command "Move-Item ./HEW2/stage ./Magneco"
            pwsh -command "Move-Item ./HEW2/texture ./Magneco"
+           pwsh -command "Move-Item ./HEW2/BGM ./Magneco"
+           pwsh -command "Move-Item ./HEW2/SE ./Magneco"
            pwsh -command "Move-Item ./x64/Release/*.exe ./Magneco"
       
     - name: Zip

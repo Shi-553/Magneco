@@ -14,11 +14,13 @@ struct Spone {
 struct SponeId {
 	Spone s;
 	int id;
+	int isAlive;
 };
 
 void InitFlyingSponer();
 void UninitFlyingSponer();
 void UpdateFlyingSponer();
+void DrawFlyingSponer();
 
 void SetFlyingObjectSponerLoop(bool f);
 bool GetFlyingObjectSponerLoop();
@@ -31,3 +33,5 @@ bool FlyingObjectSponerImport(FILE* fp);
 
 int GetFlyingObjectSponeFrame();
 void SetFlyingObjectSponeFrame(int f);
+
+void DestrySpone(int id);

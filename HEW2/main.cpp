@@ -29,10 +29,11 @@
 #include "sound.h"
 #include <string>
 #include "pauseMenu.h"
+#include "resource.h"
 
 
 #define CLASS_NAME "GameWindow"
-#define WINDOW_CAPTION "ウインドウ表示処理"
+#define WINDOW_CAPTION "マグネッコ"
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -67,6 +68,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	wc.hInstance = hInstance;                          //インスタンスハンドルを登録
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);          //マウルカーソルの指定
 	wc.hbrBackground = (HBRUSH)(COLOR_BACKGROUND + 1); //背景色の設定   COLOR_BACKGROUND 系は +1 しないといけない
+	
+	wc.hIcon = LoadIconA(hInstance, (LPSTR)IDI_ICON1);
 
 	RegisterClass(&wc);
 
@@ -170,7 +173,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			Draw();
 		}
 	}
-
 	Uninit();
 	return (int)msg.wParam;
 }

@@ -261,6 +261,9 @@
     <ClInclude Include="teamLogo.h">
       <Filter>ヘッダー\scenes</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>リソース</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダー">
@@ -299,8 +302,22 @@
     <Filter Include="cpp\scenes\stageEditor">
       <UniqueIdentifier>{ccad7b26-5141-4836-92f4-f423fb105c04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="リソース">
+      <UniqueIdentifier>{d22ea70d-1955-4db2-aa7d-b2813e3e09a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HEW2.rc">
+      <Filter>リソース</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="texture\icon.ico">
+      <Filter>リソース</Filter>
+    </Image>
+    <Image Include="texture\icon.png" />
   </ItemGroup>
 </Project>
