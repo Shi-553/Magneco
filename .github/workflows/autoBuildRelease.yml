@@ -53,7 +53,7 @@ jobs:
     
     - name: FileMove
       run: |
-           pwsh -command "Get-ChildItem -File|Remove-Item"
+           pwsh -command "Get-ChildItem ./マグネッコ/* -File|Remove-Item"
            pwsh -command "Remove-Item ./マグネッコ/x64 -Recurse"
            
            pwsh -command "Move-Item ./x64/Release/*.exe ./マグネッコ"
