@@ -10,7 +10,7 @@
 #define EFFECT_TEXTURE_WIDTH  (32)
 #define EFFECT_TEXTURE_HEIGHT (32)
 
-#define EFFECT_ANIMATION_MAX (30)
+#define EFFECT_ANIMATION_MAX (45)
 
 static int textureId = TEXTURE_INVALID_ID;
 
@@ -52,7 +52,7 @@ void DrawEffect()
 	for (auto itr = effects.begin(); itr != effects.end(); itr++) {
 
 		auto tPos = D3DXVECTOR2(
-			EFFECT_TEXTURE_WIDTH * (itr->frame / 12 % 12),
+			EFFECT_TEXTURE_WIDTH * (itr->frame / 4 % 12),
 			0
 		);
 
