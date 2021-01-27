@@ -7,8 +7,8 @@
 #include "trans.h"
 #include <vector>
 
-#define EFFECT_TEXTURE_WIDTH  (32)
-#define EFFECT_TEXTURE_HEIGHT (32)
+#define EFFECT_WIDTH  (32)
+#define EFFECT_HEIGHT (32)
 
 #define EFFECT_ANIMATION_MAX (45)
 
@@ -17,19 +17,32 @@ static int textureId = TEXTURE_INVALID_ID;
 struct Effect {
 	D3DXVECTOR2 pos;
 	int frame;
+	EffectType type;
 };
 static std::vector<Effect> effects;
 
+struct EffectTexture {
+	int textureId;
+	int xCount;
+	INTVECTOR2 tSize;
+};
+static EffectTexture textures[EFFECT_MAX];
+
 void InitEffect()
 {
-	textureId = ReserveTextureLoadFile("texture/effect/explosion_anime.png");
+	textures[EFFECT_EXPLOSION] = { ReserveTextureLoadFile("texture/effect/explosion_anime.png"),
+		12,INTVECTOR2(32,32) };
+	textures[EFFECT_BLOCK_EXPLOSION] = { ReserveTextureLoadFile("texture/effect/blockExplosion_solo_64×64.png"),
+		14,INTVECTOR2(64,64) };
 
 	effects.clear();
 }
 
 void UninitEffect()
 {
-	ReleaseTexture(textureId);
+	for (auto& texture : textures) {
+		ReleaseTexture(texture.textureId);
+	}
 }
 void UpdateEffect()
 {
@@ -50,21 +63,23 @@ void UpdateEffect()
 void DrawEffect()
 {
 	for (auto itr = effects.begin(); itr != effects.end(); itr++) {
+		auto texture = textures[itr->type];
 
 		auto tPos = D3DXVECTOR2(
-			EFFECT_TEXTURE_WIDTH * (itr->frame / 4 % 12),
+			texture.tSize.x * (itr->frame / (int)ceilf(EFFECT_ANIMATION_MAX/ (float)texture.xCount) % texture.xCount),
 			0
 		);
 
-		DrawGameSprite(textureId, itr->pos - D3DXVECTOR2(0.5, 0.5), 30, tPos, D3DXVECTOR2(EFFECT_TEXTURE_WIDTH, EFFECT_TEXTURE_HEIGHT));
+		DrawGameSprite(texture.textureId, itr->pos - D3DXVECTOR2(0.5, 0.5), 30, tPos, texture.tSize.ToD3DXVECTOR2());
 	}
 }
 
-void CreateEffect(D3DXVECTOR2 pos)
+void CreateEffect(EffectType type, D3DXVECTOR2 pos)
 {
 	Effect effect;
 	effect.pos = pos;
 	effect.frame = 0;
+	effect.type = type;
 
 	effects.push_back(effect);
 }
