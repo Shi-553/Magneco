@@ -59,7 +59,7 @@ void UpdateEffect()
 		}
 	}
 }
-　
+
 void DrawEffect()
 {
 	for (auto itr = effects.begin(); itr != effects.end(); itr++) {
