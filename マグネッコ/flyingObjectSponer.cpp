@@ -147,11 +147,11 @@ void CheckSpone() {
 			f.speed = spones[sponeIndex].s.speed;
 			AddFlyingObjects(&f);
 
-			sponeIndex++;
-
 			if (f.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 				spones[sponeIndex].isAlive++;
 			}
+			sponeIndex++;
+
 		}
 		else {
 			break;
