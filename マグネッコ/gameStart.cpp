@@ -20,7 +20,6 @@
 
 static int backGroundTexture;
 static int titleTextTexture;
-static int buttonDescriptionTexture;
 
 static SelectButton gameStartSelect;
 void InitGameStart() {
@@ -76,7 +75,6 @@ void InitGameStart() {
 
 	titleTextTexture = ReserveTextureLoadFile("texture/ui/title_640×240.png");
 
-	buttonDescriptionTexture = ReserveTextureLoadFile("texture/ui/tips.png");
 
 	gameStartSelect.SetFrame(ReserveTextureLoadFile("texture/ui/select.png"));
 
@@ -88,13 +86,11 @@ void UninitGameStart() {
 
 	ReleaseTexture(backGroundTexture);
 	ReleaseTexture(titleTextTexture);
-	ReleaseTexture(buttonDescriptionTexture);
 
 }
 void DrawGameStart() {
 	DrawSprite(backGroundTexture, { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT }, { 0,0 }, { SCREEN_WIDTH,SCREEN_HEIGHT });
 	DrawSprite(titleTextTexture, { 320,64 }, 10, { TITLE_LOGO_WIDTH,TITLE_LOGO_HEIGHT }, { 0,0 }, { TITLE_LOGO_WIDTH,TITLE_LOGO_HEIGHT });
-	DrawSprite(buttonDescriptionTexture, { 32,640 }, 10, { BUTTON_DESCRIPTION_LOGO_WIDTH,BUTTON_DESCRIPTION_LOGO_HEIGHT }, { 0,0 }, { BUTTON_DESCRIPTION_LOGO_WIDTH,BUTTON_DESCRIPTION_LOGO_HEIGHT });
 	gameStartSelect.DrawMain();
 	gameStartSelect.DrawLR();
 }
