@@ -22,7 +22,7 @@ static SelectButton gameOverSelect;
 void InitGameOver() {
 
 	StopSound();
-	PlaySound(SOUND_LABEL_BGM005);
+	PlaySound(SOUND_LABEL_BGM004);
 
 	gameOverSelect.Init();
 

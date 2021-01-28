@@ -25,7 +25,7 @@ void InitGameClear()
 {
 	gameClearSelect.Init();
 	StopSound();
-	PlaySound(SOUND_LABEL_BGM004);
+	PlaySound(SOUND_LABEL_BGM003);
 
 
  Button returnTitleButton, stageSelectButton, nextButton;

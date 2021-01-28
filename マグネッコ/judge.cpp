@@ -231,6 +231,7 @@ void JudgePlayerandFlyingObjectHit() {
 			INTVECTOR2 pos = itr->trans.GetIntPos();
 			Map* map = GetMap(pos);
 			if (map != NULL && map->type == MAP_BLOCK) {
+				PlaySound()
 				CreateEffect(EFFECT_BLOCK_EXPLOSION, itr->trans.pos);
 
 				if (DamageFlyingObject(*itr)) {
