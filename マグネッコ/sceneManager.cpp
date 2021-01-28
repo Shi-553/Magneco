@@ -8,7 +8,6 @@
 #include "game.h"
 #include "gameOver.h"
 #include "gameClear.h"
-#include "tutorial.h"
 #include "teamLogo.h"
 #include "stageEditor.h"
 #include "InputLogger.h"
@@ -27,7 +26,6 @@ static const SceneFunc Inits[]{
 		InitGame,
 		InitGameClear,
 		InitGameOver,
-		InitTutorial,
 		InitStageEditor,
 		InitStageSelect
 };
@@ -38,7 +36,6 @@ static const SceneFunc Uninits[]{
 		UninitGame,
 		UninitGameClear,
 		UninitGameOver,
-		UninitTutorial,
 		UninitStageEditor,
 		UninitStageSelect
 };
@@ -49,7 +46,6 @@ static const SceneFunc Updates[]{
 		UpdateGame,
 		UpdateGameClear,
 		UpdateGameOver,
-		UpdateTutorial,
 		UpdateStageEditor,
 		UpdateStageSelect
 };
@@ -60,7 +56,6 @@ static const SceneFunc Draws[]{
 		DrawGame,
 		DrawGameClear,
 		DrawGameOver,
-		DrawTutorial,
 		DrawStageEditor,
 		DrawStageSelect
 };

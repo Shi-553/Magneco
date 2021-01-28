@@ -81,7 +81,7 @@ void InitGameClear()
 	};
 	gameClearSelect.Add(returnTitleButton);
 
-	backgroundTexture = ReserveTextureLoadFile("texture/background/背景１.png");
+	backgroundTexture = ReserveTextureLoadFile("texture/background/背景5.jpg");
 	gameClearTexture = ReserveTextureLoadFile("texture/ui/stageclear_1024×256.png");
 
 	gameClearSelect.SetFrame(ReserveTextureLoadFile("texture/ui/select.png"));

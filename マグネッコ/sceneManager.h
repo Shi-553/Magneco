@@ -9,7 +9,6 @@ enum Scene
 	GameScene,
 	GameClearScene,
 	GameOverScene,
-	TutorialScene,
 	StageEditorScene,
 	StageSelect,
 	MaxScene
