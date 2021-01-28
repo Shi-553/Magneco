@@ -34,6 +34,7 @@ void InitPauseMenu() {
 	startButton.textureId = ReserveTextureLoadFile("texture/ui/tudukeru.png");
 	startButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/tudukeru_pressed.png");
 	startButton.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
 		isPause = false;
 		SetTimeScale(1);
 	};
@@ -129,9 +130,8 @@ void UpdatePauseMenu() {
 
 	if (TriggerInputLogger(MYVK_ESC)|| (isPause&&TriggerInputLogger(MYVK_CANCEL))) {
 		isPause = !isPause;
-		// koko
-
 		if (isPause) {
+			PlaySound(SOUND_LABEL_SE_PAUSE);
 			pauseSelect.SetIndex(0);
 			SetTimeScale(0);
 		}
