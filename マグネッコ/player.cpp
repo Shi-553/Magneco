@@ -123,9 +123,29 @@ void UpdatePlayer() {
 			auto last = player.trans.pos;
 			auto move = player.dir * speed * GetDeltaTime();
 
-
 			player.trans.pos += move;
 
+			auto screenPos =  GameToScreenPos(player.trans.pos);
+			auto screenSize = GameToScreenSize(player.size);
+
+			auto screenLeftTop = screenPos - screenSize / 2;
+			auto screenRightBotoom = screenPos + screenSize / 2;
+
+			if (screenLeftTop.x < 0) {
+				screenPos.x = screenSize.x / 2;
+			}
+			if (screenLeftTop.y < 0) {
+				screenPos.y = screenSize.y / 2;
+			}
+			if (screenRightBotoom.x > SCREEN_WIDTH) {
+				screenPos.x = SCREEN_WIDTH - screenSize.x / 2;
+			}
+			if (screenRightBotoom.y > SCREEN_HEIGHT) {
+				screenPos.y = SCREEN_HEIGHT - screenSize.x / 2;
+			}
+			
+			player.trans.pos = ScreenToGamePos(screenPos);
+			player.size = ScreenToGameSize(screenSize);
 
 			player.trans.UpdatePos();
 
