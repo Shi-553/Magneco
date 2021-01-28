@@ -64,6 +64,7 @@ enum StageSelectTexture {
 	STAGE_SELECT_BU_TO_TITLE,
 	STAGE_SELECT_BU_TO_TITLE_PRESSED,
 	STAGE_SELECT_TITLE,
+	STAGE_SELECT_FRAME,
 	STAGE_SELECT_MAX
 };
 
@@ -99,6 +100,7 @@ void InitStageSelect() {
 	selectStageTextureIds[STAGE_SELECT_BU_TO_TITLE] = ReserveTextureLoadFile("texture/ui/quit.png");
 	selectStageTextureIds[STAGE_SELECT_BU_TO_TITLE_PRESSED] = ReserveTextureLoadFile("texture/ui/quit_pressed.png");
 	selectStageTextureIds[STAGE_SELECT_TITLE] = ReserveTextureLoadFile("texture/ui/title_640×240.png");
+	selectStageTextureIds[STAGE_SELECT_FRAME] = ReserveTextureLoadFile("texture/ui/select.png");
 
 	overviewMessage = new Message();
 	nameMessage = new Message();
@@ -261,7 +263,8 @@ void DrawStageSelect() {
 
 		DrawSprite(selectStageTextureIds[STAGE_SELECT_TITLE], { BU_TITLE_X ,  BU_TITLE_Y }, 10);
 	}
-		DrawSprite(selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
+	DrawSprite(selectStageTextureIds[STAGE_SELECT_FRAME], { BU_START_X ,  BU_START_Y }, 10);
+	DrawSprite(selectStageTextureIds[STAGE_SELECT_MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 	stageSelect.DrawLR();
 }
 
