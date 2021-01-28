@@ -241,7 +241,7 @@ void DrawNPC() {
 	}
 
 	if (npc.takeOutFrame > 0) {
-		auto string = std::to_string((TAKE_OUT_FRAME_LIMIT - npc.takeOutFrame + 1) / 100);
+		auto string = std::to_string(((TAKE_OUT_FRAME_LIMIT - npc.takeOutFrame ) / 100)+ 1);
 		auto g = npc.trans.pos + D3DXVECTOR2(0.5, 0.5);
 		auto screenPos = GameToScreenPos(g);
 
