@@ -7,6 +7,7 @@
 #include "InputLogger.h"
 #include "selectButton.h"
 #include "sceneManager.h"
+#include "sound.h"
 #include <vector>
 using namespace std;
 
@@ -43,6 +44,7 @@ void InitPauseMenu() {
 		retryButton.textureId = ReserveTextureLoadFile("texture/ui/retry.png");
 		retryButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/retry_pressed.png");
 		retryButton.releasedCallback = []() {
+			PlaySound(SOUND_LABEL_SE_DECITION);
 			GoNextScene(GameScene, FADE_OUT, true);
 			isPause = false;
 			SetTimeScale(1);
@@ -53,6 +55,7 @@ void InitPauseMenu() {
 		stageSelectButton.textureId = ReserveTextureLoadFile("texture/ui/stageselect.png");
 		stageSelectButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/stageselect_pressed.png");
 		stageSelectButton.releasedCallback = []() {
+			PlaySound(SOUND_LABEL_SE_DECITION);
 			GoNextScene(StageSelect);
 			isPause = false;
 			SetTimeScale(1);
@@ -67,6 +70,7 @@ void InitPauseMenu() {
 			returnTitleButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/quit_pressed.png");
 
 			returnTitleButton.releasedCallback = []() {
+				PlaySound(SOUND_LABEL_SE_DECITION);
 				GoNextScene(GameStartScene);
 				isPause = false;
 				SetTimeScale(1);
@@ -125,6 +129,8 @@ void UpdatePauseMenu() {
 
 	if (TriggerInputLogger(MYVK_ESC)|| (isPause&&TriggerInputLogger(MYVK_CANCEL))) {
 		isPause = !isPause;
+		// koko
+
 		if (isPause) {
 			pauseSelect.SetIndex(0);
 			SetTimeScale(0);

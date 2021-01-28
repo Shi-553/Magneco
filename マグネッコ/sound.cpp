@@ -34,12 +34,15 @@ DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイ�
 SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 {
 	{"BGM/bgm000.wav", -1},		// 通常BGM(お船でゆらゆら)
+	{"BGM/bgm000_s.wav", -1},	// 音量小さめ
 	{"BGM/bgm001.wav", -1},		// 通常BGM(小竜の背に乗って)
 	{"BGM/bgm002.wav", -1},		// ステージセレクト画面で流れるBGM(律儀なご説明)
 	{"BGM/bgm003.wav", -1},		// ゲームクリア時のBGM(みんなで山登り)
 	{"BGM/bgm004.wav", -1},		// ゲームオーバー時のBGM(たなびく黄昏)
 	{"BGM/bgm005.wav", -1},		// ボス戦BGM(決着をつけるぞ)
+	{"BGM/bgm005_s.wav", -1},	// 音量小さめ
 	{"BGM/bgm006.wav", -1},		// ボス戦BGM(予期せぬ事態)
+	{"BGM/bgm006_s.wav", -1},	// 音量小さめ
 	{"SE/beacon000.wav", 0},	// ビーコンを設置したときのSE
 	{"SE/complete000.wav", 0},	// マグネッコがルートを作成しきった時のSE
 	{"SE/decition000.wav", 0},	// 決定したときのSE
