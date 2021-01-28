@@ -12,3 +12,5 @@ void NextStaege();
 void SetStageFolder(std::string foldername);
 
 StageInfo* GetCurrentInfo();
+
+const std::string& GetStageFoldername();

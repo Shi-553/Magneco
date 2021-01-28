@@ -127,6 +127,9 @@
     <ClCompile Include="effect.cpp">
       <Filter>cpp\scenes\game</Filter>
     </ClCompile>
+    <ClCompile Include="staffRole.cpp">
+      <Filter>cpp\scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -263,6 +266,9 @@
     </ClInclude>
     <ClInclude Include="effect.h">
       <Filter>ヘッダー\scenes\game</Filter>
+    </ClInclude>
+    <ClInclude Include="staffRole.h">
+      <Filter>ヘッダー\scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
