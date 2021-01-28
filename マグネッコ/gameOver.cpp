@@ -46,6 +46,7 @@ Button retryButton, stageSelectButton, returnTitleButton;
 	stageSelectButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/stageselect_pressed.png");
 
 	stageSelectButton.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
 		GoNextScene(StageSelect);
 	};
 
