@@ -22,7 +22,7 @@ typedef enum
 	SOUND_LABEL_BGM005,			// ボス戦BGM(決着をつけるぞ)
 	SOUND_LABEL_BGM006,			// ボス戦BGM(予期せぬ事態)
 	SOUND_LABEL_SE_BEACON,		// ビーコンを設置したときのSE
-	SOUND_LABEL_SE_COMPLETE,	// マグネッコがルートを作成しきった時のSE
+	SOUND_LABEL_SE_COMPLETE,	// マグネッコがチェックポイントを置いた時のSE
 	SOUND_LABEL_SE_DECITION,	// 決定したときのSE
 	SOUND_LABEL_SE_EXPLOSION,	// 敵が爆発したときのSE
 	SOUND_LABEL_SE_PROTECTION,	// アイテム取得したときのSE
