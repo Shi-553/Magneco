@@ -59,7 +59,7 @@ static const SceneFunc Draws[]{
 		DrawStageEditor,
 		DrawStageSelect
 };
-
+Scene gStartScene;
 Scene currentScene;
 Scene nextScene;
 float fade;
@@ -73,7 +73,7 @@ void InitSceneManager(Scene startScene) {
 	currentScene = nextScene = NullScene;
 	fadeMode = FADE_NONE;
 	GoNextScene(startScene, FADE_IN);
-
+	gStartScene = startScene;
 	//SetStagePath("stage/edit.stage");
 }
 
@@ -133,10 +133,15 @@ void UpdateSceneManager() {
 
 	//フェードイン
 	if (fadeMode == FADE_IN) {
-		fade -= 0.03f;
+		if (gStartScene == currentScene) {
+			fade -= 0.02f;
+		}
+		else {
+			fade -= 0.02f;
 
-		if (fade <= 0.6f) {
-			fade -= 0.03f;
+			if (fade <= 0.7f) {
+				fade -= 0.02f;
+			}
 		}
 		if (fade < 0) {
 			fadeMode = FADE_NONE;
