@@ -671,6 +671,7 @@ void ToFreeFlyingObject(FlyingObject& flyingObject) {
 void GetItem(FlyingObjectType type) {
 	getItemFrame = 100;
 	itemType = type;
+	PlaySound(SOUND_LABEL_SE_PROTECTION);
 	if (type == FLYING_OBJECT_ITEM_ADD_SPEED) {
 		player.addSpeed++;
 	}
