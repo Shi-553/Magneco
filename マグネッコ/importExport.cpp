@@ -32,17 +32,17 @@ bool StageExport() {
 
 	return true;
 }
-bool StageImport() {
+StageInfo* StageImport() {
 	FILE* fp = NULL;
 
 	//	バイナリ読み込みモードでファイルを開く
 	fopen_s(&fp, gFilename.c_str(), "rb");
 
 	if (fp == NULL) {
-		return false;
+		return nullptr;
 	}
 
-	ImportStageInfo(fp, gFilename);
+	auto info=ImportStageInfo(fp, gFilename);
 
 	MapImport(fp);
 	FlyingObjectSponerImport(fp);
@@ -52,7 +52,7 @@ bool StageImport() {
 	SecureMapLabelList();
 
 	fclose(fp);
-	return true;
+	return info;
 }
 
 
@@ -85,8 +85,9 @@ bool GetStageInfos(std::string foldername, std::vector<StageInfo>& infos) {
 			fopen_s(&fp, filePath.c_str(), "rb");
 
 			if (fp != NULL) {
-
-				infos.push_back(ImportStageInfo(fp, filePath));
+				StageInfo f= *ImportStageInfo(fp, filePath);
+				
+				infos.push_back(f);
 
 				fclose(fp);
 			}
