@@ -71,7 +71,7 @@ void InitGameClear()
 		staffRoleButton.releasedCallback = []() {
 			StopSound();
 			PlaySound(SOUND_LABEL_SE_DECITION);
-			GoNextScene(StaffRole);
+			GoNextScene(StaffRoleScene);
 		};
 		gameClearSelect.Add(staffRoleButton);
 	}
