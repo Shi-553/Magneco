@@ -52,7 +52,7 @@ static Message* nameMessage, * overviewMessage, * lavelMessage;
 
 static vector<StageInfo> infos;
 static vector<int> smunes;
-static std::string stageFoldername = "stage";
+static std::string stageFoldername = "stage/main";
 
 enum StageSelectTexture {
 	STAGE_SELECT_BACK_GROUND,
@@ -274,4 +274,7 @@ StageInfo* GetCurrentInfo() {
 	}
 
 	return &infos[stageSelect.GetIndex()];
+}
+const std::string& GetStageFoldername() {
+	return stageFoldername;
 }

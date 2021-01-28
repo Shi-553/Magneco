@@ -11,6 +11,7 @@ enum Scene
 	GameOverScene,
 	StageEditorScene,
 	StageSelect,
+	StaffRoleScene,
 	MaxScene
 };
 enum FadeMode {

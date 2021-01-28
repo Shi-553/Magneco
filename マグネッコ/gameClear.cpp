@@ -7,7 +7,6 @@
 #include "sound.h"
 #include "stageSelect.h"
 
-
 #define GAME_CLEAR_BUTTON_WIDTH 330
 #define GAME_CLEAR_BUTTON_HEIGHT 90
 
@@ -28,22 +27,27 @@ void InitGameClear()
 	PlaySound(SOUND_LABEL_BGM003);
 
 
- Button returnTitleButton, stageSelectButton, nextButton;
+ Button returnTitleButton, stageSelectButton, nextButton,staffRoleButton;
 
 
 	auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - GAME_CLEAR_BUTTON_WIDTH / 2, (SCREEN_HEIGHT / 2 - GAME_CLEAR_BUTTON_HEIGHT / 2) + 30);
-
-	if (IsNextStage()) {
+	bool canNext = IsNextStage();
+	bool isMain = GetStageFoldername() == "stage/main";
+	if (canNext) {
 		nextButton.pos = buttonCenter ;
 		stageSelectButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 16);
 		returnTitleButton.pos = stageSelectButton.pos + D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 16);
+	}
+	else if (isMain) {
+		staffRoleButton.pos = buttonCenter + (D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 16) / 3);
+		returnTitleButton.pos = staffRoleButton.pos + D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 16);
 	}
 	else {
 		stageSelectButton.pos = buttonCenter + (D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 16)/3);
 		returnTitleButton.pos = stageSelectButton.pos + D3DXVECTOR2(0, GAME_CLEAR_BUTTON_HEIGHT + 16);
 	}
 
-	if (IsNextStage()) {
+	if (canNext) {
 		nextButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
 		nextButton.textureId = ReserveTextureLoadFile("texture/ui/next.png");
 		nextButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/next_pressed.png");
@@ -57,19 +61,34 @@ void InitGameClear()
 		gameClearSelect.Add(nextButton);
 	}
 
+	if (!canNext&& isMain) {
 
-	stageSelectButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
-	stageSelectButton.textureId = ReserveTextureLoadFile("texture/ui/stageselect.png");
-	stageSelectButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/stageselect_pressed.png");
+		staffRoleButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
+		staffRoleButton.textureId = ReserveTextureLoadFile("texture/ui/staffrole.png");
+		staffRoleButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/staffrole_pressed.png");
 
 
-	stageSelectButton.releasedCallback = []() {
-		StopSound();
-		PlaySound(SOUND_LABEL_SE_DECITION);
-		GoNextScene(StageSelect);
-	};
-	gameClearSelect.Add(stageSelectButton);
+		staffRoleButton.releasedCallback = []() {
+			StopSound();
+			PlaySound(SOUND_LABEL_SE_DECITION);
+			GoNextScene(StaffRoleScene);
+		};
+		gameClearSelect.Add(staffRoleButton);
+	}
+	else {
 
+		stageSelectButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
+		stageSelectButton.textureId = ReserveTextureLoadFile("texture/ui/stageselect.png");
+		stageSelectButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/stageselect_pressed.png");
+
+
+		stageSelectButton.releasedCallback = []() {
+			StopSound();
+			PlaySound(SOUND_LABEL_SE_DECITION);
+			GoNextScene(StageSelect);
+		};
+		gameClearSelect.Add(stageSelectButton);
+	}
 
 	returnTitleButton.size = D3DXVECTOR2(GAME_CLEAR_BUTTON_WIDTH, GAME_CLEAR_BUTTON_HEIGHT);
 	returnTitleButton.textureId = ReserveTextureLoadFile("texture/ui/quit.png");
