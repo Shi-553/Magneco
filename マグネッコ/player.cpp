@@ -473,6 +473,7 @@ void MakePut() {
 		player.invicibleTime = 0;
 		player.checkCheckpoint = false;
 		MoveAdjust();
+		PlaySound(SOUND_LABEL_SE_COMPLETE);
 		return;
 	}
 
