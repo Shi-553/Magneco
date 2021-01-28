@@ -22,7 +22,7 @@ static SelectButton gameOverSelect;
 void InitGameOver() {
 
 	StopSound();
-	PlaySound(SOUND_LABEL_BGM005);
+	PlaySound(SOUND_LABEL_BGM004);
 
 	gameOverSelect.Init();
 
@@ -46,6 +46,7 @@ Button retryButton, stageSelectButton, returnTitleButton;
 	stageSelectButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/stageselect_pressed.png");
 
 	stageSelectButton.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
 		GoNextScene(StageSelect);
 	};
 

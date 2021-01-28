@@ -17,16 +17,15 @@ typedef enum
 	SOUND_LABEL_BGM000,		    // 通常BGM(お船でゆらゆら)
 	SOUND_LABEL_BGM001,		    // 通常BGM(小竜の背に乗って)
 	SOUND_LABEL_BGM002,		    // ステージセレクト画面で流れるBGM(律儀なご説明)
-	SOUND_LABEL_BGM003,		    // ゲームクリア時のBGM(小熊のポルカ)
-	SOUND_LABEL_BGM004,		    // ゲームクリア時のBGM(みんなで山登り)
-	SOUND_LABEL_BGM005,			// ゲームオーバー時のBGM(たなびく黄昏)
-	SOUND_LABEL_BGM006,			// ゲームオーバー時のBGM(過去への旅路)
-	SOUND_LABEL_BGM007,			// ボス戦BGM(決着をつけるぞ)
-	SOUND_LABEL_BGM008,			// ボス戦BGM(予期せぬ事態)
+	SOUND_LABEL_BGM003,		    // ゲームクリア時のBGM(みんなで山登り)
+	SOUND_LABEL_BGM004,			// ゲームオーバー時のBGM(たなびく黄昏)
+	SOUND_LABEL_BGM005,			// ボス戦BGM(決着をつけるぞ)
+	SOUND_LABEL_BGM006,			// ボス戦BGM(予期せぬ事態)
 	SOUND_LABEL_SE_BEACON,		// ビーコンを設置したときのSE
 	SOUND_LABEL_SE_COMPLETE,	// マグネッコがルートを作成しきった時のSE
 	SOUND_LABEL_SE_DECITION,	// 決定したときのSE
 	SOUND_LABEL_SE_EXPLOSION,	// 敵が爆発したときのSE
+	SOUND_LABEL_SE_PROTECTION,	// アイテム取得したときのSE
 	SOUND_LABEL_SE_PURGE,		// マグネッコが所持ブロックをパージしたときのSE
 	SOUND_LEBEL_SE_STAN,		// マグネッコスタン時のSE
 	SOUND_LABEL_SE_STICK,		// マグネッコがブロックをくっつけた時のSE

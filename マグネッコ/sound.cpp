@@ -36,16 +36,15 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 	{"BGM/bgm000.wav", -1},		// 通常BGM(お船でゆらゆら)
 	{"BGM/bgm001.wav", -1},		// 通常BGM(小竜の背に乗って)
 	{"BGM/bgm002.wav", -1},		// ステージセレクト画面で流れるBGM(律儀なご説明)
-	{"BGM/bgm003.wav", -1},		// ゲームクリア時のBGM(小熊のポルカ)
-	{"BGM/bgm004.wav", -1},		// ゲームクリア時のBGM(みんなで山登り)
-	{"BGM/bgm005.wav", -1},		// ゲームオーバー時のBGM(たなびく黄昏)
-	{"BGM/bgm006.wav", -1},		// ゲームオーバー時のBGM(過去への旅路)
-	{"BGM/bgm007.wav", -1},		// ボス戦BGM(決着をつけるぞ)
-	{"BGM/bgm008.wav", -1},		// ボス戦BGM(予期せぬ事態)
+	{"BGM/bgm003.wav", -1},		// ゲームクリア時のBGM(みんなで山登り)
+	{"BGM/bgm004.wav", -1},		// ゲームオーバー時のBGM(たなびく黄昏)
+	{"BGM/bgm005.wav", -1},		// ボス戦BGM(決着をつけるぞ)
+	{"BGM/bgm006.wav", -1},		// ボス戦BGM(予期せぬ事態)
 	{"SE/beacon000.wav", 0},	// ビーコンを設置したときのSE
 	{"SE/complete000.wav", 0},	// マグネッコがルートを作成しきった時のSE
 	{"SE/decition000.wav", 0},	// 決定したときのSE
 	{"SE/explosion000.wav", 0},	// 敵が爆発したときのSE
+	{"SE/protection000.wav", 0},// アイテム取得したときのSE
 	{"SE/purge000.wav", 0},		// マグネッコが所持ブロックをパージしたときのSE
 	{"SE/stan000.wav", 0},		// マグネッコスタン時のSE
 	{"SE/stick000.wav", 0},		// マグネッコがブロックをくっつけた時のSE
