@@ -108,7 +108,7 @@ void UpdateSceneManager() {
 	//フェードアウト
 	if (fadeMode == FADE_OUT) {
 
-		fade += 0.02f;
+		fade += 0.03f;
 
 		if (1 > fade) {
 			return;
@@ -133,10 +133,10 @@ void UpdateSceneManager() {
 
 	//フェードイン
 	if (fadeMode == FADE_IN) {
-		fade -= 0.02f;
+		fade -= 0.03f;
 
-		if (fade <= 0.2f) {
-			fade -= 0.04f;
+		if (fade <= 0.6f) {
+			fade -= 0.03f;
 		}
 		if (fade < 0) {
 			fadeMode = FADE_NONE;
