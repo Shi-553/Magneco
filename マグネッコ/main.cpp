@@ -205,8 +205,7 @@ bool Init(HWND hWnd,HINSTANCE hIns) {
 	InitFont();
 	InitTexture();
 
-	//InitSceneManager(TeamLogoScene);
-	InitSceneManager(StaffRoleScene);
+	InitSceneManager(TeamLogoScene);
 
 	InitDebugFont();
 
