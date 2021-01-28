@@ -6,6 +6,7 @@
 #include "texture.h"
 #include "sprite.h"
 #include "InputLogger.h"
+#include "sound.h"
 
 #define STAFF_ROLETITLE_WIDTH 640
 #define STAFF_ROLETITLE_HEIGHT 240
@@ -96,8 +97,10 @@ void InitStaffRole() {
 	oneSizeHeight = staffRoleMessage->GetOneSize().y;
 	staffRoleId = ReserveTextureLoadFile("texture/background/背景１.png");
 	staffRoleTitleId = ReserveTextureLoadFile("texture/ui/title_640×240.png");
+	PlaySound(SOUND_LABEL_BGM004);
 }
 void UninitStaffRole() {
+	StopSound();
 	delete staffRoleMessage;
 	ReleaseTexture(staffRoleId);
 	ReleaseTexture(staffRoleTitleId);
