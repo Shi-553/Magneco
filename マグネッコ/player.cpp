@@ -74,6 +74,7 @@ void InitPlayer() {
 	player.invicibleTime = 0;
 	player.nekopunchTime = 0;
 	player.size = { 1,1 };
+	player.putRequiredFrame = (int)(1.5 * 60);
 }
 
 void UninitPlayer() {
@@ -151,7 +152,7 @@ void UpdatePlayer() {
 		if (player.isPut) {
 			player.putFrame++;
 		}
-		if (player.putFrame >= DEFAULT_PUT_REQUIRED_FRAME) {
+		if (player.putFrame >= player.putRequiredFrame) {
 			BlockDecision();
 			PlaySound(SOUND_LABEL_SE_STICK);
 		}
@@ -266,7 +267,7 @@ void DrawPlayer() {
 			getItemMessage->Draw("スピードアップ！");
 		}
 		if (itemType == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
-			getItemMessage->Draw("磁力アップ！");
+			getItemMessage->Draw("設置スピードアップ！");
 		}
 
 	}
@@ -675,7 +676,7 @@ void GetItem(FlyingObjectType type) {
 		player.addSpeed++;
 	}
 	else if (type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
-		player.blockMax++;
+		player.putRequiredFrame=player.putRequiredFrame*2/3;
 	}
 
 }

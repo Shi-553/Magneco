@@ -166,7 +166,7 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 	}
 
 	if (flyingObject.isAnime) {
-		DrawGameSprite(blockAnimationTextureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2(), { (float)(4 * player->putFrame / DEFAULT_PUT_REQUIRED_FRAME) * 32, 0 }, { 32, 32 });
+		DrawGameSprite(blockAnimationTextureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2(), { (float)(4 * player->putFrame / player->putRequiredFrame) * 32, 0 }, { 32, 32 });
 		return;
 	}
 	if (flyingObject.type == FLYING_OBJECT_ITEM_ADD_SPEED || flyingObject.type == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE || flyingObject.type == FLYING_OBJECT_ENEMY || flyingObject.type == FLYING_OBJECT_ENEMY_SECOND) {
