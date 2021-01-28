@@ -34,10 +34,11 @@ void InitGame()
 	//Grid_Initialize(GAME_SPRITE_WHIDTH, GetMapWidth(), D3DCOLOR_RGBA(0, 197, 0, 255));
 
 	//StageExport();
-	StageImport();
-	StopSound();
-	PlaySound(SOUND_LABEL_BGM000);
-
+	auto info=StageImport();
+	if (info != nullptr) {
+		StopSound();
+		PlaySound(info->sLabel);
+	}
 	LoadTexture();
 }
 

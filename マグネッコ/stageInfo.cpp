@@ -14,16 +14,18 @@ void InitStageInfo() {
 	info.level = 1;
 	info.name = "asd";
 	info.overview = "ああああ\nああ\nあああああああああああああああ";
+	info.sLabel = SOUND_LABEL_BGM000;
 }
 void UninitStageInfo() {
 }
 
 
-StageInfo ImportStageInfo(FILE* fp,string& filename) {
+StageInfo* ImportStageInfo(FILE* fp,string& filename) {
 	UninitStageInfo();
 
 	fread(&info.index, sizeof(int), 1, fp);
 	fread(&info.level, sizeof(int), 1, fp);
+	fread(&info.sLabel, sizeof(SOUND_LABEL), 1, fp);
 
 	int nameLen,overviewLen;
 	fread(&nameLen, sizeof(int), 1, fp);
@@ -36,7 +38,7 @@ StageInfo ImportStageInfo(FILE* fp,string& filename) {
 	fread(&overviewLen, sizeof(int), 1, fp);
 	auto overview = new char[overviewLen];
 	fread(overview, sizeof(char), overviewLen, fp);
-	//fread(&info.overview, sizeof(char), overviewLen, fp);
+
 	info.overview = overview;
 	delete[] overview;
 
@@ -45,7 +47,9 @@ StageInfo ImportStageInfo(FILE* fp,string& filename) {
 	info.samunename = filename;
 	StageToSamune(info.samunename);
 
-	return info;
+
+
+	return &info;
 }
 
 bool ExportStageInfo(FILE* fp) {
@@ -53,6 +57,8 @@ bool ExportStageInfo(FILE* fp) {
 	//	ファイルへの書き込み処理
 	fwrite(&info.index, sizeof(int), 1, fp);
 	fwrite(&info.level, sizeof(int), 1, fp);
+
+	fwrite(&info.sLabel, sizeof(SOUND_LABEL), 1, fp);
 
 	int nameLen=info.name.size()+1, overviewLen= info.overview.size() + 1;
 

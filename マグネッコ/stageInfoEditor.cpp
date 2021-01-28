@@ -20,12 +20,14 @@ void Paste(std::string& str);
 #define OVERVIEW_POS D3DXVECTOR2(10, POS_Y + oneSize.y)
 #define LEVEL_POS D3DXVECTOR2(10, POS_Y + infoMessage->GetOneSize().y*2)
 #define INDEX_POS D3DXVECTOR2(10, POS_Y + infoMessage->GetOneSize().y*3)
+#define SLABEL_POS D3DXVECTOR2(10, POS_Y + infoMessage->GetOneSize().y*4)
 
 
 std::string name;
 std::string overview;
 std::string level;
 std::string index;
+std::string sLabel;
 
 void InitStageInfoEditor() {
 	infoMessage = new Message(D3DXVECTOR2(0.8, 0.8));
@@ -41,7 +43,8 @@ void DrawStageInfoEditor() {
 	overview = "OVERVIEW:" + std::regex_replace(info.overview, std::regex("\n"), "/n");
 
 	level = "LEVEL:" + std::to_string(info.level);
-	 index = "INDEX:" + std::to_string(info.index);
+	index = "INDEX:" + std::to_string(info.index);
+	sLabel = "S:" + std::to_string(info.sLabel);
 
 	infoMessage->ClearOffset();
 	infoMessage->SetPos(FILENAME_POS);
@@ -62,6 +65,10 @@ void DrawStageInfoEditor() {
 	infoMessage->ClearOffset();
 	infoMessage->SetPos(INDEX_POS);
 	infoMessage->Draw(index.c_str());
+
+	infoMessage->ClearOffset();
+	infoMessage->SetPos(SLABEL_POS);
+	infoMessage->Draw(sLabel.c_str());
 }
 void UpdateStageInfoEditor() {
 
@@ -83,10 +90,13 @@ bool CheckMouseStageInfoEditor() {
 	auto wheel = GetInputLoggerAxisAmountInt(MYVA_MW);
 	if (wheel != 0) {
 		if (CheckSquare(mousePos, LEVEL_POS, D3DXVECTOR2(level.size() * oneSize.x, oneSize.y))) {
-			info.level += wheel/120;
+			info.level += wheel / 120;
 		}
 		if (CheckSquare(mousePos, INDEX_POS, D3DXVECTOR2(index.size() * oneSize.x, oneSize.y))) {
-			info.index += wheel/120;
+			info.index += wheel / 120;
+		}
+		if (CheckSquare(mousePos, SLABEL_POS, D3DXVECTOR2(index.size() * oneSize.x, oneSize.y))) {
+			info.sLabel = (SOUND_LABEL)(info.sLabel +(wheel / 120));
 		}
 	}
 	return false;
