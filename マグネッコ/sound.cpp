@@ -46,6 +46,7 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 	{"SE/complete000.wav", 0},	// マグネッコがルートを作成しきった時のSE
 	{"SE/decition000.wav", 0},	// 決定したときのSE
 	{"SE/explosion000.wav", 0},	// 敵が爆発したときのSE
+	{"SE/protection000.wav", 0},// アイテム取得したときのSE
 	{"SE/purge000.wav", 0},		// マグネッコが所持ブロックをパージしたときのSE
 	{"SE/stan000.wav", 0},		// マグネッコスタン時のSE
 	{"SE/stick000.wav", 0},		// マグネッコがブロックをくっつけた時のSE

@@ -27,6 +27,7 @@ typedef enum
 	SOUND_LABEL_SE_COMPLETE,	// マグネッコがルートを作成しきった時のSE
 	SOUND_LABEL_SE_DECITION,	// 決定したときのSE
 	SOUND_LABEL_SE_EXPLOSION,	// 敵が爆発したときのSE
+	SOUND_LABEL_SE_PROTECTION,	// アイテム取得したときのSE
 	SOUND_LABEL_SE_PURGE,		// マグネッコが所持ブロックをパージしたときのSE
 	SOUND_LEBEL_SE_STAN,		// マグネッコスタン時のSE
 	SOUND_LABEL_SE_STICK,		// マグネッコがブロックをくっつけた時のSE
