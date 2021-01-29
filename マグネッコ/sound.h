@@ -32,6 +32,7 @@ typedef enum
 	SOUND_LABEL_SE_UFO,			// UFOが漂うSE
 	SOUND_LAGEL_SE_UFO_BEAM,	// UFOがローズをさらっているときのSE
 	SOUND_LABEL_SE_PAUSE,		// ポーズを押したときのSE
+	SOUND_LABEL_SE_SWITCH,		// 選択肢を移動したときのSE
 	SOUND_LABEL_MAX,
 } SOUND_LABEL;
 
