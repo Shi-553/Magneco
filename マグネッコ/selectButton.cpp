@@ -1,6 +1,7 @@
 ﻿#include "selectButton.h"
 #include "sprite.h"
 #include "debugPrintf.h"
+#include "sound.h"
 
 
 
@@ -123,7 +124,7 @@ void SelectButton::Update() {
 		if (buttons.size() <= selectedIndex) {
 			selectedIndex = 0;
 		}
-
+		PlaySound(SOUND_LABEL_SE_SWITCH);
 		AllReleasePressedFlag();
 		isPressedForward = true;
 		if (buttons[selectedIndex].rightCallback != NULL) {
@@ -141,6 +142,7 @@ void SelectButton::Update() {
 		if (selectedIndex < 0) {
 			selectedIndex = buttons.size() - 1;
 		}
+		PlaySound(SOUND_LABEL_SE_SWITCH);
 		AllReleasePressedFlag();
 		isPressedBack = true;
 		if (buttons[selectedIndex].leftCallback != NULL) {

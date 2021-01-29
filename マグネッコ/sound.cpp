@@ -51,6 +51,7 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 	{"SE/ufo000.wav", -1},		// UFOが漂うSE
 	{"SE/ufo001.wav", -1},		// UFOがローズをさらっているときのSE
 	{"SE/pause000.wav", 0},		// ポーズを押したときのSE
+	{"SE/switch000.wav", 0},	// 選択肢を移動したときのSE
 
 
 
