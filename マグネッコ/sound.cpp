@@ -50,6 +50,8 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 	{"SE/stick000.wav", 0},		// マグネッコがブロックをくっつけた時のSE
 	{"SE/ufo000.wav", -1},		// UFOが漂うSE
 	{"SE/ufo001.wav", -1},		// UFOがローズをさらっているときのSE
+	{"SE/pause000.wav", 0},		// ポーズを押したときのSE
+
 
 
 };
