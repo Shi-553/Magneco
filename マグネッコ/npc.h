@@ -24,7 +24,7 @@ void DrawNPC();
 void UninitNPC();
 
 bool UpdateNPCShortestPath(INTVECTOR2 beaconPos);
-void UpdateNPCShortestPath();
+bool UpdateNPCShortestPath();
 
 void SecureMapLabelList();
 

@@ -256,15 +256,15 @@ void DrawNPC() {
 bool UpdateNPCShortestPath(INTVECTOR2 beaconPos) {
 	if (!npc.isMove) {
 		gBeaconPos = beaconPos;
-		UpdateNPCShortestPath();
-		return true;
+		
+		return UpdateNPCShortestPath();
 	}
 	return false;
 }
 
-void UpdateNPCShortestPath() {
+bool UpdateNPCShortestPath() {
 	if (gBeaconPos == npc.trans.GetIntPos()) {
-		return;
+		return false;
 	}
 	for (int i = 0; i < GetMapHeight(); i++)
 	{
@@ -322,6 +322,10 @@ void UpdateNPCShortestPath() {
 			continue;
 		}
 	}
+	if (nextPosQueue.empty()) {
+		return false;
+	}
+	return true;
 }
 INTVECTOR2 FindNearestBlock() {
 
