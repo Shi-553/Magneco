@@ -409,8 +409,9 @@ void PutBeacon() {
 	}
 	auto mapType = GetMapType(player.trans.GetIntPos());
 	if (CanGoNPCMapType(mapType)) {
-		UpdateNPCShortestPath(player.trans.GetIntPos());
-		PlaySound(SOUND_LABEL_SE_BEACON);
+		if (UpdateNPCShortestPath(player.trans.GetIntPos())) {
+			PlaySound(SOUND_LABEL_SE_BEACON);
+		}
 	}
 }
 

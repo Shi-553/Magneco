@@ -253,11 +253,13 @@ void DrawNPC() {
 	}
 }
 
-void UpdateNPCShortestPath(INTVECTOR2 beaconPos) {
+bool UpdateNPCShortestPath(INTVECTOR2 beaconPos) {
 	if (!npc.isMove) {
 		gBeaconPos = beaconPos;
 		UpdateNPCShortestPath();
+		return true;
 	}
+	return false;
 }
 
 void UpdateNPCShortestPath() {
