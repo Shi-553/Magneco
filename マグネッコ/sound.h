@@ -31,10 +31,6 @@ typedef enum
 	SOUND_LABEL_SE_STICK,		// マグネッコがブロックをくっつけた時のSE
 	SOUND_LABEL_SE_UFO,			// UFOが漂うSE
 	SOUND_LAGEL_SE_UFO_BEAM,	// UFOがローズをさらっているときのSE
-	SOUND_LABEL_BGM000_s,		// 音量小さめ
-	SOUND_LABEL_DAMMY000,		// ダミー
-	SOUND_LABEL_BGM005_s,		// 音量小さめ
-	SOUND_LABEL_BGM006_s,		// 音量小さめ
 	SOUND_LABEL_SE_PAUSE,		// ポーズを押したときのSE
 	SOUND_LABEL_MAX,
 } SOUND_LABEL;
