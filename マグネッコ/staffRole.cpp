@@ -61,6 +61,13 @@ BONICALZI CECILIA
 
 
 
+
+フォント素材
+
+PixelMplus（ピクセル・エムプラス）
+
+
+
 音源素材
 
 OtoLogic https://otologic.jp
