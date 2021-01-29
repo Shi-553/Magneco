@@ -66,6 +66,7 @@ jobs:
            pwsh -command "Move-Item ./マグネッコ/BGM ./Magneco"
            pwsh -command "Move-Item ./マグネッコ/SE ./Magneco"
            pwsh -command "Move-Item ./*.txt ./Magneco"
+           pwsh -command "Move-Item ./*.pptx ./Magneco"
            pwsh -command "Move-Item ./x64/Release/*.exe ./Magneco"
            
       
