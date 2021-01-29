@@ -5,7 +5,7 @@
 #include "gameSrite.h"
 #include "effect.h"
 #include "trans.h"
-#include <vector>
+#include <list>
 
 #define EFFECT_WIDTH  (32)
 #define EFFECT_HEIGHT (32)
@@ -19,7 +19,7 @@ struct Effect {
 	int frame;
 	EffectType type;
 };
-static std::vector<Effect> effects;
+static std::list<Effect> effects;
 
 struct EffectTexture {
 	int textureId;
