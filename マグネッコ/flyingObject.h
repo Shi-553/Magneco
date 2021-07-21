@@ -32,6 +32,7 @@ struct FlyingObject
 	int hp;
 	INTVECTOR2 size;
 	float speed;
+	float rad;
 };
 
 std::list<FlyingObject>* GetFlyingObjects();

@@ -11,7 +11,6 @@
 #include "player.h"
 #include "flyingObjectSponer.h"
 #include "sound.h"
-
 // flyingObject描画範囲の加算分
 #define FLYINGOBJECT_ADD_RANGE (5)
 
@@ -62,6 +61,7 @@ void AddFlyingObjects(FlyingObject* flyingObject) {
 		PlaySound(SOUND_LABEL_SE_UFO);
 	}
 	flyingObject->uid = currentUID;
+	flyingObject->rad = 0;
 	currentUID++;
 	flyingObjects.push_back(*flyingObject);
 
@@ -112,6 +112,7 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 	Player* player = GetPlayer();
 	NPC* npc = GetNpc();
 	auto textureId = flyingObjectTextureIds[flyingObject.type];
+
 
 	if (flyingObject.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 		auto pos = flyingObject.trans.pos;
@@ -213,7 +214,14 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 		}
 	}
 	else {
-		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2());
+		DrawGameSprite(textureId,
+			flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0,
+			50, 
+			flyingObject.size.ToD3DXVECTOR2(), 
+			D3DXVECTOR2(0, 0),
+			D3DXVECTOR2(FLYINGOBJECT_ITEM_TEXTURE_WIDTH, FLYINGOBJECT_ITEM_TEXTURE_HEIGHT),
+			flyingObject.size.ToD3DXVECTOR2() / 2.0,
+			3.141519f+ flyingObject.rad);
 	}
 
 }
@@ -264,6 +272,9 @@ void BackFlyingObject(int frame) {
 	}
 }
 bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
+	if (flyingObject->type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
+		flyingObject->rad += 0.05f;
+	}
 	if (flyingObject->type == FLYING_OBJECT_UFO) {
 		flyingObject->dir = (GetNpc()->trans.pos + ADD_UFO_POS) - flyingObject->trans.pos;
 
