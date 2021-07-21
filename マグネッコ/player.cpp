@@ -250,7 +250,38 @@ void DrawPlayer() {
 				0
 		);
 
-		DrawGameSprite(notifyUFOTextureId, player.trans.pos - D3DXVECTOR2(0.5, 1.5), 30, tPos, D3DXVECTOR2(NOTIFY_UFO_TEXTURE_WIDTH, NOTIFY_UFO_TEXTURE_HEIGHT));
+		auto size = D3DXVECTOR2(50,50);
+
+		auto d = D3DXVECTOR2(-1, 0);
+		auto dir = player.trans.pos - npc->trans.pos;
+		D3DXVec2Normalize(&dir, &dir);
+
+		auto dr = D3DXVec2Dot(&d, &dir);
+		if (dr > 1) {
+			dr = 1;
+		}
+		if (dr < -1) {
+			dr = -1;
+		}
+		auto rad = acosf(dr);
+		if (d.x * dir.y - d.y * dir.x < 0) {
+			rad = -rad;
+		}
+		auto cp = size / 2.0;
+
+		D3DXMATRIX mtx,t1,t2,t3,r1,r2;
+		auto pivot = -(size / 2);
+		D3DXMatrixTranslation(&t1, pivot.x , pivot.y, 0);
+		D3DXMatrixTranslation(&t2,50,0, 0);
+
+		auto pos = GameToScreenPos(player.trans.pos);
+		D3DXMatrixTranslation(&t3, pos.x,pos.y, 0);
+		D3DXMatrixRotationZ(&r1,-rad);
+		D3DXMatrixRotationZ(&r2,rad);
+
+		mtx = t1 * r1 * t2*r2*t3;
+
+		DrawSprite(notifyUFOTextureId, size, 30, tPos, D3DXVECTOR2(NOTIFY_UFO_TEXTURE_WIDTH, NOTIFY_UFO_TEXTURE_HEIGHT), &mtx);
 	}
 
 
