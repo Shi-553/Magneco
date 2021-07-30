@@ -53,6 +53,7 @@ double fps = 0.0;
 double reserveTime = 0.0;
 
 HINSTANCE ghInstance;
+HWND ghWnd;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	UNREFERENCED_PARAMETER(hInstance);
@@ -73,7 +74,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	RegisterClass(&wc);
 
-	DWORD windowsStyle = WS_OVERLAPPEDWINDOW ^ WS_MAXIMIZEBOX ^ WS_THICKFRAME;
+	DWORD windowsStyle = WS_OVERLAPPEDWINDOW ^ WS_MAXIMIZEBOX ^ WS_THICKFRAME^ WS_CLIPCHILDREN;
 
 	RECT rect = { 0,0,SCREEN_WIDTH,SCREEN_HEIGHT };
 	AdjustWindowRect(&rect, windowsStyle, false);
@@ -116,7 +117,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	//ウインドウ作る
 	//ハンドル = ユニークなID
-	HWND hWnd = CreateWindow(
+	ghWnd = CreateWindow(
 		CLASS_NAME,              //ウインドウ クラス
 		WINDOW_CAPTION,          //ウインドウ テキスト(上にでてくる)
 		windowsStyle,     //ウインドウ スタイル
@@ -134,18 +135,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		NULL             //追加のアプリケーションデータ (ほぼ使わない)
 	);
 
-	if (hWnd == NULL) {
+	if (ghWnd == NULL) {
 		//ウインドウハンドルがなんか生成できなかった
 		return -1;
 	}
 
-	if (!Init(hWnd,hInstance)) {
+	if (!Init(ghWnd,hInstance)) {
 		return -1;
 	}
 
 
-	ShowWindow(hWnd, nCmdShow);
-	UpdateWindow(hWnd);
+	ShowWindow(ghWnd, nCmdShow);
+	UpdateWindow(ghWnd);
 
 
 	//ウインドウメッセージの取得 
@@ -178,6 +179,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+	if (hWnd != ghWnd) {
+		return DefWindowProc(hWnd, uMsg, wParam, lParam);
+	}
+
 	switch (uMsg)
 	{
 	case WM_CLOSE:
@@ -214,6 +219,8 @@ bool Init(HWND hWnd,HINSTANCE hIns) {
 	frameCount = baseFrame = 0;
 	fps = 0.0;
 
+	// COMライブラリの初期化
+	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 	InitSound(hWnd);
 	InitSprite();
 
@@ -291,4 +298,8 @@ void Uninit(void) {
 
 	UninitTime();
 	UninitInputLogger();
+
+
+	// COMライブラリの終了処理
+	CoUninitialize();
 }
