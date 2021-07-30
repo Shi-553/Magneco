@@ -130,6 +130,7 @@
     <ClCompile Include="staffRole.cpp">
       <Filter>cpp\scenes</Filter>
     </ClCompile>
+    <ClCompile Include="movie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -270,6 +271,7 @@
     <ClInclude Include="staffRole.h">
       <Filter>ヘッダー\scenes</Filter>
     </ClInclude>
+    <ClInclude Include="movie.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダー">
