@@ -15,6 +15,7 @@
 #include "judge.h"
 #include "sound.h"
 #include "messeage.h"
+#include <string>
 
 
 #define PLAYER_TEXTURE_WIDTH 64
@@ -38,7 +39,9 @@ static int  playerTextureVertical = 0;
 static int putPredictionTextureId = TEXTURE_INVALID_ID;
 static FlyingObjectType itemType = FLYING_OBJECT_NONE;
 static int getItemFrame = 0;
+static int getBlockFrame = 0;
 static Message* getItemMessage;
+static Message* getBlockMessage;
 
 void BlockDecision();
 void ToFreeFlyingObject(FlyingObject& flyingObject);
@@ -58,6 +61,9 @@ void InitPlayer() {
 
 	getItemMessage = new Message(D3DXVECTOR2(2, 2));
 	getItemMessage->SetFormat(DT_CENTER | DT_NOCLIP);
+	getBlockMessage = new Message(D3DXVECTOR2(2, 2));
+	getBlockMessage->SetFormat(DT_CENTER | DT_NOCLIP);
+
 	player.trans.Init(3.5, 3.5);
 	player.flyingObjectList.clear();
 	player.purgeFlyingObjectList.clear();
@@ -81,6 +87,7 @@ void InitPlayer() {
 
 void UninitPlayer() {
 	delete getItemMessage;
+	delete getBlockMessage;
 
 	ReleaseTexture(textureId);
 	ReleaseTexture(putPredictionTextureId);
@@ -183,6 +190,9 @@ void UpdatePlayer() {
 
 	if (getItemFrame > 0) {
 		getItemFrame--;
+	}
+	if (getBlockFrame > 0) {
+		getBlockFrame--;
 	}
 }
 
@@ -309,6 +319,24 @@ void DrawPlayer() {
 		if (itemType == FLYING_OBJECT_ITEM_ADD_MAGNETIC_FORCE) {
 			getItemMessage->Draw("設置スピードアップ！");
 		}
+
+	}
+	if (getBlockFrame > 0) {
+		auto pos = player.trans.pos - D3DXVECTOR2(-0.1, 2);
+		auto screenPos = GameToScreenPos(pos);
+
+		getBlockMessage->SetColor(D3DXCOLOR(1,1,1, 1));
+
+		getBlockMessage->SetPos(screenPos);
+		getBlockMessage->SetEndPos(screenPos);
+
+		getBlockMessage->ClearOffset();
+
+		auto num = player.blockMax - player.flyingObjectList.size();
+		if (player.checkCheckpoint) {
+			num = 0;
+		}
+		getBlockMessage->Draw(std::to_string(num).c_str());
 
 	}
 }
@@ -601,6 +629,8 @@ bool GetBlock(FlyingObject& itr, D3DXVECTOR2& attachPos) {
 
 
 	player.flyingObjectList.push_back(itr);
+
+	getBlockFrame = 100;
 	return true;
 }
 bool IsOverlaped(FlyingObject& flyingObject) {
