@@ -17,6 +17,7 @@
 #include "importExport.h"
 #include "stageInfo.h"
 #include "sound.h"
+#include "movie.h"
 
 
 void InitGame() 
@@ -40,6 +41,10 @@ void InitGame()
 		PlaySound(info->sLabel);
 	}
 	LoadTexture();
+
+	Movie m(L"movie/test.avi");
+	m.Init();
+	m.Play();
 }
 
 void UpdateGame() 
