@@ -182,6 +182,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="importExport.cpp" />
     <ClCompile Include="messeage.cpp" />
     <ClCompile Include="messeagebox.cpp" />
+    <ClCompile Include="movie.cpp" />
     <ClCompile Include="pauseMenu.cpp" />
     <ClCompile Include="selectButton.cpp" />
     <ClCompile Include="debugFont.cpp" />
@@ -228,6 +229,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="mapEditor.h" />
     <ClInclude Include="messeage.h" />
     <ClInclude Include="messeagebox.h" />
+    <ClInclude Include="movie.h" />
     <ClInclude Include="pauseMenu.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="selectButton.h" />

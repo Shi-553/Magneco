@@ -64,8 +64,6 @@ bool InitSound(HWND hWnd)
 {
 	HRESULT hr;
 
-	// COMライブラリの初期化
-	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
 	// XAudio2オブジェクトの作成
 	hr = XAudio2Create(&g_pXAudio2, 0);
@@ -92,8 +90,6 @@ bool InitSound(HWND hWnd)
 			g_pXAudio2 = NULL;
 		}
 
-		// COMライブラリの終了処理
-		CoUninitialize();
 
 		return false;
 	}
@@ -229,8 +225,6 @@ void UninitSound(void)
 		g_pXAudio2 = NULL;
 	}
 
-	// COMライブラリの終了処理
-	CoUninitialize();
 }
 
 //=============================================================================
