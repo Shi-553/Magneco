@@ -26,7 +26,7 @@ void Rotate(Vertex2D* v, D3DXVECTOR2 pos, D3DXVECTOR2 cPos, float degreeAngle);
 void SetSpriteUV(Vertex2D* v, D3DXVECTOR2 size, D3DXVECTOR2 tPos, D3DXVECTOR2 tSize, bool  flipLR );
 void SetSpriteColor(Vertex2D* v, D3DCOLOR color);
 void SetSpriteUV01(Vertex2D* v, bool  flipLR);
-void MatrixTransform(Vertex2D* v, D3DXVECTOR2 pos, D3DXVECTOR2 cPos, D3DXMATRIX* matrix);
+void MatrixTransform(Vertex2D* v,D3DXMATRIX* matrix);
 
 
 
@@ -232,7 +232,7 @@ void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, D3DXV
 
 
 //マトリックス DrawIndexedPrimitiveを使用
-void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, D3DXVECTOR2 tPos, D3DXVECTOR2 tSize, D3DXVECTOR2 cPos, D3DXMATRIX* matrix,bool  flipLR) {
+void DrawSprite(int textureId, D3DXVECTOR2 size, float z,  D3DXVECTOR2 tPos, D3DXVECTOR2 tSize, D3DXMATRIX* matrix,bool  flipLR) {
 	LPDIRECT3DDEVICE9 d3dDevice = GetD3DDevice();
 
 	//このテクスチャ使ってー
@@ -248,10 +248,12 @@ void DrawSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, D3DXV
 	Vertex2D* pV;
 	vertexBuffer1->Lock(0, 0, (void**)&pV, 0);//offset 0、size 0で全ロックしてる
 
-
-	SetSpritePos(pV, pos, z, size);
-
-	MatrixTransform(pV,pos ,cPos , matrix);
+	for (size_t i = 0; i < 4; i++)
+	{
+		pV[i].pos = {0,0,0,0};
+	}
+	SetSpritePos(pV, { 0,0 }, z, size);
+	MatrixTransform(pV, matrix);
 
 	SetSpriteColor(pV, color);
 
@@ -313,20 +315,10 @@ void Rotate(Vertex2D* v, D3DXVECTOR2 pos, D3DXVECTOR2 cPos, float rad) {
 }
 
 
-void MatrixTransform(Vertex2D* v, D3DXVECTOR2 pos, D3DXVECTOR2 cPos,D3DXMATRIX* matrix) {
-
-	D3DXMATRIX  mtxTransToCenter, mtxRotation, mtxResult;
-
-	D3DXMatrixTranslation(&mtxTransToCenter, -pos.x - cPos.x, -pos.y - cPos.y, 0);
-
-	D3DXMatrixRotationZ(&mtxRotation,  3.141519);
-
-	mtxResult = mtxTransToCenter * mtxRotation* *matrix * -mtxTransToCenter;
-
-
+void MatrixTransform(Vertex2D* v,D3DXMATRIX* matrix) {
 	for (int i = 0; i < 4; i++)
 	{
-		D3DXVec4Transform(&v[i].pos, &v[i].pos, &mtxResult);
+		D3DXVec4Transform(&v[i].pos, &v[i].pos, matrix);
 	}
 }
 

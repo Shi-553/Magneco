@@ -20,8 +20,8 @@
 #define PLAYER_TEXTURE_WIDTH 64
 #define PLAYER_TEXTURE_HEIGHT 64
 
-#define NOTIFY_UFO_TEXTURE_WIDTH  32
-#define NOTIFY_UFO_TEXTURE_HEIGHT 32
+#define NOTIFY_UFO_TEXTURE_WIDTH  64
+#define NOTIFY_UFO_TEXTURE_HEIGHT 64
 
 #define PLAYER_PURGE_SPEED 6
 
@@ -31,6 +31,7 @@ static int invincibleTextureId = TEXTURE_INVALID_ID;
 static int damageTextureId = TEXTURE_INVALID_ID;
 static int purgeTextureId = TEXTURE_INVALID_ID;
 static int notifyUFOTextureId = TEXTURE_INVALID_ID;
+static int warningArrowTextureId = TEXTURE_INVALID_ID;
 static Player player;
 static int  playerTextureVertical = 0;
 
@@ -52,7 +53,8 @@ void InitPlayer() {
 	damageTextureId = ReserveTextureLoadFile("texture/player/player_naepoyo_64×64.png");
 	purgeTextureId = ReserveTextureLoadFile("texture/player/player_nekopunch_64×64.png");
 	putPredictionTextureId = ReserveTextureLoadFile("texture/player/putPrediction.png");
-	notifyUFOTextureId = ReserveTextureLoadFile("texture/player/akan.png");
+	notifyUFOTextureId = ReserveTextureLoadFile("texture/player/warning_faceicon.png");
+	warningArrowTextureId = ReserveTextureLoadFile("texture/player/warning_arrow.png");
 
 	getItemMessage = new Message(D3DXVECTOR2(2, 2));
 	getItemMessage->SetFormat(DT_CENTER | DT_NOCLIP);
@@ -87,6 +89,7 @@ void UninitPlayer() {
 	ReleaseTexture(damageTextureId);
 	ReleaseTexture(purgeTextureId);
 	ReleaseTexture(notifyUFOTextureId);
+	ReleaseTexture(warningArrowTextureId);
 }
 
 void UpdatePlayer() {
@@ -246,11 +249,48 @@ void DrawPlayer() {
 
 	if (npc->contactUFO) {
 		auto tPos = D3DXVECTOR2(
-				NOTIFY_UFO_TEXTURE_WIDTH * (player.frame / 8 % 4),
+				NOTIFY_UFO_TEXTURE_WIDTH * (player.frame / 8 % 8),
 				0
 		);
 
-		DrawGameSprite(notifyUFOTextureId, player.trans.pos - D3DXVECTOR2(0.5, 1.5), 30, tPos, D3DXVECTOR2(NOTIFY_UFO_TEXTURE_WIDTH, NOTIFY_UFO_TEXTURE_HEIGHT));
+		auto size = D3DXVECTOR2(50,50);
+
+		auto d = D3DXVECTOR2(-1, 0);
+		auto dir = player.trans.pos - npc->trans.pos;
+		D3DXVec2Normalize(&dir, &dir);
+
+		auto dr = D3DXVec2Dot(&d, &dir);
+		if (dr > 1) {
+			dr = 1;
+		}
+		if (dr < -1) {
+			dr = -1;
+		}
+		auto rad = acosf(dr);
+		if (d.x * dir.y - d.y * dir.x < 0) {
+			rad = -rad;
+		}
+		auto cp = size / 2.0;
+
+		D3DXMATRIX mtx,t1,t2,t3,r1,r2 ,r3;
+		auto pivot = -(size / 2);
+		D3DXMatrixTranslation(&t1, pivot.x , pivot.y, 0);
+		D3DXMatrixTranslation(&t2,50,0, 0);
+
+		auto pos = GameToScreenPos(player.trans.pos);
+		D3DXMatrixTranslation(&t3, pos.x,pos.y, 0);
+		D3DXMatrixRotationZ(&r1,-rad);
+		D3DXMatrixRotationZ(&r2,rad);
+
+		D3DXMatrixRotationZ(&r3,D3DXToRadian(180));
+
+		mtx = t1 * r3 * t2 * r2 * t3;
+
+		DrawSprite(warningArrowTextureId, size, 30, {0,0}, D3DXVECTOR2(NOTIFY_UFO_TEXTURE_WIDTH, NOTIFY_UFO_TEXTURE_HEIGHT), &mtx);
+
+		mtx = t1 * r1 * t2*r2*t3;
+		DrawSprite(notifyUFOTextureId, size, 30, tPos, D3DXVECTOR2(NOTIFY_UFO_TEXTURE_WIDTH, NOTIFY_UFO_TEXTURE_HEIGHT), &mtx);
+
 	}
 
 
