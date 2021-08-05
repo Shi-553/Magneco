@@ -28,6 +28,9 @@ static int mapWidth = 10;
 
 static int putPredictionThinTextureId = TEXTURE_INVALID_ID;
 
+
+static int  checkPointGuideTextureId = TEXTURE_INVALID_ID;
+
 void InitMap(void)
 {
 	map_textureIds = ReserveTextureLoadFile("texture/background/背景１.png");
@@ -43,7 +46,10 @@ void InitMap(void)
 	textureIds[MAP_CHEST_CLOSED] = ReserveTextureLoadFile("texture/block/itembox_anime.png");
 	textureIds[MAP_CHEST_OPENED] = ReserveTextureLoadFile("texture/block/itembox_block.png");
 	textureIds[MAP_BLOCK_REMOVE] = ReserveTextureLoadFile("texture/block/road_block.png");
+	textureIds[MAP_BLOCK_REMOVE] = ReserveTextureLoadFile("texture/block/checkpoint_guide.png");
 	putPredictionThinTextureId = ReserveTextureLoadFile("texture/player/putPredictionThin.png");
+
+	checkPointGuideTextureId = ReserveTextureLoadFile("texture/block/checkpoint_guide.png");
 
 	frame = 0;
 	mapHeight = 10;
@@ -248,6 +254,15 @@ void DrawMap(void)
 			else
 			{
 				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j, i), 100);
+			}
+			if (map->type == MAP_CHAECKPOINT_OFF && MapFourDirectionsJudgment(mapPos))
+			{
+				auto tPos = D3DXVECTOR2(
+					MAP_TEXTURE_WIDTH * (frame / 6 % 16),
+					0
+				);
+
+				DrawGameSprite(checkPointGuideTextureId, D3DXVECTOR2(j + 0.1, i - 1.5), 100, D3DXVECTOR2(0.8, 1.5), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_AND_ITEM_TEXTURE_HEIGHT));
 			}
 		}
 	}

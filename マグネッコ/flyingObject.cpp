@@ -91,6 +91,7 @@ void InitFlyingObject() {
 	breakAlertTextureId = ReserveTextureLoadFile("texture/enemy/breakAlert.png");
 	breakNoticeTextureId = ReserveTextureLoadFile("texture/enemy/breakNotice.png");
 
+
 	frame = 0;
 	breakAleartFrame = 0;
 	currentUID = 0;
@@ -123,6 +124,7 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 		}
 
 		for (int i = 0; i < 100; i++) {
+
 			if (GetMapType(pos) != MAP_BLOCK) {
 				pos += flyingObject.dir;
 				continue;
@@ -223,6 +225,7 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 			flyingObject.size.ToD3DXVECTOR2() / 2.0,
 			3.141519f+ flyingObject.rad);
 	}
+	
 
 }
 
