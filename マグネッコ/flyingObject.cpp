@@ -36,6 +36,8 @@ static int  nekoPanchiTextureId = TEXTURE_INVALID_ID;
 static int  breakAlertTextureId = TEXTURE_INVALID_ID;
 static int  breakNoticeTextureId = TEXTURE_INVALID_ID;
 
+static int  checkPointGuideTextureId = TEXTURE_INVALID_ID;
+
 static float breakAleartFrame = 0;
 
 static bool isBreakAleartLeft = false;
@@ -91,6 +93,7 @@ void InitFlyingObject() {
 	breakAlertTextureId = ReserveTextureLoadFile("texture/enemy/breakAlert.png");
 	breakNoticeTextureId = ReserveTextureLoadFile("texture/enemy/breakNotice.png");
 
+	checkPointGuideTextureId = ReserveTextureLoadFile("texture/block/checkpoint_guide.png");
 
 	frame = 0;
 	breakAleartFrame = 0;
@@ -139,6 +142,7 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 			DrawGameSprite(breakAlertTextureId, pos, 10);
 			break;
 		}
+
 	}
 
 	if (flyingObject.type == FLYING_OBJECT_PURGE_BLOCK) {
@@ -224,6 +228,24 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 			D3DXVECTOR2(FLYINGOBJECT_ITEM_TEXTURE_WIDTH, FLYINGOBJECT_ITEM_TEXTURE_HEIGHT),
 			flyingObject.size.ToD3DXVECTOR2() / 2.0,
 			3.141519f+ flyingObject.rad);
+	}
+
+	for (int i = 0; i < GetMapHeight(); i++)
+	{
+		for (int j = 0; j < GetMapWidth(); j++)
+		{
+			auto mapPos = INTVECTOR2(j, i);
+			Map* map = GetMap(mapPos);
+			if (map->type == MAP_CHAECKPOINT_OFF && MapFourDirectionsJudgment(mapPos))
+			{
+				auto tPos = D3DXVECTOR2(
+					32 * (frame / 6 % 16),
+					0
+				);
+
+				DrawGameSprite(checkPointGuideTextureId, D3DXVECTOR2(j + 0.1, i - 1.5), 100, D3DXVECTOR2(0.8, 1.5), tPos, D3DXVECTOR2(32, 64));
+			}
+		}
 	}
 	
 
