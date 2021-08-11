@@ -44,7 +44,21 @@ public:
 
 	void SetSize(const D3DXVECTOR2& size = D3DXVECTOR2(0, 0));
 	void SetPos(const D3DXVECTOR2& screenPos);
+	void SetIsLoop(bool isLoop);
+
+
+	void HandleEvent();
+	LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 private:
+
+	bool isLoop;
+
+	bool isPlaying;
+
+
+	LONGLONG duration;
+	FILTER_STATE  filterState;
 
 	IGraphBuilder* pGB;
 
@@ -53,6 +67,8 @@ private:
 	ICaptureGraphBuilder2* pCGB2 = NULL;
 	IBaseFilter* pVMR9 = NULL;
 	IMediaControl* pMediaCont = NULL;
+	IMediaSeeking* pMediaSeek = NULL;
+	IMediaEventEx* pMediaEvent = NULL;
 
 	HWND hWnd = NULL;
 
