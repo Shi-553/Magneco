@@ -28,6 +28,7 @@ static int mapWidth = 10;
 
 static int putPredictionThinTextureId = TEXTURE_INVALID_ID;
 
+
 void InitMap(void)
 {
 	map_textureIds = ReserveTextureLoadFile("texture/background/背景１.png");
@@ -43,6 +44,7 @@ void InitMap(void)
 	textureIds[MAP_CHEST_CLOSED] = ReserveTextureLoadFile("texture/block/itembox_anime.png");
 	textureIds[MAP_CHEST_OPENED] = ReserveTextureLoadFile("texture/block/itembox_block.png");
 	textureIds[MAP_BLOCK_REMOVE] = ReserveTextureLoadFile("texture/block/road_block.png");
+	textureIds[MAP_BLOCK_REMOVE] = ReserveTextureLoadFile("texture/block/checkpoint_guide.png");
 	putPredictionThinTextureId = ReserveTextureLoadFile("texture/player/putPredictionThin.png");
 
 	frame = 0;
