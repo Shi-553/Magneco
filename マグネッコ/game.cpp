@@ -17,7 +17,9 @@
 #include "importExport.h"
 #include "stageInfo.h"
 #include "sound.h"
+#include "movie.h"
 
+Movie m(L"movie/kadai1.avi");
 
 void InitGame() 
 {
@@ -40,6 +42,11 @@ void InitGame()
 		PlaySound(info->sLabel);
 	}
 	LoadTexture();
+
+	m.Init();
+	m.SetIsLoop(true);
+	m.Play();
+
 }
 
 void UpdateGame() 
@@ -56,6 +63,7 @@ void UpdateGame()
 	UpdateJudge();
 	UpdateFlyingObject();
 	UpdateFlyingSponer();
+
 }
 
 void DrawGame() 
