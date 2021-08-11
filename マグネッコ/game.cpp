@@ -19,7 +19,6 @@
 #include "sound.h"
 #include "movie.h"
 
-Movie m(L"movie/kadai1.avi");
 
 void InitGame() 
 {
@@ -43,9 +42,6 @@ void InitGame()
 	}
 	LoadTexture();
 
-	m.Init();
-	m.SetIsLoop(true);
-	m.Play();
 
 }
 
