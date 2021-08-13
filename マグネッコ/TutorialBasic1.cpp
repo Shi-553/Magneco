@@ -27,7 +27,7 @@ void TutorialBasic1::Init() {
 	message->SetMargin(7);
 	message->SetPos(D3DXVECTOR2(MESSAGE_X, MESSAGE_Y));
 
-	tutorialBasic1TextureIds[MESSAGE_BOX] = ReserveTextureLoadFile("texture/ui/Textbox_Test.png");
+	textureIds[MESSAGE_BOX] = ReserveTextureLoadFile("texture/ui/Textbox_Test.png");
 }
 void TutorialBasic1::Uninit() {
 	delete message;
@@ -38,49 +38,49 @@ void TutorialBasic1::Draw() {
 	switch (num)
 	{
 	case 0:
-		DrawSprite(tutorialBasic1TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
+		DrawSprite(textureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 		message->Draw("チュートリアル基礎編その１へようこそ！");
 		break;
 	case 1:
-		DrawSprite(tutorialBasic1TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
+		DrawSprite(textureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 		message->Draw("\"マグネッコ\"はルートを作って\n女の子をゴールまで誘導するゲームです！");
 		break;
 	case 2:
-		DrawSprite(tutorialBasic1TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
+		DrawSprite(textureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 		message->Draw("基礎編その１ではゲームクリアまでの流れを\n実践してもらいます！");
 		break;
 	case 3:
-		DrawSprite(tutorialBasic1TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
+		DrawSprite(textureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 		message->Draw("--ブロック取得＆ルート作成--(動画)");
 		break;
 
 	case 4:
 	case 5:
-		DrawSprite(tutorialBasic1TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
+		DrawSprite(textureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 		message->Draw("移動：左スティック\nルート作成：ルートのとなりで〇ボタン長押し");
 		break;
 	case 6:
-		DrawSprite(tutorialBasic1TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
+		DrawSprite(textureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 		message->Draw("そのまま右下のゴールまで繋げましょう！");
 		break;
 	case 7:
-		DrawSprite(tutorialBasic1TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
+		DrawSprite(textureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 		message->Draw("--誘導＆ゴール--(動画)");
 		break;
 	case 8:
-		DrawSprite(tutorialBasic1TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
+		DrawSprite(textureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 		message->Draw("誘導：Xボタン");
 		break;
 	case 9:
-		DrawSprite(tutorialBasic1TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
+		DrawSprite(textureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 		message->Draw("そのまま右下のゴールに誘導しましょう！");
 		break;

@@ -18,12 +18,12 @@ public:
 
 private:
 
-	enum TutorialBasic1Texture {
+	enum TextureEnum {
 		MESSAGE_BOX,
 		MAX
 	};
 
-	 int tutorialBasic1TextureIds[MAX];
+	 int textureIds[MAX];
 
 	int num=0;
 	Message* message;
