@@ -159,6 +159,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalOptions>/execution-charset:shift_jis %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -216,6 +217,8 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="gameStart.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="trans.cpp" />
+    <ClCompile Include="Tutorial.cpp" />
+    <ClCompile Include="TutorialBasic1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bitFlagsScopedEnum.h" />
@@ -265,6 +268,8 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="gameStart.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="trans.h" />
+    <ClInclude Include="Tutorial.h" />
+    <ClInclude Include="TutorialBasic1.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

@@ -140,7 +140,12 @@ void InitStageSelect() {
 		PlaySound(SOUND_LABEL_SE_DECITION);
 		index = stageSelect.GetIndex();
 		SetStagePath(infos[index].filename);
-		GoNextScene(GameScene);
+		if (GetStageFoldername() == "stage/main") {
+			GoNextScene(GameScene);
+		}
+		else {
+			GoNextScene(TutorialScene);
+		}
 	};
 	b.textureId = ReserveTextureLoadFile("texture/stageSelect/icon_noselect.png");
 	b.pressedTextureId = b.textureId;
@@ -171,7 +176,7 @@ void InitStageSelect() {
 	toTitile.releasedCallback = []() {
 		PlaySound(SOUND_LABEL_SE_DECITION);
 		index = 0;
-		GoNextScene(GameStartScene);
+			GoNextScene(GameStartScene);
 	};
 
 

@@ -16,6 +16,7 @@
 #include "pauseMenu.h"
 #include "time.h"
 #include "staffRole.h"
+#include "Tutorial.h"
 
 
 typedef void (*SceneFunc)(void);
@@ -29,7 +30,8 @@ static const SceneFunc Inits[]{
 		InitGameOver,
 		InitStageEditor,
 		InitStageSelect,
-		InitStaffRole
+		InitStaffRole,
+		InitTutorial
 };
 
 static const SceneFunc Uninits[]{
@@ -40,7 +42,8 @@ static const SceneFunc Uninits[]{
 		UninitGameOver,
 		UninitStageEditor,
 		UninitStageSelect,
-		UninitStaffRole
+		UninitStaffRole,
+		UninitTutorial
 };
 
 static const SceneFunc Updates[]{
@@ -51,7 +54,8 @@ static const SceneFunc Updates[]{
 		UpdateGameOver,
 		UpdateStageEditor,
 		UpdateStageSelect,
-		UpdateStaffRole
+		UpdateStaffRole,
+		UpdateTutorial
 };
 
 static const SceneFunc Draws[]{
@@ -62,7 +66,8 @@ static const SceneFunc Draws[]{
 		DrawGameOver,
 		DrawStageEditor,
 		DrawStageSelect,
-		DrawStaffRole
+		DrawStaffRole,
+		DrawTutorial
 };
 Scene gStartScene;
 Scene currentScene;
