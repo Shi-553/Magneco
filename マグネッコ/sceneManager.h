@@ -12,6 +12,7 @@ enum Scene
 	StageEditorScene,
 	StageSelect,
 	StaffRoleScene,
+	TutorialScene,
 	MaxScene
 };
 enum FadeMode {

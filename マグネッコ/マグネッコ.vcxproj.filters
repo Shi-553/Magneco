@@ -130,7 +130,15 @@
     <ClCompile Include="staffRole.cpp">
       <Filter>cpp\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="movie.cpp" />
+    <ClCompile Include="Tutorial.cpp">
+      <Filter>cpp\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="movie.cpp">
+      <Filter>cpp\others</Filter>
+    </ClCompile>
+    <ClCompile Include="TutorialBasic1.cpp">
+      <Filter>cpp\Tutorial</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -271,7 +279,15 @@
     <ClInclude Include="staffRole.h">
       <Filter>ヘッダー\scenes</Filter>
     </ClInclude>
-    <ClInclude Include="movie.h" />
+    <ClInclude Include="Tutorial.h">
+      <Filter>ヘッダー\scenes\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="movie.h">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
+    <ClInclude Include="TutorialBasic1.h">
+      <Filter>ヘッダー\scenes\Tutorial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダー">
@@ -312,6 +328,12 @@
     </Filter>
     <Filter Include="リソース">
       <UniqueIdentifier>{d22ea70d-1955-4db2-aa7d-b2813e3e09a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー\scenes\Tutorial">
+      <UniqueIdentifier>{ce5138e5-f71c-4359-90ff-9afb76e6edfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Tutorial">
+      <UniqueIdentifier>{5b4c0c2a-ab2d-4017-8832-31ba0957d796}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
