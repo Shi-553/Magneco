@@ -234,9 +234,10 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 	{
 		for (int j = 0; j < GetMapWidth(); j++)
 		{
+			auto npcPos = npc->trans.GetIntPos();
 			auto mapPos = INTVECTOR2(j, i);
 			Map* map = GetMap(mapPos);
-			if (map->type == MAP_CHAECKPOINT_OFF && MapFourDirectionsJudgment(mapPos))
+			if (map->type == MAP_CHAECKPOINT_OFF && MapFourDirectionsJudgment(mapPos) && MapFourDirectionsJudgment(npcPos))
 			{
 				auto tPos = D3DXVECTOR2(
 					32 * (frame / 6 % 16),
