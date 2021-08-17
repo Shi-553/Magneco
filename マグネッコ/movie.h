@@ -37,7 +37,9 @@ public:
 	void Uninit();
 
 	void Play();
-	void Stop();
+	void Pause(bool isShow=true);
+	void Stop(bool isShow=true);
+
 
 	bool IsPlaying();
 
@@ -58,6 +60,10 @@ public:
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 private:
+
+	void SwitchPause(bool sw);
+
+	int eventId;
 
 	bool isLoop;
 

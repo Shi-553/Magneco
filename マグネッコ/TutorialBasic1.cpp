@@ -32,6 +32,7 @@ void TutorialBasic1::Init() {
 	textureIds[MESSAGE_BOX] = ReserveTextureLoadFile("texture/ui/Textbox_Test.png");
 
 	num = 0;
+
 }
 void TutorialBasic1::Uninit() {
 	delete message;
@@ -108,6 +109,7 @@ void TutorialBasic1::Draw() {
 	}
 }
 void TutorialBasic1::Update()  {
+
 	switch (num)
 	{
 	case 0:

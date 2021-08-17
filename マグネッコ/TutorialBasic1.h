@@ -12,6 +12,7 @@ public:
 	void Draw()override;
 	void Update()override;
 
+
 	virtual int GetStageIndex()const override {
 		return 0;
 	}
