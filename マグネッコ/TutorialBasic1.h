@@ -20,6 +20,7 @@ private:
 
 	enum TextureEnum {
 		MESSAGE_BOX,
+		BACKGROUND,
 		MAX
 	};
 

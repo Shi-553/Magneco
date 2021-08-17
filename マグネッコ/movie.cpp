@@ -117,6 +117,8 @@ void Movie::Uninit() {
 	}
 	pMediaCont->Stop();
 
+	pMediaEvent->Release();
+
 	DestroyWindow(hWnd);
 	pMediaCont->Release();
 	pMediaCont = nullptr;
@@ -158,13 +160,16 @@ void Movie::SetSize(const D3DXVECTOR2& size) {
 
 	if (size == D3DXVECTOR2(0, 0)) {
 		destR = srcR;
+		this->size.x= srcR.right+srcR.left;
+		this->size.y= srcR.bottom+srcR.top;
 	}
 	else {
-		destR.right = size.x;
-		destR.bottom = size.y;
+		destR.right = destR.left+ size.x;
+		destR.bottom = destR.top + size.y;
+		this->size = size;
 	}
 
-	SetWindowPos(hWnd, HWND_TOP, screenPos.x, screenPos.y, destR.right, destR.bottom, SWP_SHOWWINDOW);
+	SetWindowPos(hWnd, HWND_TOP, screenPos.x, screenPos.y, this->size.x, this->size.y, SWP_SHOWWINDOW);
 	pControl->SetVideoPosition(&srcR, &destR);
 }
 void Movie::SetPos(const D3DXVECTOR2& screenPos) {
@@ -172,7 +177,13 @@ void Movie::SetPos(const D3DXVECTOR2& screenPos) {
 		return;
 	}
 	this->screenPos = screenPos;
-	SetWindowPos(hWnd, HWND_TOP, this->screenPos.x, this->screenPos.y, destR.right, destR.bottom, SWP_SHOWWINDOW);
+	destR.left =0;
+	destR.top = 0;
+
+	destR.right =  size.x;
+	destR.bottom =  size.y;
+
+	SetWindowPos(hWnd, HWND_TOP, this->screenPos.x, this->screenPos.y, size.x, size.y, SWP_SHOWWINDOW);
 	pControl->SetVideoPosition(&srcR, &destR);
 }
 
@@ -221,9 +232,6 @@ LRESULT CALLBACK Movie::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 {
 	switch (uMsg)
 	{
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		return 0;
 	case WM_DIRECTSHOWMESSAGE:
 		HandleEvent();
 		break;
