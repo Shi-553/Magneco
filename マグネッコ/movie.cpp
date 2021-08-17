@@ -1,6 +1,7 @@
 ﻿#include "movie.h"
 #include <Vmr9.h>
 #include "config.h"
+#include "pauseMenu.h"
 
 
 #define WM_DIRECTSHOWMESSAGE (WM_APP + 1)
@@ -109,12 +110,18 @@ void Movie::Init() {
 	pGB->QueryInterface(IID_IMediaEventEx, (void**)&pMediaEvent);
 
 	pMediaEvent->SetNotifyWindow((OAHWND)hWnd, WM_DIRECTSHOWMESSAGE, (LPARAM)NULL);
+
+
+	eventId = AddSwitchPauseEvent(std::bind(&Movie::SwitchPause, this, std::placeholders::_1));
 }
 
 void Movie::Uninit() {
+
 	if (pMediaCont == nullptr) {
 		return;
 	}
+	RemoveSwitchPauseEvent(eventId);
+
 	pMediaCont->Stop();
 
 	pMediaEvent->Release();
@@ -133,14 +140,24 @@ void Movie::Uninit() {
 void Movie::Play() {
 
 	pMediaCont->Run();
+	ShowWindow(hWnd, SW_SHOW);
 
 }
-void Movie::Stop() {
+void Movie::Pause(bool isShow) {
+	pMediaCont->Pause();
+	if (!isShow) {
+		ShowWindow(hWnd, SW_HIDE);
+	}
+}
+void Movie::Stop(bool isShow) {
 	if (pMediaCont == nullptr) {
 		return;
 	}
 
 	pMediaCont->Stop();
+	if (!isShow) {
+		ShowWindow(hWnd, SW_HIDE);
+	}
 }
 
 bool Movie::IsPlaying() {
@@ -255,4 +272,13 @@ LRESULT CALLBACK Movie::StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LP
 		return This->WndProc(hWnd, message, wParam, lParam);
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
+}
+
+void Movie::SwitchPause(bool sw) {
+	if (sw) {
+		Pause(false);
+	}
+	else {
+		Play();
+	}
 }
