@@ -37,9 +37,11 @@ void TutorialBasic1::Init() {
 void TutorialBasic1::Uninit() {
 	delete message;
 
-	movie->Stop();
-	movie->Uninit();
-	delete movie;
+	if (movie != nullptr) {
+		movie->Stop();
+		movie->Uninit();
+		delete movie;
+	}
 
 	ReleaseTexture(textureIds,MAX);
 }
