@@ -46,6 +46,13 @@ public:
 	void SetPos(const D3DXVECTOR2& screenPos);
 	void SetIsLoop(bool isLoop);
 
+	const RECT& GetSrcRect() {
+		return srcR;
+	}
+	const RECT& GetDestRect() {
+		return destR;
+	}
+
 
 	void HandleEvent();
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -74,8 +81,11 @@ private:
 
 	std::wstring path;
 	D3DXVECTOR2 screenPos;
+	D3DXVECTOR2 size;
 
 
 	RECT srcR, destR;
+
+
 };
 

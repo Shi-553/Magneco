@@ -22,15 +22,25 @@
 #define MESSAGE_Y (MESSAGEBOX_Y+20)
 
 void TutorialBasic1::Init() {
+	 textureIds[BACKGROUND] = ReserveTextureLoadFile("texture/fade.png");
+
 	message = new Message();
 	message->SetScale(D3DXVECTOR2(0.7, 0.7));
 	message->SetMargin(7);
 	message->SetPos(D3DXVECTOR2(MESSAGE_X, MESSAGE_Y));
 
 	textureIds[MESSAGE_BOX] = ReserveTextureLoadFile("texture/ui/Textbox_Test.png");
+
+	num = 0;
 }
 void TutorialBasic1::Uninit() {
 	delete message;
+
+	movie->Stop();
+	movie->Uninit();
+	delete movie;
+
+	ReleaseTexture(textureIds,MAX);
 }
 void TutorialBasic1::Draw() {
 	message->ClearOffset();
@@ -53,9 +63,14 @@ void TutorialBasic1::Draw() {
 		message->Draw("基礎編その１ではゲームクリアまでの流れを\n実践してもらいます！");
 		break;
 	case 3:
+		SetSpriteColor(D3DXCOLOR(1, 1, 1, 0.5f));
+		DrawSprite(textureIds[BACKGROUND], { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT });
+		SetSpriteColor(D3DXCOLOR(1, 1, 1, 1));
+
 		DrawSprite(textureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
-		message->Draw("--ブロック取得＆ルート作成--(動画)");
+
+		message->Draw("--ブロック取得＆ルート作成--");
 		break;
 
 	case 4:
@@ -70,9 +85,13 @@ void TutorialBasic1::Draw() {
 		message->Draw("そのまま右下のゴールまで繋げましょう！");
 		break;
 	case 7:
+		SetSpriteColor(D3DXCOLOR(1, 1, 1, 0.5f));
+		DrawSprite(textureIds[BACKGROUND], { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT });
+		SetSpriteColor(D3DXCOLOR(1, 1, 1, 1));
+
 		DrawSprite(textureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
-		message->Draw("--誘導＆ゴール--(動画)");
+		message->Draw("--誘導＆ゴール--");
 		break;
 	case 8:
 		DrawSprite(textureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
@@ -93,20 +112,34 @@ void TutorialBasic1::Update()  {
 	{
 	case 0:
 	case 1:
-	case 2:
 		isUpdate = false;
 
 		if (TriggerInputLogger(MYVK_ENTER)) {
 			num++;
 		}
 		break;
-	case 3:
+	case 2:
 		isUpdate = false;
-
-		//movie = new Movie();
 
 		if (TriggerInputLogger(MYVK_ENTER)) {
 			num++;
+			movie = new Movie(L"movie/Basics_1.avi");
+			auto& size = movie->GetSrcRect();
+			movie->Init();
+			movie->SetPos(D3DXVECTOR2( SCREEN_WIDTH / 2 - size.right / 2,SCREEN_HEIGHT / 2 - size.bottom / 2-50));
+			movie->Play();
+			movie->SetIsLoop(true);
+		}
+		break;
+	case 3:
+		isUpdate = false;
+
+
+		if (TriggerInputLogger(MYVK_ENTER)) {
+			num++;
+			auto& size = movie->GetSrcRect();
+			movie->SetPos(D3DXVECTOR2(100,300));
+			movie->SetSize(D3DXVECTOR2(size.right/2,size.bottom/2));
 		}
 		break;
 	case 4:
@@ -130,14 +163,26 @@ void TutorialBasic1::Update()  {
 		if((GetMapType(INTVECTOR2(GetMapWidth() - 3, GetMapHeight() - 2))==MAP_BLOCK) ||
 		(GetMapType(INTVECTOR2(GetMapWidth() - 2, GetMapHeight() - 3))==MAP_BLOCK)) {
 			num++;
+			movie->Stop();
+			movie->Uninit();
+			delete movie;
+
+			movie = new Movie(L"movie/Basics_2.avi");
+			auto& size = movie->GetSrcRect();
+			movie->Init();
+			movie->SetPos(D3DXVECTOR2(SCREEN_WIDTH / 2 - size.right / 2 , SCREEN_HEIGHT / 2 - size.bottom / 2- 50));
+			movie->Play();
+			movie->SetIsLoop(true);
 		}
 		break;
 	case 7:
 		isUpdate = false;
 
-		//movie = new Movie();
 		if (TriggerInputLogger(MYVK_ENTER)) {
 			num++;
+			auto& size = movie->GetSrcRect();
+			movie->SetPos(D3DXVECTOR2(100, 300));
+			movie->SetSize(D3DXVECTOR2(size.right / 2, size.bottom / 2));
 		}
 		break;
 	case 8:
