@@ -157,7 +157,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			if (WM_QUIT == msg.message)
 				break;
 
-			TranslateMessage(&msg);//なんか翻訳するんだか整えるんだか
+			TranslateMessage(&msg);//なんか翻訳するんだか整えるんだ。
 
 			DispatchMessage(&msg);//これでウインドウプロシージャが呼ばれる
 		}
