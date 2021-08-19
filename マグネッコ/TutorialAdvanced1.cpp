@@ -33,6 +33,12 @@ void TutorialAdvanced1::Init() {
 }
 void TutorialAdvanced1::Uninit() {
 	delete message;
+	if (movie != nullptr) {
+		movie->Stop();
+		movie->Uninit();
+		delete movie;
+	}
+
 }
 void TutorialAdvanced1::Draw() {
 	message->ClearOffset();
