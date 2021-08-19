@@ -26,6 +26,8 @@
 
 #include "TutorialBasic1.h"
 
+#include "TutorialAdvanced2.h"
+#include "TutorialAdvanced3.h"
 
 
 std::map<int, std::shared_ptr<ITutorial>> tutorialMap;
@@ -38,6 +40,9 @@ void RegisterTutorial(const std::shared_ptr<ITutorial>& tutorial);
 void InitTutorial()
 {
 	RegisterTutorial(std::make_shared<TutorialBasic1>());
+
+	RegisterTutorial(std::make_shared<TutorialAdvanced2>());
+	RegisterTutorial(std::make_shared<TutorialAdvanced3>());
 
 
 	InitStageInfo();
