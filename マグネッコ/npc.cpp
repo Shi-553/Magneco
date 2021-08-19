@@ -14,6 +14,7 @@
 #include "sound.h"
 #include <string>
 #include "messeage.h"
+#include "time.h"
 
 typedef struct MapLabel {
 	INTVECTOR2 pos;
@@ -60,6 +61,10 @@ static INTVECTOR2 gBeaconPos;
 
 static int  npcTextureVertical = 0;
 
+
+
+D3DXVECTOR2 ufoPos = D3DXVECTOR2(0, 0);
+D3DXVECTOR2 ufoPos2 = D3DXVECTOR2(0, 0);
 static Message* font;
 void InitNPC() {
 	beaconTextureId = ReserveTextureLoadFile("texture/npc/beacon_anime.png");
@@ -87,6 +92,9 @@ void InitNPC() {
 	font = new Message(D3DXVECTOR2(1.3, 1.3));
 	npc.fallFrame = 0;
 	npc.respawnFrame = 0;
+
+	ufoPos = D3DXVECTOR2(0, 0);
+	ufoPos2 = D3DXVECTOR2(0, 0);
 }
 
 void UninitNPC() {
@@ -103,6 +111,40 @@ void UninitNPC() {
 }
 
 void UpdateNPC() {
+	if (npc.gameOverFrame > 0) {
+
+		if (npc.fallFrame > 1) {
+			npc.fallFrame--;
+			npc.trans.pos -= D3DXVECTOR2(0, 0.005f);
+			npc.gameOverFrame = 45;
+		}
+		else {
+			npc.contactUFO = false;
+			npc.gameOverFrame++;
+			auto flyingObjectList = GetFlyingObjects();
+			for (auto& itr : *flyingObjectList) {
+				if (itr.type == FLYING_OBJECT_UFO) {
+					if (npc.gameOverFrame < 45) {
+						if (ufoPos == D3DXVECTOR2(0, 0)) {
+							ufoPos = itr.trans.pos;
+							ufoPos2 = D3DXVECTOR2(cos(npc.gameOverFrame / 40.0f), -sin(npc.gameOverFrame / 40.0f));
+						}
+						itr.trans.pos = ufoPos - ufoPos2 + D3DXVECTOR2(cos(npc.gameOverFrame / 40.0f), -sin(npc.gameOverFrame / 40.0f));
+					}
+					else {
+						auto dir = ScreenToGamePos(D3DXVECTOR2(SCREEN_WIDTH + 200, 100)) - itr.trans.pos;
+						D3DXVec2Normalize(&dir, &dir);
+						itr.trans.pos += dir / 20.0f;
+
+						if (GameToScreenPos(itr.trans.pos).x > SCREEN_WIDTH+100 ) {
+							GoNextScene(GameOverScene);
+						}
+					}
+				}
+			}
+		}
+		return;
+	}
 	if (npc.respawnFrame > 0) {
 		npc.respawnFrame--;
 	}
@@ -190,15 +232,15 @@ void DrawNPC() {
 
 	if (npc.fallFrame > 0) {
 		auto tPos = D3DXVECTOR2(
-			NPC_TEXTURE_WIDTH * (npc.fallFrame / 6 % 6),
+			NPC_TEXTURE_WIDTH * ((int)npc.fallFrame / 6 % 6),
 			0
 		);
 		auto bef = D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT);
 		auto t = npc.fallFrame / NPC_FALL_FRAME_MAX;
-		auto aft = bef *t*(2-t);
+		auto aft = bef * t * (2 - t);
 
 		drawingPos -= (aft - bef) / 2;
-		DrawGameSprite(npcTextureUFO, drawingPos, 30, aft* ty, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT* ty));
+		DrawGameSprite(npcTextureUFO, drawingPos, 30, aft * ty, tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT * ty));
 
 		return;
 	}
@@ -210,7 +252,7 @@ void DrawNPC() {
 			npcTextureVertical
 		);
 
-		DrawGameSprite(npcTextureIdWait, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT * ty) , tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT * ty));
+		DrawGameSprite(npcTextureIdWait, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT * ty), tPos, D3DXVECTOR2(NPC_TEXTURE_WIDTH, NPC_TEXTURE_HEIGHT * ty));
 		DrawGameSprite(npcTextureIdShadow, drawingPos, 30, D3DXVECTOR2(NPC_SIZE_WIDTH, NPC_SIZE_HEIGHT));
 	}
 	else if (!npc.isMove && npc.contactUFO) {
@@ -241,7 +283,7 @@ void DrawNPC() {
 	}
 
 	if (npc.takeOutFrame > 0) {
-		auto string = std::to_string(((TAKE_OUT_FRAME_LIMIT - npc.takeOutFrame ) / 100)+ 1);
+		auto string = std::to_string(((TAKE_OUT_FRAME_LIMIT - npc.takeOutFrame) / 100) + 1);
 		auto g = npc.trans.pos + D3DXVECTOR2(0.5, 0.5);
 		auto screenPos = GameToScreenPos(g);
 
@@ -256,7 +298,7 @@ void DrawNPC() {
 bool UpdateNPCShortestPath(INTVECTOR2 beaconPos) {
 	if (!npc.isMove) {
 		gBeaconPos = beaconPos;
-		
+
 		return UpdateNPCShortestPath();
 	}
 	return false;
@@ -516,15 +558,17 @@ bool NPCRespone() {
 
 }
 void NPCContactUFO() {
-
 	npc.takeOutFrame++;
 	npc.contactUFO = true;
 	if (npc.takeOutFrame >= TAKE_OUT_FRAME_LIMIT) {
+		npc.gameOverFrame = 1;
+		npc.fallFrame = NPC_FALL_FRAME_MAX;
+
 		//itr = flyingObjectList->erase(itr);
-		GoNextScene(GameOverScene, FADE_IN);
 	}
 }
 void NPCDeleteUFO() {
 	npc.takeOutFrame = 0;
 	npc.contactUFO = false;
+	npc.gameOverFrame = 0;
 }

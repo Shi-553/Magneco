@@ -302,9 +302,13 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 		flyingObject->rad += 0.05f;
 	}
 	if (flyingObject->type == FLYING_OBJECT_UFO) {
-		flyingObject->dir = (GetNpc()->trans.pos + ADD_UFO_POS) - flyingObject->trans.pos;
-
-		D3DXVec2Normalize(&flyingObject->dir, &flyingObject->dir);
+		if (GetNpc()->gameOverFrame == 0) {
+			flyingObject->dir = (GetNpc()->trans.pos + ADD_UFO_POS) - flyingObject->trans.pos;
+			D3DXVec2Normalize(&flyingObject->dir, &flyingObject->dir);
+		}
+		else {
+			flyingObject->dir = D3DXVECTOR2(0, 0);
+		}
 	}
 	else if (flyingObject->type == FLYING_OBJECT_PURGE_BLOCK) {
 		D3DXVec2Normalize(&flyingObject->dir, &flyingObject->dir);
@@ -327,6 +331,9 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 
 	flyingObject->trans.UpdatePos();
 
+	if (flyingObject->type == FLYING_OBJECT_UFO) {
+		return false;
+	}
 	if (flyingObject->trans.pos.x > GetMapWidth() + FLYINGOBJECT_ADD_RANGE ||
 		flyingObject->trans.pos.x < -GetMapWidth() - FLYINGOBJECT_ADD_RANGE ||
 		flyingObject->trans.pos.y > GetMapHeight() + FLYINGOBJECT_ADD_RANGE ||
