@@ -76,7 +76,7 @@ void TutorialAdvanced3::Draw() {
 
 		DrawSprite(TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
-		message->Draw("--ブロック起動--(動画)");
+		message->Draw("--ブロック起動--");
 		break;
 
 	case 5:

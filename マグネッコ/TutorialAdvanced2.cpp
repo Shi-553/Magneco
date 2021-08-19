@@ -126,7 +126,7 @@ void TutorialAdvanced2::Draw() {
 
 		DrawSprite(TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
-		message->Draw("--隕石で妨害ブロックを壊す--(動画)");
+		message->Draw("--隕石で妨害ブロックを壊す--");
 		break;
 	case 13:
 		DrawSprite(TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
