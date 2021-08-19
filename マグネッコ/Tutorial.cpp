@@ -25,6 +25,8 @@
 
 
 #include "TutorialBasic1.h"
+#include "TutorialBasic2.h"
+#include "TutorialAdvanced1.h"
 
 
 
@@ -38,6 +40,8 @@ void RegisterTutorial(const std::shared_ptr<ITutorial>& tutorial);
 void InitTutorial()
 {
 	RegisterTutorial(std::make_shared<TutorialBasic1>());
+	RegisterTutorial(std::make_shared<TutorialBasic2>());
+	RegisterTutorial(std::make_shared<TutorialAdvanced1>());
 
 
 	InitStageInfo();
