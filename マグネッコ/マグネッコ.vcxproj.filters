@@ -139,6 +139,12 @@
     <ClCompile Include="TutorialBasic1.cpp">
       <Filter>cpp\Tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="TutorialAdvanced1.cpp">
+      <Filter>cpp\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="TutorialBasic2.cpp">
+      <Filter>cpp\Tutorial</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameClear.h">
@@ -286,6 +292,12 @@
       <Filter>ヘッダー\others</Filter>
     </ClInclude>
     <ClInclude Include="TutorialBasic1.h">
+      <Filter>ヘッダー\scenes\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="TutorialAdvanced1.h">
+      <Filter>ヘッダー\scenes\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="TutorialBasic2.h">
       <Filter>ヘッダー\scenes\Tutorial</Filter>
     </ClInclude>
   </ItemGroup>
