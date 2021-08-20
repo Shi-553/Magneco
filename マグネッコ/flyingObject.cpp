@@ -210,7 +210,7 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 
 			DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6, 50, D3DXVECTOR2(1.3, 1.3), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
 		}
-		if (npc->contactUFO == true&&npc->gameOverFrame==0) {
+		if (npc->contactUFO == true&&npc->gameOverFrame<2) {
 			auto tPos = D3DXVECTOR2(
 				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 8 % 4),
 				0

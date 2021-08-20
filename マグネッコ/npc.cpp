@@ -112,36 +112,29 @@ void UninitNPC() {
 }
 
 void UpdateNPC() {
+	npc.aniFrame++;
 	if (npc.gameOverFrame > 0) {
 
 		if (npc.fallFrame > 1) {
 			npc.fallFrame--;
 			npc.trans.pos -= D3DXVECTOR2(0, 0.005f);
-			npc.gameOverFrame = 45;
+			npc.gameOverFrame = 2;
 		}
 		else {
 			npc.contactUFO = false;
-			npc.gameOverFrame++;
 			auto flyingObjectList = GetFlyingObjects();
 			for (auto& itr : *flyingObjectList) {
 				if (itr.type == FLYING_OBJECT_UFO) {
-					if (npc.gameOverFrame < 45) {
-						if (ufoPos == D3DXVECTOR2(0, 0)) {
-							ufoPos = itr.trans.pos;
-							ufoPos2 = D3DXVECTOR2(cos(npc.gameOverFrame / 40.0f), -sin(npc.gameOverFrame / 40.0f));
-						}
-						itr.trans.pos = ufoPos - ufoPos2 + D3DXVECTOR2(cos(npc.gameOverFrame / 40.0f), -sin(npc.gameOverFrame / 40.0f));
-					}
-					else {
-						auto dir = ScreenToGamePos(D3DXVECTOR2(SCREEN_WIDTH + 200, 100)) - itr.trans.pos;
-						D3DXVec2Normalize(&dir, &dir);
-						itr.trans.pos += dir / 20.0f;
+					auto dir = ScreenToGamePos(D3DXVECTOR2(SCREEN_WIDTH + 200, 100)) - itr.trans.pos;
+					D3DXVec2Normalize(&dir, &dir);
+					itr.trans.pos += dir / 20.0f;
+					npc.trans.pos = itr.trans.pos;
 
-						if (GameToScreenPos(itr.trans.pos).x > SCREEN_WIDTH+100 ) {
-							GoNextScene(GameOverScene);
-						}
+					if (GameToScreenPos(itr.trans.pos).x > SCREEN_WIDTH + 100) {
+						GoNextScene(GameOverScene);
 					}
 				}
+
 			}
 		}
 		return;
@@ -167,7 +160,6 @@ void UpdateNPC() {
 		return;
 	}
 
-	npc.aniFrame++;
 
 	if (NPCRespone()) {
 		npc.fallFrame = NPC_FALL_FRAME_MAX;
@@ -559,6 +551,9 @@ bool NPCRespone() {
 
 }
 void NPCContactUFO() {
+	if (npc.gameOverFrame > 0) {
+		return;
+	}
 	npc.takeOutFrame++;
 	npc.contactUFO = true;
 	if (npc.takeOutFrame >= TAKE_OUT_FRAME_LIMIT) {
@@ -571,5 +566,10 @@ void NPCContactUFO() {
 void NPCDeleteUFO() {
 	npc.takeOutFrame = 0;
 	npc.contactUFO = false;
-	npc.gameOverFrame = 0;
+
+	if (npc.gameOverFrame > 0) {
+		npc.gameOverFrame = 0;
+		npc.fallFrame = NPC_FALL_FRAME_MAX;
+
+	}
 }
