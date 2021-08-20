@@ -9,6 +9,7 @@
 #include "sceneManager.h"
 #include "sound.h"
 #include <vector>
+#include <map>
 using namespace std;
 
 #define PAUSE_MENU_BUTTON_WIDTH 330
@@ -18,6 +19,9 @@ static int backgroundTextureId = TEXTURE_INVALID_ID;
 static int pauseTextureId = TEXTURE_INVALID_ID;
 static bool isPause = false;
 static SelectButton pauseSelect;
+
+
+std::map < int,SwitchPauseEvent> switchPauseEvent;
 
 void InitPauseMenu() {
 	isPause = false;
@@ -130,6 +134,11 @@ void UpdatePauseMenu() {
 
 	if (TriggerInputLogger(MYVK_ESC)|| (isPause&&TriggerInputLogger(MYVK_CANCEL))) {
 		isPause = !isPause;
+
+		for (auto& e : switchPauseEvent) {
+			e.second(isPause);
+		}
+
 		if (isPause) {
 			PlaySound(SOUND_LABEL_SE_PAUSE);
 			pauseSelect.SetIndex(0);
@@ -146,4 +155,18 @@ void UpdatePauseMenu() {
 	}
 
 	pauseSelect.Update();
+}
+
+
+bool GetIsPause() {
+	return isPause;
+}
+
+int AddSwitchPauseEvent(const SwitchPauseEvent& e) {
+	auto s = switchPauseEvent.size();
+	switchPauseEvent.emplace(s,e);
+	return s;
+}
+void RemoveSwitchPauseEvent(int i) {
+	switchPauseEvent.erase(i);
 }
