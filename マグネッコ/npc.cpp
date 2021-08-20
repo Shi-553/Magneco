@@ -91,6 +91,7 @@ void InitNPC() {
 	}
 	font = new Message(D3DXVECTOR2(1.3, 1.3));
 	npc.fallFrame = 0;
+	npc.gameOverFrame = 0;
 	npc.respawnFrame = 0;
 
 	ufoPos = D3DXVECTOR2(0, 0);
