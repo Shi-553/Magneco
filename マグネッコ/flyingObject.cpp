@@ -12,7 +12,8 @@
 #include "flyingObjectSponer.h"
 #include "sound.h"
 // flyingObject描画範囲の加算分
-#define FLYINGOBJECT_ADD_RANGE (5)
+#define FLYINGOBJECT_ADD_RANGE_WIDTH (15)
+#define FLYINGOBJECT_ADD_RANGE_HEIGHT (10)
 
 #define FLYINGOBJECT_TEXTURE_WIDTH (64)
 #define FLYINGOBJECT_TEXTURE_HEIGHT (64)
@@ -334,10 +335,10 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 	if (flyingObject->type == FLYING_OBJECT_UFO) {
 		return false;
 	}
-	if (flyingObject->trans.pos.x > GetMapWidth() + FLYINGOBJECT_ADD_RANGE ||
-		flyingObject->trans.pos.x < -GetMapWidth() - FLYINGOBJECT_ADD_RANGE ||
-		flyingObject->trans.pos.y > GetMapHeight() + FLYINGOBJECT_ADD_RANGE ||
-		flyingObject->trans.pos.y < -GetMapHeight() - FLYINGOBJECT_ADD_RANGE) {
+	if (flyingObject->trans.pos.x > GetMapWidth() / 2 + FLYINGOBJECT_ADD_RANGE_WIDTH ||
+		flyingObject->trans.pos.x <  GetMapWidth() / 2 - FLYINGOBJECT_ADD_RANGE_WIDTH ||
+		flyingObject->trans.pos.y > GetMapHeight() /2+ FLYINGOBJECT_ADD_RANGE_HEIGHT ||
+		flyingObject->trans.pos.y < GetMapHeight() / 2 - FLYINGOBJECT_ADD_RANGE_HEIGHT) {
 		return true;
 	}
 	else {
