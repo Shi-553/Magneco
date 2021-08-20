@@ -29,11 +29,24 @@ void InitGameStart() {
 	gameStartSelect.Init();
 
 
-	Button startButton, tutorialButton, endButton;
+	Button tutorialButton, startButton , endButton;
 
 	auto buttonCenter = D3DXVECTOR2(SCREEN_WIDTH / 2 - GAME_START_BUTTON_WIDTH / 2, (SCREEN_HEIGHT / 2 - GAME_START_BUTTON_HEIGHT / 2) + 40);
 
-	startButton.pos = buttonCenter;
+
+	tutorialButton.pos = buttonCenter ;
+	tutorialButton.size = D3DXVECTOR2(GAME_START_BUTTON_WIDTH, GAME_START_BUTTON_HEIGHT);
+	tutorialButton.textureId = ReserveTextureLoadFile("texture/ui/tutorial.png");
+	tutorialButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/tutorial_pressed.png");
+
+	tutorialButton.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
+		SetStageFolder("stage/tutorial");
+		GoNextScene(StageSelect);
+	};
+
+
+	startButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_START_BUTTON_HEIGHT + 16);
 	startButton.size = D3DXVECTOR2(GAME_START_BUTTON_WIDTH, GAME_START_BUTTON_HEIGHT);
 	startButton.textureId = ReserveTextureLoadFile("texture/ui/start.png");
 	startButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/start_pressed.png");
@@ -45,30 +58,17 @@ void InitGameStart() {
 	};
 
 
-	tutorialButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_START_BUTTON_HEIGHT + 16);
-	tutorialButton.size = D3DXVECTOR2(GAME_START_BUTTON_WIDTH, GAME_START_BUTTON_HEIGHT);
-	tutorialButton.textureId = ReserveTextureLoadFile("texture/ui/tutorial.png");
-	tutorialButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/tutorial_pressed.png");
-
-
-	tutorialButton.releasedCallback = []() {
-		PlaySound(SOUND_LABEL_SE_DECITION);
-		SetStageFolder("stage/tutorial");
-		GoNextScene(StageSelect);
-	};
-
-	endButton.pos = tutorialButton.pos + D3DXVECTOR2(0, GAME_START_BUTTON_HEIGHT + 16);
+	endButton.pos = startButton.pos + D3DXVECTOR2(0, GAME_START_BUTTON_HEIGHT + 16);
 	endButton.size = D3DXVECTOR2(GAME_START_BUTTON_WIDTH, GAME_START_BUTTON_HEIGHT);
 	endButton.textureId = ReserveTextureLoadFile("texture/ui/end.png");
 	endButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/end_pressed.png");
-
 
 	endButton.releasedCallback = []() {
 		PostQuitMessage(0);
 	};
 
-	gameStartSelect.Add(startButton);
 	gameStartSelect.Add(tutorialButton);
+	gameStartSelect.Add(startButton);
 	gameStartSelect.Add(endButton);
 
 	backGroundTexture = ReserveTextureLoadFile("texture/background/背景１.png");
