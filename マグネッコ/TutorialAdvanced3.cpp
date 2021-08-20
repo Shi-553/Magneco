@@ -107,7 +107,7 @@ void TutorialAdvanced3::Update() {
 		break;
 
 	case 2:
-		isUpdate = true;
+		isUpdate = false;
 
 		if (TriggerInputLogger(MYVK_ENTER)) {
 			num++;
@@ -115,7 +115,7 @@ void TutorialAdvanced3::Update() {
 		break;
 
 	case 3:
-		isUpdate = true;
+		isUpdate = false;
 
 		if (TriggerInputLogger(MYVK_ENTER)) {
 			num++;
@@ -140,13 +140,15 @@ void TutorialAdvanced3::Update() {
 		break;
 
 	case 5:
-		isUpdate = true;
+		isUpdate = false;
 
 		if (TriggerInputLogger(MYVK_ENTER)) {
 			num++;
 		}
 		break;
 
+	case 6:
+		isUpdate = true;
 
 
 	}
