@@ -36,9 +36,11 @@ void TutorialAdvanced2::Init() {
 void TutorialAdvanced2::Uninit() {
 	delete message;
 
-	movie->Stop();
-	movie->Uninit();
-	delete movie;
+	if (movie != nullptr) {
+		movie->Stop();
+		movie->Uninit();
+		delete movie;
+	}
 
 	ReleaseTexture(TextureIds, MAX);
 
