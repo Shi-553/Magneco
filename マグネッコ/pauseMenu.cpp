@@ -44,13 +44,14 @@ void InitPauseMenu() {
 	};
 	buttons.push_back(startButton);
 
-	if (GetCurrentScene() == GameScene) {
+	auto scene = GetCurrentScene();
+	if (scene == GameScene|| scene == TutorialScene) {
 		Button retryButton;
 		retryButton.textureId = ReserveTextureLoadFile("texture/ui/retry.png");
 		retryButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/retry_pressed.png");
 		retryButton.releasedCallback = []() {
 			PlaySound(SOUND_LABEL_SE_DECITION);
-			GoNextScene(GameScene, FADE_OUT, true);
+			GoNextScene(GetCurrentScene(), FADE_OUT, true);
 			isPause = false;
 			SetTimeScale(1);
 		};
@@ -69,7 +70,7 @@ void InitPauseMenu() {
 
 	}
 	else {
-		if (GetCurrentScene() !=GameStartScene) {
+		if (scene !=GameStartScene) {
 			Button returnTitleButton;
 			returnTitleButton.textureId = ReserveTextureLoadFile("texture/ui/quit.png");
 			returnTitleButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/quit_pressed.png");

@@ -39,26 +39,26 @@ void DrawGameSprite(int textureId, D3DXVECTOR2 pos, float z, D3DXVECTOR2 size, D
 	DrawSprite(textureId, GameToScreenPos(pos), z, GameToScreenSize(size), tPos, tSize, GameToScreenSize(cPos),rad);
 }
 
-D3DXVECTOR2 ScreenToGamePos(D3DXVECTOR2& screenPos) {
+D3DXVECTOR2 ScreenToGamePos(const D3DXVECTOR2& screenPos) {
 	return D3DXVECTOR2(
 		(screenPos.x - GAME_SPRITE_ZERO_X) / GAME_SPRITE_WHIDTH,
 		(screenPos.y - GAME_SPRITE_ZERO_Y) / GAME_SPRITE_HEIGHT
 	);
 }
-D3DXVECTOR2 GameToScreenPos(D3DXVECTOR2& gamePos) {
+D3DXVECTOR2 GameToScreenPos(const D3DXVECTOR2& gamePos) {
 	return D3DXVECTOR2(
 		GAME_SPRITE_ZERO_X + (gamePos.x * GAME_SPRITE_WHIDTH),
 		GAME_SPRITE_ZERO_Y + (gamePos.y * GAME_SPRITE_HEIGHT)
 	);
 }
 
-D3DXVECTOR2 ScreenToGameSize(D3DXVECTOR2& screenSize) {
+D3DXVECTOR2 ScreenToGameSize(const D3DXVECTOR2& screenSize) {
 	return D3DXVECTOR2(
 		screenSize.x / GAME_SPRITE_WHIDTH,
 		screenSize.y / GAME_SPRITE_HEIGHT
 	);
 }
-D3DXVECTOR2 GameToScreenSize(D3DXVECTOR2& gameSize) {
+D3DXVECTOR2 GameToScreenSize(const D3DXVECTOR2& gameSize) {
 	return D3DXVECTOR2(
 		gameSize.x * GAME_SPRITE_WHIDTH,
 		gameSize.y * GAME_SPRITE_HEIGHT
