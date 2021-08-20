@@ -218,7 +218,11 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="time.cpp" />
     <ClCompile Include="trans.cpp" />
     <ClCompile Include="Tutorial.cpp" />
+    <ClCompile Include="TutorialAdvanced1.cpp" />
+    <ClCompile Include="TutorialAdvanced2.cpp" />
+    <ClCompile Include="TutorialAdvanced3.cpp" />
     <ClCompile Include="TutorialBasic1.cpp" />
+    <ClCompile Include="TutorialBasic2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bitFlagsScopedEnum.h" />
@@ -269,7 +273,11 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="time.h" />
     <ClInclude Include="trans.h" />
     <ClInclude Include="Tutorial.h" />
+    <ClInclude Include="TutorialAdvanced1.h" />
+    <ClInclude Include="TutorialAdvanced2.h" />
+    <ClInclude Include="TutorialAdvanced3.h" />
     <ClInclude Include="TutorialBasic1.h" />
+    <ClInclude Include="TutorialBasic2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
