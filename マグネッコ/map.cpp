@@ -15,7 +15,8 @@
 
 
 
-bool CanAttachedMapType(INTVECTOR2& pos, MapType type);
+void DrawMagnetPower(const D3DXVECTOR2& origin, const D3DXVECTOR2& target);
+bool CanAttachedMapType(const INTVECTOR2& pos, MapType type);
 bool IsBreakBlock(INTVECTOR2 pos, vector<INTVECTOR2>& v);
 
 static Map* MapChipList = NULL;
@@ -27,6 +28,8 @@ static int mapHeight = 10;
 static int mapWidth = 10;
 
 static int putPredictionThinTextureId = TEXTURE_INVALID_ID;
+static int magnetPowerWidthTextureId = TEXTURE_INVALID_ID;
+static int magnetPowerHeightTextureId = TEXTURE_INVALID_ID;
 
 
 void InitMap(void)
@@ -44,8 +47,9 @@ void InitMap(void)
 	textureIds[MAP_CHEST_CLOSED] = ReserveTextureLoadFile("texture/block/itembox_anime.png");
 	textureIds[MAP_CHEST_OPENED] = ReserveTextureLoadFile("texture/block/itembox_block.png");
 	textureIds[MAP_BLOCK_REMOVE] = ReserveTextureLoadFile("texture/block/road_block.png");
-	textureIds[MAP_BLOCK_REMOVE] = ReserveTextureLoadFile("texture/block/checkpoint_guide.png");
 	putPredictionThinTextureId = ReserveTextureLoadFile("texture/player/putPredictionThin.png");
+	magnetPowerWidthTextureId = ReserveTextureLoadFile("texture/block/magnetPowerWidth.png");
+	magnetPowerHeightTextureId = ReserveTextureLoadFile("texture/block/magnetPowerHeight.png");
 
 	frame = 0;
 	mapHeight = 10;
@@ -180,6 +184,8 @@ void UninitMap(void)
 	ReleaseTexture(textureIds, MAP_MAX);
 	ReleaseTexture(map_textureIds);
 	ReleaseTexture(putPredictionThinTextureId);
+	ReleaseTexture(magnetPowerWidthTextureId);
+	ReleaseTexture(magnetPowerHeightTextureId);
 
 	if (MapChipList != NULL) {
 		delete[] MapChipList;
@@ -219,9 +225,15 @@ void DrawMap(void)
 			if (map == NULL) {
 				continue;
 			}
-			if (map->type == MAP_BLOCK_NONE&& MapFourDirectionsJudgment(mapPos)) {
+			if (map->type == MAP_BLOCK_REMOVE) {
+				auto size = map->param / 100.0f;
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j + 0.5 - size / 2, i + 0.5 - size / 2), 100, D3DXVECTOR2(size, size));
+				continue;
+			}
+			if (map->type == MAP_BLOCK_NONE && MapFourDirectionsJudgment(mapPos)) {
 				DrawGameSprite(putPredictionThinTextureId, D3DXVECTOR2(j, i), 100);
 
+				continue;
 			}
 			if (map->type == MAP_WALL) {
 				auto addDir = map->dir + INTVECTOR2(1, 1);
@@ -234,11 +246,16 @@ void DrawMap(void)
 				continue;
 			}
 
-			if (map->type == MAP_BLOCK_REMOVE) {
-				auto size = map->param / 100.0f;
-				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j+0.5- size/2, i + 0.5 - size / 2), 100, D3DXVECTOR2(size, size));
+			if (map->type == MAP_BLOCK) {
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j, i+0.1f), 100, D3DXVECTOR2(0.9, 0.9));
+
+				DrawMagnetPower(D3DXVECTOR2(j, i), D3DXVECTOR2(j + 1, i));
+				DrawMagnetPower(D3DXVECTOR2(j, i), D3DXVECTOR2(j - 1, i));
+				DrawMagnetPower(D3DXVECTOR2(j, i), D3DXVECTOR2(j, i + 1));
+				DrawMagnetPower(D3DXVECTOR2(j, i), D3DXVECTOR2(j, i - 1));
 				continue;
 			}
+
 			if (map->type == MAP_GOAL || map->type == MAP_CHEST_CLOSED) {
 				auto tPos = D3DXVECTOR2(
 					MAP_TEXTURE_WIDTH * (frame / 8 % 8),
@@ -246,11 +263,31 @@ void DrawMap(void)
 				);
 
 				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j, i - 1), 100, D3DXVECTOR2(MAP_GOAL_AND_ITEMDRAW_SIZE_WIDTH, MAP_GOAL_AND_ITEMDRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_AND_ITEM_TEXTURE_HEIGHT));
+
+				continue;
 			}
-			else
-			{
-				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j, i), 100);
-			}
+			DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j, i), 100);
+		}
+	}
+}
+
+void DrawMagnetPower(const D3DXVECTOR2& origin, const D3DXVECTOR2& target) {
+	auto isW = origin.x != target.x;
+
+	auto type = GetMapType(target);
+	if (GetMapType(origin)== MAP_BLOCK &&type == MAP_BLOCK&&(origin.x<target.x||origin.y<target.y)) {
+		return;
+	}
+	if (CanAttachedMapType(target, type)) {
+		auto pos = (origin + target) / 2;
+		if (isW) {
+			pos.y -= 0.05f;
+			DrawGameSprite(magnetPowerWidthTextureId, pos, 100);
+		}
+		else {
+			//pos.y -= 0.1f;
+			pos.x -= 0.05f;
+			DrawGameSprite(magnetPowerHeightTextureId, pos, 100);
 		}
 	}
 }
@@ -273,7 +310,7 @@ void MapChange(FlyingObject flyingobject)
 
 //無限ループしないように
 vector<INTVECTOR2> v;
-bool MapFourDirectionsJudgment(INTVECTOR2& pos)
+bool MapFourDirectionsJudgment(const INTVECTOR2& pos)
 {
 	if (std::find(v.begin(), v.end(), pos) != v.end()) {
 		v.clear();
@@ -288,25 +325,25 @@ bool MapFourDirectionsJudgment(INTVECTOR2& pos)
 
 	Map* map = GetMap(to);
 
-	if (map != NULL && CanAttachedMapType(to,map->type)) {
+	if (map != NULL && CanAttachedMapType(to, map->type)) {
 		v.clear();
 		return true;
 	}
 	to = INTVECTOR2(x, y - 1);
-	map = GetMap(to);
-	if (map != NULL && CanAttachedMapType(to,map->type)) {
-		v.clear();
-		return true;
-	}
-
-	to = INTVECTOR2(x+1, y );
 	map = GetMap(to);
 	if (map != NULL && CanAttachedMapType(to, map->type)) {
 		v.clear();
 		return true;
 	}
 
-	to = INTVECTOR2(x-1, y );
+	to = INTVECTOR2(x + 1, y);
+	map = GetMap(to);
+	if (map != NULL && CanAttachedMapType(to, map->type)) {
+		v.clear();
+		return true;
+	}
+
+	to = INTVECTOR2(x - 1, y);
 	map = GetMap(to);
 	if (map != NULL && CanAttachedMapType(to, map->type)) {
 		v.clear();
@@ -457,11 +494,12 @@ bool CanGoNPCMapType(MapType type) {
 	}
 }
 
-bool CanAttachedMapType(INTVECTOR2& pos,MapType type) {
+bool CanAttachedMapType(const INTVECTOR2& pos, MapType type) {
 	switch (type)
 	{
 	case MAP_CHEST_OPENED:
 	case MAP_CHEST_CLOSED:
+	case MAP_GOAL:
 		return MapFourDirectionsJudgment(pos);
 
 	case MAP_BLOCK:
@@ -528,7 +566,7 @@ bool IsBreakBlock(INTVECTOR2 pos, vector<INTVECTOR2>& v) {
 		return true;
 	}
 	//くっつけられない
-	if (!CanAttachedMapType(pos,m->type)) {
+	if (!CanAttachedMapType(pos, m->type)) {
 		return false;
 	}
 	v.push_back(pos);
