@@ -182,11 +182,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+	if (imGuiRenderer->Proc(hWnd, uMsg, wParam, lParam)) {
+		return true;
+	}
 	if (hWnd != ghWnd) {
 		return DefWindowProc(hWnd, uMsg, wParam, lParam);
-	}
-	if (imGuiRenderer->Proc(hWnd, uMsg, wParam, lParam)) {
-		return 0;
 	}
 
 	switch (uMsg)

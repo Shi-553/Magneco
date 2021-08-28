@@ -9,7 +9,6 @@
 #include "stageEditor.h"
 #include "gameSrite.h"
 #include "npc.h"
-#include "imgui/imgui.h"
 
 #define CREATE_FLYING_OBJECT_TEXTURE_WIDTH 32
 #define CREATE_FLYING_OBJECT_TEXTURE_HEIGHT 32
@@ -140,12 +139,6 @@ void DrawFlyingObjectEditor() {
 		}
 
 
-	ImGui::SetNextWindowPos(ImVec2(300, 500), ImGuiCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
-	if (ImGui::Begin("FlyingObject", nullptr)) {//, &isEdit]
-		ImGui::Image(GetTexture(textureIds[3]), ImVec2(200, 200));
-	}
-	ImGui::End();
 }
 void UpdateFlyingObjectEditor() {
 	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));
@@ -384,6 +377,13 @@ void DrawFlyingObjectScreen(const Spone& map) {
 
 	D3DXVECTOR2 tPos = { 0,0 };
 	D3DXVECTOR2 tSize = { CREATE_FLYING_OBJECT_TEXTURE_WIDTH,CREATE_FLYING_OBJECT_TEXTURE_HEIGHT };
+
+	if (map.type == FLYING_OBJECT_UFO) {
+		tSize *= 2;
+	}
+	if (map.type == FLYING_OBJECT_PURGE_BLOCK||map.type == FLYING_OBJECT_PLAYER_BLOCK) {
+		return;
+	}
 
 	DrawSprite(textureIds[map.type], map.initPos, 10, size, tPos, tSize);
 }

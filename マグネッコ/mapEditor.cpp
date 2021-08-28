@@ -74,8 +74,8 @@ void InitMapEditor() {
 		textureIds[i] = GetMapTextureId((MapType)i);
 	}
 	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/block/MAP_BLOCK_NONE_ERASE.png");
-	playerTextureId = ReserveTextureLoadFile("texture/player_32×32.png");
-	npcTextureId = ReserveTextureLoadFile("texture/spr_rose_idle.png");
+	playerTextureId = ReserveTextureLoadFile("texture/player/player_64×64.png");
+	npcTextureId = ReserveTextureLoadFile("texture/npc/spr_rose_idle.png");
 
 	for (int i = MAP_BLOCK_NONE; i < MAP_MAX; i++) {
 		auto mapType = (MapType)i;
@@ -89,6 +89,7 @@ void InitMapEditor() {
 
 		createMap[i].map->type = mapType;
 		createMap[i].map->dir = mapType == MAP_WALL ? createWallDir : D3DXVECTOR2(0, 0);
+
 	}
 
 	frame = 0;
@@ -113,6 +114,12 @@ void DrawMapEditor() {
 	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));
 
 	for (int i = MAP_BLOCK_NONE; i < MAP_MAX; i++) {
+		switch (i)
+		{
+		case MAP_BLOCK_REMOVE:
+		case MAP_BLOCK_NONE:
+			continue;
+		}
 		DrawMapScreen(createMap[i]);
 	}
 
@@ -126,15 +133,15 @@ void DrawMapEditor() {
 	auto screenPos = GetCreateMapPos((MapType)-3);
 
 	DrawSprite(playerTextureId, screenPos
-		, 10, { 50,50 }, { 0, 0 }, { 32,32 });
+		, 10, { 64,64 }, { 0, 0 }, { 64,64 });
 
 	screenPos = GetCreateMapPos((MapType)-2);
 	DrawSprite(npcTextureId, screenPos
-		, 10, { 50 ,50 }, { 0, 0 }, { 64,64 });
+		, 10, { 64,64 }, { 0, 0 }, { 64,64 });
 
 	if (isPlayerEdit) {
 		DrawSprite(playerTextureId, D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY)) - D3DXVECTOR2(32 / 2, 32 / 2)
-			, 10, { 50,50 }, { 0, 0 }, { 32,32 });
+			, 10, { 64,64 }, { 0, 0 }, { 64,64 });
 	}
 	else {
 		DrawPlayer();
@@ -142,7 +149,7 @@ void DrawMapEditor() {
 
 	if (isNPCEdit) {
 		DrawSprite(npcTextureId, D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY)) - D3DXVECTOR2(50 * 1.76 / 2, (50 * 1.76 / 2) + 20)
-			, 10, { 50 * 1.76,50 * 1.76 }, { 0, 0 }, { 64,64 });
+			, 10, { 64,64 }, { 0, 0 }, { 64,64 });
 	}
 	else {
 		DrawNPC();
@@ -396,6 +403,10 @@ ScreenMap CheckCreateMap(D3DXVECTOR2 pos) {
 		auto screenPos = GetCreateMapPos(type);
 		D3DXVECTOR2 mapSize = { CREATE_MAP_WIDTH,CREATE_MAP_HEIGHT };
 
+		if (type == MAP_CHEST_CLOSED|| type == MAP_CHEST_OPENED) {
+			mapSize.y *= 2;
+		}
+
 		if (CheckSquare(pos, screenPos, mapSize)) {
 			return createMap[i];
 		}
@@ -416,6 +427,7 @@ void DrawMapScreen(const ScreenMap& map) {
 
 	D3DXVECTOR2 tPos = { 0,0 };
 	D3DXVECTOR2 tSize = { CREATE_MAP_TEXTURE_WIDTH,CREATE_MAP_TEXTURE_HEIGHT };
+	auto pos = map.pos;
 
 	if (map.map->type == MAP_WALL) {
 		auto addDir = map.map->dir + INTVECTOR2(1, 1);
@@ -428,7 +440,15 @@ void DrawMapScreen(const ScreenMap& map) {
 		tPos.x = CREATE_MAP_TEXTURE_WIDTH * (frame / 8 % 8);
 		tPos.y = CREATE_MAP_TEXTURE_HEIGHT;
 	}
+	if (map.map->type == MAP_CHEST_CLOSED) {
+		tSize.y *= 2;
+		size.y *= 2;
+	}
+	
+	if (map.map->type == MAP_CHEST_OPENED) {
+		pos.y += size.y;
+	}
 
-	DrawSprite(textureIds[map.map->type], map.pos, 10, size, tPos, tSize);
+	DrawSprite(textureIds[map.map->type], pos, 10, size, tPos, tSize);
 
 }
