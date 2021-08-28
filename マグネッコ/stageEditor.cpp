@@ -21,6 +21,9 @@
 #include "sceneManager.h"
 #include "flyingObjectEditor.h"
 #include "stageInfoEditor.h"
+#include <string>
+
+
 
 void InitStageEditor() {
 	InitPlayer();
@@ -41,6 +44,7 @@ void InitStageEditor() {
 	//SetStagePath("stage/edit.stage");
 
 	StageImport();
+
 }
 
 void UninitStageEditor() {
@@ -71,6 +75,7 @@ void DrawStageEditor() {
 	//DrawFlyingObject();
 
 	//DrawPlayer();
+
 }
 
 void UpdateStageEditor() {
@@ -98,15 +103,6 @@ void UpdateStageEditor() {
 	//UpdateFlyingObject();
 	//UpdateFlyingSponer();
 
-#if _DEBUG
-	if (PressInputLogger(MYVK_CONTROL) && TriggerInputLogger(MYVK_SAVE)) {
-		StageExport();
-
-	}
-	if (PressInputLogger(MYVK_CONTROL) && TriggerInputLogger(MYVK_LOAD)) {
-		StageImport();
-	}
-#endif // _DEBUG
 }
 
 

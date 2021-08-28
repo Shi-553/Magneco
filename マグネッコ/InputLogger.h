@@ -43,8 +43,6 @@ enum VirtualKey {
 
 	MYVK_ARROW_LEFT,
 	MYVK_ARROW_RIGHT,
-#if _DEBUG
-#endif // _DEBUG
 
 	MYVK_MAX
 };

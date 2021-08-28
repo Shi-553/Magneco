@@ -242,10 +242,12 @@ void DrawMap(void)
 				continue;
 			}
 			if (map->type == MAP_BLOCK_NONE && MapFourDirectionsJudgment(mapPos)) {
+				EndMapFourDirectionsJudgment();
 				DrawGameSprite(putPredictionThinTextureId, D3DXVECTOR2(j, i), 100);
 
 				continue;
 			}
+			EndMapFourDirectionsJudgment();
 			if (map->type == MAP_WALL) {
 				auto addDir = map->dir + INTVECTOR2(1, 1);
 				auto tPos = D3DXVECTOR2(
@@ -290,6 +292,7 @@ void DrawMagnetPower(const D3DXVECTOR2& origin, const D3DXVECTOR2& target) {
 		return;
 	}
 	if (CanAttachedMapType(target, type)) {
+		EndMapFourDirectionsJudgment();
 		auto pos = (origin + target) / 2;
 		if (isW) {
 			pos.y -= 0.05f;
@@ -340,7 +343,6 @@ vector<INTVECTOR2> v;
 bool MapFourDirectionsJudgment(const INTVECTOR2& pos)
 {
 	if (std::find(v.begin(), v.end(), pos) != v.end()) {
-		v.clear();
 		return false;
 	}
 	v.push_back(pos);
@@ -349,36 +351,47 @@ bool MapFourDirectionsJudgment(const INTVECTOR2& pos)
 	int y = pos.y;
 
 	auto to = INTVECTOR2(x, y + 1);
+	if (std::find(v.begin(), v.end(), to) != v.end()) {
+		return false;
+	}
 
 	Map* map = GetMap(to);
 
 	if (map != NULL && CanAttachedMapType(to, map->type)) {
-		v.clear();
 		return true;
 	}
 	to = INTVECTOR2(x, y - 1);
+	if (std::find(v.begin(), v.end(), to) != v.end()) {
+		return false;
+	}
 	map = GetMap(to);
 	if (map != NULL && CanAttachedMapType(to, map->type)) {
-		v.clear();
 		return true;
 	}
 
 	to = INTVECTOR2(x + 1, y);
+	if (std::find(v.begin(), v.end(), to) != v.end()) {
+		return false;
+	}
 	map = GetMap(to);
 	if (map != NULL && CanAttachedMapType(to, map->type)) {
-		v.clear();
 		return true;
 	}
 
 	to = INTVECTOR2(x - 1, y);
+	if (std::find(v.begin(), v.end(), to) != v.end()) {
+		return false;
+	}
 	map = GetMap(to);
 	if (map != NULL && CanAttachedMapType(to, map->type)) {
-		v.clear();
 		return true;
 	}
 
-	v.clear();
 	return false;
+}
+
+void EndMapFourDirectionsJudgment() {
+	v.clear();
 }
 
 MapType GetMapType(INTVECTOR2 pos)
@@ -520,7 +533,6 @@ bool CanGoNPCMapType(MapType type) {
 		break;
 	}
 }
-
 bool CanAttachedMapType(const INTVECTOR2& pos, MapType type) {
 	switch (type)
 	{
@@ -594,8 +606,10 @@ bool IsBreakBlock(INTVECTOR2 pos, vector<INTVECTOR2>& v) {
 	}
 	//くっつけられない
 	if (!CanAttachedMapType(pos, m->type)) {
+		EndMapFourDirectionsJudgment();
 		return false;
 	}
+	EndMapFourDirectionsJudgment();
 	v.push_back(pos);
 
 	//そこからみて4方向チェック

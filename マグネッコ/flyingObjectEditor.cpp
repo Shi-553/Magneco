@@ -9,6 +9,8 @@
 #include "stageEditor.h"
 #include "gameSrite.h"
 #include "npc.h"
+#include "imgui/imgui.h"
+#include <string>
 
 #define CREATE_FLYING_OBJECT_TEXTURE_WIDTH 32
 #define CREATE_FLYING_OBJECT_TEXTURE_HEIGHT 32
@@ -137,17 +139,35 @@ void DrawFlyingObjectEditor() {
 			s.initPos = GameToScreenPos(s.initPos) - D3DXVECTOR2(CREATE_FLYING_OBJECT_WIDTH, CREATE_FLYING_OBJECT_HEIGHT) / 2;
 			DrawFlyingObjectScreen(s);
 		}
+
+	ImGui::SetNextWindowPos(ImVec2(500, 500), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
+	if (ImGui::Begin("PlayControl", nullptr)) {//, &isEdit]
+		if (ImGui::Button("Start/Pause")) {
+			isPlay = !isPlay;
+		}
+		if (ImGui::Button("Restart")) {
+			isPlay = true;
+			GetFlyingObjects()->clear();
+			SetFlyingObjectSponeFrame(0);
+		}
+		bool l = GetFlyingObjectSponerLoop();
+		if (ImGui::Checkbox("Loop", &l)) {
+			SetFlyingObjectSponerLoop(l);
+			GetFlyingObjects()->clear();
+			SetFlyingObjectSponeFrame(0);
+		}
+		auto s = "MAX: " + std::to_string(GetFlyingObjectSponeFrameMax());
+		ImGui::Text(s.c_str());
+	}
+	ImGui::End();
+
 }
 void UpdateFlyingObjectEditor() {
 	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));
 
 	NPCDeleteUFO();
 
-	if (TriggerInputLogger(MYVK_L)) {
-		SetFlyingObjectSponerLoop(!GetFlyingObjectSponerLoop());
-		GetFlyingObjects()->clear();
-		SetFlyingObjectSponeFrame(0);
-	}
 
 	auto wheel = GetInputLoggerAxisAmountInt(MYVA_MW);
 	//DebugPrintf("%d,\n", wheel);
@@ -183,6 +203,11 @@ void UpdateFlyingObjectEditor() {
 		}
 	}
 
+	if (TriggerInputLogger(MYVK_L)) {
+		SetFlyingObjectSponerLoop(!GetFlyingObjectSponerLoop());
+		GetFlyingObjects()->clear();
+		SetFlyingObjectSponeFrame(0);
+	}
 	if (TriggerInputLogger(MYVK_START_STOP)) {
 		isPlay = !isPlay;
 	}
@@ -197,6 +222,7 @@ void UpdateFlyingObjectEditor() {
 		UpdateFlyingSponer();
 		UpdateFlyingObject();
 	}
+
 
 }
 bool CheckMouseFlyingObjectEditor() {
@@ -375,6 +401,13 @@ void DrawFlyingObjectScreen(const Spone& map) {
 
 	D3DXVECTOR2 tPos = { 0,0 };
 	D3DXVECTOR2 tSize = { CREATE_FLYING_OBJECT_TEXTURE_WIDTH,CREATE_FLYING_OBJECT_TEXTURE_HEIGHT };
+
+	if (map.type == FLYING_OBJECT_UFO) {
+		tSize *= 2;
+	}
+	if (map.type == FLYING_OBJECT_PURGE_BLOCK||map.type == FLYING_OBJECT_PLAYER_BLOCK) {
+		return;
+	}
 
 	DrawSprite(textureIds[map.type], map.initPos, 10, size, tPos, tSize);
 }
