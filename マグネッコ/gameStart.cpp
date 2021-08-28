@@ -60,11 +60,12 @@ void InitGameStart() {
 
 	endButton.pos = startButton.pos + D3DXVECTOR2(0, GAME_START_BUTTON_HEIGHT + 16);
 	endButton.size = D3DXVECTOR2(GAME_START_BUTTON_WIDTH, GAME_START_BUTTON_HEIGHT);
-	endButton.textureId = ReserveTextureLoadFile("texture/ui/end.png");
-	endButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/end_pressed.png");
+	endButton.textureId = ReserveTextureLoadFile("texture/ui/tukuru.png");
+	endButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/tukuru_pressed.png");
 
 	endButton.releasedCallback = []() {
-		PostQuitMessage(0);
+		SetStageFolder("stage/main");
+		GoNextScene(StageEditorScene);
 	};
 
 	gameStartSelect.Add(tutorialButton);
