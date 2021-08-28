@@ -169,13 +169,6 @@ void UpdateSceneManager() {
 	if (NullScene < currentScene && currentScene < MaxScene) {
 		Updates[currentScene]();
 	}
-
-#ifdef _DEBUG
-
-
-	if (PressInputLogger(MYVK_START)) {
-		GoNextScene(GameStartScene);
-	}
 	if (PressInputLogger(MYVK_GAME)) {
 		if (auto info = GetCurrentInfo()) {
 			SetStagePath(info->filename);
@@ -188,6 +181,13 @@ void UpdateSceneManager() {
 			SetStagePath(info->filename);
 		}
 		GoNextScene(StageEditorScene);
+	}
+
+#ifdef _DEBUG
+
+
+	if (PressInputLogger(MYVK_START)) {
+		GoNextScene(GameStartScene);
 	}
 
 	if (TriggerInputLogger(MYVK_GAME_CLEAR)) {

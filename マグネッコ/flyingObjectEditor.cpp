@@ -9,6 +9,7 @@
 #include "stageEditor.h"
 #include "gameSrite.h"
 #include "npc.h"
+#include "imgui/imgui.h"
 
 #define CREATE_FLYING_OBJECT_TEXTURE_WIDTH 32
 #define CREATE_FLYING_OBJECT_TEXTURE_HEIGHT 32
@@ -137,6 +138,14 @@ void DrawFlyingObjectEditor() {
 			s.initPos = GameToScreenPos(s.initPos) - D3DXVECTOR2(CREATE_FLYING_OBJECT_WIDTH, CREATE_FLYING_OBJECT_HEIGHT) / 2;
 			DrawFlyingObjectScreen(s);
 		}
+
+
+	ImGui::SetNextWindowPos(ImVec2(300, 500), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
+	if (ImGui::Begin("FlyingObject", nullptr)) {//, &isEdit]
+		ImGui::Image(GetTexture(textureIds[3]), ImVec2(200, 200));
+	}
+	ImGui::End();
 }
 void UpdateFlyingObjectEditor() {
 	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));

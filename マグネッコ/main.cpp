@@ -30,6 +30,7 @@
 #include <string>
 #include "pauseMenu.h"
 #include "resource.h"
+#include "ImGuiRenderer.h"
 
 
 #define CLASS_NAME "GameWindow"
@@ -54,6 +55,8 @@ double reserveTime = 0.0;
 
 HINSTANCE ghInstance;
 HWND ghWnd;
+
+ImGuiRenderer* imGuiRenderer;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	UNREFERENCED_PARAMETER(hInstance);
@@ -182,6 +185,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	if (hWnd != ghWnd) {
 		return DefWindowProc(hWnd, uMsg, wParam, lParam);
 	}
+	if (imGuiRenderer->Proc(hWnd, uMsg, wParam, lParam)) {
+		return 0;
+	}
 
 	switch (uMsg)
 	{
@@ -224,6 +230,9 @@ bool Init(HWND hWnd,HINSTANCE hIns) {
 	InitSound(hWnd);
 	InitSprite();
 
+
+	imGuiRenderer = new ImGuiRenderer();
+	imGuiRenderer->Init(ghWnd);
 	return true;
 
 }
@@ -262,6 +271,7 @@ void Draw() {
 	d3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL, D3DCOLOR_RGBA(30, 30, 80, 255), 1.0f, 0);
 	//描画命令を貯めていく
 	d3dDevice->BeginScene();
+	imGuiRenderer->DrawBegin();
 
 	DrawSceneManager();
 
@@ -273,6 +283,7 @@ void Draw() {
 
 
 
+	imGuiRenderer->DrawEnd();
 	//貯めるの終わり
 	d3dDevice->EndScene();
 
@@ -283,6 +294,8 @@ void Draw() {
 
 
 void Uninit(void) {
+	imGuiRenderer->Uninit();
+	delete imGuiRenderer;
 
 	UninitSprite();
 	UninitSound();
