@@ -238,7 +238,7 @@ void DrawMap(void)
 			}
 			if (map->type == MAP_BLOCK_REMOVE) {
 				auto size = map->param / 100.0f;
-				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j + 0.5 - size / 2, i + 0.5 - size / 2), 100, D3DXVECTOR2(size, size));
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j + 0.5 - size / 2, i + 0.5 - size / 2), 100, D3DXVECTOR2(size*0.9, size*0.9));
 				continue;
 			}
 			if (map->type == MAP_BLOCK_NONE && MapFourDirectionsJudgment(mapPos)) {
@@ -259,8 +259,44 @@ void DrawMap(void)
 				continue;
 			}
 
+			if (map->type == MAP_GOAL || map->type == MAP_CHEST_CLOSED) {
+				auto tPos = D3DXVECTOR2(
+					MAP_TEXTURE_WIDTH * (frame / 8 % 8),
+					0
+				);
+
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j + 0.05f, i - 0.8f), 100, D3DXVECTOR2(MAP_GOAL_AND_ITEMDRAW_SIZE_WIDTH*0.9, MAP_GOAL_AND_ITEMDRAW_SIZE_HEIGHT*0.9), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_AND_ITEM_TEXTURE_HEIGHT));
+
+				continue;
+			}
+			if (map->type == MAP_CHEST_OPENED ||map->type ==  MAP_CHAECKPOINT_ON ||map->type ==  MAP_CHAECKPOINT_OFF) {
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j + 0.05f, i+ 0.1f), 100, D3DXVECTOR2(0.9, 0.9));
+				continue;
+			}
+
+			if (map->type != MAP_BLOCK) {
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j, i), 100);
+
+			}
+
 			if (map->type == MAP_BLOCK) {
-				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j+0.05f, i+0.1f), 100, D3DXVECTOR2(0.9, 0.9));
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j + 0.05f, i + 0.1f), 100, D3DXVECTOR2(0.9, 0.9));
+
+				continue;
+			}
+
+		}
+
+	}
+	
+	for (int i = 0; i < mapHeight; i++) {
+		for (int j = 0; j < mapWidth; j++) {
+			auto mapPos = INTVECTOR2(j, i);
+			Map* map = GetMap(mapPos);
+			if (map == NULL) {
+				continue;
+			}
+			if (map->type == MAP_BLOCK) {
 
 				DrawMagnetPower(D3DXVECTOR2(j, i), D3DXVECTOR2(j + 1, i));
 				DrawMagnetPower(D3DXVECTOR2(j, i), D3DXVECTOR2(j - 1, i));
@@ -268,20 +304,9 @@ void DrawMap(void)
 				DrawMagnetPower(D3DXVECTOR2(j, i), D3DXVECTOR2(j, i - 1));
 				continue;
 			}
-
-			if (map->type == MAP_GOAL || map->type == MAP_CHEST_CLOSED) {
-				auto tPos = D3DXVECTOR2(
-					MAP_TEXTURE_WIDTH * (frame / 8 % 8),
-					0
-				);
-
-				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j, i - 1), 100, D3DXVECTOR2(MAP_GOAL_AND_ITEMDRAW_SIZE_WIDTH, MAP_GOAL_AND_ITEMDRAW_SIZE_HEIGHT), tPos, D3DXVECTOR2(MAP_TEXTURE_WIDTH, MAP_GOAL_AND_ITEM_TEXTURE_HEIGHT));
-
-				continue;
-			}
-			DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j, i), 100);
 		}
 	}
+
 }
 
 void DrawMagnetPower(const D3DXVECTOR2& origin, const D3DXVECTOR2& target) {
