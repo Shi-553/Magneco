@@ -10,6 +10,7 @@
 #include "gameSrite.h"
 #include "npc.h"
 #include "imgui/imgui.h"
+#include <string>
 
 #define CREATE_FLYING_OBJECT_TEXTURE_WIDTH 32
 #define CREATE_FLYING_OBJECT_TEXTURE_HEIGHT 32
@@ -156,6 +157,8 @@ void DrawFlyingObjectEditor() {
 			GetFlyingObjects()->clear();
 			SetFlyingObjectSponeFrame(0);
 		}
+		auto s = "MAX: " + std::to_string(GetFlyingObjectSponeFrameMax());
+		ImGui::Text(s.c_str());
 	}
 	ImGui::End();
 
