@@ -283,6 +283,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="stageInfo.h" />
     <ClInclude Include="stageInfoEditor.h" />
     <ClInclude Include="stageSelect.h" />
+    <ClInclude Include="StringConvert.hpp" />
     <ClInclude Include="system_timer.h" />
     <ClInclude Include="teamLogo.h" />
     <ClInclude Include="texture.h" />

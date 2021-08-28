@@ -69,7 +69,6 @@ void InitMap(void)
 		delete[] MapChipList;
 		MapChipList = NULL;
 	}
-#ifdef _DEBUG
 
 	MapChipList = new Map[mapHeight * mapWidth]{
 		{MAP_WALL, INTVECTOR2::GetUpperLeftCorner()},
@@ -186,7 +185,6 @@ void InitMap(void)
 
 	SecureMapLabelList();
 
-#endif // _DEBUG
 }
 
 void UninitMap(void)

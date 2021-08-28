@@ -27,10 +27,12 @@ public:
 	//行ごとのマージン
 	void SetMargin(long margin);
 
-	void SetScale(D3DXVECTOR2 scale);
+	void SetScale(const D3DXVECTOR2& scale);
 
-	void SetPos(D3DXVECTOR2 pos);
-	void SetEndPos(D3DXVECTOR2 pos);
+	void SetPosEndPos(const D3DXVECTOR2& pos);
+
+	void SetPos(const D3DXVECTOR2& pos);
+	void SetEndPos(const D3DXVECTOR2& pos);
 
 	//DT_から始まるやつ
 	void SetFormat(int f);

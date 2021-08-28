@@ -41,7 +41,7 @@ Message::~Message() {
 void Message::SetMargin(long margin) {
 	fontMarginY = margin;
 }
-void Message::SetScale(D3DXVECTOR2 scale) {
+void Message::SetScale(const D3DXVECTOR2& scale) {
 	fontScale = scale;
 	if (font != NULL) {
 		font->Release();
@@ -49,7 +49,13 @@ void Message::SetScale(D3DXVECTOR2 scale) {
 	}
 	MyCreateFont(FONT_HEIGHT, FONT_WIDTH, &font);
 }
-void Message::SetPos(D3DXVECTOR2 pos) {
+
+void Message::SetPosEndPos(const D3DXVECTOR2& pos) {
+	SetPos(pos);
+	SetEndPos(pos);
+}
+
+void Message::SetPos(const D3DXVECTOR2& pos) {
 	fontPos = pos;
 	if (fontPos.x == -1) {
 		fontPos.x = 0;
@@ -58,7 +64,7 @@ void Message::SetPos(D3DXVECTOR2 pos) {
 		fontPos.y = 0;
 	}
 }
-void Message::SetEndPos(D3DXVECTOR2 pos) {
+void Message::SetEndPos(const D3DXVECTOR2& pos) {
 	endPos = pos;
 	if (endPos.x == -1) {
 		endPos.x = SCREEN_WIDTH;

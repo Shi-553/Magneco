@@ -12,6 +12,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_dx9.h"
 #include "importExport.h"
+#include "StringConvert.hpp"
 
 static Message* infoMessage;
 static StageInfo& info = GetStageInfo();
@@ -58,26 +59,27 @@ void DrawStageInfoEditor() {
 	if (ImGui::Begin("StageSetting",nullptr, ImGuiWindowFlags_MenuBar)) {//, &isEdit]
 
 		ImGui::PushID(&info.name);
-		char nameBuf[256] = "";
-		strcpy(nameBuf, info.name.c_str());
-		nameBuf[info.name.size()] = '\0';
+
+		std::string nameBuf = StringConvert::MultiToUtf8(info.name);
+		nameBuf.resize(256);
+
 
 		ImGui::Text("NAME: ");
 		ImGui::SameLine();
-		if (ImGui::InputText("", nameBuf,sizeof(nameBuf))) {
-			info.name = nameBuf;
+		if (ImGui::InputText("", (char*)nameBuf.c_str(), nameBuf.capacity() + 1)) {
+			info.name = StringConvert::Utf8ToMulti(nameBuf);
 		}
 		ImGui::PopID();
 
 		ImGui::PushID(&info.overview);
-		char overviewBuf[256] = "";
-		strcpy(overviewBuf, info.overview.c_str());
-		overviewBuf[info.overview.size()] = '\0';
+
+		std::string overviewBuf = StringConvert::MultiToUtf8(info.overview);
+		overviewBuf.resize(256);
 
 		ImGui::Text("OVERVIEW: ");
 		ImGui::SameLine();
-		if (ImGui::InputText("", overviewBuf,sizeof(overviewBuf))) {
-			info.overview = overviewBuf;
+		if (ImGui::InputText("", (char*)overviewBuf.c_str(), overviewBuf.capacity() + 1)) {
+			info.overview = StringConvert::Utf8ToMulti(overviewBuf);
 		}
 		ImGui::PopID();
 
