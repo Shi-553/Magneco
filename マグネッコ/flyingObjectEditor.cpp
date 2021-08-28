@@ -9,6 +9,7 @@
 #include "stageEditor.h"
 #include "gameSrite.h"
 #include "npc.h"
+#include "imgui/imgui.h"
 
 #define CREATE_FLYING_OBJECT_TEXTURE_WIDTH 32
 #define CREATE_FLYING_OBJECT_TEXTURE_HEIGHT 32
@@ -138,6 +139,25 @@ void DrawFlyingObjectEditor() {
 			DrawFlyingObjectScreen(s);
 		}
 
+	ImGui::SetNextWindowPos(ImVec2(500, 500), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
+	if (ImGui::Begin("PlayControl", nullptr)) {//, &isEdit]
+		if (ImGui::Button("Start/Pause")) {
+			isPlay = !isPlay;
+		}
+		if (ImGui::Button("Restart")) {
+			isPlay = true;
+			GetFlyingObjects()->clear();
+			SetFlyingObjectSponeFrame(0);
+		}
+		bool l = GetFlyingObjectSponerLoop();
+		if (ImGui::Checkbox("Loop", &l)) {
+			SetFlyingObjectSponerLoop(l);
+			GetFlyingObjects()->clear();
+			SetFlyingObjectSponeFrame(0);
+		}
+	}
+	ImGui::End();
 
 }
 void UpdateFlyingObjectEditor() {
@@ -145,11 +165,6 @@ void UpdateFlyingObjectEditor() {
 
 	NPCDeleteUFO();
 
-	if (TriggerInputLogger(MYVK_L)) {
-		SetFlyingObjectSponerLoop(!GetFlyingObjectSponerLoop());
-		GetFlyingObjects()->clear();
-		SetFlyingObjectSponeFrame(0);
-	}
 
 	auto wheel = GetInputLoggerAxisAmountInt(MYVA_MW);
 	//DebugPrintf("%d,\n", wheel);
@@ -185,6 +200,11 @@ void UpdateFlyingObjectEditor() {
 		}
 	}
 
+	if (TriggerInputLogger(MYVK_L)) {
+		SetFlyingObjectSponerLoop(!GetFlyingObjectSponerLoop());
+		GetFlyingObjects()->clear();
+		SetFlyingObjectSponeFrame(0);
+	}
 	if (TriggerInputLogger(MYVK_START_STOP)) {
 		isPlay = !isPlay;
 	}
@@ -199,6 +219,7 @@ void UpdateFlyingObjectEditor() {
 		UpdateFlyingSponer();
 		UpdateFlyingObject();
 	}
+
 
 }
 bool CheckMouseFlyingObjectEditor() {
