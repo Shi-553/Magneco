@@ -117,7 +117,6 @@ void DrawMapEditor() {
 		switch (i)
 		{
 		case MAP_BLOCK_REMOVE:
-		case MAP_BLOCK_NONE:
 			continue;
 		}
 		DrawMapScreen(createMap[i]);
