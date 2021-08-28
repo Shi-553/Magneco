@@ -64,6 +64,7 @@ void InitGameStart() {
 	endButton.pressedTextureId = ReserveTextureLoadFile("texture/ui/tukuru_pressed.png");
 
 	endButton.releasedCallback = []() {
+		PlaySound(SOUND_LABEL_SE_DECITION);
 		SetStageFolder("stage/main");
 		GoNextScene(StageEditorScene);
 	};
