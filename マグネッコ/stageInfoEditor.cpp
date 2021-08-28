@@ -1,7 +1,8 @@
-﻿#include "stageInfoEditor.h"
+﻿
+#include "config.h"
+#include "stageInfoEditor.h"
 #include "messeage.h"
 #include "stageInfo.h"
-#include "config.h"
 #include <regex>
 #include "InputLogger.h"
 #include "stageEditor.h"
@@ -58,6 +59,9 @@ void DrawStageInfoEditor() {
 
 		ImGui::PushID(&info.name);
 		char nameBuf[256] = "";
+		strcpy(nameBuf, info.name.c_str());
+		nameBuf[info.name.size()] = '\0';
+
 		ImGui::Text("NAME: ");
 		ImGui::SameLine();
 		if (ImGui::InputText("", nameBuf,sizeof(nameBuf))) {
@@ -65,12 +69,15 @@ void DrawStageInfoEditor() {
 		}
 		ImGui::PopID();
 
-		ImGui::PushID(&info.name);
+		ImGui::PushID(&info.overview);
 		char overviewBuf[256] = "";
+		strcpy(overviewBuf, info.overview.c_str());
+		overviewBuf[info.overview.size()] = '\0';
+
 		ImGui::Text("OVERVIEW: ");
 		ImGui::SameLine();
 		if (ImGui::InputText("", overviewBuf,sizeof(overviewBuf))) {
-			info.name = overviewBuf;
+			info.overview = overviewBuf;
 		}
 		ImGui::PopID();
 
