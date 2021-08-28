@@ -13,6 +13,11 @@
 #define MAP_GOAL_AND_ITEMDRAW_SIZE_WIDTH 1
 #define MAP_GOAL_AND_ITEMDRAW_SIZE_HEIGHT 2
 
+#define MAGNETIC_FORCE_TEXTURE_WIDTH (384)
+#define MAGNETIC_FORCE_TEXTURE_HEIGHT (64)
+
+
+
 
 
 void DrawMagnetPower(const D3DXVECTOR2& origin, const D3DXVECTOR2& target);
@@ -26,6 +31,9 @@ static int map_textureIds;
 static int frame = 0;
 static int mapHeight = 10;
 static int mapWidth = 10;
+
+static int magneticAnimeFrame = 0;
+
 
 static int putPredictionThinTextureId = TEXTURE_INVALID_ID;
 static int magnetPowerWidthTextureId = TEXTURE_INVALID_ID;
@@ -48,12 +56,14 @@ void InitMap(void)
 	textureIds[MAP_CHEST_OPENED] = ReserveTextureLoadFile("texture/block/itembox_block.png");
 	textureIds[MAP_BLOCK_REMOVE] = ReserveTextureLoadFile("texture/block/road_block.png");
 	putPredictionThinTextureId = ReserveTextureLoadFile("texture/player/putPredictionThin.png");
-	magnetPowerWidthTextureId = ReserveTextureLoadFile("texture/block/magnetPowerWidth.png");
-	magnetPowerHeightTextureId = ReserveTextureLoadFile("texture/block/magnetPowerHeight.png");
+	magnetPowerWidthTextureId = ReserveTextureLoadFile("texture/effect/connect_electricity.png");
+	magnetPowerHeightTextureId = ReserveTextureLoadFile("texture/effect/connect_electricity_rotate.png");
+	//magnetPowerHeightTextureId = ReserveTextureLoadFile("texture/block/magnetPowerHeight.png");
 
 	frame = 0;
 	mapHeight = 10;
 	mapWidth = 10;
+	magneticAnimeFrame = 0;
 
 	if (MapChipList != NULL) {
 		delete[] MapChipList;
@@ -211,6 +221,7 @@ void UpdateMap(void)
 		}
 	}
 	frame++;
+	magneticAnimeFrame++;
 }
 
 
@@ -249,7 +260,7 @@ void DrawMap(void)
 			}
 
 			if (map->type == MAP_BLOCK) {
-				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j, i+0.1f), 100, D3DXVECTOR2(0.9, 0.9));
+				DrawGameSprite(textureIds[map->type], D3DXVECTOR2(j+0.05f, i+0.1f), 100, D3DXVECTOR2(0.9, 0.9));
 
 				DrawMagnetPower(D3DXVECTOR2(j, i), D3DXVECTOR2(j + 1, i));
 				DrawMagnetPower(D3DXVECTOR2(j, i), D3DXVECTOR2(j - 1, i));
@@ -285,12 +296,28 @@ void DrawMagnetPower(const D3DXVECTOR2& origin, const D3DXVECTOR2& target) {
 		auto pos = (origin + target) / 2;
 		if (isW) {
 			pos.y -= 0.05f;
-			DrawGameSprite(magnetPowerWidthTextureId, pos, 100);
+
+			auto tPos = D3DXVECTOR2(
+			0,
+			MAGNETIC_FORCE_TEXTURE_HEIGHT * (magneticAnimeFrame / 12 % 2)
+			);
+
+			pos.x += 0.26f;
+			DrawGameSprite(magnetPowerWidthTextureId, pos, 100, D3DXVECTOR2(0.5f, 1), tPos, D3DXVECTOR2(MAGNETIC_FORCE_TEXTURE_HEIGHT, MAGNETIC_FORCE_TEXTURE_WIDTH / 6));
+
+			//DrawGameSprite(magnetPowerWidthTextureId, pos, 100);
 		}
 		else {
 			//pos.y -= 0.1f;
-			pos.x -= 0.05f;
-			DrawGameSprite(magnetPowerHeightTextureId, pos, 100);
+			//pos.x -= 0.05f;
+
+			auto tPos = D3DXVECTOR2(
+			MAGNETIC_FORCE_TEXTURE_HEIGHT * (magneticAnimeFrame / 12 % 6),
+			0
+			);
+
+			pos.y += 0.1f;
+			DrawGameSprite(magnetPowerHeightTextureId, pos, 100, D3DXVECTOR2(1, 0.8f), tPos, D3DXVECTOR2(MAGNETIC_FORCE_TEXTURE_HEIGHT, MAGNETIC_FORCE_TEXTURE_WIDTH / 6));
 		}
 	}
 }
