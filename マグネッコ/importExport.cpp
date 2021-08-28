@@ -6,10 +6,13 @@
 #include "importExport.h"
 
 
-std::string gFilename;
+std::string gFilename="";
 
 void SetStagePath(std::string filename) {
 	gFilename = filename;
+}
+const std::string& GetStagePath(){
+	return gFilename;
 }
 bool StageExport() {
 	FILE* fp = NULL;

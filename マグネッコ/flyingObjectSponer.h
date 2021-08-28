@@ -31,6 +31,7 @@ void RemoveFlyingObjectSponer(int id);
 bool FlyingObjectSponerExport(FILE* fp);
 bool FlyingObjectSponerImport(FILE* fp);
 
+int GetFlyingObjectSponeFrameMax();
 int GetFlyingObjectSponeFrame();
 void SetFlyingObjectSponeFrame(int f);
 

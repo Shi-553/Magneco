@@ -238,15 +238,19 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 			auto npcPos = npc->trans.GetIntPos();
 			auto mapPos = INTVECTOR2(j, i);
 			Map* map = GetMap(mapPos);
-			if (map->type == MAP_CHAECKPOINT_OFF && MapFourDirectionsJudgment(mapPos) && MapFourDirectionsJudgment(npcPos))
-			{
-				auto tPos = D3DXVECTOR2(
-					32 * (frame / 6 % 16),
-					0
-				);
+			if (map->type == MAP_CHAECKPOINT_OFF && MapFourDirectionsJudgment(mapPos)) {
+				EndMapFourDirectionsJudgment();
+				if (MapFourDirectionsJudgment(npcPos))
+				{
+					auto tPos = D3DXVECTOR2(
+						32 * (frame / 6 % 16),
+						0
+					);
 
-				DrawGameSprite(checkPointGuideTextureId, D3DXVECTOR2(j + 0.1, i - 1.5), 100, D3DXVECTOR2(0.8, 1.5), tPos, D3DXVECTOR2(32, 64));
+					DrawGameSprite(checkPointGuideTextureId, D3DXVECTOR2(j + 0.1, i - 1.5), 100, D3DXVECTOR2(0.8, 1.5), tPos, D3DXVECTOR2(32, 64));
+				}
 			}
+			EndMapFourDirectionsJudgment();
 		}
 	}
 	

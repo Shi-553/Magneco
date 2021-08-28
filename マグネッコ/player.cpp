@@ -370,6 +370,7 @@ void UpdatePutFlyingObject() {
 
 			if (GetMapType(current.trans.GetIntPos()) == MAP_BLOCK_NONE && MapFourDirectionsJudgment(current.trans.GetIntPos()) &&
 				std::find_if(player.putFlyingObjectList.begin(), player.putFlyingObjectList.end(), [&current](FlyingObject f) {return f.uid == current.uid; }) == player.putFlyingObjectList.end()) {
+				EndMapFourDirectionsJudgment();
 				MapChange(current);
 
 				player.putFlyingObjectList.push_back(current);
@@ -382,6 +383,7 @@ void UpdatePutFlyingObject() {
 				break;
 			}
 			else {
+				EndMapFourDirectionsJudgment();
 				modosu.push_back(current);
 				player.flyingObjectList.pop_front();
 			}
