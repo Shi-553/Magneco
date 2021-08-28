@@ -249,7 +249,11 @@ bool FlyingObjectSponerImport(FILE* fp) {
 
 
 int GetFlyingObjectSponeFrameMax() {
-	return spones[spones.size()-1].s.frame;
+	if (spones.empty()) {
+		return 0;
+	}
+	int end = spones.size() - 1;
+	return spones[end].s.frame;
 }
 
 int GetFlyingObjectSponeFrame() {

@@ -11,6 +11,7 @@
 #include "npc.h"
 #include "imgui/imgui.h"
 #include <string>
+#include "messeage.h"
 
 #define CREATE_FLYING_OBJECT_TEXTURE_WIDTH 32
 #define CREATE_FLYING_OBJECT_TEXTURE_HEIGHT 32
@@ -25,15 +26,9 @@
 #define CREATE_FLYING_OBJECT_MARGIN 20
 
 #define CREATE_PROPERTY_X 1000
-#define CREATE_HP_Y 40
-#define CREATE_SIZEX_Y 70
-#define CREATE_SIZEY_Y 100
-#define CREATE_SPPED_Y 130
-#define CREATE_PROPERTY_MARGIN D3DXVECTOR2(20,5)
 
 
-bool CheckWheelProperty(D3DXVECTOR2 pos, D3DXVECTOR2 addPos);
-bool CheckChangeProperty(D3DXVECTOR2 pos, D3DXVECTOR2 addPos);
+
 
 
 D3DXVECTOR2 GetCreateFlyingObjectPos(int type);
@@ -56,6 +51,8 @@ static D3DXVECTOR2 startDrag;
 static int createHP = 1;
 static INTVECTOR2 createSize = { 1,1 };
 static float createSpeed = 1.0f;
+
+Message* flyingObjectEditorMessage;
 
 void SetSpeed(float speed) {
 	createSpeed = speed;
@@ -83,39 +80,59 @@ void InitFlyingObjectEditor() {
 		creates[i].initPos = GetCreateFlyingObjectPos(i);
 		creates[i].size = { 1,1 };
 	}
+
+	flyingObjectEditorMessage = new Message({ 1.5f,1.5f });
+
+	SetFlyingObjectSponerLoop(false);
 }
 void UninitFlyingObjectEditor() {
 	ReleaseTexture(eraseTextureId);
+
+	delete flyingObjectEditorMessage;
 }
 
 void DrawFlyingObjectEditor() {
 	DrawFlyingObject();
 
-	DEBUG_FONT_STATE s = {};
-	s.pos = { 500,0 };
-	DrawDebugFont(&s, "%d", GetFlyingObjectSponeFrame());
+	flyingObjectEditorMessage->SetFormat(DT_CENTER | DT_NOCLIP);
 
-	s.scale = 0.5;
-	s.pos = { CREATE_PROPERTY_X,0 };
-	DrawDebugFont(&s, "CREATE");
-	s.pos = { CREATE_PROPERTY_X,CREATE_HP_Y };
-	DrawDebugFont(&s, "HP  <   >");
-	s.pos = { CREATE_PROPERTY_X + DEBUG_FONT_WIDTH * 6 / 2,CREATE_HP_Y };
-	DrawDebugFont(&s, "%d", createHP);
+	flyingObjectEditorMessage->SetPosEndPos({ SCREEN_WIDTH / 2,0 });
+	flyingObjectEditorMessage->ClearOffset();
+	flyingObjectEditorMessage->Draw("%d", GetFlyingObjectSponeFrame());
 
-	s.pos = { CREATE_PROPERTY_X,CREATE_SIZEX_Y };
-	DrawDebugFont(&s, "SX  <   >");
-	s.pos = { CREATE_PROPERTY_X + DEBUG_FONT_WIDTH * 6 / 2,CREATE_SIZEX_Y };
-	DrawDebugFont(&s, "%d", createSize.x);
-	s.pos = { CREATE_PROPERTY_X,CREATE_SIZEY_Y };
-	DrawDebugFont(&s, "SY  <   >");
-	s.pos = { CREATE_PROPERTY_X + DEBUG_FONT_WIDTH * 6 / 2,CREATE_SIZEY_Y };
-	DrawDebugFont(&s, "%d", createSize.y);
+	ImGui::SetNextWindowPos(ImVec2(CREATE_PROPERTY_X, 0), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiCond_Once);
+	if (ImGui::Begin("CreateObjectSetting", nullptr)) {//, &isEdit]
 
-	s.pos = { CREATE_PROPERTY_X,CREATE_SPPED_Y };
-	DrawDebugFont(&s, "SPD <   >");
-	s.pos = { CREATE_PROPERTY_X + DEBUG_FONT_WIDTH * 5 / 2,CREATE_SPPED_Y };
-	DrawDebugFont(&s, "%.1f", createSpeed);
+
+		ImGui::PushID(&createHP);
+		ImGui::Text("HP: ");
+		ImGui::SameLine();
+		if (ImGui::InputInt("", &createHP)) {
+			createHP = max(createHP, 0);
+		}
+		ImGui::PopID();
+
+		ImGui::PushID(&createSize);
+		ImGui::Text("SIZE: ");
+		ImGui::SameLine();
+		if (ImGui::InputInt2("", (int*)&createSize)) {
+			createSize.x = max(createSize.x, 0);
+			createSize.y = max(createSize.y, 0);
+		}
+		ImGui::PopID();
+
+		ImGui::PushID(&createSpeed);
+		ImGui::Text("SIZE: ");
+		ImGui::SameLine();
+		if (ImGui::InputFloat("",&createSpeed)) {
+			createSpeed = max(createSpeed, 0);
+		}
+		ImGui::PopID();
+	}
+	ImGui::End();
+
+
 
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
 		DrawFlyingObjectScreen(creates[i]);
@@ -175,32 +192,8 @@ void UpdateFlyingObjectEditor() {
 	if (wheel != 0) {
 		auto base = PressInputLogger(MYVK_SHIFT) ? 5 : 1;
 
-		if (CheckWheelProperty(mousePos, D3DXVECTOR2(0, CREATE_HP_Y))) {
-			createHP += (wheel / 120) * base;
-			if (createHP < 1) {
-				createHP = 1;
-			}
-		}
-		else if (CheckWheelProperty(mousePos, D3DXVECTOR2(0, CREATE_SIZEX_Y))) {
-			createSize.x += (wheel / 120) * base;
-			if (createSize.x < 1) {
-				createSize.x = 1;
-			}
-		}
-		else if (CheckWheelProperty(mousePos, D3DXVECTOR2(0, CREATE_SIZEY_Y))) {
-			createSize.y += (wheel / 120)* base;
-			if (createSize.y < 1) {
-				createSize.y = 1;
-			}
-		}
-		else if (CheckWheelProperty(mousePos, D3DXVECTOR2(0, CREATE_SPPED_Y))) {
-			SetSpeed(createSpeed + (wheel / 120) / 10.0f * base);
-			
-		}
-		else {
 			isPlay = false;
 			SetFlyingObjectSponeFrame(GetFlyingObjectSponeFrame() + (wheel / 10) * base);
-		}
 	}
 
 	if (TriggerInputLogger(MYVK_L)) {
@@ -260,45 +253,6 @@ bool CheckMouseFlyingObjectEditor() {
 		}
 	}
 	if (ReleaseInputLogger(MYVK_LEFT_CLICK)) {
-		auto base = PressInputLogger(MYVK_SHIFT) ? 5 : 1;
-		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 8 / 2, CREATE_HP_Y))) {
-			createHP+= base;
-			return true;
-		}
-		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 4 / 2, CREATE_HP_Y))) {
-			if (createHP > 1) {
-				createHP-= base;
-			}
-			return true;
-		}
-		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 8 / 2, CREATE_SIZEX_Y))) {
-			createSize.x+= base;
-			return true;
-		}
-		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 4 / 2, CREATE_SIZEX_Y))) {
-			if (createSize.x > 1) {
-				createSize.x-= base;
-			}
-			return true;
-		}
-		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 8 / 2, CREATE_SIZEY_Y))) {
-			createSize.y+= base;
-			return true;
-		}
-		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 4 / 2, CREATE_SIZEY_Y))) {
-			if (createSize.y > 1) {
-				createSize.y-= base;
-			}
-			return true;
-		}
-		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 8 / 2, CREATE_SPPED_Y))) {
-			SetSpeed(createSpeed+ 0.1f * base);
-			return true;
-		}
-		if (CheckChangeProperty(mousePos, D3DXVECTOR2(DEBUG_FONT_WIDTH * 4 / 2, CREATE_SPPED_Y))) {
-			SetSpeed(createSpeed - 0.1f * base);
-			return true;
-		}
 
 		if (!isDrag) {
 			isErase = false;
@@ -352,19 +306,6 @@ bool CheckMouseFlyingObjectEditor() {
 		ret = true;
 	}
 	return ret;
-}
-
-bool CheckChangeProperty(D3DXVECTOR2 pos, D3DXVECTOR2 addPos) {
-	D3DXVECTOR2 upPos = { CREATE_PROPERTY_X + addPos.x,addPos.y };
-	D3DXVECTOR2 size = { DEBUG_FONT_WIDTH / 2,DEBUG_FONT_HEIGHT / 2 };
-
-	return CheckSquare(pos, upPos - CREATE_PROPERTY_MARGIN / 2, size + CREATE_PROPERTY_MARGIN);
-}
-bool CheckWheelProperty(D3DXVECTOR2 pos, D3DXVECTOR2 addPos) {
-	D3DXVECTOR2 hpPos = { CREATE_PROPERTY_X + addPos.x ,addPos.y };
-	D3DXVECTOR2 size = { DEBUG_FONT_WIDTH * 9 / 2,DEBUG_FONT_HEIGHT / 2 };
-
-	return CheckSquare(pos, hpPos - CREATE_PROPERTY_MARGIN / 2, size + CREATE_PROPERTY_MARGIN);
 }
 
 
