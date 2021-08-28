@@ -101,7 +101,7 @@ void DrawFlyingObjectEditor() {
 	flyingObjectEditorMessage->Draw("%d", GetFlyingObjectSponeFrame());
 
 	ImGui::SetNextWindowPos(ImVec2(CREATE_PROPERTY_X, 0), ImGuiCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(200, 130), ImGuiCond_Once);
 	if (ImGui::Begin("CreateObjectSetting", nullptr)) {//, &isEdit]
 
 
@@ -114,7 +114,7 @@ void DrawFlyingObjectEditor() {
 		ImGui::PopID();
 
 		ImGui::PushID(&createSize);
-		ImGui::Text("SIZE: ");
+		ImGui::Text("Size: ");
 		ImGui::SameLine();
 		if (ImGui::InputInt2("", (int*)&createSize)) {
 			createSize.x = max(createSize.x, 0);
@@ -123,7 +123,7 @@ void DrawFlyingObjectEditor() {
 		ImGui::PopID();
 
 		ImGui::PushID(&createSpeed);
-		ImGui::Text("SIZE: ");
+		ImGui::Text("Speed: ");
 		ImGui::SameLine();
 		if (ImGui::InputFloat("",&createSpeed)) {
 			createSpeed = max(createSpeed, 0);
