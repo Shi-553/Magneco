@@ -272,8 +272,14 @@ void SetFlyingObjectSponeFrame(int f) {
 	}
 	else {
 		if (f < 0) {
-			f = spones.back().s.frame;
-			sponeIndex = spones.size();
+			if (spones.empty()) {
+				f = 0;
+				sponeIndex = 0;
+			}
+			else {
+				f = spones.back().s.frame;
+				sponeIndex = spones.size();
+			}
 		}
 
 		frame = f;
