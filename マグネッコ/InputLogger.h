@@ -73,7 +73,7 @@ float GetInputLoggerAxis(VirtualAxis axis);
 float GetInputLoggerAxisAmount(VirtualAxis axis);
 
 
-void InputLoggerProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);
+void InputLoggerProcessMessage(UINT message, WPARAM wParam, LPARAM lParam, bool isKeyboard, bool isMouse);
 
 
 void RecordStart(int frameMax);

@@ -31,6 +31,7 @@
 #include "pauseMenu.h"
 #include "resource.h"
 #include "ImGuiRenderer.h"
+#include "imgui/imgui.h"
 
 
 #define CLASS_NAME "GameWindow"
@@ -197,7 +198,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		return 0;
 	}
 
-	InputLoggerProcessMessage(uMsg, wParam, lParam);
+	ImGuiIO& io = ImGui::GetIO();
+
+	
+	InputLoggerProcessMessage(uMsg, wParam, lParam, !io.WantCaptureKeyboard, !io.WantCaptureMouse);
 
 	//デフォルトのメッセージ処理
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);

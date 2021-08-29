@@ -285,9 +285,13 @@ float GetInputLoggerAxisAmount(VirtualAxis axis) {
 	return GetInputLoggerAxisAmountInt(axis) / (float)axisMaxs[(int)axis];
 }
 
-void InputLoggerProcessMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	Keyboard_ProcessMessage(uMsg, wParam, lParam);
-	Mouse_ProcessMessage(uMsg, wParam, lParam);
+void InputLoggerProcessMessage(UINT uMsg, WPARAM wParam, LPARAM lParam,bool isKeyboard,bool isMouse) {
+	if (isKeyboard) {
+		Keyboard_ProcessMessage(uMsg, wParam, lParam);
+	}
+	if (isMouse) {
+		Mouse_ProcessMessage(uMsg, wParam, lParam);
+	}
 }
 
 void RecordStart(int recordFrameMax) {
