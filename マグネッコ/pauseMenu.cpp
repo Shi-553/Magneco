@@ -159,7 +159,7 @@ void UpdatePauseMenu() {
 }
 
 
-bool GetIsPause() {
+bool IsPause() {
 	return isPause;
 }
 

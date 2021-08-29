@@ -35,7 +35,6 @@
 
 
 #define CLASS_NAME "GameWindow"
-#define WINDOW_CAPTION "マグネッコ"
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -54,10 +53,16 @@ double baseTime = 0.0;
 double fps = 0.0;
 double reserveTime = 0.0;
 
+bool isInit = false;
+
 HINSTANCE ghInstance;
 HWND ghWnd;
 
 ImGuiRenderer* imGuiRenderer;
+
+HWND GetWindowHandle() {
+	return ghWnd;
+}
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	UNREFERENCED_PARAMETER(hInstance);
@@ -183,7 +188,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	if (imGuiRenderer->Proc(hWnd, uMsg, wParam, lParam)) {
+	if (isInit && imGuiRenderer->Proc(hWnd, uMsg, wParam, lParam)) {
 		return true;
 	}
 	if (hWnd != ghWnd) {
@@ -198,10 +203,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		return 0;
 	}
 
-	ImGuiIO& io = ImGui::GetIO();
+	if (isInit) {
+		ImGuiIO& io = ImGui::GetIO();
 
-	
-	InputLoggerProcessMessage(uMsg, wParam, lParam, !io.WantCaptureKeyboard, !io.WantCaptureMouse);
+		InputLoggerProcessMessage(uMsg, wParam, lParam, !io.WantCaptureKeyboard, !io.WantCaptureMouse);
+	}
 
 	//デフォルトのメッセージ処理
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
@@ -236,12 +242,16 @@ bool Init(HWND hWnd,HINSTANCE hIns) {
 
 
 	imGuiRenderer = new ImGuiRenderer();
-	imGuiRenderer->Init(ghWnd);
+	imGuiRenderer->Init();
+
+	isInit = true;
+
 	return true;
 
 }
 
 void Update(void) {
+
 	UpdateInputLogger();
 	UpdateSceneManager();
 
@@ -298,6 +308,8 @@ void Draw() {
 
 
 void Uninit(void) {
+	isInit = false;
+
 	imGuiRenderer->Uninit();
 	delete imGuiRenderer;
 

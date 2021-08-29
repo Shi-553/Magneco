@@ -9,6 +9,6 @@ void DrawPauseMenu();
 
 void UpdatePauseMenu();
 
-bool GetIsPause();
+bool IsPause();
 int AddSwitchPauseEvent(const SwitchPauseEvent& e);
 void RemoveSwitchPauseEvent(int i);
