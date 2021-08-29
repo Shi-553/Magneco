@@ -13,14 +13,14 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 bool isDBCS = false;
 BYTE befByte;
 
-void ImGuiRenderer::Init(HWND hWnd) {
+void ImGuiRenderer::Init() {
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui::StyleColorsDark();
 
-	ImGui_ImplWin32_Init(hWnd);
+	ImGui_ImplWin32_Init(GetWindowHandle());
 	ImGui_ImplDX9_Init(GetD3DDevice());
 
 	io.IniFilename = NULL;

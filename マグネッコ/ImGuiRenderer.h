@@ -6,7 +6,7 @@
 class ImGuiRenderer
 {
 public:
-	void Init(HWND hWnd);
+	void Init();
 	void Uninit();
 	LRESULT CALLBACK Proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	void DrawBegin();

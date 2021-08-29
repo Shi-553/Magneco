@@ -20,33 +20,20 @@ static StageInfo& info = GetStageInfo();
 std::string path = "";
 
 
+
+void SetWindowCaption(const std::string& caption);
 OPENFILENAME CreateOPENFILENAME(const LPSTR& path, const std::string& initPath);
 
 void SaveStageInfo(bool isOther);
 void LoadStageInfo();
 
-
-OPENFILENAME CreateOPENFILENAME(const LPSTR& path, const std::string& initPath) {
-
-	OPENFILENAME open{};
-	open.lpstrFilter = "ステージファイル(*.stage)\0*.stage\0全てのファイル(*.*)\0*.*\0";
-	open.lStructSize = sizeof(OPENFILENAME);
-	//open.hwndOwner = GetWindow();
-	open.lpstrFile = path;
-	open.nMaxFile = MAX_PATH;
-	open.Flags = OFN_FILEMUSTEXIST | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
-	open.lpstrDefExt = "stage";
-
-	open.lpstrInitialDir = initPath.c_str();
-
-	return open;
-}
-
 void InitStageInfoEditor() {
 	infoMessage = new Message(D3DXVECTOR2(0.8, 0.8));
+	SetWindowCaption(path);
 }
 void UninitStageInfoEditor() {
 	delete infoMessage;
+	SetWindowCaption("");
 }
 void DrawStageInfoEditor() {
 	auto oneSize = infoMessage->GetOneSize();
@@ -158,6 +145,7 @@ void SaveStageInfo(bool isOther){
 		SetStagePath(path);
 		StageExport();
 	}
+	SetWindowCaption(path);
 }
 
 void LoadStageInfo(){
@@ -171,4 +159,31 @@ void LoadStageInfo(){
 		SetStagePath(path);
 		StageImport();
 	}
+	SetWindowCaption(path);
+}
+
+
+
+OPENFILENAME CreateOPENFILENAME(const LPSTR& path, const std::string& initPath) {
+
+	OPENFILENAME open{};
+	open.lpstrFilter = "ステージファイル(*.stage)\0*.stage\0全てのファイル(*.*)\0*.*\0";
+	open.lStructSize = sizeof(OPENFILENAME);
+	//open.hwndOwner = GetWindow();
+	open.lpstrFile = path;
+	open.nMaxFile = MAX_PATH;
+	open.Flags = OFN_FILEMUSTEXIST | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
+	open.lpstrDefExt = "stage";
+
+	open.lpstrInitialDir = initPath.c_str();
+
+	return open;
+}
+
+void SetWindowCaption(const std::string& caption) {
+	auto cap = caption.empty() ? "" : " - " + caption;
+
+	auto c = std::string(WINDOW_CAPTION) + cap;
+
+	SetWindowText(GetWindowHandle(), c.c_str());
 }
