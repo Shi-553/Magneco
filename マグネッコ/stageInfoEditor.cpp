@@ -22,6 +22,8 @@ std::string path = "";
 
 OPENFILENAME CreateOPENFILENAME(const LPSTR& path, const std::string& initPath);
 
+void SaveStageInfo(bool isOther);
+void LoadStageInfo();
 
 
 OPENFILENAME CreateOPENFILENAME(const LPSTR& path, const std::string& initPath) {
@@ -107,48 +109,17 @@ void DrawStageInfoEditor() {
 		}
 		ImGui::PopID();
 
-
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::BeginMenu("File"))
 			{
 				if (ImGui::MenuItem("Save")) {
-					if (path == "") {
-						char strFile[MAX_PATH] = "";
-						auto open = CreateOPENFILENAME(strFile, path);
-
-						if (GetSaveFileName(&open)) {
-							path = strFile;
-						}
-					}
-					if (path != "") {
-						SetStagePath(path);
-						StageExport();
-					}
+					SaveStageInfo(false);
 				}
 				if (ImGui::MenuItem("Save as...")) {
-					char strFile[MAX_PATH] = "";
-					auto open = CreateOPENFILENAME(strFile, path);
-
-					if (GetSaveFileName(&open)) {
-						path = strFile;
-					}
-					if (path != "") {
-						SetStagePath(path);
-						StageExport();
-					}
-
+					SaveStageInfo(true);
 				}
 				if (ImGui::MenuItem("Load")) {
-					char strFile[MAX_PATH] = "";
-					auto open = CreateOPENFILENAME(strFile, path);
-
-					if (GetOpenFileName(&open)) {
-						path = strFile;
-					}
-					if (path != "") {
-						SetStagePath(path);
-						StageImport();
-					}
+					LoadStageInfo();
 				}
 
 				ImGui::EndMenu();
@@ -161,14 +132,43 @@ void DrawStageInfoEditor() {
 void UpdateStageInfoEditor() {
 
 	if (PressInputLogger(MYVK_CONTROL) && TriggerInputLogger(MYVK_SAVE)) {
-		StageExport();
+		SaveStageInfo(PressInputLogger(MYVK_SHIFT));
 
 	}
 	if (PressInputLogger(MYVK_CONTROL) && TriggerInputLogger(MYVK_LOAD)) {
-		StageImport();
+		LoadStageInfo();
 	}
 }
 bool CheckMouseStageInfoEditor() {
 
 	return false;
+}
+
+void SaveStageInfo(bool isOther){
+	if (isOther||path == "") {
+		char strFile[MAX_PATH] = "";
+		auto open = CreateOPENFILENAME(strFile, path);
+
+		if (GetSaveFileName(&open)) {
+			path = strFile;
+		}
+	}
+
+	if (path != "") {
+		SetStagePath(path);
+		StageExport();
+	}
+}
+
+void LoadStageInfo(){
+	char strFile[MAX_PATH] = "";
+	auto open = CreateOPENFILENAME(strFile, path);
+
+	if (GetOpenFileName(&open)) {
+		path = strFile;
+	}
+	if (path != "") {
+		SetStagePath(path);
+		StageImport();
+	}
 }
