@@ -13,6 +13,7 @@
 #include "imgui/imgui_impl_dx9.h"
 #include "importExport.h"
 #include "StringConvert.hpp"
+#include "pauseMenu.h"
 
 static Message* infoMessage;
 static StageInfo& info = GetStageInfo();
@@ -45,7 +46,9 @@ void DrawStageInfoEditor() {
 
 	ImGui::SetNextWindowPos(ImVec2(300, 500), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(200, 230), ImGuiCond_Once);
-	if (ImGui::Begin("StageSetting",nullptr, ImGuiWindowFlags_MenuBar)) {//, &isEdit]
+
+
+	if (!IsPause() && ImGui::Begin("StageSetting", nullptr, ImGuiWindowFlags_MenuBar)) {
 
 		ImGui::PushID(&info.name);
 
@@ -113,8 +116,9 @@ void DrawStageInfoEditor() {
 			}
 			ImGui::EndMenuBar();
 		}
+
+		ImGui::End();
 	}
-	ImGui::End();
 }
 void UpdateStageInfoEditor() {
 

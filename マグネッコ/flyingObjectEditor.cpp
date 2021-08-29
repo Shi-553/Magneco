@@ -12,6 +12,7 @@
 #include "imgui/imgui.h"
 #include <string>
 #include "messeage.h"
+#include "pauseMenu.h"
 
 #define CREATE_FLYING_OBJECT_TEXTURE_WIDTH 32
 #define CREATE_FLYING_OBJECT_TEXTURE_HEIGHT 32
@@ -102,7 +103,8 @@ void DrawFlyingObjectEditor() {
 
 	ImGui::SetNextWindowPos(ImVec2(CREATE_PROPERTY_X, 0), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(200, 130), ImGuiCond_Once);
-	if (ImGui::Begin("CreateObjectSetting", nullptr)) {//, &isEdit]
+
+	if (!IsPause() &&ImGui::Begin("CreateObjectSetting")) {
 
 
 		ImGui::PushID(&createHP);
@@ -129,8 +131,9 @@ void DrawFlyingObjectEditor() {
 			createSpeed = max(createSpeed, 0);
 		}
 		ImGui::PopID();
+
+		ImGui::End();
 	}
-	ImGui::End();
 
 
 
@@ -159,7 +162,8 @@ void DrawFlyingObjectEditor() {
 
 	ImGui::SetNextWindowPos(ImVec2(500, 500), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
-	if (ImGui::Begin("PlayControl", nullptr)) {//, &isEdit]
+
+	if (!IsPause() && ImGui::Begin("PlayControl")) {
 		if (ImGui::Button("Start/Pause")) {
 			isPlay = !isPlay;
 		}
@@ -176,8 +180,9 @@ void DrawFlyingObjectEditor() {
 		}
 		auto s = "MAX: " + std::to_string(GetFlyingObjectSponeFrameMax());
 		ImGui::Text(s.c_str());
+
+		ImGui::End();
 	}
-	ImGui::End();
 
 }
 void UpdateFlyingObjectEditor() {
