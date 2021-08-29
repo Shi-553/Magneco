@@ -29,7 +29,7 @@ void ImGuiRenderer::Uninit() {
 	ImGui::DestroyContext();
 
 }
-bool ImGuiRenderer::Proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK ImGuiRenderer::Proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	return ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
 }
 void ImGuiRenderer::DrawBegin() {
