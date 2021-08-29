@@ -55,7 +55,7 @@ void DrawStageInfoEditor() {
 
 
 	ImGui::SetNextWindowPos(ImVec2(300, 500), ImGuiCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(200, 230), ImGuiCond_Once);
 	if (ImGui::Begin("StageSetting",nullptr, ImGuiWindowFlags_MenuBar)) {//, &isEdit]
 
 		ImGui::PushID(&info.name);
@@ -64,7 +64,7 @@ void DrawStageInfoEditor() {
 		nameBuf.resize(256);
 
 
-		ImGui::Text("NAME: ");
+		ImGui::Text("Name:     ");
 		ImGui::SameLine();
 		if (ImGui::InputText("", (char*)nameBuf.c_str(), nameBuf.capacity() + 1)) {
 			info.name = StringConvert::Utf8ToMulti(nameBuf);
@@ -76,15 +76,15 @@ void DrawStageInfoEditor() {
 		std::string overviewBuf = StringConvert::MultiToUtf8(info.overview);
 		overviewBuf.resize(256);
 
-		ImGui::Text("OVERVIEW: ");
+		ImGui::Text("Overview: ");
 		ImGui::SameLine();
-		if (ImGui::InputText("", (char*)overviewBuf.c_str(), overviewBuf.capacity() + 1)) {
+		if (ImGui::InputTextMultiline("", (char*)overviewBuf.c_str(), overviewBuf.capacity() + 1, ImVec2(120, 50))) {
 			info.overview = StringConvert::Utf8ToMulti(overviewBuf);
 		}
 		ImGui::PopID();
 
 		ImGui::PushID(&info.level);
-		ImGui::Text("LEVEL: ");
+		ImGui::Text("Level: ");
 		ImGui::SameLine();
 		if (ImGui::InputInt("", &info.level)) {
 			info.level = max(info.level, 0);
@@ -92,7 +92,7 @@ void DrawStageInfoEditor() {
 		ImGui::PopID();
 
 		ImGui::PushID(&info.index);
-		ImGui::Text("INDEX: ");
+		ImGui::Text("Index: ");
 		ImGui::SameLine();
 		if (ImGui::InputInt("", &info.index)) {
 			info.index = max(info.index, 0);
