@@ -170,12 +170,14 @@ void DrawFlyingObjectEditor() {
 		if (ImGui::Button("Restart")) {
 			isPlay = true;
 			GetFlyingObjects()->clear();
+			FlyingObjectDeleteUFO();
 			SetFlyingObjectSponeFrame(0);
 		}
 		bool l = GetFlyingObjectSponerLoop();
 		if (ImGui::Checkbox("Loop", &l)) {
 			SetFlyingObjectSponerLoop(l);
 			GetFlyingObjects()->clear();
+			FlyingObjectDeleteUFO();
 			SetFlyingObjectSponeFrame(0);
 		}
 		auto s = "MAX: " + std::to_string(GetFlyingObjectSponeFrameMax());
@@ -188,7 +190,7 @@ void DrawFlyingObjectEditor() {
 void UpdateFlyingObjectEditor() {
 	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));
 
-	NPCDeleteUFO();
+
 
 
 	auto wheel = GetInputLoggerAxisAmountInt(MYVA_MW);
@@ -204,6 +206,7 @@ void UpdateFlyingObjectEditor() {
 	if (TriggerInputLogger(MYVK_L)) {
 		SetFlyingObjectSponerLoop(!GetFlyingObjectSponerLoop());
 		GetFlyingObjects()->clear();
+		FlyingObjectDeleteUFO();
 		SetFlyingObjectSponeFrame(0);
 	}
 	if (TriggerInputLogger(MYVK_START_STOP)) {
@@ -213,6 +216,7 @@ void UpdateFlyingObjectEditor() {
 	if (TriggerInputLogger(MYVK_FIRST_START)) {
 		isPlay = true;
 		GetFlyingObjects()->clear();
+		FlyingObjectDeleteUFO();
 		SetFlyingObjectSponeFrame(0);
 	}
 

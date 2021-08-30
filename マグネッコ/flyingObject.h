@@ -57,6 +57,8 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed);
 
 void BackFlyingObject(int frame);
 
+void FlyingObjectDeleteUFO();
+
 void BreakBlock(FlyingObject& f);
 bool DamageFlyingObject(FlyingObject& f);
 

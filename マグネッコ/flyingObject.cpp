@@ -11,6 +11,7 @@
 #include "player.h"
 #include "flyingObjectSponer.h"
 #include "sound.h"
+#include "sceneManager.h"
 // flyingObject描画範囲の加算分
 #define FLYINGOBJECT_ADD_RANGE_WIDTH (15)
 #define FLYINGOBJECT_ADD_RANGE_HEIGHT (10)
@@ -295,7 +296,7 @@ void BackFlyingObject(int frame) {
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
 		if (UpdateFlyingObject(&*itr, -frame * itr->speed)) {
 			if (itr->type == FLYING_OBJECT_UFO) {
-				NPCDeleteUFO();
+				FlyingObjectDeleteUFO();
 			}
 			DestrySpone(*itr);
 			itr = flyingObjects.erase(itr);
@@ -339,7 +340,7 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 
 	flyingObject->trans.UpdatePos();
 
-	if (flyingObject->type == FLYING_OBJECT_UFO) {
+	if (flyingObject->type == FLYING_OBJECT_UFO&&GetCurrentScene()!=StageEditorScene) {
 		return false;
 	}
 	if (flyingObject->trans.pos.x > GetMapWidth() / 2 + FLYINGOBJECT_ADD_RANGE_WIDTH ||
@@ -352,7 +353,11 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 		return false;
 	}
 }
-
+void FlyingObjectDeleteUFO() {
+	NPCDeleteUFO();
+	existsUFO = false;
+	StopSound(SOUND_LABEL_SE_UFO);
+}
 
 
 void BreakBlock(FlyingObject& f) {
@@ -370,9 +375,7 @@ bool DamageFlyingObject(FlyingObject& f) {
 		return false;
 	}
 	if (f.type == FLYING_OBJECT_UFO) {
-		existsUFO = false;
-		StopSound(SOUND_LABEL_SE_UFO);
-		NPCDeleteUFO();
+		FlyingObjectDeleteUFO();
 	}
 	
 	DestrySpone(f);

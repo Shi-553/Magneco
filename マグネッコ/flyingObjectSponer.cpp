@@ -290,7 +290,7 @@ void SetFlyingObjectSponeFrame(int f) {
 				auto itr = find_if(GetFlyingObjects()->begin(), GetFlyingObjects()->end(), [](FlyingObject f) {return sponeIndex == f.id; });
 				if (itr != GetFlyingObjects()->end()) {
 					if (itr->type == FLYING_OBJECT_UFO) {
-						NPCDeleteUFO();
+						FlyingObjectDeleteUFO();
 					}
 					GetFlyingObjects()->erase(itr);
 				}
