@@ -351,7 +351,7 @@ void DrawFlyingObjectScreen(const Spone& map) {
 	if (map.type == FLYING_OBJECT_UFO) {
 		tSize *= 2;
 	}
-	if (map.type == FLYING_OBJECT_PURGE_BLOCK||map.type == FLYING_OBJECT_PLAYER_BLOCK) {
+	if (map.type == FLYING_OBJECT_PURGE_BLOCK||map.type == FLYING_OBJECT_PLAYER_BLOCK||map.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK_SECOND||map.type == FLYING_OBJECT_CHECKPOINT_OFF) {
 		return;
 	}
 
