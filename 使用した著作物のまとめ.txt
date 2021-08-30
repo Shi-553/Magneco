@@ -1,0 +1,31 @@
+・BGM/SE
+
+　OtoLogic https://otologic.jp/
+
+　(C)PANICPUMPKIN http://pansound.com/panicpumpkin
+
+　On-Jin ～音人～ https://on-jin.com/
+
+  bgm000.wav
+  bgm001.wav
+  bgm002.wav
+  bgm003.wav
+  bgm004.wav
+  bgm005.wav
+  bgm006.wav
+
+　beacon000.wav
+  complete000.wav
+  decition000.wav
+  explosion000.wav
+  pause000.wav
+  protection000.wav
+  purge000.wav
+  stan000.wav
+  stick000.wav
+  switch000.wav
+  ufo000.wav
+  ufo001.wav
+
+  PixelMpluse-20130602
+  
