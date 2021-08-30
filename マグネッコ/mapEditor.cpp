@@ -37,6 +37,9 @@ struct ScreenMap {
 static int textureIds[MAP_MAX];
 static int playerTextureId;
 static int npcTextureId;
+
+static int mapCreateFrame = TEXTURE_INVALID_ID;;
+
 static int frame = 0;
 
 static INTVECTOR2 createWallDir = { -1,-1 };
@@ -76,6 +79,7 @@ void InitMapEditor() {
 	textureIds[MAP_BLOCK_NONE] = ReserveTextureLoadFile("texture/block/MAP_BLOCK_NONE_ERASE.png");
 	playerTextureId = ReserveTextureLoadFile("texture/player/player_64×64.png");
 	npcTextureId = ReserveTextureLoadFile("texture/npc/spr_rose_idle.png");
+	mapCreateFrame = ReserveTextureLoadFile("texture/ui/mapCreateFrame.png");
 
 	for (int i = MAP_BLOCK_NONE; i < MAP_MAX; i++) {
 		auto mapType = (MapType)i;
@@ -102,6 +106,7 @@ void InitMapEditor() {
 }
 void UninitMapEditor() {
 	ReleaseTexture(textureIds, MAP_MAX);
+	ReleaseTexture(mapCreateFrame);
 
 	for (int i = MAP_BLOCK_NONE; i < MAP_MAX; i++) {
 		if (createMap[i].map != NULL) {
@@ -121,6 +126,9 @@ void DrawMapEditor() {
 		}
 		DrawMapScreen(createMap[i]);
 	}
+
+	DrawSprite(mapCreateFrame, { CREATE_MAP_ZERO_X ,CREATE_MAP_ZERO_Y}, 1);
+
 
 	if (currentMap.type != MAP_NONE) {
 		ScreenMap map;

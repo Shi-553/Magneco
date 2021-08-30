@@ -44,6 +44,7 @@ static Spone creates[FLYING_OBJECT_MAX];
 static int textureIds[FLYING_OBJECT_MAX];
 
 static int eraseTextureId = TEXTURE_INVALID_ID;
+static int flyingObjectCreateFrame = TEXTURE_INVALID_ID;
 static bool isErase = false;
 
 static Spone current;
@@ -73,12 +74,13 @@ void InitFlyingObjectEditor() {
 	}
 
 
-	eraseTextureId = ReserveTextureLoadFile("texture/block/MAP_BLOCK_NONE_ERASE.png");
+	eraseTextureId = ReserveTextureLoadFile("texture/block/MAP_BLOCK_NONE_ERASE2.png");
+	flyingObjectCreateFrame = ReserveTextureLoadFile("texture/ui/flyingObjectCreateFrame.png");
 
 
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
 		creates[i].type = (FlyingObjectType)i;
-		creates[i].initPos = GetCreateFlyingObjectPos(i);
+		creates[i].initPos = GetCreateFlyingObjectPos(i+2);
 		creates[i].size = { 1,1 };
 	}
 
@@ -88,6 +90,7 @@ void InitFlyingObjectEditor() {
 }
 void UninitFlyingObjectEditor() {
 	ReleaseTexture(eraseTextureId);
+	ReleaseTexture(flyingObjectCreateFrame);
 
 	delete flyingObjectEditorMessage;
 }
@@ -137,9 +140,11 @@ void DrawFlyingObjectEditor() {
 
 
 
+
 	for (int i = FLYING_OBJECT_BLOCK; i < FLYING_OBJECT_MAX; i++) {
 		DrawFlyingObjectScreen(creates[i]);
 	}
+
 
 	auto mousePos = D3DXVECTOR2(GetInputLoggerAxisInt(MYVA_MX), GetInputLoggerAxisInt(MYVA_MY));
 
@@ -148,7 +153,7 @@ void DrawFlyingObjectEditor() {
 	D3DXVECTOR2 tPos = { 0,0 };
 	D3DXVECTOR2 tSize = { CREATE_FLYING_OBJECT_TEXTURE_WIDTH,CREATE_FLYING_OBJECT_TEXTURE_HEIGHT };
 
-	DrawSprite(eraseTextureId, GetCreateFlyingObjectPos(-2), 10, size, tPos, tSize);
+	DrawSprite(eraseTextureId, GetCreateFlyingObjectPos(-1), 10, size, tPos, tSize);
 
 	if (isErase) {
 		DrawSprite(eraseTextureId, mousePos - D3DXVECTOR2(CREATE_FLYING_OBJECT_WIDTH, CREATE_FLYING_OBJECT_HEIGHT) / 2, 10, size, tPos, tSize);
@@ -159,6 +164,9 @@ void DrawFlyingObjectEditor() {
 			s.initPos = GameToScreenPos(s.initPos) - D3DXVECTOR2(CREATE_FLYING_OBJECT_WIDTH, CREATE_FLYING_OBJECT_HEIGHT) / 2;
 			DrawFlyingObjectScreen(s);
 		}
+
+	DrawSprite(flyingObjectCreateFrame, GetCreateFlyingObjectPos(-1), 10);
+
 
 	ImGui::SetNextWindowPos(ImVec2(500, 500), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
