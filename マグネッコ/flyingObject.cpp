@@ -121,6 +121,9 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 
 	if (flyingObject.type == FLYING_OBJECT_ENEMY_BREAK_BLOCK) {
 		auto pos = flyingObject.trans.pos;
+		if (flyingObject.hp > 1) {
+			textureId = flyingObjectTextureIds[FLYING_OBJECT_ENEMY_BREAK_BLOCK_SECOND];
+		}
 
 		if (GetMapType(pos) == MAP_ROCK) {
 			auto p = INTVECTOR2(pos).ToD3DXVECTOR2();
