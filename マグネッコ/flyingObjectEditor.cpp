@@ -107,34 +107,33 @@ void DrawFlyingObjectEditor() {
 	ImGui::SetNextWindowPos(ImVec2(CREATE_PROPERTY_X, 0), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(200, 130), ImGuiCond_Once);
 
-	if (!IsPause() &&ImGui::Begin("CreateObjectSetting")) {
+	if (!IsPause()) {
+		if (ImGui::Begin("CreateObjectSetting")) {
+			ImGui::PushID(&createHP);
+			ImGui::Text("HP: ");
+			ImGui::SameLine();
+			if (ImGui::InputInt("", &createHP)) {
+				createHP = max(createHP, 0);
+			}
+			ImGui::PopID();
 
+			ImGui::PushID(&createSize);
+			ImGui::Text("Size: ");
+			ImGui::SameLine();
+			if (ImGui::InputInt2("", (int*)&createSize)) {
+				createSize.x = max(createSize.x, 0);
+				createSize.y = max(createSize.y, 0);
+			}
+			ImGui::PopID();
 
-		ImGui::PushID(&createHP);
-		ImGui::Text("HP: ");
-		ImGui::SameLine();
-		if (ImGui::InputInt("", &createHP)) {
-			createHP = max(createHP, 0);
+			ImGui::PushID(&createSpeed);
+			ImGui::Text("Speed: ");
+			ImGui::SameLine();
+			if (ImGui::InputFloat("", &createSpeed)) {
+				createSpeed = max(createSpeed, 0);
+			}
+			ImGui::PopID();
 		}
-		ImGui::PopID();
-
-		ImGui::PushID(&createSize);
-		ImGui::Text("Size: ");
-		ImGui::SameLine();
-		if (ImGui::InputInt2("", (int*)&createSize)) {
-			createSize.x = max(createSize.x, 0);
-			createSize.y = max(createSize.y, 0);
-		}
-		ImGui::PopID();
-
-		ImGui::PushID(&createSpeed);
-		ImGui::Text("Speed: ");
-		ImGui::SameLine();
-		if (ImGui::InputFloat("",&createSpeed)) {
-			createSpeed = max(createSpeed, 0);
-		}
-		ImGui::PopID();
-
 		ImGui::End();
 	}
 
@@ -171,26 +170,28 @@ void DrawFlyingObjectEditor() {
 	ImGui::SetNextWindowPos(ImVec2(500, 500), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
 
-	if (!IsPause() && ImGui::Begin("PlayControl")) {
-		if (ImGui::Button("Start/Pause")) {
-			isPlay = !isPlay;
-		}
-		if (ImGui::Button("Restart")) {
-			isPlay = true;
-			GetFlyingObjects()->clear();
-			FlyingObjectDeleteUFO();
-			SetFlyingObjectSponeFrame(0);
-		}
-		bool l = GetFlyingObjectSponerLoop();
-		if (ImGui::Checkbox("Loop", &l)) {
-			SetFlyingObjectSponerLoop(l);
-			GetFlyingObjects()->clear();
-			FlyingObjectDeleteUFO();
-			SetFlyingObjectSponeFrame(0);
-		}
-		auto s = "MAX: " + std::to_string(GetFlyingObjectSponeFrameMax());
-		ImGui::Text(s.c_str());
+	if (!IsPause()){
+		if (ImGui::Begin("PlayControl")) {
+			if (ImGui::Button("Start/Pause")) {
+				isPlay = !isPlay;
+			}
+			if (ImGui::Button("Restart")) {
+				isPlay = true;
+				GetFlyingObjects()->clear();
+				FlyingObjectDeleteUFO();
+				SetFlyingObjectSponeFrame(0);
+			}
+			bool l = GetFlyingObjectSponerLoop();
+			if (ImGui::Checkbox("Loop", &l)) {
+				SetFlyingObjectSponerLoop(l);
+				GetFlyingObjects()->clear();
+				FlyingObjectDeleteUFO();
+				SetFlyingObjectSponeFrame(0);
+			}
+			auto s = "MAX: " + std::to_string(GetFlyingObjectSponeFrameMax());
+			ImGui::Text(s.c_str());
 
+		}
 		ImGui::End();
 	}
 
