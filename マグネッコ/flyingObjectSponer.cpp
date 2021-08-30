@@ -33,39 +33,15 @@ void InitFlyingSponer() {
 	meteoriteIconFrame = 0;
 	meteoriteIconTextureId = ReserveTextureLoadFile("texture/enemy/insekikuruyo.png");
 
-#ifdef _DEBUG
-	Spone initSpone[24]{
-   {100,{5.5,-3.5},FLYING_OBJECT_UFO,{0,1},1,{1,1},1},
-   {150,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0},1,{1,1},2},
-   {200,{13.5,7.5},FLYING_OBJECT_ENEMY_BREAK_BLOCK,{-1,0},1,{1,1},1},
-   {250,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0},1,{1,1},0.5},
-   {300,{8.5,13.5},FLYING_OBJECT_BLOCK,{0,-1},1,{1,1},1},
-   {350,{3.5,-3.5},FLYING_OBJECT_ENEMY_SECOND,{0,1},3,{2,2},1},
-   {450,{13.5,3.5},FLYING_OBJECT_BLOCK,{-1,0},1,{1,1},1},
-   {500,{5.5,13.5},FLYING_OBJECT_BLOCK,{0,-1},1,{1,1},1},
-   {550,{2.5,13.5},FLYING_OBJECT_ENEMY_BREAK_BLOCK,{0,-1},1,{1,1},1},
-   {600,{3.5,13.5},FLYING_OBJECT_BLOCK,{0,-1},1,{1,1},1},
-   {650,{13.5,7.5},FLYING_OBJECT_BLOCK,{-1,0},1,{1,1},1},
-   {700,{-3.5,5.5},FLYING_OBJECT_BLOCK,{1,0},1,{1,1},1},
-   {750,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0},1,{1,1},1},
-   {400,{2.5,13.5},FLYING_OBJECT_UFO,{0,-1},1,{1,1},1},
-   {800,{3.5,13.5},FLYING_OBJECT_ENEMY,{0,-1},1,{1,1},1},
-   {850,{13.5,5.5},FLYING_OBJECT_BLOCK,{-1,0},1,{1,1},1},
-   {900,{2.5,13.5},FLYING_OBJECT_BLOCK,{0,-1},1,{1,1},1},
-   {950,{8.5,-3.5},FLYING_OBJECT_ENEMY_BREAK_BLOCK,{0,1},1,{1,1},1},
-   {1000,{-3.5,8.5},FLYING_OBJECT_BLOCK,{1,0},1,{1,1},1},
-   {1050,{13.5,3.5},FLYING_OBJECT_BLOCK,{-1,0},1,{1,1},1},
-   {1100,{6.5,13.5},FLYING_OBJECT_BLOCK,{0,-1},1,{1,1},1},
-   {1150,{4.5,-3.5},FLYING_OBJECT_ENEMY,{0,1},1,{1,1},1},
-   {1200,{13.5,1.5},FLYING_OBJECT_BLOCK,{-1,0},1,{1,1},1},
-   {1250,{7.5,13.5},FLYING_OBJECT_BLOCK,{0,-1},1,{1,1},1}
+	Spone initSpone[1]{
+   {180,{13.5,5.5},FLYING_OBJECT_BLOCK,{-1,0},1,{1,1},2},
 	};
-	for (int i = 0; i < 24; i++)
+
+	for (int i = 0; i < 1; i++)
 	{
 		spones.push_back({ initSpone[i],currentSponeId,0 });
 		currentSponeId++;
 	}
-#endif
 }
 
 
