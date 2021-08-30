@@ -128,7 +128,7 @@ void UpdateNPC() {
 					auto dir = ScreenToGamePos(D3DXVECTOR2(SCREEN_WIDTH + 200, 100)) - itr.trans.pos;
 					D3DXVec2Normalize(&dir, &dir);
 					itr.trans.pos += dir / 20.0f;
-					npc.trans.pos = itr.trans.pos;
+					npc.trans.pos = itr.trans.pos- npc.size / 2;
 
 					if (GameToScreenPos(itr.trans.pos).x > SCREEN_WIDTH + 100) {
 						GoNextScene(GameOverScene);

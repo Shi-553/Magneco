@@ -239,7 +239,7 @@ void DrawPlayer() {
 			playerTextureVertical
 		);
 
-		DrawGameSprite(idleTextureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2, 2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
+		DrawGameSprite(idleTextureId, player.trans.pos - D3DXVECTOR2(1, 1), 30, D3DXVECTOR2(2,2), tPos, D3DXVECTOR2(PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT));
 	}
 	else if (player.isMove)
 	{
@@ -266,7 +266,7 @@ void DrawPlayer() {
 		auto size = D3DXVECTOR2(50,50);
 
 		auto d = D3DXVECTOR2(-1, 0);
-		auto dir = player.trans.pos - npc->trans.pos;
+		auto dir = player.trans.pos - (npc->trans.pos+ npc->size/2);
 		D3DXVec2Normalize(&dir, &dir);
 
 		auto dr = D3DXVec2Dot(&d, &dir);

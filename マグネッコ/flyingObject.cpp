@@ -11,6 +11,7 @@
 #include "player.h"
 #include "flyingObjectSponer.h"
 #include "sound.h"
+#include "sceneManager.h"
 // flyingObject描画範囲の加算分
 #define FLYINGOBJECT_ADD_RANGE_WIDTH (15)
 #define FLYINGOBJECT_ADD_RANGE_HEIGHT (10)
@@ -189,30 +190,22 @@ void DrawFlyingObject(FlyingObject& flyingObject) {
 		DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 2.0, 50, flyingObject.size.ToD3DXVECTOR2(), tPos, D3DXVECTOR2(FLYINGOBJECT_ITEM_TEXTURE_WIDTH, FLYINGOBJECT_ITEM_TEXTURE_HEIGHT));
 	}
 	else if (flyingObject.type == FLYING_OBJECT_UFO) {
-		if (flyingObject.hp >= 3) {
-			auto tPos = D3DXVECTOR2(
-				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 12 % 4),
-				0
-			);
+		auto y = 0;
 
-			DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6, 50, D3DXVECTOR2(1.3, 1.3), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
-		}
-		else if (flyingObject.hp == 2) {
-			auto tPos = D3DXVECTOR2(
-				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 12 % 4),
-				FLYINGOBJECT_TEXTURE_HEIGHT
-			);
-
-			DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6, 50, D3DXVECTOR2(1.3, 1.3), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
+		if (flyingObject.hp == 2) {
+			y = 1;
 		}
 		else if (flyingObject.hp == 1) {
-			auto tPos = D3DXVECTOR2(
-				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 12 % 4),
-				FLYINGOBJECT_TEXTURE_HEIGHT * 2
-			);
-
-			DrawGameSprite(textureId, flyingObject.trans.pos - flyingObject.size.ToD3DXVECTOR2() / 1.6, 50, D3DXVECTOR2(1.3, 1.3), tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
+			y = 2;
 		}
+		auto f =npc->gameOverFrame==2?frame*6: frame;
+		auto tPos = D3DXVECTOR2(
+			FLYINGOBJECT_TEXTURE_WIDTH * (f / 12 % 4),
+			FLYINGOBJECT_TEXTURE_HEIGHT * y
+		);
+
+		DrawGameSprite(textureId, flyingObject.trans.pos - (flyingObject.size.ToD3DXVECTOR2() / 2)*1.5f, 50, D3DXVECTOR2(1,1) * 1.5f, tPos, D3DXVECTOR2(FLYINGOBJECT_TEXTURE_WIDTH, FLYINGOBJECT_TEXTURE_HEIGHT));
+
 		if (npc->contactUFO == true) {
 			auto tPos = D3DXVECTOR2(
 				FLYINGOBJECT_TEXTURE_WIDTH * (frame / 8 % 4),
@@ -295,7 +288,7 @@ void BackFlyingObject(int frame) {
 	for (auto itr = flyingObjects.begin(); itr != flyingObjects.end();) {
 		if (UpdateFlyingObject(&*itr, -frame * itr->speed)) {
 			if (itr->type == FLYING_OBJECT_UFO) {
-				NPCDeleteUFO();
+				FlyingObjectDeleteUFO();
 			}
 			DestrySpone(*itr);
 			itr = flyingObjects.erase(itr);
@@ -339,7 +332,7 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 
 	flyingObject->trans.UpdatePos();
 
-	if (flyingObject->type == FLYING_OBJECT_UFO) {
+	if (flyingObject->type == FLYING_OBJECT_UFO&&GetCurrentScene()!=StageEditorScene) {
 		return false;
 	}
 	if (flyingObject->trans.pos.x > GetMapWidth() / 2 + FLYINGOBJECT_ADD_RANGE_WIDTH ||
@@ -352,7 +345,11 @@ bool UpdateFlyingObject(FlyingObject* flyingObject, float speed) {
 		return false;
 	}
 }
-
+void FlyingObjectDeleteUFO() {
+	NPCDeleteUFO();
+	existsUFO = false;
+	StopSound(SOUND_LABEL_SE_UFO);
+}
 
 
 void BreakBlock(FlyingObject& f) {
@@ -370,9 +367,7 @@ bool DamageFlyingObject(FlyingObject& f) {
 		return false;
 	}
 	if (f.type == FLYING_OBJECT_UFO) {
-		existsUFO = false;
-		StopSound(SOUND_LABEL_SE_UFO);
-		NPCDeleteUFO();
+		FlyingObjectDeleteUFO();
 	}
 	
 	DestrySpone(f);
