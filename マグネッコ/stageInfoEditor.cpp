@@ -48,75 +48,76 @@ void DrawStageInfoEditor() {
 	ImGui::SetNextWindowSize(ImVec2(200, 230), ImGuiCond_Once);
 
 
-	if (!IsPause() && ImGui::Begin("StageSetting", nullptr, ImGuiWindowFlags_MenuBar)) {
+	if (!IsPause()){
+		if (ImGui::Begin("StageSetting", nullptr, ImGuiWindowFlags_MenuBar)) {
 
-		ImGui::PushID(&info.name);
+			ImGui::PushID(&info.name);
 
-		std::string nameBuf = StringConvert::MultiToUtf8(info.name);
-		nameBuf.resize(256);
+			std::string nameBuf = StringConvert::MultiToUtf8(info.name);
+			nameBuf.resize(256);
 
 
-		ImGui::Text("Name:     ");
-		ImGui::SameLine();
-		if (ImGui::InputText("", (char*)nameBuf.c_str(), nameBuf.capacity() + 1)) {
-			info.name = StringConvert::Utf8ToMulti(nameBuf);
-		}
-		ImGui::PopID();
-
-		ImGui::PushID(&info.overview);
-
-		std::string overviewBuf = StringConvert::MultiToUtf8(info.overview);
-		overviewBuf.resize(256);
-
-		ImGui::Text("Overview: ");
-		ImGui::SameLine();
-		if (ImGui::InputTextMultiline("", (char*)overviewBuf.c_str(), overviewBuf.capacity() + 1, ImVec2(120, 50))) {
-			info.overview = StringConvert::Utf8ToMulti(overviewBuf);
-		}
-		ImGui::PopID();
-
-		ImGui::PushID(&info.level);
-		ImGui::Text("Level: ");
-		ImGui::SameLine();
-		if (ImGui::InputInt("", &info.level)) {
-			info.level = max(info.level, 0);
-		}
-		ImGui::PopID();
-
-		ImGui::PushID(&info.index);
-		ImGui::Text("Index: ");
-		ImGui::SameLine();
-		if (ImGui::InputInt("", &info.index)) {
-			info.index = max(info.index, 0);
-		}
-		ImGui::PopID();
-
-		ImGui::PushID(&info.sLabel);
-		ImGui::Text("BGM: ");
-		ImGui::SameLine();
-		if (ImGui::SliderInt("", (int*)&info.sLabel,0, SOUND_LABEL_BGM006)) {
-
-		}
-		ImGui::PopID();
-
-		if (ImGui::BeginMenuBar()) {
-			if (ImGui::BeginMenu("File"))
-			{
-				if (ImGui::MenuItem("Save")) {
-					SaveStageInfo(false);
-				}
-				if (ImGui::MenuItem("Save as...")) {
-					SaveStageInfo(true);
-				}
-				if (ImGui::MenuItem("Load")) {
-					LoadStageInfo();
-				}
-
-				ImGui::EndMenu();
+			ImGui::Text("Name:     ");
+			ImGui::SameLine();
+			if (ImGui::InputText("", (char*)nameBuf.c_str(), nameBuf.capacity() + 1)) {
+				info.name = StringConvert::Utf8ToMulti(nameBuf);
 			}
-			ImGui::EndMenuBar();
-		}
+			ImGui::PopID();
 
+			ImGui::PushID(&info.overview);
+
+			std::string overviewBuf = StringConvert::MultiToUtf8(info.overview);
+			overviewBuf.resize(256);
+
+			ImGui::Text("Overview: ");
+			ImGui::SameLine();
+			if (ImGui::InputTextMultiline("", (char*)overviewBuf.c_str(), overviewBuf.capacity() + 1, ImVec2(120, 50))) {
+				info.overview = StringConvert::Utf8ToMulti(overviewBuf);
+			}
+			ImGui::PopID();
+
+			ImGui::PushID(&info.level);
+			ImGui::Text("Level: ");
+			ImGui::SameLine();
+			if (ImGui::InputInt("", &info.level)) {
+				info.level = max(info.level, 0);
+			}
+			ImGui::PopID();
+
+			ImGui::PushID(&info.index);
+			ImGui::Text("Index: ");
+			ImGui::SameLine();
+			if (ImGui::InputInt("", &info.index)) {
+				info.index = max(info.index, 0);
+			}
+			ImGui::PopID();
+
+			ImGui::PushID(&info.sLabel);
+			ImGui::Text("BGM: ");
+			ImGui::SameLine();
+			if (ImGui::SliderInt("", (int*)&info.sLabel, 0, SOUND_LABEL_BGM006)) {
+
+			}
+			ImGui::PopID();
+
+			if (ImGui::BeginMenuBar()) {
+				if (ImGui::BeginMenu("File"))
+				{
+					if (ImGui::MenuItem("Save")) {
+						SaveStageInfo(false);
+					}
+					if (ImGui::MenuItem("Save as...")) {
+						SaveStageInfo(true);
+					}
+					if (ImGui::MenuItem("Load")) {
+						LoadStageInfo();
+					}
+
+					ImGui::EndMenu();
+				}
+				ImGui::EndMenuBar();
+			}
+		}
 		ImGui::End();
 	}
 }
