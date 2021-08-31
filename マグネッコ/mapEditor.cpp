@@ -289,16 +289,28 @@ bool CheckMouseMapEditor() {
 		}
 		if (ReleaseInputLogger(MYVK_LEFT_CLICK)) {
 
-			auto screenPos = GetCreateMapPos((MapType)-3);
-			if (CheckSquare(mousePos, screenPos, { 50,50 })) {
-				isPlayerEdit = true;
-			}
-			screenPos = GetCreateMapPos((MapType)-2);
-			if (CheckSquare(mousePos, screenPos, { 50,50 })) {
-				isNPCEdit = true;
+			if (currentMap.type == MAP_NONE) {
+				auto screenPos = GetCreateMapPos((MapType)-3);
+				if (CheckSquare(mousePos, screenPos, { 50,50 })) {
+					isPlayerEdit = true;
+				}
+				screenPos = GameToScreenPos(GetPlayer()->trans.pos-GetPlayer()->size/2);
+				if (CheckSquare(mousePos, screenPos, { 50,50 })) {
+					isPlayerEdit = true;
+				}
+
+				screenPos = GetCreateMapPos((MapType)-2);
+				if (CheckSquare(mousePos, screenPos, { 50,50 })) {
+					isNPCEdit = true;
+				}
+				screenPos = GameToScreenPos(GetNpc()->trans.pos);
+				screenPos.y -= 30;
+				if (CheckSquare(mousePos, screenPos, { 50,80 })) {
+					isNPCEdit = true;
+				}
 			}
 
-			if (!isDrag || isTemp) {
+			if (!isNPCEdit&&!isPlayerEdit &&(!isDrag || isTemp)) {
 				ScreenMap matchedCreateMap = CheckCreateMap(mousePos);
 				ScreenMap matchedMap = CheckMap(mousePos);
 				//DebugPrintf("%d %f %f,", matchedCreateMap.map.type, matchedCreateMap.pos.x, matchedCreateMap.pos.y);
