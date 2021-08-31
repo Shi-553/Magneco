@@ -67,10 +67,15 @@ void TutorialAdvanced3::Draw() {
 	case 3:
 		DrawSprite(TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
+		message->Draw("起動すると電源ブロックに変化し\nそこを起点にルートを作っていけるので\n大変便利です！");
+		break;
+	case 4:
+		DrawSprite(TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
+
 		message->Draw("見かけたらすぐルートを作ってローズを誘導する\nように心掛けましょう！");
 		break;
 
-	case 4:
+	case 5:
 		SetSpriteColor(D3DXCOLOR(1, 1, 1, 0.5f));
 		DrawSprite(TextureIds[BACKGROUND], { 0,0 }, 10, { SCREEN_WIDTH,SCREEN_HEIGHT });
 		SetSpriteColor(D3DXCOLOR(1, 1, 1, 1));
@@ -80,13 +85,13 @@ void TutorialAdvanced3::Draw() {
 		message->Draw("--ブロック起動--");
 		break;
 
-	case 5:
+	case 6:
 		DrawSprite(TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 		message->Draw("それではブロックを起動してゴールを目指してみましょう");
 		break;
 
-	case 6:
+	case 7:
 		DrawSprite(TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
 		message->Draw("誘導：Xボタン");
@@ -120,6 +125,14 @@ void TutorialAdvanced3::Update() {
 
 		if (TriggerInputLogger(MYVK_ENTER)) {
 			num++;
+		}
+		break;
+
+	case 4:
+		isUpdate = false;
+
+		if (TriggerInputLogger(MYVK_ENTER)) {
+			num++;
 			movie = new Movie(L"movie/checkpoint.avi");
 			auto& size = movie->GetSrcRect();
 			movie->Init();
@@ -129,7 +142,7 @@ void TutorialAdvanced3::Update() {
 		}
 		break;
 
-	case 4:
+	case 5:
 		isUpdate = false;
 
 		if (TriggerInputLogger(MYVK_ENTER)) {
@@ -140,7 +153,7 @@ void TutorialAdvanced3::Update() {
 		}
 		break;
 
-	case 5:
+	case 6:
 		isUpdate = false;
 
 		if (TriggerInputLogger(MYVK_ENTER)) {
@@ -148,7 +161,7 @@ void TutorialAdvanced3::Update() {
 		}
 		break;
 
-	case 6:
+	case 7:
 		isUpdate = true;
 
 
