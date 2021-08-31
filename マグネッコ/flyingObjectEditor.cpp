@@ -329,7 +329,7 @@ bool CheckMouseFlyingObjectEditor() {
 
 
 Spone CheckCreateFlyingObject(D3DXVECTOR2 pos) {
-	if (CheckSquare(pos, GetCreateFlyingObjectPos(-2), { CREATE_FLYING_OBJECT_WIDTH ,CREATE_FLYING_OBJECT_HEIGHT })) {
+	if (CheckSquare(pos, GetCreateFlyingObjectPos(-1), { CREATE_FLYING_OBJECT_WIDTH ,CREATE_FLYING_OBJECT_HEIGHT })) {
 		isErase = true;
 		return {};
 	}
