@@ -25,6 +25,7 @@ static int meteoriteIconTextureId = TEXTURE_INVALID_ID;
 
 
 void InitFlyingSponer() {
+	isLoop = true;
 	frame = 0;
 	sponeIndex = 0;
 	spones.clear();
