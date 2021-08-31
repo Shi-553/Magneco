@@ -14,6 +14,7 @@
 #include "importExport.h"
 #include "StringConvert.hpp"
 #include "pauseMenu.h"
+#include "SafeDelete.hpp"
 
 static Message* infoMessage;
 static StageInfo& info = GetStageInfo();
@@ -33,7 +34,7 @@ void InitStageInfoEditor() {
 	SetWindowCaption(path);
 }
 void UninitStageInfoEditor() {
-	delete infoMessage;
+	SafeDelete(infoMessage);
 	SetWindowCaption("");
 }
 void DrawStageInfoEditor() {

@@ -32,6 +32,7 @@
 #include "resource.h"
 #include "ImGuiRenderer.h"
 #include "imgui/imgui.h"
+#include "SafeDelete.hpp"
 
 
 #define CLASS_NAME "GameWindow"
@@ -311,7 +312,7 @@ void Uninit(void) {
 	isInit = false;
 
 	imGuiRenderer->Uninit();
-	delete imGuiRenderer;
+	SafeDelete(imGuiRenderer);
 
 	UninitSprite();
 	UninitSound();

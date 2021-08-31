@@ -10,6 +10,7 @@
 #include "importExport.h"
 #include "sound.h"
 #include <algorithm>
+#include "SafeDelete.hpp"
 using namespace std;
 
 #define POS_Y (15)
@@ -198,9 +199,9 @@ void UninitStageSelect() {
 		ReleaseTexture(*itr);
 	}
 	smunes.clear();
-	delete overviewMessage;
-	delete nameMessage;
-	delete lavelMessage;
+	SafeDelete(overviewMessage);
+	SafeDelete(nameMessage);
+	SafeDelete(lavelMessage);
 }
 
 void UpdateStageSelect() {

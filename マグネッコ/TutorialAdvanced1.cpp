@@ -8,6 +8,7 @@
 #include "map.h"
 #include "npc.h"
 #include "sceneManager.h"
+#include "SafeDelete.hpp"
 
 
 #define POS_Y (120)
@@ -32,11 +33,11 @@ void TutorialAdvanced1::Init() {
 	num = 0;
 }
 void TutorialAdvanced1::Uninit() {
-	delete message;
+	SafeDelete( message);
 	if (movie != nullptr) {
 		movie->Stop();
 		movie->Uninit();
-		delete movie;
+		SafeDelete(movie);
 	}
 
 }
