@@ -8,6 +8,7 @@
 #include "npc.h"
 #include "player.h"
 #include "stageEditor.h"
+#include "SafeDelete.hpp"
 
 
 #define CREATE_MAP_TEXTURE_WIDTH 32
@@ -86,8 +87,7 @@ void InitMapEditor() {
 		createMap[i].pos = GetCreateMapPos(mapType);
 
 		if (createMap[i].map != NULL) {
-			delete createMap[i].map;
-			createMap[i].map = NULL;
+			SafeDelete(createMap[i].map);
 		}
 		createMap[i].map = new Map();
 
@@ -110,8 +110,7 @@ void UninitMapEditor() {
 
 	for (int i = MAP_BLOCK_NONE; i < MAP_MAX; i++) {
 		if (createMap[i].map != NULL) {
-			delete createMap[i].map;
-			createMap[i].map = NULL;
+			SafeDelete( createMap[i].map);
 		}
 	}
 }

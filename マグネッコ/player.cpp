@@ -16,6 +16,7 @@
 #include "sound.h"
 #include "messeage.h"
 #include <string>
+#include "SafeDelete.hpp"
 
 
 #define PLAYER_TEXTURE_WIDTH 64
@@ -86,8 +87,8 @@ void InitPlayer() {
 }
 
 void UninitPlayer() {
-	delete getItemMessage;
-	delete getBlockMessage;
+	SafeDelete(getItemMessage);
+	SafeDelete(getBlockMessage);
 
 	ReleaseTexture(textureId);
 	ReleaseTexture(putPredictionTextureId);

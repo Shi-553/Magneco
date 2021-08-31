@@ -7,6 +7,7 @@
 #include "sprite.h"
 #include "InputLogger.h"
 #include "sound.h"
+#include "SafeDelete.hpp"
 
 #define STAFF_ROLE_TITLE_WIDTH 640
 #define STAFF_ROLE_TITLE_HEIGHT 240
@@ -119,7 +120,7 @@ void InitStaffRole() {
 }
 void UninitStaffRole() {
 	StopSound();
-	delete staffRoleMessage;
+	SafeDelete(staffRoleMessage);
 	ReleaseTexture(staffRoleId);
 	ReleaseTexture(staffRoleTitleId);
 	ReleaseTexture(pressOTexture);

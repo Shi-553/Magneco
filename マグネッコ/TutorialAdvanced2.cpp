@@ -8,6 +8,7 @@
 #include "map.h"
 #include "npc.h"
 #include "sceneManager.h"
+#include "SafeDelete.hpp"
 
 
 #define POS_Y (120)
@@ -34,12 +35,12 @@ void TutorialAdvanced2::Init() {
 
 }
 void TutorialAdvanced2::Uninit() {
-	delete message;
+	SafeDelete(message);
 
 	if (movie != nullptr) {
 		movie->Stop();
 		movie->Uninit();
-		delete movie;
+		SafeDelete(movie);
 	}
 
 	ReleaseTexture(TextureIds, MAX);
@@ -224,7 +225,7 @@ void TutorialAdvanced2::Update() {
 			num++;
 			movie->Stop();
 			movie->Uninit();
-			delete movie;
+			SafeDelete(movie);
 
 			movie = new Movie(L"movie/break_block.avi");
 			auto& size = movie->GetSrcRect();
@@ -261,7 +262,8 @@ void TutorialAdvanced2::Update() {
 			num++;
 			movie->Stop();
 			movie->Uninit();
-			delete movie;
+			SafeDelete(movie);
+
 
 			movie = new Movie(L"movie/break_meteorite.avi");
 			auto& size = movie->GetSrcRect();

@@ -256,6 +256,7 @@ d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="movie.h" />
     <ClInclude Include="pauseMenu.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SafeDelete.hpp" />
     <ClInclude Include="selectButton.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="debugFont.h" />

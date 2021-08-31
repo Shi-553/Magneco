@@ -7,6 +7,7 @@
 #include "InputLogger.h"
 #include "selectButton.h"
 #include "sound.h"
+#include "stageSelect.h"
 
 #define GAME_OVER_BUTTON_WIDTH 330
 #define GAME_OVER_BUTTON_HEIGHT 90
@@ -37,7 +38,12 @@ Button retryButton, stageSelectButton, returnTitleButton;
 
 	retryButton.releasedCallback = []() {
 		PlaySound(SOUND_LABEL_SE_DECITION);
-		GoNextScene(GameScene);
+		if (GetStageFoldername() == "stage/main") {
+			GoNextScene(GameScene);
+		}
+		else {
+			GoNextScene(TutorialScene);
+		}
 	};
 
 	stageSelectButton.pos = buttonCenter + D3DXVECTOR2(0, GAME_OVER_BUTTON_HEIGHT + 16);

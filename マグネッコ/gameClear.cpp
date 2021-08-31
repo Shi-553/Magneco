@@ -56,7 +56,12 @@ void InitGameClear()
 		nextButton.releasedCallback = []() {
 		PlaySound(SOUND_LABEL_SE_DECITION);
 			NextStaege();
-			GoNextScene(GameScene);
+			if (GetStageFoldername() == "stage/main") {
+				GoNextScene(GameScene);
+			}
+			else {
+				GoNextScene(TutorialScene);
+			}
 		};
 		gameClearSelect.Add(nextButton);
 	}

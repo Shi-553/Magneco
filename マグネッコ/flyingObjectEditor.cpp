@@ -13,6 +13,7 @@
 #include <string>
 #include "messeage.h"
 #include "pauseMenu.h"
+#include "SafeDelete.hpp"
 
 #define CREATE_FLYING_OBJECT_TEXTURE_WIDTH 32
 #define CREATE_FLYING_OBJECT_TEXTURE_HEIGHT 32
@@ -92,7 +93,7 @@ void UninitFlyingObjectEditor() {
 	ReleaseTexture(eraseTextureId);
 	ReleaseTexture(flyingObjectCreateFrame);
 
-	delete flyingObjectEditorMessage;
+	SafeDelete(flyingObjectEditorMessage);
 }
 
 void DrawFlyingObjectEditor() {

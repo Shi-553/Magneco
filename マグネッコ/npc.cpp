@@ -15,6 +15,7 @@
 #include <string>
 #include "messeage.h"
 #include "time.h"
+#include "SafeDelete.hpp"
 
 typedef struct MapLabel {
 	INTVECTOR2 pos;
@@ -108,7 +109,7 @@ void UninitNPC() {
 		delete[] mapLabelList;
 		mapLabelList = NULL;
 	}
-	delete font;
+	SafeDelete( font);
 }
 
 void UpdateNPC() {

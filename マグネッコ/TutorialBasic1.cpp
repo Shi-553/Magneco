@@ -8,6 +8,7 @@
 #include "map.h"
 #include "npc.h"
 #include "sceneManager.h"
+#include "SafeDelete.hpp"
 
 
 #define POS_Y (120)
@@ -35,12 +36,13 @@ void TutorialBasic1::Init() {
 
 }
 void TutorialBasic1::Uninit() {
-	delete message;
+	SafeDelete(message);
 
 	if (movie != nullptr) {
 		movie->Stop();
 		movie->Uninit();
-		delete movie;
+		movie = nullptr;
+		SafeDelete(movie);
 	}
 
 	ReleaseTexture(textureIds,MAX);
@@ -169,7 +171,7 @@ void TutorialBasic1::Update()  {
 			num++;
 			movie->Stop();
 			movie->Uninit();
-			delete movie;
+			SafeDelete(movie);
 
 			movie = new Movie(L"movie/Basics_2.avi");
 			auto& size = movie->GetSrcRect();

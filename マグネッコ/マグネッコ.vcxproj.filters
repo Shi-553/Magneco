@@ -366,6 +366,9 @@
     <ClInclude Include="StringConvert.hpp">
       <Filter>ヘッダー\others</Filter>
     </ClInclude>
+    <ClInclude Include="SafeDelete.hpp">
+      <Filter>ヘッダー\others</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダー">
