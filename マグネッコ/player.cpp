@@ -369,7 +369,7 @@ void UpdatePutFlyingObject() {
 			auto& current = player.flyingObjectList.front();
 
 
-			if (GetMapType(current.trans.GetIntPos()) == MAP_BLOCK_NONE && MapFourDirectionsJudgment(current.trans.GetIntPos()) &&
+			if (GetMapType(current.trans.GetIntPos()) == MAP_BLOCK_NONE && MapFourDirectionsJudgment(current.trans.GetIntPos(),true) &&
 				std::find_if(player.putFlyingObjectList.begin(), player.putFlyingObjectList.end(), [&current](FlyingObject f) {return f.uid == current.uid; }) == player.putFlyingObjectList.end()) {
 				EndMapFourDirectionsJudgment();
 				MapChange(current);

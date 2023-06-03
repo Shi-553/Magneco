@@ -42,7 +42,7 @@ void DrawMap(void);
 void MapChange(FlyingObject flyingobject);
 
 // 4方向にブロックがあるかの判定
-bool MapFourDirectionsJudgment(const INTVECTOR2& pos);
+bool MapFourDirectionsJudgment(const INTVECTOR2& pos,bool isRoot=false);
 void EndMapFourDirectionsJudgment();
 
 // 位置を指定してマップタイプを返す
