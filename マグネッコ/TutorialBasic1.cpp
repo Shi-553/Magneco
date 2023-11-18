@@ -60,7 +60,7 @@ void TutorialBasic1::Draw() {
 	case 1:
 		DrawSprite(textureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
-		message->Draw("\"マグネッコ\"はルートを作って\n女の子をゴールまで誘導するゲームです！");
+		message->Draw("\"マグネッコ\"はルートを作って\n女の子のローズをゴールまで誘導するゲームです！");
 		break;
 	case 2:
 		DrawSprite(textureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });

@@ -85,7 +85,7 @@ void TutorialAdvanced2::Draw() {
 
 		DrawSprite(TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
-		message->Draw("--妨害ブロックに重なってブロックを置くことができない--");
+		message->Draw("--妨害ブロックのある場所は設置不可--");
 		break;
 
 	case 6:
@@ -96,7 +96,7 @@ void TutorialAdvanced2::Draw() {
 	case 7:
 		DrawSprite(TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
-		message->Draw("当たった箇所だけでなく左上の磁石ブロックから\n繋がっていないルートはすべて崩れてしまいます");
+		message->Draw("当たった箇所だけでなく左上の電源ブロックから\n繋がっていないルートはすべて崩れてしまいます");
 		break;
 	case 8:
 		DrawSprite(TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
@@ -110,7 +110,7 @@ void TutorialAdvanced2::Draw() {
 
 		DrawSprite(TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
-		message->Draw("--隕石にルート壊される--");
+		message->Draw("--隕石によるルートの破壊--");
 		break;
 	case 10:
 		DrawSprite(TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
@@ -129,7 +129,7 @@ void TutorialAdvanced2::Draw() {
 
 		DrawSprite(TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
 
-		message->Draw("--隕石で妨害ブロックを壊す--");
+		message->Draw("--隕石を使った妨害ブロックの破壊--");
 		break;
 	case 13:
 		DrawSprite(TextureIds[MESSAGE_BOX], { MESSAGEBOX_X ,  MESSAGEBOX_Y }, 10, { MESSAGEBOX_WIDTH, MESSAGEBOX_HEIGHT });
